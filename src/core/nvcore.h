@@ -1,0 +1,123 @@
+#pragma once
+#include <nvplayground.h>
+
+// Architecture Includes
+#include <architecture/nv3/nv3.h>
+
+/* 
+    Filename: nvcore.h
+    Purpose: Shared files between all NV cards, including core PCI defines
+*/
+
+/* PCI Defines */
+#define PCI_BIOS_MAGIC			0x20494350
+
+/* PCI CFG space offset. We don't care about most of this because we know what devices we are dealing with */
+#define PCI_CFG_OFFSET_BAR0		0x10	// Main GPU MMIO
+#define PCI_CFG_OFFSET_BAR1		0x14	// VRAM + RAMIN (on nv3), otherwise just dumb framebuffer
+#define PCI_CFG_OFFSET_BAR2		0x18	// Allegedly NV3 mirrors I/O here
+
+/* PCI Structures & Enums */
+typedef enum {
+	// Int 0x13,AX=0xB1xx   = PCI
+	PCI_FUNCTION_ID_BASE = 0xB1,
+
+	// PCI BIOS SUBFUNCTIONS
+	PCI_BIOS_IS_PRESENT = 0x01,
+	PCI_FIND_DEVICE = 0x02,
+	PCI_FIND_CLASS_CODE = 0x03,
+	PCI_GENERATE_SPECIAL_CYCLE = 0x06,
+	PCI_READ_CONFIG_BYTE = 0x08,
+	PCI_READ_CONFIG_WORD = 0x09,
+	PCI_READ_CONFIG_DWORD = 0x0A,
+	PCI_WRITE_CONFIG_BYTE = 0x0B,
+	PCI_WRITE_CONFIG_WORD = 0x0C,
+	PCI_WRITE_CONFIG_DWORD = 0x0D,
+	PCI_GET_IRQ_ROUTING_OPTIONS = 0x0E,
+	PCI_SET_PCI_IRQ = 0x0F,
+
+	CFLAG_CARRY = 0x01,
+} pci_functions_t;
+
+typedef enum 
+{
+	PCI_ERROR_UNSUPPORTED_FUNCTION = 0x81,
+	PCI_ERROR_BAD_VENDOR_ID = 0x83,
+	PCI_ERROR_DEVICE_NOT_FOUND = 0x86,
+	PCI_ERROR_BAD_PCI_REGISTER = 0x87,
+} pci_errors_t; 
+
+/* PCI Functions */
+bool pci_bios_is_present(void);
+bool pci_does_device_exist(uint32_t device_id, uint32_t vendor_id);
+
+uint32_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+uint32_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+
+#define PCI_VENDOR_SGS              0x104A      // Used for NV1, STG-2000 variant
+#define PCI_VENDOR_SGS_NV           0x12D2      // Used for NV3/NV3T
+#define PCI_VENDOR_NV               0x10DE      // Used for NV1, NV1 variant, and NV4+
+
+#define PCI_DEVICE_NV1_NV           0x0008      // NV1 NV component     	1995
+#define PCI_DEVICE_NV1_VGA          0x0009      // NV1 VGA component    	1995
+#define PCI_DEVICE_NV2              0x0010      // Mutara               	1995-1996 (cancelled)
+#define PCI_DEVICE_NV3              0x0018      // Riva 128, Riva 128 ZX	1997-1998
+#define PCI_DEVICE_NV3T_ACPI		0x0019		// Riva 128 ZX, with ACPI	1998
+#define PCI_DEVICE_NV4				0x0020		// Riva TNT					1998
+#define PCI_DEVICE_NV5				0x0028		// Riva TNT2 / TNT2 Pro		1999
+#define PCI_DEVICE_NV5_ULTRA		0x0029		// Riva TNT2 Ultra			1999
+#define PCI_DEVICE_NV5_CRAP			0x002C		// Vanta					2000
+/* Yes this is considered "NV6" for some reason */
+#define PCI_DEVICE_NV6				0x002D		// Riva TNT2 M64			1999
+#define PCI_DEVICE_NV10				0x0100		// GeForce 256 (SDRAM)		1999
+#define PCI_DEVICE_NV10_DDR			0x0101		// GeForce 256 (DDR1)		1999
+#define PCI_DEVICE_NV10_QUADRO		0x0103		// Quadro					2000 (aka NV10GL)
+
+/* 
+    NV_PFB_BOOT values 
+    There's two ways to identify NV GPU: By reading PCI config registers and by reading the NV_PFB_BOOT register
+    We read PCI config registers to determine the overall model and hten read the pfb_boot register to get the stepping
+*/
+#define NV_PFB_BOOT_NV1_A01     	0x00010100      // NV1 Stepping A0 (Prototype) 1994
+#define NV_PFB_BOOT_NV1_B01     	0x00010101      // NV1 Stepping B0 (Prototype) 1995
+#define NV_PFB_BOOT_NV1_B02     	0x00010102      // NV1 Stepping B1 (Prototype) 1995
+#define NV_PFB_BOOT_NV1_B03     	0x00010103      // NV1 Stepping B2 (Prototype) 1995
+#define NV_PFB_BOOT_NV1_C01     	0x00010104      // NV1 Stepping C0 (Final)	   1995
+#define NV_PFB_BOOT_NV2_A01			0x20030120		// NV2 Stepping A0 (Prototype) 1995/1996 (Helios Semiconductor) 
+
+/* NVidia Device Definition */
+typedef struct nv_device_info_s
+{
+	uint32_t device_id; 		// Device ID of the GPU
+	uint32_t vendor_id;			// Vendor ID of the GPU
+	const char* name; 			// Friendly name of the GPU
+	bool (*init_function)();	// Function to call on entry point
+
+	void (*main_function)();	// Function to call on entry point
+	
+	void (*shutdown_function)();	// Function to call on shutdown
+	void (*submit_function)();	// Function to call for graphics object submission
+} nv_device_info_t; 
+
+/* List of supported devices */
+extern nv_device_info_t supported_devices[]; 
+
+/* Full NV Device Struct */
+typedef struct nv_device_s
+{
+	nv_device_info_t device_info;
+	uint32_t bus_number;			// PCI bus number
+	uint32_t function_number; 		// PCI function number
+	void* bar0;						// PCI BAR0 mapping - gpu stuff
+	void* bar1;						// PCI BAR1 mapping for DFB
+	void* bar1_ramin; 				// ******NV3 ONLY****** RAMIN Mapping
+
+	int32_t bar0_selector;			// MUST BE USED FOR ACCESS TO BAR0
+	int32_t bar1_selector;			// MUST BE USED FOR ACCESS TO BAR1
+} nv_device_t;
+
+extern nv_device_t current_device;
+
+// Detection functions
+bool nv_detect(); 
