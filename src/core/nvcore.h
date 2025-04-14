@@ -55,6 +55,7 @@ uint32_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32
 uint32_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset);
 uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset);
 
+/* Device definitions */
 #define PCI_VENDOR_SGS              0x104A      // Used for NV1, STG-2000 variant
 #define PCI_VENDOR_SGS_NV           0x12D2      // Used for NV3/NV3T
 #define PCI_VENDOR_NV               0x10DE      // Used for NV1, NV1 variant, and NV4+
@@ -103,7 +104,7 @@ typedef struct nv_device_info_s
 /* List of supported devices */
 extern nv_device_info_t supported_devices[]; 
 
-/* Full NV Device Struct */
+/* Full NV Device Struct (shared across all devices) */
 typedef struct nv_device_s
 {
 	nv_device_info_t device_info;
@@ -115,9 +116,33 @@ typedef struct nv_device_s
 
 	int32_t bar0_selector;			// MUST BE USED FOR ACCESS TO BAR0
 	int32_t bar1_selector;			// MUST BE USED FOR ACCESS TO BAR1
+	uint32_t vram_amount;			// Amount of Video RAM
+
+	/* Some registers shared between all gpus */
+	uint32_t nv_pfb_boot_0;			// nv_pfb_boot_0 register read at boot
+	uint32_t nv_pmc_boot_0;			// nv_pmc_boot_0 register read at boot
+	uint32_t straps;				// Straps for oem-specific config
 } nv_device_t;
 
 extern nv_device_t current_device;
 
 // Detection functions
 bool nv_detect(); 
+
+// Read/write functions
+// only 8 and 32 bit are really needed
+uint8_t nv_mmio_read8(uint32_t offset); 
+uint32_t nv_mmio_read32(uint32_t offset); 
+/* Requires some special dispensations if the bus size is 64-bit and there is only 2 MB of VRAM */
+uint8_t nv_dfb_read8(uint32_t offset); 
+uint16_t nv_dfb_read16(uint32_t offset); 
+uint32_t nv_dfb_read32(uint32_t offset); 
+// RAMIN is always read as 32bit
+uint32_t nv_ramin_read32(uint32_t offset); 
+
+void nv_mmio_write8(uint32_t offset, uint8_t val);
+void nv_mmio_write32(uint32_t offset, uint32_t val);
+void nv_dfb_write8(uint32_t offset, uint8_t val);
+void nv_dfb_write16(uint32_t offset, uint16_t val);
+void nv_dfb_write32(uint32_t offset, uint32_t val);
+void nv_ramin_write32(uint32_t offset, uint32_t val);

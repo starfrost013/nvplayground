@@ -28,8 +28,15 @@ int main(void)
 	if (!nv_detect())
 		exit(2);
 
-	if (!current_device.device_info.init_function())
+	/* Make sure the GPU is supported */
+	if (!current_device.device_info.init_function)
+	{
+		printf("This GPU is not yet supported :(");
 		exit(3);
+	}
+
+	if (!current_device.device_info.init_function())
+		exit(4);
 	
   	//__djgpp_nearptr_enable(); for dos rom
 	// kbhit() etc

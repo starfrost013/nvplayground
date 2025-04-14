@@ -15,6 +15,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # NVCore
 "src/core/nvcore_detect.c"
+"src/core/nvcore_io.c"
 
 # Architecture: NV3
 "src/architecture/nv3/nv3_core.c"

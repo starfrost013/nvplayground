@@ -9,8 +9,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#pragma once
-
 #define NV3_MMIO_SIZE                                   0x1000000       // Max MMIO size
 
 #define NV3_LFB_RAMIN_MIRROR_START                      0x400000        // Mirror of ramin (VERIFY ON HARDWARE)
@@ -40,14 +38,11 @@
 #define NV3_BOOT_REG_REV_B00                            0x00030110
 #define NV3_BOOT_REG_REV_C00                            0x00030120
 
-// various vbioses for testing
-// Coming soon: MIROmagic Premium BIOS (when I get mine dumped)
-//todo: move to hash system
+#define NV3_VRAM_SIZE_1MB                               0x100000 // 1MB (commented out in drivers)
+#define NV3_VRAM_SIZE_2MB                               0x200000 // 2MB
+#define NV3_VRAM_SIZE_4MB                               0x400000 // 4MB
+#define NV3_VRAM_SIZE_8MB                               0x800000 // NV3T only
 
-// Temporary, will be loaded from settings
-#define NV3_VRAM_SIZE_2MB                                   0x200000 // 2MB
-#define NV3_VRAM_SIZE_4MB                                   0x400000 // 4MB
-#define NV3_VRAM_SIZE_8MB                                   0x800000 // NV3T only
 // There is also 1mb supported by the card but it was never used
 
 // PCI config
