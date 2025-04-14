@@ -1,5 +1,3 @@
-
-#include "core/nvcore.h"
 #include <bios.h>
 #include <dpmi.h>
 #include <stdio.h>
