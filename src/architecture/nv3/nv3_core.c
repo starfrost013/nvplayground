@@ -86,13 +86,13 @@ bool nv3_init()
 
     uint32_t vpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_PIXEL);
     uint32_t mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
-
+    
     //todo: MHz
-    printf("Pixel Clock Coefficient = %08lX", vpll);
-    printf("Memory Clock Coefficient= %08lX", mpll);
+    printf("Pixel Clock Coefficient = %08lX\n", vpll);
+    printf("Memory Clock Coefficient= %08lX\n", mpll);
 
     /* Power up all GPU subsystems */
-    printf("Enabling all GPU subsystems (NV3_PMC_ENABLE -> 0x11111111)...");
+    printf("Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
     nv_mmio_write32(NV3_PMC_ENABLE, 0x11111111);
     printf("Done!\n");
 
