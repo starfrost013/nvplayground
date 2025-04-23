@@ -7,6 +7,52 @@
 #include "dpmi.h"
 #include "nv3.h"
 #include "sys/farptr.h"
+#include "time.h"
+
+#define NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS       60
+
+/* TEMPORARY test  function to test certain hardcoded overclocks */
+bool nv3_init_test_overclock()
+{
+    /* print out some helpful messages */
+    printf("Basic clockspeed test (text mode: best case scenario)\n");
+    printf("The GPU will try to run for 60 seconds at each clock setting, gradually going from an underclock to an overclock. If it crashes, reboot, and the default 100Mhz MCLK will be restored.\n");
+    printf("Note: Some NVIDIA RIVA 128 ZX cards manufactured by TSMC run at 90Mhz and will have less overclocking potential!\n");
+
+    /* read the straps to find our base clock value */
+    uint32_t straps = nv_mmio_read32(NV3_PSTRAPS);
+
+    float clock_base = 13500000.0f;
+
+    if ((straps >> NV3_PSTRAPS_CRYSTAL) & 0x01)
+        clock_base = 14318180.0f;
+
+    /* We vary the n-parameter of the MCLK to fine-tune the GPU clock speed. M can be used for large steps and P param can be used for very big steps */#
+
+    uclock_t start_clock = uclock();
+
+    // Start with base of 0x1A30B (100.02 Mhz)
+    uint32_t clock_m = 0x01, clock_p = 0x0B;
+
+    for (int32_t clock_n = 0x70; clock_n <= 0xFF; clock_n ++)
+    {
+        uint32_t final_clock = (clock_m << 16)
+        | (clock_n << 8)
+        | ((clock_p & 0x07) << 16);
+
+        //not speed critical, use a double
+        double megahertz = (clock_base * clock_n) / (clock_m << clock_p) / 1000000.0f;
+
+        printf("Trying MCLK = %.2f Mhz", megahertz);
+
+        nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, final_clock);
+
+        uclock_t this_clock = uclock();
+
+        // Sit in a spinloop
+        while (this_clock - start_clock < (UCLOCKS_PER_SEC * NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS));
+    }
+}
 
 bool nv3_init()
 {
@@ -100,10 +146,8 @@ bool nv3_init()
     printf("Enabling interrupts...");
     nv_mmio_write32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
     printf("Done!\n");
-
-    printf("Turning them off again for now...");
-    nv_mmio_write32(NV3_PMC_INTERRUPT_ENABLE, 0);
-    printf("Done!\n");
-
+ 
+    nv3_init_test_overclock();
+    
     return true; 
 }
