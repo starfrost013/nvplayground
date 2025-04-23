@@ -55,14 +55,15 @@ bool nv3_init_test_overclock()
         //not speed critical, use a double
         double megahertz = (clock_base * clock_n) / (clock_m << clock_p) / 1000000.0f;
 
-        printf("Trying MCLK = %.2f Mhz", megahertz);
+        printf("Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)", megahertz, final_clock);
 
         nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, final_clock);
 
         uclock_t this_clock = uclock();
 
-        // Sit in a spinloop
-        while (this_clock - start_clock < (UCLOCKS_PER_SEC * NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS));
+        // Sit in a spinloop until it's time to wake up
+        while (this_clock - start_clock < (UCLOCKS_PER_SEC * NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS))
+            this_clock = uclock();
     }
 
     printf("We survived. Returning to 100Mhz...\n");
