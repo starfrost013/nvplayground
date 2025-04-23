@@ -146,3 +146,8 @@ void nv_dfb_write8(uint32_t offset, uint8_t val);
 void nv_dfb_write16(uint32_t offset, uint16_t val);
 void nv_dfb_write32(uint32_t offset, uint32_t val);
 void nv_ramin_write32(uint32_t offset, uint32_t val);
+
+/* Temp stuff */
+#define NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS        60
+#define NV3_TEST_OVERCLOCK_BASE_13500                   0x1A30B
+#define NV3_TEST_OVERCLOCK_BASE_14318					0x1C40E

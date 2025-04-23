@@ -9,7 +9,6 @@
 #include "sys/farptr.h"
 #include "time.h"
 
-#define NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS       60
 
 /* TEMPORARY test  function to test certain hardcoded overclocks */
 bool nv3_init_test_overclock()
@@ -22,19 +21,32 @@ bool nv3_init_test_overclock()
     /* read the straps to find our base clock value */
     uint32_t straps = nv_mmio_read32(NV3_PSTRAPS);
 
+    /* there are two possible clock bases here: 13.5 and 14.318 Mhz */
+
     float clock_base = 13500000.0f;
+    bool is_14318mhz_clock = false;     
 
     if ((straps >> NV3_PSTRAPS_CRYSTAL) & 0x01)
+    {
         clock_base = 14318180.0f;
-
+        is_14318mhz_clock = true; 
+    }
+        
     /* We vary the n-parameter of the MCLK to fine-tune the GPU clock speed. M can be used for large steps and P param can be used for very big steps */#
 
     uclock_t start_clock = uclock();
 
     // Start with base of 0x1A30B (100.02 Mhz)
+
     uint32_t clock_m = 0x01, clock_p = 0x0B;
 
-    for (int32_t clock_n = 0x70; clock_n <= 0xFF; clock_n ++)
+    if (is_14318mhz_clock)
+    {
+        clock_p = 0x0E;
+        //base clock_n is 0xC4, so the gpu will be biased more towards underclocking
+    }
+
+    for (int32_t clock_n = 0x70; clock_n <= 0xFF; clock_n++)
     {
         uint32_t final_clock = (clock_m << 16)
         | (clock_n << 8)
@@ -52,6 +64,15 @@ bool nv3_init_test_overclock()
         // Sit in a spinloop
         while (this_clock - start_clock < (UCLOCKS_PER_SEC * NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS));
     }
+
+    printf("We survived. Returning to 100Mhz...\n");
+    /* restore original clock */
+    if (is_14318mhz_clock)
+        nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TEST_OVERCLOCK_BASE_14318);
+    else
+        nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TEST_OVERCLOCK_BASE_13500);
+
+    return true; 
 }
 
 bool nv3_init()
@@ -147,7 +168,8 @@ bool nv3_init()
     nv_mmio_write32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
     printf("Done!\n");
  
-    nv3_init_test_overclock();
-    
+    if (nv3_init_test_overclock())
+        printf("Passed insane clock torture test\n");
+
     return true; 
 }
