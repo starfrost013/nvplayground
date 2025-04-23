@@ -37,16 +37,17 @@ bool nv3_init_test_overclock()
         
     /* We vary the n-parameter of the MCLK to fine-tune the GPU clock speed. M can be used for large steps and P param can be used for very big steps */
 
-
+    uint32_t clock_n_start = 0xA3; 
     uint32_t clock_m = 0x0B, clock_p = 0x01;
 
     if (is_14318mhz_clock)
     {
         clock_m = 0x0E;
         //base clock_n is 0xC4, so the gpu will be biased more towards underclocking
+        clock_n_start = 0xC4;
     }
 
-    for (int32_t clock_n = 0x70; clock_n <= 0xFF; clock_n++)
+    for (int32_t clock_n = clock_n_start; clock_n <= 0xFF; clock_n++)
     {
         uclock_t start_clock = uclock();
 
