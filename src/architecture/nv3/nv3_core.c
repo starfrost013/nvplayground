@@ -21,7 +21,10 @@ bool nv3_init_test_overclock()
     /* read the straps to find our base clock value */
     uint32_t straps = nv_mmio_read32(NV3_PSTRAPS);
 
-    /* there are two possible clock bases here: 13.5 and 14.318 Mhz */
+    /* 
+        there are two possible clock bases here: 13.5 and 14.318 Mhz 
+        we need two different values for our start menu
+    */
 
     float clock_base = 13500000.0f;
     bool is_14318mhz_clock = false;     
@@ -32,11 +35,8 @@ bool nv3_init_test_overclock()
         is_14318mhz_clock = true; 
     }
         
-    /* We vary the n-parameter of the MCLK to fine-tune the GPU clock speed. M can be used for large steps and P param can be used for very big steps */#
+    /* We vary the n-parameter of the MCLK to fine-tune the GPU clock speed. M can be used for large steps and P param can be used for very big steps */
 
-    uclock_t start_clock = uclock();
-
-    // Start with base of 0x1A30B (100.02 Mhz)
 
     uint32_t clock_m = 0x01, clock_p = 0x0B;
 
@@ -48,14 +48,16 @@ bool nv3_init_test_overclock()
 
     for (int32_t clock_n = 0x70; clock_n <= 0xFF; clock_n++)
     {
-        uint32_t final_clock = (clock_m << 16)
+        uclock_t start_clock = uclock();
+
+        uint32_t final_clock = clock_m
         | (clock_n << 8)
         | ((clock_p & 0x07) << 16);
 
         //not speed critical, use a double
         double megahertz = (clock_base * clock_n) / (clock_m << clock_p) / 1000000.0f;
 
-        printf("Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)", megahertz, final_clock);
+        printf("Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)...\n", megahertz, final_clock);
 
         nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, final_clock);
 
