@@ -655,7 +655,12 @@
 #define NV3_PVIDEO_OVERLAY_FORMAT                       8           // 0 = CCIR, 1 = YUY2
 
 #define NV3_PVIDEO_END                                  0x6802FF
+
 #define NV3_PRAMDAC_START                               0x680300
+#define NV3_PRAMDAC_CURSOR_START_POSITION               0x680300
+
+#define NV3_PRAMDAC_CURSOR_SIZE_X                       32
+#define NV3_PRAMDAC_CURSOR_SIZE_Y                       32
 
 #define NV3_PRAMDAC_CLOCK_MEMORY                        0x680504
 #define NV3_PRAMDAC_CLOCK_MEMORY_VDIV                   7:0
@@ -764,6 +769,8 @@
 #define NV3_CRTC_REGISTER_HBLANKEND                     0x03
 #define NV3_CRTC_REGISTER_HRETRACESTART                 0x04
 #define NV3_CRTC_REGISTER_HRETRACEEND                   0x05
+#define NV3_CRTC_REGISTER_CURSOR_START_DISABLED         5
+
 #define NV3_CRTC_REGISTER_VTOTAL                        0x06
 #define NV3_CRTC_REGISTER_OVERFLOW                      0x07
 #define NV3_CRTC_REGISTER_PRESETROWSCAN                 0x08
@@ -800,6 +807,9 @@
 #define NV3_CRTC_REGISTER_PIXELMODE                     0x28
 
 #define NV3_CRTC_REGISTER_HEB                           0x2D        // HRS most significant bit
+
+#define NV3_CRTC_REGISTER_CURSOR_ADDR0                  0x30        // Cursor high 
+#define NV3_CRTC_REGISTER_CURSOR_ADDR1                  0x31        // Cursor low (1:0 = enable)
 
 #define NV3_CRTC_REGISTER_PIXELMODE_VGA                 0x00        // vga textmode
 #define NV3_CRTC_REGISTER_PIXELMODE_8BPP                0x01

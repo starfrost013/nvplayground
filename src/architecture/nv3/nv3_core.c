@@ -79,6 +79,26 @@ bool nv3_init_test_overclock()
     return true; 
 }
 
+void nv3_dump_vbios()
+{
+    FILE* vbios = fopen("nv3bios.bin", "r+");
+
+    uint32_t rom_location = NV3_PROM_START;
+    uint32_t vbios_bin[8192];
+
+    for (int32_t i = 0; i < 8192; i++)
+    {
+        vbios_bin[i] = nv_mmio_read32(rom_location);
+
+
+        rom_location += 4; //dword 
+    }   
+
+    fwrite(vbios_bin, 1, 32768, vbios);
+
+    fclose(vbios);
+}
+
 bool nv3_init()
 {
     // only top 8 bits actually matter
@@ -172,8 +192,12 @@ bool nv3_init()
     nv_mmio_write32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
     printf("Done!\n");
  
-    if (nv3_init_test_overclock())
-        printf("Passed insane clock torture test\n");
+    printf("Dumping Video BIOS...");
+    nv3_dump_vbios();
+    printf("Done!\n");
+
+    //if (nv3_init_test_overclock())
+        //printf("Passed insane clock torture test\n");
 
     return true; 
 }
