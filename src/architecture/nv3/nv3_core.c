@@ -5,6 +5,7 @@
 #include "architecture/nv3/nv3_ref.h"
 #include "core/nvcore.h"
 #include "dpmi.h"
+#include "go32.h"
 #include "nv3.h"
 #include "sys/farptr.h"
 #include "time.h"
@@ -81,20 +82,18 @@ bool nv3_init_test_overclock()
 
 void nv3_dump_vbios()
 {
-    FILE* vbios = fopen("nv3bios.bin", "r+");
+    FILE* vbios = fopen("nv3bios.bin", "wb");
 
-    uint32_t rom_location = NV3_PROM_START;
+    //uint32_t rom_location = NV3_PROM_START;
     uint32_t vbios_bin[8192];
 
     for (int32_t i = 0; i < 8192; i++)
     {
-        vbios_bin[i] = nv_mmio_read32(rom_location);
-
-
-        rom_location += 4; //dword 
+        vbios_bin[i] = _farpeekl(_dos_ds, 0xC0000 + i*4);
+        //rom_location += 4; //dword 
     }   
 
-    fwrite(vbios_bin, 1, 32768, vbios);
+    fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
 
     fclose(vbios);
 }
