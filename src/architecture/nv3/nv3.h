@@ -9,3 +9,7 @@
 //
 
 bool nv3_init();
+
+/* NV3 Tests */
+bool nv3_dump_vbios();
+bool nv3_test_overclock(); 

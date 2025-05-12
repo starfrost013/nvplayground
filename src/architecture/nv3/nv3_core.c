@@ -10,9 +10,8 @@
 #include "sys/farptr.h"
 #include "time.h"
 
-
 /* TEMPORARY test  function to test certain hardcoded overclocks */
-bool nv3_init_test_overclock()
+bool nv3_test_overclock()
 {
     /* print out some helpful messages */
     printf("Basic clockspeed test (text mode: best case scenario)\n");
@@ -80,7 +79,7 @@ bool nv3_init_test_overclock()
     return true; 
 }
 
-void nv3_dump_vbios()
+bool nv3_dump_vbios()
 {
     FILE* vbios = fopen("nv3bios.bin", "wb");
 
@@ -96,6 +95,7 @@ void nv3_dump_vbios()
     fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
 
     fclose(vbios);
+    return true; 
 }
 
 bool nv3_init()
@@ -195,7 +195,7 @@ bool nv3_init()
     nv3_dump_vbios();
     printf("Done!\n");
 
-    //if (nv3_init_test_overclock())
+    //if (nv3_test_overclock())
         //printf("Passed insane clock torture test\n");
 
     return true; 

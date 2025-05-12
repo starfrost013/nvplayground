@@ -17,9 +17,17 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/nvcore_detect.c"
 "src/core/nvcore_io.c"
 
+# NVCore: Tests
+"src/core/tests/tests.c"
+
 # Architecture: NV3
+"src/architecture/nv3/nv3_class_names.c"
 "src/architecture/nv3/nv3_core.c"
 "src/architecture/nv3/nv3_mode_table.c"
+
+# Util
+"util/util_logging.c"
+"util/ini.c"
 )
 
 add_executable(nvplay ${sources})
