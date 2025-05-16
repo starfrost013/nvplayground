@@ -10,6 +10,9 @@
 #include "sys/farptr.h"
 #include "time.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 /* TEMPORARY test  function to test certain hardcoded overclocks */
 bool nv3_test_overclock()
 {
@@ -96,6 +99,39 @@ bool nv3_dump_vbios()
 
     fclose(vbios);
     return true; 
+}
+
+bool nv3_dump_mmio()
+{
+    FILE* vbios_bar0 = fopen("nv3bar0.bin", "wb");
+    FILE* vbios_bar1 = fopen("nv3bar1.bin", "wb");
+
+    if (!vbios_bar0)
+        return false;
+
+    if (!vbios_bar1)
+        return false;
+    
+    uint8_t* mmio_dump_bar_buf = (uint8_t*)calloc(1, NV3_MMIO_SIZE);
+
+    // use ldt to read out BAR0 and BAR1 MMIO 
+
+    for (int32_t i = 0; i < NV3_MMIO_SIZE; i++)
+    {
+        mmio_dump_bar_buf[i] = _farpeekl(current_device.bar0_selector, i);
+    }
+
+    fwrite(vbios_bar0, sizeof(mmio_dump_bar_buf), 1, vbios_bar0);
+
+    for (int32_t i = 0; i < NV3_MMIO_SIZE; i++)
+    {
+        mmio_dump_bar_buf[i] = _farpeekl(current_device.bar1_selector, i);
+    }
+
+    fwrite(vbios_bar1, sizeof(mmio_dump_bar_buf), 1, vbios_bar0);
+    
+    return true; 
+
 }
 
 bool nv3_init()

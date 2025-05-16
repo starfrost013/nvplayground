@@ -520,8 +520,7 @@ ini_strip_quotes(ini_t ini)
 ini_t
 ini_new(void)
 {
-    ini_t ini = malloc(sizeof(list_t));
-    memset(ini, 0, sizeof(list_t));
+    ini_t ini = calloc(1, (sizeof(list_t)));
     return ini;
 }
 
@@ -560,7 +559,7 @@ ini_section_get_int(ini_section_t self, const char *name, int32_t def)
     if (stricmp(entry->data, "false") == 0)
         return 0;
 
-    sscanf(entry->data, "%i", &value);
+    sscanf(entry->data, "%li", &value);
 
     return value;
 }

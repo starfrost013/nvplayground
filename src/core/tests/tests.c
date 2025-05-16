@@ -55,7 +55,7 @@ nv_test_t* Test_Get(const char* test_name)
         nv_test = nv_tests[test_number];
 
         if (!strcmp(nv_test.name, test_name))
-            return &nv_test;
+            return &nv_tests[test_number];
 
         test_number++;
     }
