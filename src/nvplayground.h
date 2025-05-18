@@ -8,11 +8,15 @@
 */
 
 #include <bios.h>
+#include <ctype.h>
 #include <dpmi.h>
+#include <go32.h>
 #include <pc.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/nearptr.h>
 #include <sys/farptr.h>
 

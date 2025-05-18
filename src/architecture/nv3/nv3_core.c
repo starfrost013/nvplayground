@@ -106,14 +106,15 @@ bool nv3_dump_mmio()
     FILE* vbios_bar0 = fopen("nv3bar0.bin", "wb");
     FILE* vbios_bar1 = fopen("nv3bar1.bin", "wb");
 
-    if (!vbios_bar0)
+    if (!vbios_bar0
+    || !vbios_bar1)
         return false;
 
-    if (!vbios_bar1)
-        return false;
-    
     uint8_t* mmio_dump_bar_buf = (uint8_t*)calloc(1, NV3_MMIO_SIZE);
 
+    if (!mmio_dump_bar_buf)
+        return false; 
+    
     // use ldt to read out BAR0 and BAR1 MMIO 
 
     for (int32_t i = 0; i < NV3_MMIO_SIZE; i++)
@@ -128,8 +129,13 @@ bool nv3_dump_mmio()
         mmio_dump_bar_buf[i] = _farpeekl(current_device.bar1_selector, i);
     }
 
-    fwrite(vbios_bar1, sizeof(mmio_dump_bar_buf), 1, vbios_bar0);
+    fwrite(vbios_bar1, sizeof(mmio_dump_bar_buf), 1, vbios_bar1);
     
+    fclose(vbios_bar0);
+    fclose(vbios_bar1);
+    
+    free(mmio_dump_bar_buf);
+
     return true; 
 
 }

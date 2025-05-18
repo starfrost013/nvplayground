@@ -7,11 +7,18 @@ add_compile_options(-Wall -std=gnu99 -save-temps)
 
 file(GLOB sources CONFIGURE_DEPENDS 
 
+# Util
+"src/util/util_logging.c"
+"src/util/ini.c"
+
 # Main
 "src/main.c"
 
 # PCI
 "src/core/pci/pci.c"
+
+# Config
+"src/config/config.c"
 
 # NVCore
 "src/core/nvcore_detect.c"
@@ -24,10 +31,6 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/architecture/nv3/nv3_class_names.c"
 "src/architecture/nv3/nv3_core.c"
 "src/architecture/nv3/nv3_mode_table.c"
-
-# Util
-"util/util_logging.c"
-"util/ini.c"
 )
 
 add_executable(nvplay ${sources})

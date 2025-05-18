@@ -18,10 +18,7 @@
  *
  */
 
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+ 
 #include <util/ini.h>
 
 typedef struct _list_ {
@@ -477,7 +474,54 @@ ini_write(ini_t ini, const char *fn)
     (void) fclose(fp);
 }
 
-extern char* trim(char* str);
+// https://stackoverflow.com/a/122974
+// taken from 86box net_modem.c
+char *
+trim(char *str)
+{
+    size_t len    = 0;
+    char  *frontp = str;
+    char  *endp   = NULL;
+
+    if (str == NULL) {
+        return NULL;
+    }
+    if (str[0] == '\0') {
+        return str;
+    }
+
+    len  = strlen(str);
+    endp = str + len;
+
+    /* Move the front and back pointers to address the first non-whitespace
+     * characters from each end.
+     */
+    while (isspace((unsigned char) *frontp)) {
+        ++frontp;
+    }
+    if (endp != frontp) {
+        while (isspace((unsigned char) *(--endp)) && endp != frontp) { }
+    }
+
+    if (frontp != str && endp == frontp)
+        *str = '\0';
+    else if (str + len - 1 != endp)
+        *(endp + 1) = '\0';
+
+    /* Shift the string so that it starts at str so that if it's dynamically
+     * allocated, we can still free it on the returned pointer.  Note the reuse
+     * of endp to mean the front of the string buffer now.
+     */
+    endp = str;
+    if (frontp != str) {
+        while (*frontp) {
+            *endp++ = *frontp++;
+        }
+        *endp = '\0';
+    }
+
+    return str;
+}
 
 void
 ini_strip_quotes(ini_t ini)
@@ -587,10 +631,10 @@ ini_section_get_uint(ini_section_t self, const char *name, uint32_t def)
 double
 ini_section_get_double(ini_section_t self, const char *name, double def)
 {
-    section_t     *section = (section_t *) self;
-    entry_t *entry;
-    double   value = 0;
-    int32_t      res = 0;
+    section_t   *section = (section_t *) self;
+    entry_t     *entry;
+    double      value = 0;
+    int32_t     res = 0;
 
     if (section == NULL)
         return def;
@@ -618,7 +662,7 @@ ini_section_get_hex16(ini_section_t self, const char *name, int32_t def)
 {
     section_t     *section = (section_t *) self;
     const entry_t *entry;
-    unsigned int32_t   value = 0;
+    uint32_t   value = 0;
 
     if (section == NULL)
         return def;
@@ -627,7 +671,7 @@ ini_section_get_hex16(ini_section_t self, const char *name, int32_t def)
     if (entry == NULL)
         return def;
 
-    sscanf(entry->data, "%04X", &value);
+    sscanf(entry->data, "%04lX", &value);
 
     return value;
 }
@@ -637,7 +681,7 @@ ini_section_get_hex20(ini_section_t self, const char *name, int32_t def)
 {
     section_t     *section = (section_t *) self;
     const entry_t *entry;
-    unsigned int32_t   value = 0;
+    uint32_t   value = 0;
 
     if (section == NULL)
         return def;
@@ -646,7 +690,7 @@ ini_section_get_hex20(ini_section_t self, const char *name, int32_t def)
     if (entry == NULL)
         return def;
 
-    sscanf(entry->data, "%05X", &value);
+    sscanf(entry->data, "%05lX", &value);
 
     return value;
 }
@@ -656,7 +700,7 @@ ini_section_get_hex32(ini_section_t self, const char *name, int32_t def)
 {
     section_t     *section = (section_t *) self;
     const entry_t *entry;
-    unsigned int32_t   value = 0;
+    uint32_t   value = 0;
 
     if (section == NULL)
         return def;
@@ -665,7 +709,7 @@ ini_section_get_hex32(ini_section_t self, const char *name, int32_t def)
     if (entry == NULL)
         return def;
 
-    sscanf(entry->data, "%08X", &value);
+    sscanf(entry->data, "%08lX", &value);
 
     return value;
 }
@@ -675,9 +719,9 @@ ini_section_get_mac(ini_section_t self, const char *name, int32_t def)
 {
     section_t     *section = (section_t *) self;
     const entry_t *entry;
-    unsigned int32_t   val0 = 0;
-    unsigned int32_t   val1 = 0;
-    unsigned int32_t   val2 = 0;
+    uint32_t   val0 = 0;
+    uint32_t   val1 = 0;
+    uint32_t   val2 = 0;
 
     if (section == NULL)
         return def;
@@ -686,7 +730,7 @@ ini_section_get_mac(ini_section_t self, const char *name, int32_t def)
     if (entry == NULL)
         return def;
 
-    sscanf(entry->data, "%02x:%02x:%02x", &val0, &val1, &val2);
+    sscanf(entry->data, "%02lx:%02lx:%02lx", &val0, &val1, &val2);
 
     return ((val0 << 16) + (val1 << 8) + val2);
 }
@@ -720,7 +764,7 @@ ini_section_set_int(ini_section_t self, const char *name, int32_t val)
     if (ent == NULL)
         ent = create_entry(section, name);
 
-    sprintf(ent->data, "%i", val);
+    sprintf(ent->data, "%li", val);
 }
 
 void

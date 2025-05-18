@@ -1,11 +1,8 @@
-#include <bios.h>
-#include <dpmi.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/nearptr.h>
+
 
 #include <nvplayground.h>
 #include <core/nvcore.h>
+#include <config/config.h>
 
 #define GDB_IMPLEMENTATION
 #include "gdbstub.h"
@@ -19,6 +16,8 @@ void set_video_mode(int mode) {
 int main(void) 
 {
 	_gdb_start(); // gdb_start but it doesn't actually break into the debugger automatically
+
+	Config_Load(); 
 
 	printf(APP_SIGNON_STRING);
 
