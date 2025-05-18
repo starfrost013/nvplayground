@@ -74,7 +74,15 @@ bool Config_Load()
             }
                 
             /* just copy up to 64 chars */
-            strncpy(*new_test_entry->name, current_test.name, MAX_TEST_NAME_BUFFER_LEN);
+            strncpy(new_test_entry->name, current_test.name, MAX_TEST_NAME_BUFFER_LEN);
+
+            if (!current_test.test_function)
+            {
+                printf("Warning: test %s doesn't have a test function", new_test_entry->name);
+                continue; 
+            }            
+
+            new_test_entry->test_function = current_test.test_function;
 
         }
         
