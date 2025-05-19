@@ -13,8 +13,8 @@ nv_test_t nv_tests[] =
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_SetOverclock", "NV3 Overclock Torture", nv3_test_overclock},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_DumpVBIOS", "NV3 Dump Video BIOS (Real Mode)", nv3_dump_vbios},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_DumpVBIOS", "NV3 Dump Video BIOS (Real Mode)", nv3_dump_vbios},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_DumpMMIO", "NV3 Full BAR0/BAR1 Dump", nv3_dump_vbios},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_DumpMMIO", "NV3 Full BAR0/BAR1 Dump", nv3_dump_vbios},
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_DumpMMIO", "NV3 Full BAR0/BAR1 Dump", nv3_dump_mmio},
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_DumpMMIO", "NV3 Full BAR0/BAR1 Dump", nv3_dump_mmio},
     { 0x0000, 0x0000, "", "", NULL}, // Sentinel value, do not remove
 };
 

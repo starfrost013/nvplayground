@@ -84,6 +84,8 @@ bool nv3_test_overclock()
 
 bool nv3_dump_vbios()
 {
+    printf("Dumping Video BIOS...");
+
     FILE* vbios = fopen("nv3bios.bin", "wb");
 
     //uint32_t rom_location = NV3_PROM_START;
@@ -98,11 +100,15 @@ bool nv3_dump_vbios()
     fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
 
     fclose(vbios);
+    printf("Done!\n");
+
     return true; 
 }
 
 bool nv3_dump_mmio()
 {
+    printf("Dumping GPU MMIO...");
+
     FILE* vbios_bar0 = fopen("nv3bar0.bin", "wb");
     FILE* vbios_bar1 = fopen("nv3bar1.bin", "wb");
 
@@ -136,8 +142,35 @@ bool nv3_dump_mmio()
     
     free(mmio_dump_bar_buf);
 
-    return true; 
+    printf("Done!\n");
 
+    return true; 
+}
+
+bool nv3_print_info()
+{
+    /* TODO: Read our Dumb Framebuffer */
+    printf("NV3 Manufacture-Time Configuration: \n");
+    printf("NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
+    printf("NV_PFB_BOOT_0           = %08lX\n", current_device.nv_pfb_boot_0);
+    /* 
+        Determine the amount of Video RAM 
+        In theory this could be a shared function between all nv gpus, but in reality i'm not so sure
+    */
+
+    printf("Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
+
+    /* Read in the straps */
+    printf("Straps                  = %08lX\n", current_device.straps);
+
+    uint32_t vpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_PIXEL);
+    uint32_t mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
+    
+    //todo: MHz
+    printf("Pixel Clock Coefficient = %08lX\n", vpll);
+    printf("Memory Clock Coefficient= %08lX\n", mpll);
+    return true; 
+    
 }
 
 bool nv3_init()
@@ -185,18 +218,10 @@ bool nv3_init()
     __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1_dfb.address);
     __dpmi_set_segment_limit(current_device.bar1_selector, NV3_MMIO_SIZE - 1); // ultimately the same size
 
+    /* store manufacture time configuratino */
     current_device.nv_pmc_boot_0 = nv_mmio_read32(NV3_PMC_BOOT);
     current_device.nv_pfb_boot_0 = nv_mmio_read32(NV3_PFB_BOOT);
 
-    /* TODO: Read our Dumb Framebuffer */
-    printf("I'm a Riva 128! Information: \n");
-    printf("NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
-    printf("NV_PFB_BOOT_0           = %08lX\n", current_device.nv_pfb_boot_0);
-
-    /* 
-        Determine the amount of Video RAM 
-        In theory this could be a shared function between all nv gpus, but in reality i'm not so sure
-    */
     uint32_t ram_amount_value = (current_device.nv_pfb_boot_0 >> NV3_PFB_BOOT_RAM_AMOUNT) & 0x03; 
     bool ram_extension_8mb = (current_device.nv_pfb_boot_0 >> NV3_PFB_BOOT_RAM_EXTENSION) & 0x01;      // Needed for Riva128 ZX
     
@@ -210,18 +235,7 @@ bool nv3_init()
     else if (!ram_amount_value && ram_extension_8mb == NV3_PFB_BOOT_RAM_EXTENSION_NONE) // 1MB (never existed)
         current_device.vram_amount = NV3_VRAM_SIZE_1MB;
 
-    printf("Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
-
-    /* Read in the straps */
     current_device.straps = nv_mmio_read32(NV3_PSTRAPS);
-    printf("Straps                  = %08lX\n", current_device.straps);
-
-    uint32_t vpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_PIXEL);
-    uint32_t mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
-    
-    //todo: MHz
-    printf("Pixel Clock Coefficient = %08lX\n", vpll);
-    printf("Memory Clock Coefficient= %08lX\n", mpll);
 
     /* Power up all GPU subsystems */
     printf("Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
@@ -232,13 +246,6 @@ bool nv3_init()
     printf("Enabling interrupts...");
     nv_mmio_write32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
     printf("Done!\n");
- 
-    printf("Dumping Video BIOS...");
-    nv3_dump_vbios();
-    printf("Done!\n");
-
-    //if (nv3_test_overclock())
-        //printf("Passed insane clock torture test\n");
-
+    
     return true; 
 }

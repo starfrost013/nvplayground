@@ -604,7 +604,7 @@ ini_section_get_int(ini_section_t self, const char *name, int32_t def)
         return 0;
 
     sscanf(entry->data, "%li", &value);
-
+    
     return value;
 }
 

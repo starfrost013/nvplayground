@@ -15,6 +15,8 @@ bool Config_Load()
     if (!config.ini_file)
         return false; 
 
+    printf("Loaded nvplay.ini\n");
+
     ini_section_t section_tests = ini_find_section(config.ini_file, "Tests");
 
     nv_test_t current_test = nv_tests[0];
@@ -29,17 +31,21 @@ bool Config_Load()
 
         if (!ini_has_entry(section_tests, current_test.name))
         {
+            printf("Test %s not found (1)\n", current_test.name);
             test_id++;
             continue; 
         }
         else
         {
+
             // call ini_section_get_int so we don't have to iterate through the INI sections again
             int32_t enabled = ini_section_get_int(section_tests, current_test.name, 0);
 
             // check if it's enabled. if it's not just skip
             if (!enabled)
             {
+                printf("Test %s not found (2)\n", current_test.name);
+
                 test_id++;
                 continue; 
             }

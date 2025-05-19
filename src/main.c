@@ -18,8 +18,6 @@ int main(void)
 {
 	_gdb_start(); // gdb_start but it doesn't actually break into the debugger automatically
 
-	Config_Load(); 
-
 	printf(APP_SIGNON_STRING);
 
 	if (!pci_bios_is_present())
@@ -27,6 +25,8 @@ int main(void)
 
 	if (!nv_detect())
 		exit(2);
+
+	Config_Load(); 
 
 	/* Make sure the GPU is supported */
 	if (!current_device.device_info.init_function)
@@ -88,7 +88,7 @@ int main(void)
 				}
 			}
 				
-			current_entry = config.test_list_head->next; 
+			current_entry = current_entry->next; 
 		}
 
 		printf("%s: %lu tests ran, %lu/%lu succeeded (%lu failed)", 
@@ -103,7 +103,6 @@ int main(void)
 
 	if (current_device.device_info.shutdown_function)
 		current_device.device_info.shutdown_function();
-
 	
  	return 0;
 }
