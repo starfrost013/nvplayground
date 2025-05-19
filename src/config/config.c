@@ -28,7 +28,10 @@ bool Config_Load()
         // see if the tests specified in the ini file are for the right gpu 
 
         if (!ini_has_entry(section_tests, current_test.name))
+        {
+            test_id++;
             continue; 
+        }
         else
         {
             // call ini_section_get_int so we don't have to iterate through the INI sections again
@@ -36,7 +39,10 @@ bool Config_Load()
 
             // check if it's enabled. if it's not just skip
             if (!enabled)
+            {
+                test_id++;
                 continue; 
+            }
         }    
 
         if (current_device.device_info.vendor_id == current_test.required_vendor_id
@@ -45,6 +51,7 @@ bool Config_Load()
             if (!current_test.test_function)
             {
                 printf("Test %s (%s) does not have defined test function", current_test.name, current_test.name_friendly);
+                test_id++;
                 continue; 
             }
 
@@ -79,6 +86,7 @@ bool Config_Load()
             if (!current_test.test_function)
             {
                 printf("Warning: test %s doesn't have a test function", new_test_entry->name);
+                test_id++;
                 continue; 
             }            
 
