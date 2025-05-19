@@ -9,6 +9,8 @@
 
 nv_test_t nv_tests[] = 
 {
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", nv3_print_info},
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", nv3_print_info},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_SetOverclock", "NV3 Overclock Torture", nv3_test_overclock},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_SetOverclock", "NV3 Overclock Torture", nv3_test_overclock},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_DumpVBIOS", "NV3 Dump Video BIOS (Real Mode)", nv3_dump_vbios},
