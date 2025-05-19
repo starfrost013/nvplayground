@@ -112,10 +112,11 @@ typedef struct nv_device_s
 	uint32_t function_number; 		// PCI function number
 	void* bar0;						// PCI BAR0 mapping - gpu stuff
 	void* bar1;						// PCI BAR1 mapping for DFB
-	void* bar1_ramin; 				// ******NV3 ONLY****** RAMIN Mapping
-
 	int32_t bar0_selector;			// MUST BE USED FOR ACCESS TO BAR0
 	int32_t bar1_selector;			// MUST BE USED FOR ACCESS TO BAR1
+	uint32_t bar1_dfb_start;		// DFB start address
+	uint32_t bar1_ramin_start; 		// RAMIN start address
+
 	uint32_t vram_amount;			// Amount of Video RAM
 
 	/* Some registers shared between all gpus */

@@ -170,7 +170,7 @@ bool nv3_print_info()
     printf("Pixel Clock Coefficient = %08lX\n", vpll);
     printf("Memory Clock Coefficient= %08lX\n", mpll);
     return true; 
-    
+
 }
 
 bool nv3_init()
@@ -190,20 +190,18 @@ bool nv3_init()
     /* So start by allocating a physical mapping. */
 
     __dpmi_meminfo meminfo_bar0 = {0};
-    __dpmi_meminfo meminfo_bar1_ramin = {0};
-    __dpmi_meminfo meminfo_bar1_dfb = {0};
+    __dpmi_meminfo meminfo_bar1 = {0};
 
     meminfo_bar0.address = bar0_base;
     meminfo_bar0.size = NV3_MMIO_SIZE;
-    meminfo_bar1_ramin.address = bar1_base + 0xC00000;
-    meminfo_bar1_ramin.size = NV3_RAMIN_SIZE;
-    meminfo_bar1_dfb.address = bar1_base;
-    meminfo_bar1_dfb.size = NV3_VRAM_SIZE_4MB; //this will change
+    meminfo_bar1.address = bar1_base;
+    meminfo_bar1.size = NV3_MMIO_SIZE; //this will change
+
+    current_device.bar1_dfb_start = bar1_base;
+    current_device.bar1_ramin_start = bar1_base + 0xC00000;
 
     __dpmi_physical_address_mapping(&meminfo_bar0);
-    __dpmi_physical_address_mapping(&meminfo_bar1_ramin);
-    __dpmi_physical_address_mapping(&meminfo_bar1_dfb);
-
+    __dpmi_physical_address_mapping(&meminfo_bar1);
     
     printf("GPU Init: Mapping BAR0 MMIO...\n");
 
@@ -215,7 +213,7 @@ bool nv3_init()
     printf("GPU Init: Mapping BAR1 (DFB / RAMIN)...\n");
 
     current_device.bar1_selector = __dpmi_allocate_ldt_descriptors(1);
-    __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1_dfb.address);
+    __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1.address);
     __dpmi_set_segment_limit(current_device.bar1_selector, NV3_MMIO_SIZE - 1); // ultimately the same size
 
     /* store manufacture time configuratino */
