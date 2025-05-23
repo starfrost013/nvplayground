@@ -167,7 +167,7 @@ bool nv3_dump_mmio()
     {
         // subtract nv3_flush_frequency to start at 0
         if ((bar0_pos % NV3_FLUSH_FREQUENCY == 0 && bar0_pos > 0)
-        || bar0_pos == (NV3_FLUSH_FREQUENCY - 4)) // i'm lazy
+        || bar0_pos == (NV3_MMIO_SIZE - 4)) // i'm lazy
         {
             Logging_Write(log_level_debug, "Dumped BAR0 up to: %08lX\n", bar0_pos);
             fwrite(&mmio_dump_bar_buf[(bar0_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, vbios_bar0);
@@ -189,7 +189,7 @@ bool nv3_dump_mmio()
     for (int32_t bar1_pos = 0; bar1_pos < NV3_MMIO_SIZE; bar1_pos += 4)
     {
         if ((bar1_pos % NV3_FLUSH_FREQUENCY == 0 && bar1_pos > 0)
-        || bar1_pos == (NV3_FLUSH_FREQUENCY - 4)) // i'm lazy
+        || bar1_pos == (NV3_MMIO_SIZE - 4)) // i'm lazy
         {
             Logging_Write(log_level_debug, "Dumped BAR1 up to: %08lX\n", bar1_pos);
             fwrite(&mmio_dump_bar_buf[(bar1_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, vbios_bar1);
