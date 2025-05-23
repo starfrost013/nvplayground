@@ -576,6 +576,10 @@
 #define NV3_PGRAPH_DMA_INTR_NOTIFY                      16
 #define NV3_PGRAPH_DMA_INTR_EN_0                        0x401140    // PGRAPH DMA Interrupt Enable 0
 
+// Write-only register
+#define NV3_PGRAPH_CLASSES_START                        0x410000
+#define NV3_PGRAPH_CLASSES_END                          0x5FFFFF
+
 // not sure about the class ids
 // these are NOT what each class is, just uSed to manipulate it (there isn't a one to one class->reg mapping anyway)
 #define NV3_PGRAPH_CLASS01_BETA_START                   0x410000    // Beta blending factor

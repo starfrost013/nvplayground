@@ -105,9 +105,43 @@ bool nv3_dump_vbios()
     return true; 
 }
 
+// Areas of the GPU space that may crash the system. These are to be ignored while dumping with the EXCLUDED string written.
+nv3_dump_excluded_areas_t excluded_areas[] =
+{
+    { NV3_PME_START, NV3_PME_END },                             // At least one Riva crashed when this area was accessed.
+    { NV3_PGRAPH_CLASSES_START, NV3_PGRAPH_CLASSES_END, },      // Write-only area
+    { 0x602000, 0x67FFFF},
+    { 0, 0 },                                                   // Sentinel value
+};
+
+// Determines if an MMIO area is excluded.
+bool nv3_mmio_area_is_excluded(uint32_t addr)
+{
+    nv3_dump_excluded_areas_t excluded_area = excluded_areas[0];
+
+    uint32_t exclusion_number = 0;
+
+    while (excluded_area.start != 0)
+    {
+        // if the address is excluded, return
+        if (addr >= excluded_area.start
+        && addr <= excluded_area.end)
+        {
+            return true; 
+        }
+
+        exclusion_number++;
+        excluded_area = excluded_areas[exclusion_number];
+    }
+
+    return false;
+}
+
+#define NV3_FLUSH_FREQUENCY     65536
+
 bool nv3_dump_mmio()
 {
-    printf("Dumping GPU MMIO...");
+    printf("Dumping GPU MMIO...\n");
 
     FILE* vbios_bar0 = fopen("nv3bar0.bin", "wb");
     FILE* vbios_bar1 = fopen("nv3bar1.bin", "wb");
@@ -122,22 +156,48 @@ bool nv3_dump_mmio()
         return false; 
     
     // use ldt to read out BAR0 and BAR1 MMIO 
+    // Flush every 64kb, because the real NV3 hardware crashes at some point?!
 
-    for (int32_t i = 0; i < NV3_MMIO_SIZE; i += 4)
+    /* Dump all known memory regions except write-only ones */
+
+    for (int32_t bar0_pos = 0; bar0_pos < NV3_MMIO_SIZE; bar0_pos += 4)
     {
-        mmio_dump_bar_buf[i >> 2] = _farpeekl(current_device.bar0_selector, i);
+        // subtract nv3_flush_frequency to start at 0
+        if ((bar0_pos % NV3_FLUSH_FREQUENCY == 0 && bar0_pos > 0)
+        || bar0_pos == (NV3_FLUSH_FREQUENCY - 4)) // i'm lazy
+        {
+            printf("Dumped up to: %08lX\n", bar0_pos);
+            fwrite(&mmio_dump_bar_buf[(bar0_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, vbios_bar0);
+            fflush(vbios_bar0);
+        }
+
+        // skip the address if it will crash 
+        if (nv3_mmio_area_is_excluded(bar0_pos))
+        {
+            mmio_dump_bar_buf[bar0_pos >> 2] = 0x4E4F4E45; // 'NONE'
+        }
+        else
+            mmio_dump_bar_buf[bar0_pos >> 2] = _farpeekl(current_device.bar0_selector, bar0_pos);
+
     }
 
-    fwrite(vbios_bar0, sizeof(mmio_dump_bar_buf), 1, vbios_bar0);
-
-    for (int32_t i = 0; i < NV3_MMIO_SIZE; i += 4)
-    {
-        mmio_dump_bar_buf[i >> 2] = _farpeekl(current_device.bar1_selector, i);
-    }
-
-    fwrite(vbios_bar1, sizeof(mmio_dump_bar_buf), 1, vbios_bar1);
-    
     fclose(vbios_bar0);
+
+    for (int32_t bar1_pos = 0; bar1_pos < NV3_MMIO_SIZE; bar1_pos += 4)
+    {
+        if ((bar1_pos % NV3_FLUSH_FREQUENCY == 0 && bar1_pos > 0)
+        || bar1_pos == (NV3_FLUSH_FREQUENCY - 4)) // i'm lazy
+        {
+            printf("Dumped up to: %08lX\n", bar1_pos);
+            fwrite(&mmio_dump_bar_buf[(bar1_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, vbios_bar1);
+            fflush(vbios_bar1);
+        }
+
+        // no excluded areas needed
+        mmio_dump_bar_buf[bar1_pos >> 2] = _farpeekl(current_device.bar1_selector, bar1_pos);
+
+    }
+
     fclose(vbios_bar1);
     
     free(mmio_dump_bar_buf);

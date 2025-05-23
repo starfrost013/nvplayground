@@ -18,7 +18,8 @@
 #define PCI_CFG_OFFSET_BAR2		0x18	// Allegedly NV3 mirrors I/O here
 
 /* PCI Structures & Enums */
-typedef enum {
+typedef enum 
+{
 	// Int 0x13,AX=0xB1xx   = PCI
 	PCI_FUNCTION_ID_BASE = 0xB1,
 

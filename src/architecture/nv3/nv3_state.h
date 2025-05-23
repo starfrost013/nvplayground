@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
 /* Mode entry */
 typedef struct nv3_mode_entry_s
 {
