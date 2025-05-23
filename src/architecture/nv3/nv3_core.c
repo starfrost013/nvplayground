@@ -163,15 +163,19 @@ bool nv3_dump_mmio()
         We don't use nv_mmio_* because those will account for other things in the future
     */
 
-    for (int32_t bar0_pos = 0; bar0_pos < NV3_MMIO_SIZE; bar0_pos += 4)
+    for (int32_t bar0_pos = 0; bar0_pos <= NV3_MMIO_SIZE; bar0_pos += 4)
     {
         // subtract nv3_flush_frequency to start at 0
-        if ((bar0_pos % NV3_FLUSH_FREQUENCY == 0 && bar0_pos > 0)
-        || bar0_pos == (NV3_MMIO_SIZE - 4)) // i'm lazy
+        if (bar0_pos % NV3_FLUSH_FREQUENCY == 0 
+            && bar0_pos > 0) // i'm lazy
         {
             Logging_Write(log_level_debug, "Dumped BAR0 up to: %08lX\n", bar0_pos);
             fwrite(&mmio_dump_bar_buf[(bar0_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, vbios_bar0);
             fflush(vbios_bar0);
+
+            // don't try and read out of bounds
+            if (bar0_pos == NV3_MMIO_SIZE)
+                break;
         }
 
         // skip the address if it will crash 
@@ -186,14 +190,18 @@ bool nv3_dump_mmio()
 
     fclose(vbios_bar0);
 
-    for (int32_t bar1_pos = 0; bar1_pos < NV3_MMIO_SIZE; bar1_pos += 4)
+    for (int32_t bar1_pos = 0; bar1_pos <= NV3_MMIO_SIZE; bar1_pos += 4)
     {
-        if ((bar1_pos % NV3_FLUSH_FREQUENCY == 0 && bar1_pos > 0)
-        || bar1_pos == (NV3_MMIO_SIZE - 4)) // i'm lazy
+        if ((bar1_pos % NV3_FLUSH_FREQUENCY == 0 
+            && bar1_pos > 0))
         {
             Logging_Write(log_level_debug, "Dumped BAR1 up to: %08lX\n", bar1_pos);
             fwrite(&mmio_dump_bar_buf[(bar1_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, vbios_bar1);
             fflush(vbios_bar1);
+
+            // don't try and read out of bounds
+            if (bar1_pos == NV3_MMIO_SIZE)
+                break;
         }
 
         // no excluded areas needed
