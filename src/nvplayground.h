@@ -12,6 +12,7 @@
 #include <dpmi.h>
 #include <go32.h>
 #include <pc.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -19,6 +20,9 @@
 #include <string.h>
 #include <sys/nearptr.h>
 #include <sys/farptr.h>
+
+// #pragma once my beloved
+#include <util/util.h>
 
 #define APP_NAME "NVPlayground"
 #define APP_DESCRIPTION "Raw GPU programming for early Nvidia GPUs\n"

@@ -5,9 +5,9 @@
 #include "ini.h"
 
 /* Logging system */
-#define LOGGING_FILE_DEFAULT_NAME "nvplay.log"   
+#define LOG_FILE_DEFAULT_NAME "nvplay.log"   
 
-typedef enum log_level_s 
+typedef enum log_level 
 {
     // A debug log message
     log_level_debug = 1,
@@ -20,14 +20,30 @@ typedef enum log_level_s
 
     // A fatal error
     log_level_error = 1 << 3,
-} log_level_t;
+} log_level;
+
+// Enumerates (as a bitfield) the available logging destinations.
+typedef enum log_dest_e
+{
+    log_dest_console = 1,
+    
+    log_dest_file = 1 << 1,
+} log_dest; 
 
 typedef struct log_settings_s
 {
-    log_level_t log_level;
-    bool valid;                 // Determines if the log settings were actually set,
+    log_level level;
+    log_dest destination; 
+    const char* file_name; 
+    bool valid;                 // Determines if the log settings were actually set up
+    bool open;                  // Determines if the log is actually open
+    bool flush_on_line;         // Determines if we should flush every single line.
 } log_settings_t;
 
 extern log_settings_t log_settings; 
 
 bool Logging_Init();
+
+void Logging_Write(log_level level, const char* fmt, ...);
+
+void Logging_Shutdown();

@@ -5,7 +5,7 @@
 
 //
 // Filename: nv3.h
-// Purpose: NV3/NV3T (Riva 128/128ZX) core
+// Purpose: NV3/NV3T (RIVA 128/128ZX) core
 //
 
 bool nv3_init();

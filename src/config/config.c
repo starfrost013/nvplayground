@@ -15,7 +15,7 @@ bool Config_Load()
     if (!config.ini_file)
         return false; 
 
-    printf("Loaded nvplay.ini\n");
+    Logging_Write(log_level_message, "Loaded nvplay.ini\n");
 
     ini_section_t section_tests = ini_find_section(config.ini_file, "Tests");
 
@@ -31,7 +31,7 @@ bool Config_Load()
 
         if (!ini_has_entry(section_tests, current_test.name))
         {
-            printf("Test %s not found (1)\n", current_test.name);
+            Logging_Write(log_level_warning, "Test %s not found (1)\n", current_test.name);
             test_id++;
             continue; 
         }
@@ -44,7 +44,7 @@ bool Config_Load()
             // check if it's enabled. if it's not just skip
             if (!enabled)
             {
-                printf("Test %s not found (2)\n", current_test.name);
+                Logging_Write(log_level_warning, "Test %s not found (2)\n", current_test.name);
 
                 test_id++;
                 continue; 
@@ -56,7 +56,7 @@ bool Config_Load()
         {
             if (!current_test.test_function)
             {
-                printf("Test %s (%s) does not have defined test function", current_test.name, current_test.name_friendly);
+                Logging_Write(log_level_warning, "Test %s (%s) does not have defined test function", current_test.name, current_test.name_friendly);
                 test_id++;
                 continue; 
             }
@@ -91,7 +91,7 @@ bool Config_Load()
 
             if (!current_test.test_function)
             {
-                printf("Warning: test %s doesn't have a test function", new_test_entry->name);
+                Logging_Write(log_level_warning, "Test %s doesn't have a test function", new_test_entry->name);
                 test_id++;
                 continue; 
             }            

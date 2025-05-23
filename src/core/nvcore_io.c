@@ -69,13 +69,13 @@ void nv_dfb_write32(uint32_t offset, uint32_t val)
 /* Read 32-bit value from RAMIN */
 uint32_t nv_ramin_read32(uint32_t offset)
 {
-    printf("nv_ramin_read32 NOT YET IMPLEMENTED");
+    Logging_Write(log_level_warning, "nv_ramin_read32 NOT YET IMPLEMENTED");
     return 0x00;
 }
 
 void nv_ramin_write32(uint32_t offset, uint32_t val)
 {
-    printf("nv_ramin_write32 NOT YET IMPLEMENTED");
+     Logging_Write(log_level_warning, "nv_ramin_write32 NOT YET IMPLEMENTED");
     return;
 }
 

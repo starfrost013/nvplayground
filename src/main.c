@@ -1,6 +1,7 @@
 
 
 #include "config/config.h"
+#include "util/util.h"
 #include <nvplayground.h>
 #include <core/nvcore.h>
 #include <config/config.h>
@@ -14,24 +15,12 @@ void set_video_mode(int mode) {
   __dpmi_int(0x10, &regs);
 }
 
-int main(void) 
+void NVPlay_Run()
 {
-	_gdb_start(); // gdb_start but it doesn't actually break into the debugger automatically
-
-	printf(APP_SIGNON_STRING);
-
-	if (!pci_bios_is_present())
-		exit(1);
-
-	if (!nv_detect())
-		exit(2);
-
-	Config_Load(); 
-
-	/* Make sure the GPU is supported */
+/* Make sure the GPU is supported */
 	if (!current_device.device_info.init_function)
 	{
-		printf("This GPU is not yet supported :(");
+		Logging_Write(log_level_error, "This GPU is not yet supported :(");
 		exit(3);
 	}
 
@@ -41,21 +30,21 @@ int main(void)
 	/* If main_function is set, call it, otherwise run the tests from the INI */
 	if (current_device.device_info.main_function)
 	{
-		printf("Main function mode\n");
+		Logging_Write(log_level_message, "Main function mode\n");
 
 		current_device.device_info.main_function();
 	}
 	else 
 	{
-		printf("GPU test mode\n");
+		Logging_Write(log_level_message, "GPU test mode\n");
 
 		if (config.num_tests_enabled == 0)
 		{
-			printf("No tests to run. Exiting...\n");
+			Logging_Write(log_level_warning, "No tests to run. Exiting...\n");
 			exit(5);
 		}
 
-		printf("Running %ld tests...\n", config.num_tests_enabled);
+		Logging_Write(log_level_message, "Running %ld tests...\n", config.num_tests_enabled);
 
 		/* run each loaded test in order */
 		nv_config_test_entry_t* current_entry = config.test_list_head; 
@@ -77,13 +66,13 @@ int main(void)
 				if (success)
 				{
 					tests_succeeded++;
-					printf("Test %s succeeded\n", current_entry->name);
+					Logging_Write(log_level_message, "Test %s succeeded\n", current_entry->name);
 
 				}
 				else
 				{
 					tests_failed++;
-					printf("Test %s failed! :(\n", current_entry->name);
+					Logging_Write(log_level_message, "Test %s failed! :(\n", current_entry->name);
 
 				}
 			}
@@ -91,10 +80,38 @@ int main(void)
 			current_entry = current_entry->next; 
 		}
 
-		printf("%s: %lu tests ran, %lu/%lu succeeded (%lu failed)", 
+		Logging_Write(log_level_message, "%s: %lu tests ran, %lu/%lu succeeded (%lu failed)", 
 			current_device.device_info.name, config.num_tests_enabled, tests_succeeded, config.num_tests_enabled, tests_failed);
 
 	}
+}
+
+int main(void) 
+{
+	_gdb_start(); // gdb_start but it doesn't actually break into the debugger automatically
+
+	printf(APP_SIGNON_STRING);
+
+	log_settings.destination = (log_dest_file | log_dest_console);
+	log_settings.flush_on_line = true; //bad idea?
+	log_settings.level = (log_level_debug | log_level_message | log_level_warning | log_level_error);
+	log_settings.valid = true;
+	
+	if (!Logging_Init())
+	{
+		printf("Failed to initialise logging system\n");
+		exit(7);
+	}
+
+	if (!pci_bios_is_present())
+		exit(1);
+
+	if (!nv_detect())
+		exit(2);
+
+	Config_Load(); 
+
+	NVPlay_Run();
 
   	//__djgpp_nearptr_enable(); for dos rom
 	// kbhit() etc
@@ -103,6 +120,8 @@ int main(void)
 
 	if (current_device.device_info.shutdown_function)
 		current_device.device_info.shutdown_function();
-	
+
+	Logging_Shutdown();
+
  	return 0;
 }

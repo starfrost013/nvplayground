@@ -2,6 +2,7 @@
 #include "dos.h"
 #include "dpmi.h"
 #include "nvplayground.h"
+#include "util/util.h"
 #include <core/nvcore.h>
 
 /* Discover the PCI BIOS */
@@ -16,11 +17,11 @@ bool pci_bios_is_present(void)
 
   if (regs.d.edx != PCI_BIOS_MAGIC) // "PCI "
   {
-    printf("PCI BIOS not found, or PCI BIOS specification was below version 2.0c\n");
+    Logging_Write(log_level_error, "PCI BIOS not found, or PCI BIOS specification was below version 2.0c\n");
     return false;
   }
 
-  printf("Found PCI BIOS, specification version %x.%x\n", regs.h.bh, regs.h.bl); // %x as a cheap way of printing it as BCD
+  Logging_Write(log_level_message, "Found PCI BIOS, specification version %x.%x\n", regs.h.bh, regs.h.bl); // %x as a cheap way of printing it as BCD
   return true; 
 }
 
@@ -40,10 +41,10 @@ bool pci_does_device_exist(uint32_t device_id, uint32_t vendor_id)
         switch (regs.h.ah)
         {
             case PCI_ERROR_UNSUPPORTED_FUNCTION:
-                printf("PCI BIOS was not speciifcation level 2.0c or higher compatible after all\n");
+                Logging_Write(log_level_error, "PCI BIOS was not speciifcation level 2.0c or higher compatible after all\n");
                 break;
             case PCI_ERROR_BAD_VENDOR_ID:
-                printf("[BUG] BAD vendor id %08lX", vendor_id);
+                Logging_Write(log_level_error, "[BUG] BAD vendor id %08lX", vendor_id);
                 break; 
         }
 
@@ -74,7 +75,7 @@ uint32_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32
     else 
     {
         //todo fatal error code
-        printf("FAILED to get PCI bus %lu function %lu offset %08lX info (8bit)", bus_number, function_number, offset);
+        Logging_Write(log_level_error, "FAILED to get PCI bus %lu function %lu offset %08lX info (8bit)", bus_number, function_number, offset);
         return 0x00;
     }
 }
@@ -84,7 +85,7 @@ uint32_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint3
     /* Offset must be dword aligned */
     if (offset % 0x02)
     {
-        printf("BUG: pci_read_config_16 called with unaligned address");
+        Logging_Write(log_level_error, "BUG: pci_read_config_16 called with unaligned address");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -102,7 +103,7 @@ uint32_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint3
         return regs.x.cx;
     else 
     {
-        printf("FAILED to get PCI bus %lu function %lu offset %08lX info (16bit)", bus_number, function_number, offset);
+        Logging_Write(log_level_error, "FAILED to get PCI bus %lu function %lu offset %08lX info (16bit)", bus_number, function_number, offset);
         return 0x00;
     }
 }
@@ -113,7 +114,7 @@ uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint3
     /* Offset must be dword aligned. AND fucks up with 0x10 so just use mod */
     if (offset % 0x04)
     {
-        printf("BUG: pci_read_config_32 called with unaligned address");
+        Logging_Write(log_level_error, "BUG: pci_read_config_32 called with unaligned address");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -131,7 +132,7 @@ uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint3
         return regs.d.ecx;
     else 
     {
-        printf("FAILED to get PCI bus %lu function %lu offset %08lX info (32bit)", bus_number, function_number, offset);
+        Logging_Write(log_level_error, "FAILED to get PCI bus %lu function %lu offset %08lX info (32bit)", bus_number, function_number, offset);
         return 0x00;
     }
         

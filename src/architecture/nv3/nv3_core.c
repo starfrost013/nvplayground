@@ -1,6 +1,6 @@
 //
 // Filename: nv3_core.c
-// Purpose: NV3/NV3T (Riva 128/128ZX) core functions (bringup, shutdown, mainloop)
+// Purpose: NV3/NV3T (RIVA 128/128ZX) core functions (bringup, shutdown, mainloop)
 //
 #include "architecture/nv3/nv3_ref.h"
 #include "core/nvcore.h"
@@ -17,9 +17,9 @@
 bool nv3_test_overclock()
 {
     /* print out some helpful messages */
-    printf("Basic clockspeed test (text mode: best case scenario)\n");
-    printf("The GPU will try to run for 60 seconds at each clock setting, gradually going from an underclock to an overclock. If it crashes, reboot, and the default 100Mhz MCLK will be restored.\n");
-    printf("Note: Some NVIDIA RIVA 128 ZX cards manufactured by TSMC run at 90Mhz and will have less overclocking potential!\n");
+    Logging_Write(log_level_message, "Basic clockspeed test (text mode: best case scenario)\n");
+    Logging_Write(log_level_message, "The GPU will try to run for 60 seconds at each clock setting, gradually going from an underclock to an overclock. If it crashes, reboot, and the default 100Mhz MCLK will be restored.\n");
+    Logging_Write(log_level_message, "Note: Some NVIDIA RIVA 128 ZX cards manufactured by TSMC run at 90Mhz and will have less overclocking potential!\n");
 
     /* read the straps to find our base clock value */
     uint32_t straps = nv_mmio_read32(NV3_PSTRAPS);
@@ -61,7 +61,7 @@ bool nv3_test_overclock()
         //not speed critical, use a double
         double megahertz = (clock_base * clock_n) / (clock_m << clock_p) / 1000000.0f;
 
-        printf("Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)...\n", megahertz, final_clock);
+        Logging_Write(log_level_message, "Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)...\n", megahertz, final_clock);
 
         nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, final_clock);
 
@@ -72,7 +72,7 @@ bool nv3_test_overclock()
             this_clock = uclock();
     }
 
-    printf("We survived. Returning to 100Mhz...\n");
+    Logging_Write(log_level_message, "We survived. Returning to 100Mhz...\n");
     /* restore original clock */
     if (is_14318mhz_clock)
         nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TEST_OVERCLOCK_BASE_14318);
@@ -84,7 +84,7 @@ bool nv3_test_overclock()
 
 bool nv3_dump_vbios()
 {
-    printf("Dumping Video BIOS...");
+    Logging_Write(log_level_message, "Dumping Video BIOS...");
 
     FILE* vbios = fopen("nv3bios.bin", "wb");
 
@@ -100,7 +100,7 @@ bool nv3_dump_vbios()
     fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
 
     fclose(vbios);
-    printf("Done!\n");
+    Logging_Write(log_level_message, "Done!\n");
 
     return true; 
 }
@@ -108,7 +108,7 @@ bool nv3_dump_vbios()
 // Areas of the GPU space that may crash the system. These are to be ignored while dumping with the EXCLUDED string written.
 nv3_dump_excluded_areas_t excluded_areas[] =
 {
-    { NV3_PME_START, NV3_PME_END },                             // At least one Riva crashed when this area was accessed.
+    { NV3_PME_START, NV3_PME_END },                             // At least one RIVA crashed when this area was accessed.
     { NV3_PGRAPH_CLASSES_START, NV3_PGRAPH_CLASSES_END, },      // Write-only area
     { 0x602000, 0x67FFFF},
     { 0, 0 },                                                   // Sentinel value
@@ -141,7 +141,7 @@ bool nv3_mmio_area_is_excluded(uint32_t addr)
 
 bool nv3_dump_mmio()
 {
-    printf("Dumping GPU MMIO...\n");
+    Logging_Write(log_level_message, "Dumping GPU PCI BARs (BAR0 = MMIO, BAR1 = VRAM/RAMIN)...\n");
 
     FILE* vbios_bar0 = fopen("nv3bar0.bin", "wb");
     FILE* vbios_bar1 = fopen("nv3bar1.bin", "wb");
@@ -166,7 +166,7 @@ bool nv3_dump_mmio()
         if ((bar0_pos % NV3_FLUSH_FREQUENCY == 0 && bar0_pos > 0)
         || bar0_pos == (NV3_FLUSH_FREQUENCY - 4)) // i'm lazy
         {
-            printf("Dumped up to: %08lX\n", bar0_pos);
+            Logging_Write(log_level_debug, "Dumped up to: %08lX\n", bar0_pos);
             fwrite(&mmio_dump_bar_buf[(bar0_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, vbios_bar0);
             fflush(vbios_bar0);
         }
@@ -188,7 +188,7 @@ bool nv3_dump_mmio()
         if ((bar1_pos % NV3_FLUSH_FREQUENCY == 0 && bar1_pos > 0)
         || bar1_pos == (NV3_FLUSH_FREQUENCY - 4)) // i'm lazy
         {
-            printf("Dumped up to: %08lX\n", bar1_pos);
+            Logging_Write(log_level_debug, "Dumped up to: %08lX\n", bar1_pos);
             fwrite(&mmio_dump_bar_buf[(bar1_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, vbios_bar1);
             fflush(vbios_bar1);
         }
@@ -202,7 +202,7 @@ bool nv3_dump_mmio()
     
     free(mmio_dump_bar_buf);
 
-    printf("Done!\n");
+    Logging_Write(log_level_message, "Done!\n");
 
     return true; 
 }
@@ -210,25 +210,25 @@ bool nv3_dump_mmio()
 bool nv3_print_info()
 {
     /* TODO: Read our Dumb Framebuffer */
-    printf("NV3 Manufacture-Time Configuration: \n");
-    printf("NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
-    printf("NV_PFB_BOOT_0           = %08lX\n", current_device.nv_pfb_boot_0);
+    Logging_Write(log_level_message, "NV3 Manufacture-Time Configuration: \n");
+    Logging_Write(log_level_message, "NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
+    Logging_Write(log_level_message, "NV_PFB_BOOT_0           = %08lX\n", current_device.nv_pfb_boot_0);
     /* 
         Determine the amount of Video RAM 
         In theory this could be a shared function between all nv gpus, but in reality i'm not so sure
     */
 
-    printf("Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
+    Logging_Write(log_level_message, "Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
 
     /* Read in the straps */
-    printf("Straps                  = %08lX\n", current_device.straps);
+    Logging_Write(log_level_message, "Straps                  = %08lX\n", current_device.straps);
 
     uint32_t vpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_PIXEL);
     uint32_t mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
     
-    //todo: MHz
-    printf("Pixel Clock Coefficient = %08lX\n", vpll);
-    printf("Memory Clock Coefficient= %08lX\n", mpll);
+    //todo: convert to MHz
+    Logging_Write(log_level_message, "Pixel Clock Coefficient = %08lX\n", vpll);
+    Logging_Write(log_level_message, "Memory Clock Coefficient= %08lX\n", mpll);
     return true; 
 
 }
@@ -243,8 +243,8 @@ bool nv3_init()
     bar0_base &= 0xFF000000;
     bar1_base &= 0xFF000000;
 
-    printf("NV3 - PCI BAR0 0x%08lX\n", bar0_base);
-    printf("NV3 - PCI BAR1 0x%08lX\n", bar1_base);
+    Logging_Write(log_level_debug, "NV3 - PCI BAR0 0x%08lX\n", bar0_base);
+    Logging_Write(log_level_debug, "NV3 - PCI BAR1 0x%08lX\n", bar1_base);
     
     /* We need to allocate an LDT for this */
     /* So start by allocating a physical mapping. */
@@ -263,14 +263,14 @@ bool nv3_init()
     __dpmi_physical_address_mapping(&meminfo_bar0);
     __dpmi_physical_address_mapping(&meminfo_bar1);
     
-    printf("GPU Init: Mapping BAR0 MMIO...\n");
+    Logging_Write(log_level_debug, "GPU Init: Mapping BAR0 MMIO...\n");
 
     /* Set up two LDTs, we don't need one for ramin, because, it's just a part of bar1 we map differently */
     current_device.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar0_selector, meminfo_bar0.address);
     __dpmi_set_segment_limit(current_device.bar0_selector, NV3_MMIO_SIZE - 1);
 
-    printf("GPU Init: Mapping BAR1 (DFB / RAMIN)...\n");
+    Logging_Write(log_level_debug, "GPU Init: Mapping BAR1 (DFB / RAMIN)...\n");
 
     current_device.bar1_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1.address);
@@ -281,12 +281,12 @@ bool nv3_init()
     current_device.nv_pfb_boot_0 = nv_mmio_read32(NV3_PFB_BOOT);
 
     uint32_t ram_amount_value = (current_device.nv_pfb_boot_0 >> NV3_PFB_BOOT_RAM_AMOUNT) & 0x03; 
-    bool ram_extension_8mb = (current_device.nv_pfb_boot_0 >> NV3_PFB_BOOT_RAM_EXTENSION) & 0x01;      // Needed for Riva128 ZX
+    bool ram_extension_8mb = (current_device.nv_pfb_boot_0 >> NV3_PFB_BOOT_RAM_EXTENSION) & 0x01;      // Needed for RIVA128 ZX
     
     /* Read in the amount of video memory from the NV_PFB_BOOT_0 register. Note: 0 without RAM_EXTENSION is 1MB!!! which was never even released... */
-    if (!ram_amount_value && ram_extension_8mb == NV3_PFB_BOOT_RAM_EXTENSION_8MB)       // 8MB (Riva 128 ZX)
+    if (!ram_amount_value && ram_extension_8mb == NV3_PFB_BOOT_RAM_EXTENSION_8MB)       // 8MB (RIVA 128 ZX)
         current_device.vram_amount = NV3_VRAM_SIZE_8MB;
-    else if (ram_amount_value == NV3_PFB_BOOT_RAM_AMOUNT_4MB)                           // 4MB (Most Riva 128s)
+    else if (ram_amount_value == NV3_PFB_BOOT_RAM_AMOUNT_4MB)                           // 4MB (Most RIVA 128s)
         current_device.vram_amount = NV3_VRAM_SIZE_4MB;
     else if (ram_amount_value == NV3_PFB_BOOT_RAM_AMOUNT_2MB)                           // 2MB (Single NEC card)
         current_device.vram_amount = NV3_VRAM_SIZE_2MB;
@@ -296,14 +296,14 @@ bool nv3_init()
     current_device.straps = nv_mmio_read32(NV3_PSTRAPS);
 
     /* Power up all GPU subsystems */
-    printf("Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
+    Logging_Write(log_level_debug, "Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
     nv_mmio_write32(NV3_PMC_ENABLE, 0x11111111);
-    printf("Done!\n");
+    Logging_Write(log_level_debug, "Done!\n");
 
     /* Enable interrupts (test) */
-    printf("Enabling interrupts...");
+    Logging_Write(log_level_debug, "Enabling interrupts...");
     nv_mmio_write32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
-    printf("Done!\n");
+    Logging_Write(log_level_debug, "Done!\n");
     
     return true; 
 }
