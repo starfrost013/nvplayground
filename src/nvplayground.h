@@ -24,7 +24,7 @@
 // #pragma once my beloved
 #include <util/util.h>
 
-#define APP_NAME "NVPlayground"
+#define APP_NAME "NVPlay"
 #define APP_DESCRIPTION "Raw GPU programming for early Nvidia GPUs\n"
 #define APP_VERSION "0.2"
 #define APP_COMPILE_TIME __DATE__ " " __TIME__
