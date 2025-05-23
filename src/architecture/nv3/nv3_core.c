@@ -156,9 +156,12 @@ bool nv3_dump_mmio()
         return false; 
     
     // use ldt to read out BAR0 and BAR1 MMIO 
-    // Flush every 64kb, because the real NV3 hardware crashes at some point?!
+    // Flush every 64kb, because the real NV3 hardware may crash at some point?!
 
-    /* Dump all known memory regions except write-only ones */
+    /* 
+        Dump all known memory regions except write-only ones
+        We don't use nv_mmio_* because those will account for other things in the future
+    */
 
     for (int32_t bar0_pos = 0; bar0_pos < NV3_MMIO_SIZE; bar0_pos += 4)
     {

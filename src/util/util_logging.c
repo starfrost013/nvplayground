@@ -25,7 +25,7 @@ bool Logging_Init()
         return true; 
     }
 
-    // First try and open the log file
+    // First try and open the log file. This truncates it if it doesn't exist
     if (log_settings.destination & log_dest_file)
     {
         if (log_settings.file_name)
