@@ -53,28 +53,36 @@ void NVPlay_Run()
 
 		while (current_entry)
 		{
-			/* 
-				TODO: Ini setting to disable this print in the case of graphical tests.
-				Otherwise we'll have to switch back to test mode every test.
-
-				Also, test logging. (after util_logging.c is done)
-			*/
-			if (current_entry->test_function)
+			/* First check for dry-run */
+			if (!command_line.dry_run)
 			{
-				bool success = current_entry->test_function();	
+				/* 
+					TODO: Ini setting to disable this print in the case of graphical tests.
+					Otherwise we'll have to switch back to test mode every test.
 
-				if (success)
+					Also, test logging. (after util_logging.c is done)
+				*/
+				if (current_entry->test_function)
 				{
-					tests_succeeded++;
-					Logging_Write(log_level_message, "Test %s succeeded\n", current_entry->name);
+					bool success = current_entry->test_function();	
 
-				}
-				else
-				{
-					tests_failed++;
-					Logging_Write(log_level_message, "Test %s failed! :(\n", current_entry->name);
+					if (success)
+					{
+						tests_succeeded++;
+						Logging_Write(log_level_message, "Test %s succeeded\n", current_entry->name);
 
+					}
+					else
+					{
+						tests_failed++;
+						Logging_Write(log_level_message, "Test %s failed! :(\n", current_entry->name);
+
+					}
 				}
+			}
+			else
+			{
+				Logging_Write(log_level_message, "[DRY RUN - SKIP]\n");
 			}
 				
 			current_entry = current_entry->next; 
@@ -86,11 +94,13 @@ void NVPlay_Run()
 	}
 }
 
-int main(void) 
+int main(int argc, char** argv) 
 {
 	_gdb_start(); // gdb_start but it doesn't actually break into the debugger automatically
 
 	printf(APP_SIGNON_STRING);
+
+	Cmdline_Parse(argc, argv);
 
 	log_settings.destination = (log_dest_file | log_dest_console);
 	log_settings.flush_on_line = true; //bad idea?

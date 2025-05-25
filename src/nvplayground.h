@@ -26,7 +26,7 @@
 
 #define APP_NAME "NVPlay"
 #define APP_DESCRIPTION "Raw GPU programming for early Nvidia GPUs\n"
-#define APP_VERSION "0.2.1"
+#define APP_VERSION "0.3"
 #define APP_COMPILE_TIME __DATE__ " " __TIME__
 
 #define APP_SIGNON_STRING APP_NAME " Version " APP_VERSION " (" APP_COMPILE_TIME ")\n" APP_DESCRIPTION

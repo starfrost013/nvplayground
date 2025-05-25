@@ -8,8 +8,9 @@ add_compile_options(-Wall -std=gnu99 -save-temps)
 file(GLOB sources CONFIGURE_DEPENDS 
 
 # Util
-"src/util/util_logging.c"
 "src/util/ini.c"
+"src/util/util_cmdline.c"
+"src/util/util_logging.c"
 
 # Main
 "src/main.c"

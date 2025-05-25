@@ -47,3 +47,18 @@ bool Logging_Init();
 void Logging_Write(log_level level, const char* fmt, ...);
 
 void Logging_Shutdown();
+
+//
+// Commandline parser 
+//
+
+typedef struct command_line_s
+{
+    bool run_all_tests;         // Override test ini and run all tests
+    bool dry_run;               // don't run tests, but confirm the INI settings
+} command_line_t;
+
+extern command_line_t command_line; 
+
+//cannot use int32_t because it's defined as long
+bool Cmdline_Parse(int argc, char** argv);

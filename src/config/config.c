@@ -2,6 +2,7 @@
 #include "core/nvcore.h"
 #include "core/tests/tests.h"
 #include "util/ini.h"
+#include "util/util.h"
 #include <config/config.h>
 
 // Globals
@@ -51,8 +52,16 @@ bool Config_Load()
             }
         }    
 
-        if (current_device.device_info.vendor_id == current_test.required_vendor_id
-        && current_device.device_info.device_id == current_test.required_device_id)
+        // check if the test is available
+
+        bool test_is_available = (current_device.device_info.vendor_id == current_test.required_vendor_id
+        && current_device.device_info.device_id == current_test.required_device_id);
+
+        // apply the run all tests cmd line option
+        if (command_line.run_all_tests)
+            test_is_available = true; 
+
+        if (test_is_available)
         {
             if (!current_test.test_function)
             {
