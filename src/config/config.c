@@ -45,7 +45,7 @@ bool Config_Load()
             // check if it's enabled. if it's not just skip
             if (!enabled)
             {
-                Logging_Write(log_level_warning, "Test %s not found (2)\n", current_test.name);
+                Logging_Write(log_level_debug, "Test %s disabled (2)\n", current_test.name);
 
                 test_id++;
                 continue; 
