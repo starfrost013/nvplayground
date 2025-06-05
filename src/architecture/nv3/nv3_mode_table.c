@@ -1,6 +1,9 @@
-#include "nv3.h"
 
+// Architecture Includes
+#include <architecture/nv3/nv3.h>
+#include <architecture/nv3/nv3_api.h>
 /* 
+
     List of supported modes
     For now: Just 60Hz modes 
 

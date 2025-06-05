@@ -1,8 +1,6 @@
 #pragma once
 #include <nvplayground.h>
 
-// Architecture Includes
-#include <architecture/nv3/nv3.h>
 
 /* 
     Filename: nvcore.h
@@ -81,12 +79,23 @@ uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint3
     There's two ways to identify NV GPU: By reading PCI config registers and by reading the NV_PFB_BOOT register
     We read PCI config registers to determine the overall model and hten read the pfb_boot register to get the stepping
 */
-#define NV_PFB_BOOT_NV1_A01     	0x00010100      // NV1 Stepping A0 (Prototype) 1994
-#define NV_PFB_BOOT_NV1_B01     	0x00010101      // NV1 Stepping B0 (Prototype) 1995
-#define NV_PFB_BOOT_NV1_B02     	0x00010102      // NV1 Stepping B1 (Prototype) 1995
-#define NV_PFB_BOOT_NV1_B03     	0x00010103      // NV1 Stepping B2 (Prototype) 1995
-#define NV_PFB_BOOT_NV1_C01     	0x00010104      // NV1 Stepping C0 (Final)	   1995
-#define NV_PFB_BOOT_NV2_A01			0x20030120		// NV2 Stepping A0 (Prototype) 1995/1996 (Helios Semiconductor) 
+#define NV_PMC_BOOT_NV1_A01     	0x00010100      // NV1 Stepping A0 (Prototype) 				1994
+#define NV_PMC_BOOT_NV1_B01     	0x00010101      // NV1 Stepping B0 (Prototype) 				1995
+#define NV_PMC_BOOT_NV1_B02     	0x00010102      // NV1 Stepping B1 (Prototype) 				1995
+#define NV_PMC_BOOT_NV1_B03     	0x00010103      // NV1 Stepping B2 (Prototype)				1995
+#define NV_PMC_BOOT_NV1_C01     	0x00010104      // NV1 Stepping C0 (Final)	   				1995
+#define NV_PMC_BOOT_NV2_A01			0x10020400		// NV2 Stepping A0 (Prototype) 				1995/1996 (Helios Semiconductor) 
+// Default value for the boot information register.
+// Depends on the chip
+#define NV_PMC_BOOT_NV3_A00         0x00030100      // NV3 Stepping A0 (Prototype) 				April 1997
+#define NV_PMC_BOOT_NV3_B00         0x00030110		// NV3 Stepping B0 (Final)					July(?) 1997
+#define NV_PMC_BOOT_NV3T_A01_ST     0x00030120		// NV3 Stepping C0 / NV3T Stepping A1		Early 1998		(STMicro-manufactured)
+#define NV_PMC_BOOT_NV3T_A02_ST     0x00030121		// NV3 Stepping C1 / NV3T Stepping A2		Early 1998		(STMicro-manufactured)
+#define NV_PMC_BOOT_NV3T_A03_ST 	0x00030122		// NV3 Stepping C2/C3 / NV3 Stepping A3/A4	1998/9			(STMicro-manufactured)
+#define NV_PMC_BOOT_NV3T_A01_TSMC   0x20030120		// NV3 Stepping C0 / NV3T Stepping A1		Early 1998 		(TSMC-manufactured)
+#define NV_PMC_BOOT_NV3T_A02_TSMC   0x20030121		// NV3 Stepping C1 / NV3T Stepping A2		Early 1998 		(TSMC-manufactured)
+#define NV_PMC_BOOT_NV3T_A03_TSMC 	0x20030122		// NV3 Stepping C2/C3 / NV3 Stepping A3/A4	1998/9			(TSMC-manufactured)
+
 
 /* NVidia Device Definition */
 typedef struct nv_device_info_s

@@ -32,11 +32,7 @@
 #define NV3_PFIFO_FIRST_VALID_GRAPHICS_OBJECT_ID        0x40
 #define NV3_PFIFO_LAST_VALID_GRAPHICS_OBJECT_ID         0x5F
 
-// Default value for the boot information register.
-// Depends on the chip
-#define NV3_BOOT_REG_REV_A00                            0x00030100      // todo: format is wrong(?) for nv3a, fix it later
-#define NV3_BOOT_REG_REV_B00                            0x00030110
-#define NV3_BOOT_REG_REV_C00                            0x00030120
+
 
 #define NV3_VRAM_SIZE_1MB                               0x100000 // 1MB (commented out in drivers)
 #define NV3_VRAM_SIZE_2MB                               0x200000 // 2MB
@@ -229,7 +225,7 @@
 #define NV3_PFIFO_CACHE1_SIZE_MAX                       NV3_PFIFO_CACHE1_SIZE_REV_C
 #define NV3_PFIFO_CACHE_REASSIGNMENT                    0x2500        
 
-#define NV3_PFIFO_CACHE0_PUSH0                          0x3000
+#define NV3_PFIFO_CACHE0_PUSH_ENABLED                          0x3000
 #define NV3_PFIFO_CACHE0_PUSH_CHANNEL_ID                0x3004
 #define NV3_PFIFO_CACHE0_PUT                            0x3010
 #define NV3_PFIFO_CACHE0_STATUS                         0x3014
@@ -251,7 +247,7 @@
 #define NV3_PFIFO_CACHE0_METHOD_END                     0x3200
 #define NV3_PFIFO_CACHE0_METHOD_ADDRESS                 2           // 12:2
 #define NV3_PFIFO_CACHE0_METHOD_SUBCHANNEL              13          // 15:13
-#define NV3_PFIFO_CACHE1_PUSH0                          0x3200
+#define NV3_PFIFO_CACHE1_PUSH_ENABLED                          0x3200
 #define NV3_PFIFO_CACHE1_PUSH_CHANNEL_ID                0x3204
 #define NV3_PFIFO_CACHE1_PUT                            0x3210
 #define NV3_PFIFO_CACHE1_PUT_ADDRESS                    2           // 6:2

@@ -2,16 +2,15 @@
 // Filename: nv3_core.c
 // Purpose: NV3/NV3T (RIVA 128/128ZX) core functions (bringup, shutdown, mainloop)
 //
-#include "architecture/nv3/nv3_ref.h"
+// Architecture Includes
+#include <architecture/nv3/nv3.h>
+#include <architecture/nv3/nv3_api.h>
+#include <architecture/nv3/nv3_ref.h>
 #include "core/nvcore.h"
-#include "dpmi.h"
-#include "go32.h"
-#include "nv3.h"
-#include "sys/farptr.h"
-#include "time.h"
-
 #include <stdio.h>
 #include <stdlib.h>
+
+nv3_state_t nv3_state = {0};                    // NV3 specific state 
 
 /* TEMPORARY test  function to test certain hardcoded overclocks */
 bool nv3_test_overclock()
@@ -242,6 +241,30 @@ bool nv3_print_info()
     Logging_Write(log_level_message, "Memory Clock Coefficient= %08lX\n", mpll);
     return true; 
 
+}
+
+/* 
+    NV3: Try to get into a graphics mode.
+
+    We do this via the following ways:
+    1. Enable cache reassignment
+    2. Enable PFIFO caches
+    3. 
+*/
+bool nv3_enter_graphics_mode()
+{
+    // Ensure cache reassignment is enabled
+    // We don't do context switching yet but we still enable it since it seems 3D stuff requires it
+    nv_mmio_write32(NV3_PFIFO_CACHE_REASSIGNMENT, 1);
+
+    // Enable PFIFO caches
+    nv_mmio_write32(NV3_PFIFO_CACHE0_PUSH_ENABLED, 1);
+    nv_mmio_write32(NV3_PFIFO_CACHE1_PUSH_ENABLED, 1);
+
+    nv_mmio_write32(NV3_PFIFO_CACHE0_PULL0_ENABLED, 1);
+    nv_mmio_write32(NV3_PFIFO_CACHE1_PULL0_ENABLED, 1);
+
+    return true; 
 }
 
 bool nv3_init()

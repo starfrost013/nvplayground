@@ -1,7 +1,6 @@
 #pragma once
 #include <nvplayground.h>
 #include "nv3_ref.h"
-#include "nv3_state.h"
 
 //
 // Filename: nv3.h
@@ -11,6 +10,7 @@
 bool nv3_init();
 
 /* NV3 Tests */
+bool nv3_enter_graphics_mode();
 bool nv3_dump_vbios();
 bool nv3_dump_mmio();
 bool nv3_print_info();

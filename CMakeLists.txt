@@ -29,6 +29,9 @@ file(GLOB sources CONFIGURE_DEPENDS
 # NVCore: Tests
 "src/core/tests/tests.c"
 
+# Architecture: NV1
+"src/architecture/nv1/nv1_core.c"
+
 # Architecture: NV3
 "src/architecture/nv3/nv3_class_names.c"
 "src/architecture/nv3/nv3_core.c"

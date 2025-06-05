@@ -5,10 +5,20 @@
 #include <string.h>
 #include <core/nvcore.h>
 #include <core/tests/tests.h>
+
+// Architecture includes
+#include <architecture/nv1/nv1.h>
 #include <architecture/nv3/nv3.h>
 
 nv_test_t nv_tests[] = 
 {
+    // NV1 has two vendor ids
+    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", nv1_print_info},
+    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", nv1_print_info},
+    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", nv1_security_breach},
+    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", nv1_security_breach},
+
+    // NV3 tests
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", nv3_print_info},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", nv3_print_info},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_SetOverclock", "NV3 Overclock Torture", nv3_test_overclock},

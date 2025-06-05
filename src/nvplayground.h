@@ -18,6 +18,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <sys/nearptr.h>
 #include <sys/farptr.h>
 
