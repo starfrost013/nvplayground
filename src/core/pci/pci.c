@@ -41,7 +41,7 @@ bool pci_does_device_exist(uint32_t device_id, uint32_t vendor_id)
         switch (regs.h.ah)
         {
             case PCI_ERROR_UNSUPPORTED_FUNCTION:
-                Logging_Write(log_level_error, "PCI BIOS was not speciifcation level 2.0c or higher compatible after all\n");
+                Logging_Write(log_level_error, "PCI BIOS was not specification level 2.0c or higher compatible after all\n");
                 break;
             case PCI_ERROR_BAD_VENDOR_ID:
                 Logging_Write(log_level_error, "[BUG] BAD vendor id %08lX", vendor_id);

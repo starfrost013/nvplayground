@@ -72,18 +72,18 @@
 //
 
 // Read only
-#define NV1_PAUTH_DEBUG_0                   0x605080
-#define NV1_PAUTH_DEBUG_0_BREACH_DETECTED   0
-#define NV1_PAUTH_DEBUG_0_EEPROM_INVALID    4
+#define NV1_PAUTH_DEBUG_0                           0x605080
+#define NV1_PAUTH_DEBUG_0_BREACH_DETECTED           0
+#define NV1_PAUTH_DEBUG_0_EEPROM_INVALID            4
 
-#define NV1_PAUTH_CHIP_TOKEN_0              0x605400
-#define NV1_PAUTH_CHIP_TOKEN_1              0x605404
-#define NV1_PAUTH_PASSWORD_0(i)             0x605800+(i*16)
-#define NV1_PAUTH_PASSWORD_1(i)             0x605804+(i*16)
-#define NV1_PAUTH_PASSWORD_2(i)             0x605808+(i*16)
-#define NV1_PAUTH_PASSWORD_3(i)             0x60580C+(i*16)
+#define NV1_PAUTH_CHIP_TOKEN_0                      0x605400
+#define NV1_PAUTH_CHIP_TOKEN_1                      0x605404
+#define NV1_PAUTH_PASSWORD_0(i)                     0x605800+(i*16)
+#define NV1_PAUTH_PASSWORD_1(i)                     0x605804+(i*16)
+#define NV1_PAUTH_PASSWORD_2(i)                     0x605808+(i*16)
+#define NV1_PAUTH_PASSWORD_3(i)                     0x60580C+(i*16)
 
-#define NV1_PAUTH_PASSWORD_SIZE             128
+#define NV1_PAUTH_PASSWORD_SIZE                     128
 
 // 
 // PFB

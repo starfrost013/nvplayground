@@ -59,8 +59,8 @@ uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint3
 #define PCI_VENDOR_SGS_NV           0x12D2      // Used for NV3/NV3T
 #define PCI_VENDOR_NV               0x10DE      // Used for NV1, NV1 variant, and NV4+
 
-#define PCI_DEVICE_NV1_NV           0x0008      // NV1 NV component     	1995
-#define PCI_DEVICE_NV1_VGA          0x0009      // NV1 VGA component    	1995
+#define PCI_DEVICE_NV1_VGA          0x0008      // NV1 VGA component    	1995
+#define PCI_DEVICE_NV1_NV           0x0009      // NV1 NV component     	1995
 #define PCI_DEVICE_NV2              0x0010      // Mutara               	1995-1996 (cancelled)
 #define PCI_DEVICE_NV3              0x0018      // RIVA 128, RIVA 128 ZX	1997-1998
 #define PCI_DEVICE_NV3T_ACPI		0x0019		// RIVA 128 ZX, with ACPI	1998
