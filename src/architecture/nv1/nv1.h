@@ -14,4 +14,5 @@ typedef struct nv1_state_s
 
 bool nv1_init();
 bool nv1_print_info();
+bool nv1_print_pci_config();
 bool nv1_security_breach();

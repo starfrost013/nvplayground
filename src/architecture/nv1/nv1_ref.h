@@ -12,7 +12,7 @@
 // PCI Bus Information
 //
 
-#define NV1_PCI_BAR0_SIZE                       0x1FFFFFF
+#define NV1_PCI_BAR0_SIZE                       0xFFFFFF
 
 // 
 // VRAM

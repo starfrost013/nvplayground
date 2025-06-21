@@ -13,6 +13,8 @@
 nv_test_t nv_tests[] = 
 {
     // NV1 has two vendor ids
+    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_DumpPCICfgSpace", "NV1 Dump PCI Config Space", nv1_print_pci_config},
+    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_DumpPCICfgSpace", "NV1 Dump PCI Config Space", nv1_print_pci_config},
     { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", nv1_print_info},
     { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", nv1_print_info},
     { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", nv1_security_breach},

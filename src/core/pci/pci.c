@@ -4,6 +4,7 @@
 #include "nvplayground.h"
 #include "util/util.h"
 #include <core/nvcore.h>
+#include <stdint.h>
 
 /* Discover the PCI BIOS */
 bool pci_bios_is_present(void) 
@@ -58,7 +59,7 @@ bool pci_does_device_exist(uint32_t device_id, uint32_t vendor_id)
     return true; 
 }
 
-uint32_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset)
+uint8_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset)
 {
     __dpmi_regs regs = {0};
 
@@ -75,12 +76,12 @@ uint32_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32
     else 
     {
         //todo fatal error code
-        Logging_Write(log_level_error, "FAILED to get PCI bus %lu function %lu offset %08lX info (8bit)", bus_number, function_number, offset);
+        Logging_Write(log_level_error, "FAILED to read PCI bus %lu function %lu offset %08lX info (8bit)\n", bus_number, function_number, offset);
         return 0x00;
     }
 }
 
-uint32_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset)
+uint16_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset)
 {
     /* Offset must be dword aligned */
     if (offset % 0x02)
@@ -103,7 +104,7 @@ uint32_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint3
         return regs.x.cx;
     else 
     {
-        Logging_Write(log_level_error, "FAILED to get PCI bus %lu function %lu offset %08lX info (16bit)", bus_number, function_number, offset);
+        Logging_Write(log_level_error, "FAILED to read PCI bus %lu function %lu offset %08lX info (16bit)\n", bus_number, function_number, offset);
         return 0x00;
     }
 }
@@ -132,8 +133,97 @@ uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint3
         return regs.d.ecx;
     else 
     {
-        Logging_Write(log_level_error, "FAILED to get PCI bus %lu function %lu offset %08lX info (32bit)", bus_number, function_number, offset);
+        Logging_Write(log_level_error, "FAILED to read PCI bus %lu function %lu offset %08lX info (32bit)\n", bus_number, function_number, offset);
         return 0x00;
+    } 
+}
+
+bool pci_write_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint8_t value)
+{
+    __dpmi_regs regs = {0};
+
+    regs.h.ah = PCI_FUNCTION_ID_BASE;
+    regs.h.al = PCI_WRITE_CONFIG_BYTE;
+    regs.h.bh = bus_number;
+    regs.h.bl = function_number;
+    regs.h.cl = value;
+    regs.x.di = offset;
+
+    __dpmi_int(INT_1A, &regs);
+
+    if (!regs.h.ah)
+        return false;
+    else 
+    {
+        //todo fatal error code
+        Logging_Write(log_level_error, "FAILED to write PCI bus %lu function %lu offset %08lX info (8bit)\n", bus_number, function_number, offset);
+        return true;
+    }
+    
+    return false; // failsafe, should never happen
+
+}
+
+bool pci_write_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value)
+{
+    /* Offset must be dword aligned */
+    if (offset % 0x02)
+    {
+        Logging_Write(log_level_error, "BUG: pci_write_config_16 called with unaligned address!\n");
+        return 0x00; // it's not happening (TODO: error code)
     }
         
+    __dpmi_regs regs = {0};
+
+    regs.h.ah = PCI_FUNCTION_ID_BASE;
+    regs.h.al = PCI_WRITE_CONFIG_WORD;
+    regs.h.bh = bus_number;
+    regs.h.bl = function_number;
+    regs.x.cx = value;
+
+    regs.x.di = offset;
+
+    __dpmi_int(INT_1A, &regs);
+
+    if (!regs.h.ah)
+        return false; 
+    else 
+    {
+        Logging_Write(log_level_error, "FAILED to write PCI bus %lu function %lu offset %08lX info (16bit)\n", bus_number, function_number, offset);
+        return true;
+    }
+
+    return false; // failsafe, should never happen
+}
+
+/* Read the config dword for the current device */
+bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value)
+{
+    /* Offset must be dword aligned. AND fucks up with 0x10 so just use mod */
+    if (offset % 0x04)
+    {
+        Logging_Write(log_level_error, "BUG: pci_write_config_32 called with unaligned address!\n");
+        return 0x00; // it's not happening (TODO: error code)
+    }
+        
+    __dpmi_regs regs = {0};
+
+    regs.h.ah = PCI_FUNCTION_ID_BASE;
+    regs.h.al = PCI_WRITE_CONFIG_DWORD;
+    regs.h.bh = bus_number;
+    regs.h.bl = function_number;
+    regs.x.di = offset;
+    regs.d.ecx = value; 
+
+    __dpmi_int(INT_1A, &regs);
+
+    if (!regs.h.ah)
+        return false;
+    else 
+    {
+        Logging_Write(log_level_error, "FAILED to write PCI bus %lu function %lu offset %08lX info (32bit)\n", bus_number, function_number, offset);
+        return true;
+    }
+
+    return false; // failsafe, should never happen
 }

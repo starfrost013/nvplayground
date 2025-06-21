@@ -7,18 +7,54 @@
     Purpose: Shared files between all NV cards, including core PCI defines
 */
 
-/* PCI Defines */
-#define PCI_BIOS_MAGIC			0x20494350
+/* PCI BIOS magic */
+#define PCI_BIOS_MAGIC						0x20494350
 
-/* PCI CFG space offset. We don't care about most of this because we know what devices we are dealing with */
-#define PCI_CFG_OFFSET_BAR0		0x10	// Main GPU MMIO
-#define PCI_CFG_OFFSET_BAR1		0x14	// VRAM + RAMIN (on nv3), otherwise just dumb framebuffer
-#define PCI_CFG_OFFSET_BAR2		0x18	// Allegedly NV3 mirrors I/O here
+/* PCI Type-0 header. We don't care about PCI to PCI bridges (type 1) or PCI to CardBus bridges (type 2) */
+#define PCI_CFG_OFFSET_VENDOR_ID			0x00
+#define PCI_CFG_OFFSET_DEVICE_ID			0x02
+#define PCI_CFG_OFFSET_COMMAND				0x04
+
+#define PCI_CFG_OFFSET_COMMAND_IO_ENABLED	0x01
+#define PCI_CFG_OFFSET_COMMAND_MEM_ENABLED	0x02
+
+#define PCI_CFG_OFFSET_STATUS				0x06
+#define PCI_CFG_OFFSET_REVISION				0x08
+#define PCI_CFG_OFFSET_CLASS_CODE			0x09	
+#define PCI_CFG_OFFSET_CLASS_CODE_HIGH 		0x09
+#define PCI_CFG_OFFSET_CLASS_CODE_LOW		0x0A
+#define PCI_CFG_OFFSET_CACHE_LINE_SIZE		0x0C
+#define PCI_CFG_OFFSET_LATENCY_TIMER		0x0D
+#define PCI_CFG_OFFSET_HEADER_TYPE			0x0E
+#define PCI_CFG_OFFSET_BIST					0x0F
+
+/* BARs. Only 0/1 matter for supported NV cards and 0/1/2 for any NV cards but for PCI dumping code we dump everything 
+
+Well, I guess they would all be used for 64-bit mapping. But we only care about 32-bit
+*/
+#define PCI_CFG_OFFSET_BAR0					0x10	// Main GPU MMIO
+#define PCI_CFG_OFFSET_BAR1					0x14	// VRAM + RAMIN (on nv3), otherwise just dumb framebuffer
+#define PCI_CFG_OFFSET_BAR2					0x18	// NV20+
+#define PCI_CFG_OFFSET_BAR3					0x1C	// For dumping purposes
+#define PCI_CFG_OFFSET_BAR4					0x20	// For dumping purposes
+#define PCI_CFG_OFFSET_BAR5					0x24	// For dumping purposes
+
+#define PCI_CFG_OFFSET_CARDBUS_CIS_PTR		0x28
+#define PCI_CFG_OFFSET_SUBSYSTEM_VENDOR_ID	0x2A
+#define PCI_CFG_OFFSET_SUBSYSTEM_ID			0x2C
+#define PCI_CFG_OFFSET_EXPANSION_ROM_BASE	0x30
+#define PCI_CFG_OFFSET_CAPABILITIES_PTR 	0x34
+#define PCI_CFG_OFFSET_INTERRUPT_LINE		0x39
+#define PCI_CFG_OFFSET_INTERRUPT_PIN		0x3A
+#define PCI_CFG_OFFSET_MINIMUM_GRANT		0x3B
+#define PCI_CFG_OFFSET_MAXIMUM_LATENCY		0x3C
+
+/* TODO: AGP SHIT! */
 
 /* PCI Structures & Enums */
 typedef enum 
 {
-	// Int 0x13,AX=0xB1xx   = PCI
+	// Int 0x1A,AX=0xB1xx   = PCI
 	PCI_FUNCTION_ID_BASE = 0xB1,
 
 	// PCI BIOS SUBFUNCTIONS
@@ -50,9 +86,13 @@ typedef enum
 bool pci_bios_is_present(void);
 bool pci_does_device_exist(uint32_t device_id, uint32_t vendor_id);
 
-uint32_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset);
-uint32_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+uint8_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+uint16_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset);
 uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+
+bool pci_write_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint8_t value);
+bool pci_write_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value);
+bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value);
 
 /* Device definitions */
 #define PCI_VENDOR_SGS              0x104A      // Used for NV1, STG-2000 variant

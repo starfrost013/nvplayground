@@ -98,8 +98,6 @@ int main(int argc, char** argv)
 {
 	_gdb_start(); // gdb_start but it doesn't actually break into the debugger automatically
 
-	printf(APP_SIGNON_STRING);
-
 	Cmdline_Parse(argc, argv);
 
 	log_settings.destination = (log_dest_file | log_dest_console);
@@ -112,6 +110,8 @@ int main(int argc, char** argv)
 		printf("Failed to initialise logging system\n");
 		exit(7);
 	}
+
+	Logging_Write(log_level_message, APP_SIGNON_STRING);
 
 	if (!pci_bios_is_present())
 		exit(1);

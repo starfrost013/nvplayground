@@ -33,6 +33,66 @@ bool nv1_print_info()
     return true; 
 }
 
+bool nv1_print_pci_config()
+{
+    // read out the device id
+    uint16_t vendor_id = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_VENDOR_ID);
+    uint16_t device_id = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_DEVICE_ID);
+    uint16_t command = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND);
+    uint16_t status = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_STATUS);
+    uint8_t revision = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_REVISION);
+    uint8_t class_id_high = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_CLASS_CODE_HIGH);
+    uint16_t class_id_low = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_CLASS_CODE_LOW);
+    uint8_t cache_line_size = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_CACHE_LINE_SIZE);
+    uint8_t latency_timer = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_LATENCY_TIMER);
+    uint8_t header_type = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_HEADER_TYPE);
+    uint8_t bist = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BIST);
+    uint32_t bar0 = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
+    uint32_t bar1 = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR1);
+    uint32_t bar2 = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR2);
+    uint32_t bar3 = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR3);
+    uint32_t bar4 = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR4);
+    uint32_t bar5 = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR5);
+    uint32_t cardbus_cis_ptr = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_CARDBUS_CIS_PTR);
+    uint16_t subsystem_vendor_id = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_SUBSYSTEM_VENDOR_ID);
+    uint16_t subsystem_id = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_SUBSYSTEM_ID);
+    uint32_t rom_bar = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_EXPANSION_ROM_BASE);
+    uint8_t capabilities_ptr = pci_read_config_8(current_device.bus_number, current_device.function_number,  PCI_CFG_OFFSET_CAPABILITIES_PTR);
+    uint8_t interrupt_line = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_INTERRUPT_LINE);
+    uint8_t interrupt_pin = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_INTERRUPT_PIN);
+    uint8_t minimum_grant = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_MINIMUM_GRANT);
+    uint8_t maximum_latency = pci_read_config_8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_MAXIMUM_LATENCY);
+
+    Logging_Write(log_level_message, "[PCI CFG] PCI ID %04x:%04x\n", vendor_id, device_id);
+    Logging_Write(log_level_message, "[PCI CFG] Command Register %04x\n", command);
+    Logging_Write(log_level_message, "[PCI CFG] Status Register %04x\n", status);
+    Logging_Write(log_level_message, "[PCI CFG] Revision %02x\n", revision);
+    Logging_Write(log_level_message, "[PCI CFG] Class ID: %06x\n", (class_id_high << 16) | class_id_low);
+    Logging_Write(log_level_message, "[PCI CFG] Cache Line Size %02x\n", cache_line_size);
+    Logging_Write(log_level_message, "[PCI CFG] Latency Timer %02x\n", latency_timer);
+    Logging_Write(log_level_message, "[PCI CFG] Header Type %02x (should be 0)\n", header_type);
+    Logging_Write(log_level_message, "[PCI CFG] BIST %02x\n", bist);
+    Logging_Write(log_level_message, "[PCI CFG] BAR0 %08x\n", bar0);
+    Logging_Write(log_level_message, "[PCI CFG] BAR1 %08x\n", bar1);
+    Logging_Write(log_level_message, "[PCI CFG] BAR2 %08x\n", bar2);
+    Logging_Write(log_level_message, "[PCI CFG] BAR3 %08x\n", bar3);
+    Logging_Write(log_level_message, "[PCI CFG] BAR4 %08x\n", bar4);
+    Logging_Write(log_level_message, "[PCI CFG] BAR5 %08x\n", bar5);
+    Logging_Write(log_level_message, "[PCI CFG] CardBus CIS Pointer %04x\n", cardbus_cis_ptr);
+    Logging_Write(log_level_message, "[PCI CFG] Subsystem ID %04x:%04x\n", subsystem_vendor_id, subsystem_id);
+    Logging_Write(log_level_message, "[PCI CFG] ROM BAR %04x\n", rom_bar);
+    Logging_Write(log_level_message, "[PCI CFG] Capabilities Pointer %02x\n", capabilities_ptr);
+    Logging_Write(log_level_message, "[PCI CFG] Interrupt Line %02x\n", interrupt_line);
+    Logging_Write(log_level_message, "[PCI CFG] Interrupt Pin %02x\n", interrupt_pin);
+    Logging_Write(log_level_message, "[PCI CFG] Minimum Grant %02x\n", minimum_grant);
+    Logging_Write(log_level_message, "[PCI CFG] Maximum Latency %02x\n", maximum_latency);
+
+    return true; 
+}
+
+// Type 0 (32-bit)
+// Bit 3 = 1, for prefetchable (Only Bits 32:24 matter for BAR, it must begin on)
+#define NV1_MMIO_SPACE_TEST     0x84000008
 
 bool nv1_init()
 {
@@ -42,8 +102,24 @@ bool nv1_init()
     /* According to the datasheet only the top 8 bits matter */
     bar0_base &= 0xFF000000;
 
-    Logging_Write(log_level_debug, "NV1 - PCI BAR0 0x%08lX\n", bar0_base);
+    /* 
+        Enable MMIO and I/O and relocate the PCI BARs if they aren't already programmed e.g. on dos 
+        todo: TURN THIS OFF IN SHUTDOWN FUNCTION! BUT ONLY IF WE'RE NOT UNDER WINDOWS...
+    */
+    if (!bar0_base)
+    {
+        Logging_Write(log_level_message, "NV1: Chip is not enabled. Enabling I/O + Memory Space + BAR0...\n");
+
+        uint16_t command = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND);
+
+        command |= (PCI_CFG_OFFSET_COMMAND_IO_ENABLED | PCI_CFG_OFFSET_COMMAND_MEM_ENABLED);
+        
+        pci_write_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND, command);
+        Logging_Write(log_level_debug, "NV1: Programming Base Address Register 0 to hopefully-free value...%08x (prefetchable)\n", NV1_MMIO_SPACE_TEST & 0xFF000000);
+        pci_write_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0, NV1_MMIO_SPACE_TEST);
     
+    }
+
     /* We need to allocate an LDT for this */
     /* So start by allocating a physical mapping. */
 
