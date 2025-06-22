@@ -141,6 +141,20 @@
 #define NV3_AGP_COMMAND_SBA_ENABLE_ENABLED              0x1
 #define NV3_AGP_COMMAND_REQUEST_DEPTH                   24
 
+//
+// ACPI (NV3T only)
+//
+#define NV3_POWER_CAP_ID                                0x60
+#define NV3_POWER_NEXT_PTR                              0x61
+#define NV3_POWER_VERSION                               0x62
+
+// "The RIVA128ZX does not physically change its power consumption when
+// POWER_STATE is modified."
+#define NV3_POWER_STATE                                 0x64
+
+#define NV3_POWER_STATE_D0                              0x0
+#define NV3_POWER_STATE_D3HOT                           0x3
+
 // GPU Subsystems
 // These most likely correspond to functional blocks in the original design
 
