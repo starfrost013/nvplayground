@@ -96,6 +96,8 @@
 #define NV3_PCI_CFG_VBIOS_BASE_L                        0x32
 #define NV3_PCI_CFG_VBIOS_BASE_H                        0x33
 
+#define NV3_AGP_CAPABILITIES_POINTER                    0x34
+
 #define NV3_PCI_CFG_INT_LINE                            0x3C
 #define NV3_PCI_CFG_INT_PIN                             0x3D
 
