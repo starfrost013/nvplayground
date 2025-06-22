@@ -107,6 +107,38 @@
 #define NV3_PCI_CFG_MAX_LATENCY                         0x3F
 #define NV3_PCI_CFG_MAX_LATENCY_DEFAULT                 0x01
 
+//
+// AGP configuration
+//
+#define NV3_AGP_CAPABILITIES                            0x44
+#define NV3_AGP_CAPABILITIES_CAP_ID                     0
+#define NV3_AGP_CAPABILITIES_CAP_ID_AGP                 0x02        // "AGP"
+#define NV3_AGP_CAPABILITIES_NEXT_PTR                   8           // Hardcoded to 0
+#define NV3_AGP_CAPABILITIES_AGP_VERSION_MINOR          16
+#define NV3_AGP_CAPABILITIES_AGP_VERSION_MAJOR          20
+
+#define NV3_AGP_STATUS                                  0x48
+#define NV3_AGP_STATUS_RATE                             0
+#define NV3_AGP_STATUS_RATE_1X_SUPPORTED                0x1
+#define NV3_AGP_STATUS_RATE_2X_SUPPORTED                0x2
+#define NV3_AGP_STATUS_SBA                              9
+#define NV3_AGP_STATUS_SBA_SUPPORTED                    0x0
+#define NV3_AGP_STATUS_SBA_UNSUPPORTED                  0x1
+#define NV3_AGP_STATUS_MAX_REQUESTS                     24
+#define NV3_AGP_STATUS_MAX_REQUESTS_AMOUNT              4
+
+#define NV3_AGP_COMMAND                                 0x4C
+#define NV3_AGP_COMMAND_DATA_RATE                       0
+#define NV3_AGP_COMMAND_DATA_RATE_1X                    0x1
+#define NV3_AGP_COMMAND_DATA_RATE_2X                    0x2
+#define NV3_AGP_COMMAND_AGP_ENABLE                      8
+#define NV3_AGP_COMMAND_AGP_ENABLE_DISABLED             0x0
+#define NV3_AGP_COMMAND_AGP_ENABLE_ENABLED              0x1
+#define NV3_AGP_COMMAND_SBA_ENABLE                      9
+#define NV3_AGP_COMMAND_SBA_ENABLE_DISABLED             0x0
+#define NV3_AGP_COMMAND_SBA_ENABLE_ENABLED              0x1
+#define NV3_AGP_COMMAND_REQUEST_DEPTH                   24
+
 // GPU Subsystems
 // These most likely correspond to functional blocks in the original design
 
