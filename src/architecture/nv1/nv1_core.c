@@ -21,7 +21,7 @@ bool nv1_print_info()
     Logging_Write(log_level_message, "NV_PFB_BOOT_0           = %08lX\n", current_device.nv_pfb_boot_0);
     /* 
         Determine the amount of Video RAM 
-        In theory this could be a shared function between all nv gpus, but in reality i'm not so sure
+        In theory this could be a shared function between all nv gpus, with the actual amount based on the gpu-specific values, but in reality i'm not so sure
     */
 
     Logging_Write(log_level_message, "Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));

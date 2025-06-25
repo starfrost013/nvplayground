@@ -30,7 +30,7 @@ bool Config_Load()
 
         if (!ini_has_entry(section_tests, current_test.name))
         {
-            Logging_Write(log_level_warning, "Test %s not found (1)\n", current_test.name);
+            Logging_Write(log_level_debug, "Test %s not in INI file (1)\n", current_test.name);
             test_id++;
             current_test = nv_tests[test_id];
             continue; 

@@ -34,8 +34,10 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Architecture: NV3
 "src/architecture/nv3/nv3_class_names.c"
-"src/architecture/nv3/nv3_core.c"
 "src/architecture/nv3/nv3_mode_table.c"
+"src/architecture/nv3/nv3_core.c"
+"src/architecture/nv3/tests/nv3_tests.c"
+
 )
 
 add_executable(nvplay ${sources})
