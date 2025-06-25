@@ -940,11 +940,3 @@ typedef struct nv3_pmc_s
 #define NV3_NOTIFICATION_PAGE_FRAME_ADDRESS     12      // The pageframe to use 
 
 
-// Core notification structure
-typedef struct nv3_notification_s
-{
-    uint64_t nanoseconds;
-    uint32_t info32;
-    uint16_t info16;
-    uint16_t status;
-} nv3_notification_t;

@@ -249,7 +249,11 @@ bool nv3_print_info()
     We do this via the following ways:
     1. Enable cache reassignment
     2. Enable PFIFO caches
-    3. 
+    3. Determine if a valid mode was set
+    4. Setup CRTC registers according to mode information
+    5. Initialise RAMIN: RAMRO, RAMHT, RAMFC, etc.
+    6. Setup 2d driver gfx initflags and test function
+    7. Run NV2D driver
 */
 bool nv3_enter_graphics_mode()
 {

@@ -197,6 +197,15 @@ typedef enum nv3_pgraph_class_e
 #define NV3_SUBCHANNEL_PIO_ALWAYS_ZERO_START            0x0012
 #define NV3_SUBCHANNEL_PIO_ALWAYS_ZERO_END              0x0017
 
+// Core notification structure
+typedef struct nv3_notification_s
+{
+    uint64_t nanoseconds;
+    uint32_t info32;
+    uint16_t info16;
+    uint16_t status;
+} nv3_notification_t;
+
 /* 
     Generic coordinate struct with 16-bit components 
     NOTE: FOR GDI-A PURPOSES, THIS MUST BE FLIPPED!
@@ -1307,8 +1316,11 @@ typedef struct nv3_mode_s
     uint32_t hsync_polarity;
     uint32_t vsync_polarity;
 
+    nv3_mode_entry_t* mode_entry_ptr; 
+
     /* Util */
     bool stale;                 // Determines if the graphics hardware needs to be updated with the current state of the CRTC
+    bool valid;                 // Determines if the graphics mode is valid.
 } nv3_mode_t; 
 
 typedef struct nv3_state_s

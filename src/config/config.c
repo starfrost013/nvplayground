@@ -26,14 +26,13 @@ bool Config_Load()
 
     while (current_test.test_function)
     {
-        current_test = nv_tests[test_id];
-
-        // see if the tests specified in the ini file are for the right gpu 
+        // see if the tests specified in the ini file are for the GPU we have installed
 
         if (!ini_has_entry(section_tests, current_test.name))
         {
             Logging_Write(log_level_warning, "Test %s not found (1)\n", current_test.name);
             test_id++;
+            current_test = nv_tests[test_id];
             continue; 
         }
         else
@@ -48,6 +47,7 @@ bool Config_Load()
                 Logging_Write(log_level_debug, "Test %s disabled (2)\n", current_test.name);
 
                 test_id++;
+                current_test = nv_tests[test_id];
                 continue; 
             }
         }    
@@ -67,6 +67,7 @@ bool Config_Load()
             {
                 Logging_Write(log_level_warning, "Test %s (%s) does not have defined test function", current_test.name, current_test.name_friendly);
                 test_id++;
+                current_test = nv_tests[test_id];
                 continue; 
             }
 
@@ -81,9 +82,7 @@ bool Config_Load()
             if (!config.test_list_head)
             {
                 config.test_list_head = config.test_list_tail = new_test_entry;
-                config.test_list_head->prev = NULL;
-                config.test_list_head->next = NULL;
-
+                config.test_list_head->prev = config.test_list_head->next = NULL;
             }
             else 
             {
@@ -101,7 +100,9 @@ bool Config_Load()
             if (!current_test.test_function)
             {
                 Logging_Write(log_level_warning, "Test %s doesn't have a test function", new_test_entry->name);
-                test_id++;
+                test_id++; 
+                current_test = nv_tests[test_id];
+
                 continue; 
             }            
 
@@ -110,6 +111,7 @@ bool Config_Load()
         }
         
         test_id++;
+        current_test = nv_tests[test_id];
     }
     
     config.loaded = true; 

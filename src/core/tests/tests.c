@@ -46,14 +46,13 @@ bool Test_IsAvailableForGPU(const char* test_name)
     // iterate through each test
     while (nv_test.test_function != NULL)
     {
-        nv_test = nv_tests[test_number];
-
         if (!strcmp(nv_test.name, test_name)
         && vendor_id == nv_test.required_vendor_id
         && device_id == nv_test.required_device_id)
             return true; 
 
         test_number++;
+        nv_test = nv_tests[test_number];
     }
 
     return false; 
@@ -68,12 +67,12 @@ nv_test_t* Test_Get(const char* test_name)
     // iterate through each test
     while (nv_test.test_function != NULL)
     {
-        nv_test = nv_tests[test_number];
-
         if (!strcmp(nv_test.name, test_name))
             return &nv_tests[test_number];
 
         test_number++;
+        nv_test = nv_tests[test_number];
+
     }
 
     return NULL; 

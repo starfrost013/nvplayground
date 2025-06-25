@@ -112,7 +112,7 @@ bool nv1_init()
 
         uint16_t command = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND);
 
-        command |= (PCI_CFG_OFFSET_COMMAND_IO_ENABLED | PCI_CFG_OFFSET_COMMAND_MEM_ENABLED);
+        command |= (PCI_CFG_OFFSET_COMMAND_MEM_ENABLED);
         
         pci_write_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND, command);
         Logging_Write(log_level_debug, "NV1: Programming Base Address Register 0 to hopefully-free value...%08x (prefetchable)\n", NV1_MMIO_SPACE_TEST & 0xFF000000);
