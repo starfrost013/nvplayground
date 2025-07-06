@@ -112,7 +112,8 @@ bool nv1_init()
 
         uint16_t command = pci_read_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND);
 
-        command |= (PCI_CFG_OFFSET_COMMAND_MEM_ENABLED);
+        // Value 0x07 seen in DOS box on rev.C 2MB unit (ChipToken 0xE5219C6FA99E625E)
+        command |= (PCI_CFG_OFFSET_COMMAND_BUS_MASTER | PCI_CFG_OFFSET_COMMAND_MEM_ENABLED | PCI_CFG_OFFSET_COMMAND_IO_ENABLED);
         
         pci_write_config_16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND, command);
         Logging_Write(log_level_debug, "NV1: Programming Base Address Register 0 to hopefully-free value...%08x (prefetchable)\n", NV1_MMIO_SPACE_TEST & 0xFF000000);
@@ -251,12 +252,12 @@ bool nv1_security_breach()
 
     if (breach_detected)
     {
-        Logging_Write(log_level_message, "NV1 DRM:\tAlarm tripped. PAUTH_DEBUG_0 bit 0 is set\n. Reset to remove effects.\n");
+        Logging_Write(log_level_message, "NV1 DRM:\tAlarm tripped. PAUTH_DEBUG_0 bit 0 is set. Reset to remove effects.\n");
         return true; 
     }
     else
     { 
-        Logging_Write(log_level_debug, "That didn't work. There's some other way to do it, or this is a Rev A card or earlier.\n");
+        Logging_Write(log_level_debug, "That didn't work. There's some other way to do it, or this is a Rev B02 card or earlier.\n");
         return false;
     }
 

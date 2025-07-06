@@ -13,34 +13,6 @@
 nv3_state_t nv3_state = {0};                    // NV3 specific state 
 
 
-/* 
-    NV3: Try to get into a graphics mode.
-
-    We do this via the following ways:
-    1. Enable cache reassignment
-    2. Enable PFIFO caches
-    3. Determine if a valid mode was set
-    4. Setup CRTC registers according to mode information
-    5. Initialise RAMIN: RAMRO, RAMHT, RAMFC, etc.
-    6. Setup 2d driver gfx initflags and test function
-    7. Run NV2D driver
-*/
-bool nv3_enter_graphics_mode()
-{
-    // Ensure cache reassignment is enabled
-    // We don't do context switching yet but we still enable it since it seems 3D stuff requires it
-    nv_mmio_write32(NV3_PFIFO_CACHE_REASSIGNMENT, 1);
-
-    // Enable PFIFO caches
-    nv_mmio_write32(NV3_PFIFO_CACHE0_PUSH_ENABLED, 1);
-    nv_mmio_write32(NV3_PFIFO_CACHE1_PUSH_ENABLED, 1);
-
-    nv_mmio_write32(NV3_PFIFO_CACHE0_PULL0_ENABLED, 1);
-    nv_mmio_write32(NV3_PFIFO_CACHE1_PULL0_ENABLED, 1);
-
-    return true; 
-}
-
 bool nv3_init()
 {
     // only top 8 bits actually matter

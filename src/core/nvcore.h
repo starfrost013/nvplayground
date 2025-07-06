@@ -17,6 +17,7 @@
 
 #define PCI_CFG_OFFSET_COMMAND_IO_ENABLED	0x01
 #define PCI_CFG_OFFSET_COMMAND_MEM_ENABLED	0x02
+#define PCI_CFG_OFFSET_COMMAND_BUS_MASTER	0x04	// Allow bus mastering
 
 #define PCI_CFG_OFFSET_STATUS				0x06
 #define PCI_CFG_OFFSET_REVISION				0x08
@@ -94,6 +95,9 @@ bool pci_write_config_8(uint32_t bus_number, uint32_t function_number, uint32_t 
 bool pci_write_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value);
 bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value);
 
+/* PCI BIOS interrupt */
+#define INT_1A        0x1A
+
 /* Device definitions */
 #define PCI_VENDOR_SGS              0x104A      // Used for NV1, STG-2000 variant
 #define PCI_VENDOR_SGS_NV           0x12D2      // Used for NV3/NV3T
@@ -119,14 +123,24 @@ bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t
     There's two ways to identify NV GPU: By reading PCI config registers and by reading the NV_PFB_BOOT register
     We read PCI config registers to determine the overall model and hten read the pfb_boot register to get the stepping
 */
+
+// Default values for the boot information register.
+// Depends on the chip
+
+// NV1 (1994-1995)
+
 #define NV_PMC_BOOT_NV1_A01     	0x00010100      // NV1 Stepping A0 (Prototype) 				1994
 #define NV_PMC_BOOT_NV1_B01     	0x00010101      // NV1 Stepping B0 (Prototype) 				1995
 #define NV_PMC_BOOT_NV1_B02     	0x00010102      // NV1 Stepping B1 (Prototype) 				1995
 #define NV_PMC_BOOT_NV1_B03     	0x00010103      // NV1 Stepping B2 (Prototype)				1995
 #define NV_PMC_BOOT_NV1_C01     	0x00010104      // NV1 Stepping C0 (Final)	   				1995
+
+// NV2 (1996)
+
 #define NV_PMC_BOOT_NV2_A01			0x10020400		// NV2 Stepping A0 (Prototype) 				1995/1996 (Helios Semiconductor) 
-// Default value for the boot information register.
-// Depends on the chip
+
+// RIVA 128 (1997)
+
 #define NV_PMC_BOOT_NV3_A00         0x00030100      // NV3 Stepping A0 (Prototype) 				April 1997
 #define NV_PMC_BOOT_NV3_B00         0x00030110		// NV3 Stepping B0 (Final)					July(?) 1997
 #define NV_PMC_BOOT_NV3T_A01_ST     0x00030120		// NV3 Stepping C0 / NV3T Stepping A1		Early 1998		(STMicro-manufactured)
@@ -135,6 +149,16 @@ bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t
 #define NV_PMC_BOOT_NV3T_A01_TSMC   0x20030120		// NV3 Stepping C0 / NV3T Stepping A1		Early 1998 		(TSMC-manufactured)
 #define NV_PMC_BOOT_NV3T_A02_TSMC   0x20030121		// NV3 Stepping C1 / NV3T Stepping A2		Early 1998 		(TSMC-manufactured)
 #define NV_PMC_BOOT_NV3T_A03_TSMC 	0x20030122		// NV3 Stepping C2/C3 / NV3 Stepping A3/A4	1998/9			(TSMC-manufactured)
+
+/* Temp stuff */
+#define NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS        60
+#define NV3_TEST_OVERCLOCK_BASE_13500                   0x1A30B
+#define NV3_TEST_OVERCLOCK_BASE_14318					0x1C40E
+
+// RIVA TNT1 (1998)
+#define NV_PMC_BOOT_NV4_A01			0x20004000		// NV4 Stepping A1/A2/A3					?December 1997? (TSMC-manufactured)
+#define NV_PMC_BOOT_NV4_A04			0x20034001		// NV4 Stepping A4							?August 1998?
+#define NV_PMC_BOOT_NV4_A05			0x20044001		// NV4 Stepping A5							?Late 1998>/
 
 
 /* NVidia Device Definition */
@@ -180,25 +204,30 @@ extern nv_device_t current_device;
 // Detection functions
 bool nv_detect(); 
 
-// Read/write functions
+//
+// READ/WRITE functions for GPU memory areas
+//
+
 // only 8 and 32 bit are really needed
 uint8_t nv_mmio_read8(uint32_t offset); 
 uint32_t nv_mmio_read32(uint32_t offset); 
+void nv_mmio_write8(uint32_t offset, uint8_t val);
+void nv_mmio_write32(uint32_t offset, uint32_t val);
+
 /* Requires some special dispensations if the bus size is 64-bit and there is only 2 MB of VRAM */
 uint8_t nv_dfb_read8(uint32_t offset); 
 uint16_t nv_dfb_read16(uint32_t offset); 
 uint32_t nv_dfb_read32(uint32_t offset); 
-// RAMIN is always read as 32bit
-uint32_t nv_ramin_read32(uint32_t offset); 
-
-void nv_mmio_write8(uint32_t offset, uint8_t val);
-void nv_mmio_write32(uint32_t offset, uint32_t val);
 void nv_dfb_write8(uint32_t offset, uint8_t val);
 void nv_dfb_write16(uint32_t offset, uint16_t val);
 void nv_dfb_write32(uint32_t offset, uint32_t val);
+
+// RAMIN is always read as 32bit
+uint32_t nv_ramin_read32(uint32_t offset); 
 void nv_ramin_write32(uint32_t offset, uint32_t val);
 
-/* Temp stuff */
-#define NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS        60
-#define NV3_TEST_OVERCLOCK_BASE_13500                   0x1A30B
-#define NV3_TEST_OVERCLOCK_BASE_14318					0x1C40E
+// CRTC
+void nv_crtc_lock_extended_registers();
+void nv_crtc_unlock_extended_registers();
+uint8_t nv_crtc_read(uint8_t index);
+void nv_crtc_write(uint8_t index, uint8_t value);

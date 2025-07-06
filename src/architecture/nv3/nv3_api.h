@@ -1290,6 +1290,38 @@ typedef struct nv3_mode_entry_s
 /* List of valid tables */
 extern nv3_mode_entry_t mode_table[];
 
+/* CRTC information for the current mod */
+typedef struct nv3_mode_crtc_info_s
+{
+    /* CRTC Parameters */
+    uint32_t cursor_start;
+    uint32_t cursor_end;
+    uint32_t hdisp;
+    uint32_t hstart;
+    uint32_t hend;
+    uint32_t htotal;
+    uint32_t hblankstart;
+    uint32_t hblankend;
+    uint32_t hretracestart;
+    uint32_t hretraceend;
+    uint32_t vretracestart;
+    uint32_t vretraceend;
+    uint32_t vdisp;
+    uint32_t vstart;
+    uint32_t vend;
+    uint32_t vtotal; 
+    uint32_t vblankstart;
+    uint32_t vblankend; 
+    /* Xfree86 drivers don't use this, only the real proprietary Nvidiad rivers */
+    uint32_t hsync_polarity;
+    uint32_t vsync_polarity;
+
+    /* PRAMDAC VPLL */
+    uint32_t vpll; 
+    uint32_t vclk_ratio;
+
+} nv3_mode_crtc_info_t;
+
 /* Current mode setup */
 typedef struct nv3_mode_s
 {
@@ -1298,23 +1330,7 @@ typedef struct nv3_mode_s
     uint32_t res_vert;
     uint32_t bpp;
     uint32_t refresh_rate; 
-
-    /* CRTC Parameters */
-    uint32_t hdisp;
-    uint32_t hstart;
-    uint32_t hend;
-    uint32_t htotal;
-    uint32_t hblankstart;
-    uint32_t hblankend;
-    uint32_t vdisp;
-    uint32_t vstart;
-    uint32_t vend;
-    uint32_t vtotal; 
-    uint32_t vblankstart;
-    uint32_t vblankend; 
-    /* NV Drivers only use this, not XFree86 */
-    uint32_t hsync_polarity;
-    uint32_t vsync_polarity;
+    nv3_mode_crtc_info_t crtc; 
 
     nv3_mode_entry_t* mode_entry_ptr; 
 
@@ -1330,6 +1346,26 @@ typedef struct nv3_state_s
     // PIO method of submission TODO: DMA
      nv3_channel_t* nv_user[NV3_DMA_CHANNELS];
 } nv3_state_t;
+
+// Object name is just a uint32_t identifier it doesn't need a struct
+// This is how the context is represented in ramin
+// IN PGRAPH IT IS DIFFERENT! ONLY 5 BITS FOR THE CLASS ID! WHY?
+typedef struct nv3_ramin_context_s
+{
+    union 
+    {
+        uint32_t context; 
+
+        struct
+        {
+            uint16_t ramin_offset; 
+            uint8_t class_id : 7;
+            bool is_rendering : 1;
+            uint8_t channel : 7;
+            bool reserved : 1;
+        };
+    };
+} nv3_ramin_context_t;
 
 // NV3 specific state
 extern nv3_state_t nv3_state; 

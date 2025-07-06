@@ -684,10 +684,10 @@
 // PRMCIO is redirected to SVGA subsystem
 #define NV3_PRMCIO_START                                0x601000
 
-#define NV3_PRMCIO_CRTC_REGISTER_CUR_INDEX_MONO         0x6013B4    // Current CRTC Register Index - Monochrome
-#define NV3_PRMCIO_CRTC_REGISTER_CUR_MONO               0x6013B5    // Currently Selected CRTC Register - Monochrome
-#define NV3_PRMCIO_CRTC_REGISTER_CUR_INDEX_COLOR        0x6013D4    // Current CRTC Register Index - Colour
-#define NV3_PRMCIO_CRTC_REGISTER_CUR_COLOR              0x6013D5    
+#define NV3_PRMCIO_CRTC_REGISTER_INDEX_MONO         0x6013B4    // Current CRTC Register Index - Monochrome
+#define NV3_PRMCIO_CRTC_REGISTER_MONO               0x6013B5    // Currently Selected CRTC Register - Monochrome
+#define NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR        0x6013D4    // Current CRTC Register Index - Colour
+#define NV3_PRMCIO_CRTC_REGISTER_COLOR              0x6013D5    
 #define NV3_PRMCIO_END                                  0x601FFF
 
 #define NV3_PDAC_START                                  0x680000    // OPTIONAL external DAC
@@ -771,30 +771,33 @@
 
 // control structures for dma'd in graphics objects from pfifo
 // these all have configurable sizes, define them here
-#define NV3_RAMIN_START                                0x1C00000
 
-#define NV3_RAMIN_RAMHT_START                          0x1C00000   // Hashtable for storing submitted objects
-#define NV3_RAMIN_RAMHT_END                            0x1C00FFF
-#define NV3_RAMIN_RAMHT_SIZE_0                         0xFFF
-#define NV3_RAMIN_RAMHT_SIZE_1                         0x1FFF
-#define NV3_RAMIN_RAMHT_SIZE_2                         0x3FFF
-#define NV3_RAMIN_RAMHT_SIZE_3                         0x7FFF
+// THIS IS A BAR1 OFFSET
+#define NV3_RAMIN_START                                 0xC00000
+
+
+#define NV3_RAMIN_RAMHT_START                           0x0   // Hashtable for storing submitted objects
+#define NV3_RAMIN_RAMHT_END                             0xFF
+#define NV3_RAMIN_RAMHT_SIZE_0                          0xFFF
+#define NV3_RAMIN_RAMHT_SIZE_1                          0x1FFF
+#define NV3_RAMIN_RAMHT_SIZE_2                          0x3FFF
+#define NV3_RAMIN_RAMHT_SIZE_3                          0x7FFF
 
 /* OBSOLETE AREA for AUDIO probably. DO NOT USE! */
-#define NV3_RAMIN_RAMAU_START                          0x1C01000   
-#define NV3_RAMIN_RAMAU_END                            0x1C01BFF
-#define NV3_RAMIN_RAMFC_START                          0x1C01C00   // context for unused PFIFO DMA channels
-#define NV3_RAMIN_RAMFC_END                            0x1C01DFF
-#define NV3_RAMIN_RAMFC_SIZE_0                         0x1FF
-#define NV3_RAMIN_RAMFC_SIZE_1                         0xFFF
-#define NV3_RAMIN_RAMRO_START                          0x1C01E00   // Runout area for invalid submissions
-#define NV3_RAMIN_RAMRO_SIZE_0                         0x1FF
-#define NV3_RAMIN_RAMRO_SIZE_1                         0x1FFF
-#define NV3_RAMIN_RAMRO_END                            0x1C01FFF
-#define NV3_RAMIN_RAMRM_START                          0x1C02000
-#define NV3_RAMIN_RAMRM_END                            0x1C02FFF
+#define NV3_RAMIN_RAMAU_START                           0x1000   
+#define NV3_RAMIN_RAMAU_END                             0x1BFF
+#define NV3_RAMIN_RAMFC_START                           0x1C00   // context for unused PFIFO DMA channels
+#define NV3_RAMIN_RAMFC_END                             0x1DFF
+#define NV3_RAMIN_RAMFC_SIZE_0                          0x1FF
+#define NV3_RAMIN_RAMFC_SIZE_1                          0xFFF
+#define NV3_RAMIN_RAMRO_START                           0x1E00   // Runout area for invalid submissions
+#define NV3_RAMIN_RAMRO_SIZE_0                          0x1FF
+#define NV3_RAMIN_RAMRO_SIZE_1                          0x1FFF
+#define NV3_RAMIN_RAMRO_END                             0x1FFF
+#define NV3_RAMIN_RAMRM_START                           0x2000
+#define NV3_RAMIN_RAMRM_END                             0x2FFF
 
-#define NV3_RAMIN_END                                  0x1FFFFFF
+#define NV3_RAMIN_END                                   0xFFFFFF
 
 // not done
 
@@ -819,9 +822,11 @@
 #define NV3_CRTC_REGISTER_CURSOR_START_DISABLED         5
 
 #define NV3_CRTC_REGISTER_VTOTAL                        0x06
+// Vretrace Start bit 9, Vdisp End bit 9, Vtotal bit 9, Lcomp bit 8, Vblankstart bit 8, Vretrace start bit 8, vtotal bit 8
 #define NV3_CRTC_REGISTER_OVERFLOW                      0x07
 #define NV3_CRTC_REGISTER_PRESETROWSCAN                 0x08
 #define NV3_CRTC_REGISTER_MAXSCAN                       0x09
+#define NV3_CRTC_REGISTER_MAXSCAN_LINEDOUBLE            6
 #define NV3_CRTC_REGISTER_CURSOR_START                  0x0A
 #define NV3_CRTC_REGISTER_CURSOR_END                    0x0B
 #define NV3_CRTC_REGISTER_STARTADDR_HIGH                0x0C
@@ -839,29 +844,39 @@
 #define NV3_CRTC_REGISTER_LINECOMP                      0x18
 #define NV3_CRTC_REGISTER_STANDARDVGA_END               0x18
 
-
 // These are nvidia, licensed from weitek (25-63)
-#define NV3_CRTC_REGISTER_RPC0                          0x19        // What does this mean?
-#define NV3_CRTC_REGISTER_RPC1                          0x1A        // What does this mean?
+#define NV3_CRTC_REGISTER_REPAINT_0                     0x19        // What does this mean?
+#define NV3_CRTC_REGISTER_REPAINT_1                     0x1A        
+#define NV3_CRTC_REGISTER_REPAINT_1_LARGE_SCREEN        2           // Set for >=1280 width
+
+#define NV3_CRTC_REGISTER_REFRESH_FIFO_CONFIG           0x1B        
+
 #define NV3_CRTC_REGISTER_READ_BANK                     0x1D
 #define NV3_CRTC_REGISTER_WRITE_BANK                    0x1E
+#define NV3_CRTC_REGISTER_REFRESH_FIFO_WATERMARK        0x20
 #define NV3_CRTC_REGISTER_FORMAT                        0x25
 #define NV3_CRTC_REGISTER_FORMAT_VDT10                  0           // Use 10 bit vtotal value instead of 8 bit
 #define NV3_CRTC_REGISTER_FORMAT_VDE10                  1           // Use 10 bit dispend value instead of 8 bit
 #define NV3_CRTC_REGISTER_FORMAT_VRS10                  2           // Use 10 bit vblank start value instead of 8 bit
 #define NV3_CRTC_REGISTER_FORMAT_VBS10                  3           // Use 10 bit vsync start value instead of 8 bit
 #define NV3_CRTC_REGISTER_FORMAT_HBE6                   4           // Use 6 bit hsync start value
+
 #define NV3_CRTC_REGISTER_PIXELMODE                     0x28
-
-#define NV3_CRTC_REGISTER_HEB                           0x2D        // HRS most significant bit
-
-#define NV3_CRTC_REGISTER_CURSOR_ADDR0                  0x30        // Cursor high 
-#define NV3_CRTC_REGISTER_CURSOR_ADDR1                  0x31        // Cursor low (1:0 = enable)
-
+#define NV3_CRTC_REGISTER_PIXELMODE_CONFIG              0
 #define NV3_CRTC_REGISTER_PIXELMODE_VGA                 0x00        // vga textmode
 #define NV3_CRTC_REGISTER_PIXELMODE_8BPP                0x01
 #define NV3_CRTC_REGISTER_PIXELMODE_16BPP               0x02
 #define NV3_CRTC_REGISTER_PIXELMODE_32BPP               0x03 
+#define NV3_CRTC_REGISTER_PIXELMODE_HORIZ_ADJUST        3
+#define NV3_CRTC_REGISTER_PIXELMODE_TV_MODE             6
+#define NV3_CRTC_REGISTER_PIXELMODE_TV_MODE_VGA_MONITOR 0x00
+#define NV3_CRTC_REGISTER_PIXELMODE_TV_MODE_TV          0x01
+
+
+#define NV3_CRTC_REGISTER_HEB                           0x2D        // HRS most significant bit (Horizontal extra)
+
+#define NV3_CRTC_REGISTER_CURSOR_ADDR0                  0x30        // Cursor high 
+#define NV3_CRTC_REGISTER_CURSOR_ADDR1                  0x31        // Cursor low (1:0 = enable)
 
 #define NV3_CRTC_REGISTER_RL0                           0x34
 #define NV3_CRTC_REGISTER_RL1                           0x35
@@ -877,6 +892,8 @@
 
 #define NV3_CRTC_REGISTER_NVIDIA_END                    0x3F
 
+/* RMA - Real-Mode Access (for VBIOS etc) */
+
 // for 86box 8bit addressing
 // get rid of this asap, replace with 32->8 macros
 #define NV3_RMA_SIGNATURE_MSB                           0x65
@@ -886,6 +903,25 @@
 
 #define NV3_CRTC_REGISTER_RMA_MODE_MAX                  0x0F
 
+/* PRMVIO - Video clocking? (Real-Mode Video I/O) */
+
+/* 
+    Sequencer Registers
+    VGA         3C4-3C5
+    MMIO        C03C4-C03C5
+*/
+#define NV3_PRMVIO_SR_INDEX                             0xC03C4 // Sequence registers
+#define NV3_PRMVIO_SR                                   0xC03C5 // Sequence registers
+
+#define NV3_PRMVIO_SR_INDEX_RESET                       0
+#define NV3_PRMVIO_SR_INDEX_CLOCK                       1
+#define NV3_PRMVIO_SR_INDEX_PLANE_MASK                  2
+#define NV3_PRMVIO_SR_INDEX_CHAR_MAP                    3
+#define NV3_PRMVIO_SR_INDEX_MEM_MODE                    4
+#define NV3_PRMVIO_SR_INDEX_LOCK                        5
+
+#define NV3_PRMVIO_SR_INDEX_LOCK_LOCKED                 0x57
+#define NV3_PRMVIO_SR_INDEX_LOCK_UNLOCKED               0x99 //anything other than 0x57 but NV uses this
 
 /* 
     STRUCTURES FOR THE GPU START HERE

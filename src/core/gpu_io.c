@@ -1,5 +1,8 @@
+#include "architecture/nv3/nv3_ref.h"
+#include "core/nvcore.h"
 #include "nvcore.h"
 #include "sys/farptr.h"
+#include <stdint.h>
 
 //
 // MMIO Functinos
@@ -69,13 +72,37 @@ void nv_dfb_write32(uint32_t offset, uint32_t val)
 /* Read 32-bit value from RAMIN */
 uint32_t nv_ramin_read32(uint32_t offset)
 {
-    Logging_Write(log_level_warning, "nv_ramin_read32 NOT YET IMPLEMENTED");
-    return 0x00;
+    return _farpeekl(current_device.bar1_selector, NV3_RAMIN_START + offset);
 }
 
 void nv_ramin_write32(uint32_t offset, uint32_t val)
 {
-     Logging_Write(log_level_warning, "nv_ramin_write32 NOT YET IMPLEMENTED");
-    return;
+    _farpokel(current_device.bar1_selector, NV3_RAMIN_START + offset, val);
+}
+
+void nv_crtc_lock_extended_registers()
+{
+    // To do: Does this need to be moved to NV3
+    nv_mmio_write32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
+    nv_mmio_write32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_LOCKED);
+
+}
+
+void nv_crtc_unlock_extended_registers()
+{
+    nv_mmio_write32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
+    nv_mmio_write32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_UNLOCKED);
+}
+
+uint8_t nv_crtc_read(uint8_t index)
+{
+    nv_mmio_write32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
+    return nv_mmio_read32(NV3_PRMCIO_CRTC_REGISTER_COLOR);
+}
+
+void nv_crtc_write(uint8_t index, uint8_t value)
+{
+    nv_mmio_write32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
+    nv_mmio_write32(NV3_PRMCIO_CRTC_REGISTER_COLOR,value);
 }
 

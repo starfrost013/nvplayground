@@ -10,7 +10,6 @@
 bool nv3_init();
 
 /* NV3 Tests */
-bool nv3_enter_graphics_mode();
 bool nv3_dump_vbios();
 bool nv3_dump_mmio();
 bool nv3_garbage_mmio_read();
