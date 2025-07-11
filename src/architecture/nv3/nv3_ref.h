@@ -1,7 +1,11 @@
 /* 
-    Filename: nv3_ref.h
-    Purpose: Provides NV3 hardware defines. Simplified version of vid_nv3.h from 86Box-riva128
-    (TODO: Object definitions, so that NV_User can be treated as a c struct, like in the real drivers. Everything needs to be 0x2000)
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nv3_ref.h: Provides NV3 hardware defines. Simplified version of vid_nv3.h from 86Box-riva128
 */
 
 #pragma once 

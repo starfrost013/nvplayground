@@ -1,10 +1,16 @@
-//
-// Filename: nv3_tests.c
-// Purpose: NV3/NV3T (RIVA 128/128ZX) test fsuite implementation unctions
-//
+/*
+    NVPlayground
+    Copyright © 2025 starfrost
+
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+    
+    nv3_tests.c: NV3 test suite implementation
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-
 
 // Architecture Includes
 #include <architecture/nv3/nv3.h>
@@ -13,6 +19,9 @@
 #include "core/nvcore.h"
 #include "util/util.h"
 
+//
+// GARBAGE TEST 
+//
 
 #define NV3_GARBAGE_MMIO_AREA_01                0x610
 #define NV3_GARBAGE_MMIO_AREA_02                0x344D90

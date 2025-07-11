@@ -1,6 +1,11 @@
 /* 
-    Filename: nv1_ref.h
-    Purpose: Provides NV1 hardware defines. 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nv1_ref.h: Provides NV1 hardware defines. Simplified version of vid_nv3.h from 86Box-riva128
 */
 
 #pragma once 

@@ -1,4 +1,13 @@
 
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nv3_class_names.c: NV3 friendly class names
+*/
 
 /* These are the object classes AS RECOGNISED BY THE GRAPHICS HARDWARE. */
 /* The drivers implement a COMPLETELY DIFFERENT SET OF CLASSES. */

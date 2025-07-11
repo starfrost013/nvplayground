@@ -1,11 +1,16 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nv3.h: NV3/NV3T (RIVA 128/128ZX) core - NVPLAYGROUND ONLY, NOT API
+*/
+
 #pragma once
 #include <nvplayground.h>
 #include "nv3_ref.h"
-
-//
-// Filename: nv3.h
-// Purpose: NV3/NV3T (RIVA 128/128ZX) core - NVPLAYGROUND ONLY, NOT API
-//
 
 bool nv3_init();
 

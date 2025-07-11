@@ -1,6 +1,15 @@
-//
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nv3_core.c: NV3:NV3/NV3T (RIVA 128/128ZX) core functions (bringup, shutdown, mainloop)
+*/
+
 // Filename: nv3_core.c
-// Purpose: NV3/NV3T (RIVA 128/128ZX) core functions (bringup, shutdown, mainloop)
+// Purpose: 
 //
 // Architecture Includes
 #include <architecture/nv3/nv3.h>

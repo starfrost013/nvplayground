@@ -1,3 +1,12 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    pci.c: Implements wrappers around PCI BIOS functions
+*/
 
 #include "dos.h"
 #include "dpmi.h"

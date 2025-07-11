@@ -1,4 +1,12 @@
-/* tests.h: Defines tests */
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    tests.h: Global tests define
+*/
 
 #pragma once
 #include <nvplayground.h>

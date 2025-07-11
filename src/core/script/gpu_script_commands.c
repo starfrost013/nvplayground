@@ -1,11 +1,17 @@
-//
-// gpu_script_commands.c: Implements the commands for the GPUScript parser
-// Currently a basic command system with no real lexer or parser.
-// Basically, you can't read anything because that would require somewhere to put i.e. variables = a full interpreted language. Not yet. So the stopgap is that we at least allow to print to the console (which doesn't have any side effects requiring a variable system)
-// Although I might add a basic variable system to read to one of 10 variables as an intermediate step
-//
-// HEX notation only. Because it's easier...
-//
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    gpu_script_commands.c: Implements the commands for the GPUScript parser
+    Currently a basic command system with no real lexer or parser.
+    Basically, you can't read anything because that would require somewhere to put i.e. variables = a full interpreted language. Not yet. So the stopgap is that we at least allow to print to the console (which doesn't have any side effects requiring a variable system)
+    Although I might add a basic variable system to read to one of 10 variables as an intermediate step
+    
+    HEX notation only. Because it's easier...
+*/
 
 #include <stdio.h>
 #include <core/nvcore.h>

@@ -1,3 +1,15 @@
+/*
+    NVPlayground
+    Copyright © 2025 starfrost
+
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+    
+    nv1.h: NVPlayground NV1 core
+*/
+
+
 #pragma once
 #include <nvplayground.h>
 #include <core/nvcore.h>

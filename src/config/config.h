@@ -1,6 +1,12 @@
-//
-// Config.h: Config Subsystem
-//
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    config.h: Config subsystem
+*/
 
 #pragma once 
 

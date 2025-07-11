@@ -1,6 +1,12 @@
-//
-// tests.c: Enumerates the available tests.
-//
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    tests.c: Enumerates all available tests in test mode
+*/
 
 #include <string.h>
 #include <core/nvcore.h>

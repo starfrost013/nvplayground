@@ -1,7 +1,12 @@
-//
-// Filename: nv1_core.c
-// Purpose: NV1 core functions (bringup, shutdown, mainloop)
-//
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nv1_core.c: NV1 core functions (bringup, main loop, shutdown)
+*/
 
 #include <architecture/nv1/nv1.h>
 #include <architecture/nv1/nv1_ref.h>

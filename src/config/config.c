@@ -1,3 +1,13 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    config.c: Config system (nvplay.ini) implementation
+*/
+
 #include "config.h"
 #include "core/nvcore.h"
 #include "core/tests/tests.h"

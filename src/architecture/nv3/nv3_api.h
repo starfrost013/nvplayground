@@ -1,11 +1,12 @@
 /*
-    NVPlayground - NV3 API
-    Allows you to interface with the NV3 hardware        
+    NVPlayground
+    Copyright © 2025 starfrost
 
-    This software is licensed under the Creative Commons Attribution-ShareAlike 4.0 license. 
-    For further information: https://creativecommons.org/licenses/by-sa/4.0/deed.en
-     
-    Copyright © 2023-2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+    
+    nv3_api.h: Allows you to interface with the NV3 hardware (Copyright © 2023-2025 starfrost see 86Box)        
 */
 
 #pragma once

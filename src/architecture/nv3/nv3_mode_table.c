@@ -1,11 +1,18 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nv3_mode_table.c: NV3: List of supported modes. For now just 60Hz.
+*/
 
 // Architecture Includes
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv3/nv3_api.h>
 /* 
 
-    List of supported modes
-    For now: Just 60Hz modes 
 
     Does 24bpp exist?
 */

@@ -1,6 +1,13 @@
-//
-// gpu_script_parser.c: Main implementation of GPUScript parser
-//
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    gpu_script_parser.c: Parses our very basic command/scripting system (mostly just for writing to registers.)
+*/
+
 #include <stdio.h>
 #include <core/nvcore.h>
 
