@@ -69,6 +69,8 @@ bool nv3driver_set_mode()
 
     // let's go
 
+
+
     // enable locked crtc
     nv_crtc_unlock_extended_registers();
 
@@ -119,12 +121,48 @@ bool nv3driver_set_mode()
     else
         nv_crtc_write(NV3_CRTC_REGISTER_REPAINT_1, 0); // has no other purpose
 
+    #ifdef DEBUG
+    for (uint32_t i = 0; i < 32; i++)
+    {
+        Logging_Write(log_level_debug, "NV3 Driver Init: CRTC %02x: %02x\n", i, nv_crtc_read(i));
+    }
+    #endif
+    
+
+    // enter into mode
+    Logging_Write(log_level_debug, "NV3 Driver Init: CRTC programmed: an you hear me now?\n");
+
+    // Set the pixel mode 
+    switch (nv3_driver.mode.bpp)
+    {
+        case 8:
+            Logging_Write(log_level_message, "NV3 Driver Init: 8BPP PALETTE NOT YET PROGRAMMED!! YOU WON'T SEE ANYTHING!!!!!!!!!!\n", "");
+            nv_mmio_write32(NV3_CRTC_REGISTER_PIXELMODE, NV3_CRTC_REGISTER_PIXELMODE_8BPP);
+            break;
+        case 15 ... 16:
+            nv_mmio_write32(NV3_CRTC_REGISTER_PIXELMODE, NV3_CRTC_REGISTER_PIXELMODE_16BPP);
+
+            // toggle 5-6-5 mode if bpp=16, turn it off if it is bpp=15
+            uint32_t pramdac_general_control = nv_mmio_read32(NV3_PRAMDAC_GENERAL_CONTROL);
+    
+            if (nv3_driver.mode.bpp == 16)
+                pramdac_general_control |= (1 << NV3_PRAMDAC_GENERAL_CONTROL_565_MODE);
+            else 
+                pramdac_general_control &= ~(1 << NV3_PRAMDAC_GENERAL_CONTROL_565_MODE);
+
+            Logging_Write(log_level_message, "NV3 Driver Init: 16bpp: 565 Mode Enable = %d", (nv3_driver.mode.bpp == 16));
+
+            nv_mmio_write32(NV3_PRAMDAC_GENERAL_CONTROL, pramdac_general_control);
+            break;
+        case 32:   
+            nv_mmio_write32(NV3_CRTC_REGISTER_PIXELMODE, NV3_CRTC_REGISTER_PIXELMODE_32BPP);
+            break;
+    
+    }
 
     nv_crtc_lock_extended_registers();
-    
-    // enter into mode
-    Logging_Write(log_level_debug, "Can you hear me now?\n");
 
+    return true; 
 }
 
 /* 
@@ -168,5 +206,5 @@ bool nv3driver_enter_graphics_mode()
 
 bool nv3driver_leave_graphics_mode()
 {
-
+    return true; 
 }

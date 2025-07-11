@@ -457,6 +457,8 @@
 #define NV3_PALT_START                                  0x120000    // ??? but it exists
 #define NV3_PALT_END                                    0x12FFFF
 #define NV3_PME_START                                   0x200000    // Mediaport 
+#define NV3_PME_DEBUG_0                                 0x200080    // PME Debug 0
+#define NV3_PME_DEBUG_1                                 0x200084    // PME Debug 1
 #define NV3_PME_INTR                                    0x200100    // Mediaport: Interrupt Pending?
 #define NV3_PME_INTR_EN                                 0x200140    // Mediaport: Interrupt Enable
 #define NV3_PME_END                                     0x200FFF
@@ -710,11 +712,24 @@
 #define NV3_PRAMDAC_CURSOR_SIZE_Y                       32
 
 #define NV3_PRAMDAC_CLOCK_MEMORY                        0x680504
-#define NV3_PRAMDAC_CLOCK_MEMORY_VDIV                   7:0
-#define NV3_PRAMDAC_CLOCK_MEMORY_NDIV                   15:8
-#define NV3_PRAMDAC_CLOCK_MEMORY_PDIV                   18:16
+#define NV3_PRAMDAC_CLOCK_MEMORY_VDIV                   0
+#define NV3_PRAMDAC_CLOCK_MEMORY_NDIV                   8
+#define NV3_PRAMDAC_CLOCK_MEMORY_PDIV                   16
+
 #define NV3_PRAMDAC_CLOCK_PIXEL                         0x680508
 #define NV3_PRAMDAC_COEFF_SELECT                        0x68050C
+#define NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE            8
+#define NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE_DEFAULT    0x0
+#define NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE_SOFTWARE   0x1
+#define NV3_PRAMDAC_COEFF_SELECT_MPLL_BYPASS            12
+#define NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE            16
+#define NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE_DEFAULT    0x0
+#define NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE_SOFTWARE   0x1
+#define NV3_PRAMDAC_COEFF_SELECT_VPLL_BYPASS            20
+#define NV3_PRAMDAC_COEFF_SELECT_PCLK_SOURCE            24              // Some Mediaport crap
+#define NV3_PRAMDAC_COEFF_SELECT_VCLK_RATIO             28
+#define NV3_PRAMDAC_COEFF_SELECT_VCLK_RATIO_1           0x0
+#define NV3_PRAMDAC_COEFF_SELECT_VCLK_RATIO_2           0x1
 
 #define NV3_PRAMDAC_GENERAL_CONTROL                     0x680600
 #define NV3_PRAMDAC_GENERAL_CONTROL_565_MODE            12

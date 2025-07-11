@@ -11,6 +11,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/util/ini.c"
 "src/util/util_cmdline.c"
 "src/util/util_logging.c"
+"src/util/util_string.c"
 
 # Main
 "src/main.c"
@@ -29,6 +30,10 @@ file(GLOB sources CONFIGURE_DEPENDS
 # NVCore: Tests
 "src/core/tests/tests.c"
 
+# NVCore: Script Engine
+"src/core/script/gpu_script_commands.c"
+"src/core/script/gpu_script_parser.c"
+
 # Architecture: NV1
 "src/architecture/nv1/nv1_core.c"
 
@@ -45,6 +50,12 @@ add_executable(nvplay ${sources})
 
 # Base include directories
 include_directories("./src")
+
+if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+  target_compile_definitions(nvplay PRIVATE DEBUG)
+elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+  target_compile_definitions(nvplay PRIVATE RELEASE)
+endif()
 
 add_custom_target(assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory

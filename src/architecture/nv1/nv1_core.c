@@ -1,6 +1,6 @@
 //
-// Filename: nv3_core.c
-// Purpose: NV3/NV3T (RIVA 128/128ZX) core functions (bringup, shutdown, mainloop)
+// Filename: nv1_core.c
+// Purpose: NV1 core functions (bringup, shutdown, mainloop)
 //
 
 #include <architecture/nv1/nv1.h>

@@ -9,7 +9,7 @@
  *          Fred N. van Kempen, <decwiz@yahoo.com>
  *          Overdoze,
  *          David Hrdlička, <hrdlickadavid@outlook.com>
- *           Connor Hyde, <mario64crashed@gmail.com, nomorestarfrost@gmail.com>
+ *          Connor Hyde, <mario64crashed@gmail.com, nomorestarfrost@gmail.com>
  *
  *          Copyright 2008-2019 Sarah Walker.
  *          Copyright 2016-2019 Miran Grca.

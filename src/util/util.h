@@ -1,11 +1,21 @@
-/* Core utility headers 
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    util.h: Core utility headers
 */
 
 #pragma once
 #include "ini.h"
 
+/* General definitions */
+#define MAX_STR							260 
+
 /* Logging system */
-#define LOG_FILE_DEFAULT_NAME "nvplay.log"   
+#define LOG_FILE_DEFAULT_NAME           "nvplay.log"   
 
 typedef enum log_level 
 {
@@ -54,11 +64,18 @@ void Logging_Shutdown();
 
 typedef struct command_line_s
 {
-    bool run_all_tests;         // Override test ini and run all tests
-    bool dry_run;               // don't run tests, but confirm the INI settings
+    bool run_all_tests;             // Override test ini and run all tests
+    bool dry_run;                   // don't run tests, but confirm the INI settings
+    bool reg_script;                // run a registry script file
+    char reg_script_file[MAX_STR];  // The registry script file to use
 } command_line_t;
 
 extern command_line_t command_line; 
 
 //cannot use int32_t because it's defined as long
 bool Cmdline_Parse(int argc, char** argv);
+
+// String utils
+
+bool String_IsEntirelyWhitespace(char* fmt, uint32_t max);
+char* String_GetTokenSeparatedPart(char* fmt, const char* delim, uint32_t n);

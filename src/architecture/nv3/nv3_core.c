@@ -7,6 +7,7 @@
 #include <architecture/nv3/nv3_api.h>
 #include <architecture/nv3/nv3_ref.h>
 #include "core/nvcore.h"
+#include "util/util.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -43,14 +44,14 @@ bool nv3_init()
     __dpmi_physical_address_mapping(&meminfo_bar0);
     __dpmi_physical_address_mapping(&meminfo_bar1);
     
-    Logging_Write(log_level_debug, "GPU Init: Mapping BAR0 MMIO...\n");
+    Logging_Write(log_level_debug, "NV3 Init: Mapping BAR0 MMIO...\n");
 
     /* Set up two LDTs, we don't need one for ramin, because, it's just a part of bar1 we map differently */
     current_device.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar0_selector, meminfo_bar0.address);
     __dpmi_set_segment_limit(current_device.bar0_selector, NV3_MMIO_SIZE - 1);
 
-    Logging_Write(log_level_debug, "GPU Init: Mapping BAR1 (DFB / RAMIN)...\n");
+    Logging_Write(log_level_debug, "NV3 Init: Mapping BAR1 (DFB / RAMIN)...\n");
 
     current_device.bar1_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1.address);
@@ -76,14 +77,24 @@ bool nv3_init()
     current_device.straps = nv_mmio_read32(NV3_PSTRAPS);
 
     /* Power up all GPU subsystems */
-    Logging_Write(log_level_debug, "Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
+    Logging_Write(log_level_debug, "NV3 Init: Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
     nv_mmio_write32(NV3_PMC_ENABLE, 0x11111111);
     Logging_Write(log_level_debug, "Done!\n");
 
     /* Enable interrupts (test) */
-    Logging_Write(log_level_debug, "Enabling interrupts...");
+    Logging_Write(log_level_debug, "NV3 Init: Enabling interrupts...");
     nv_mmio_write32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
     Logging_Write(log_level_debug, "Done!\n");
     
+    Logging_Write(log_level_debug, "NV3 Init: Ensuring user-programmable pixel and memory clocks...\n");
+    
+    // ensure programmable pixel and memory clocks for driver & overclock testing
+    uint32_t pramdac_pll_coeff_select = nv_mmio_read32(NV3_PRAMDAC_COEFF_SELECT);
+
+    pramdac_pll_coeff_select |= (NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE_SOFTWARE << NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE);
+    pramdac_pll_coeff_select |= (NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE_SOFTWARE << NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE);
+
+    nv_mmio_write32(NV3_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
+
     return true; 
 }

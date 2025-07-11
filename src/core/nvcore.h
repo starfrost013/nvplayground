@@ -1,11 +1,14 @@
 #pragma once
 #include <nvplayground.h>
 
-
 /* 
     Filename: nvcore.h
     Purpose: Shared files between all NV cards, including core PCI defines
 */
+
+#define STRING_EMPTY ""
+
+/* PCI */
 
 /* PCI BIOS magic */
 #define PCI_BIOS_MAGIC						0x20494350
@@ -96,7 +99,8 @@ bool pci_write_config_16(uint32_t bus_number, uint32_t function_number, uint32_t
 bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value);
 
 /* PCI BIOS interrupt */
-#define INT_1A        0x1A
+#define INT_VIDEO		0x10
+#define INT_1A        	0x1A
 
 /* Device definitions */
 #define PCI_VENDOR_SGS              0x104A      // Used for NV1, STG-2000 variant
@@ -231,3 +235,23 @@ void nv_crtc_lock_extended_registers();
 void nv_crtc_unlock_extended_registers();
 uint8_t nv_crtc_read(uint8_t index);
 void nv_crtc_write(uint8_t index, uint8_t value);
+
+//
+// SCRIPT PARSER
+//
+
+void Script_Run();
+
+// This sucks. It's not a proper lexer/tokeniser, but we don't need one
+typedef struct gpu_script_command_s
+{
+	const char* name_abbrev;
+	const char* name_full;		// don't really need an alias system
+	bool (*function)();
+} gpu_script_command_t; 
+
+extern gpu_script_command_t commands[];
+
+/* Command utility stuff */
+const char* Command_Argv(uint32_t argv);
+uint32_t Command_Argc();

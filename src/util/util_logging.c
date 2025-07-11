@@ -1,7 +1,14 @@
-/* Logging Engine implementation */
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    util_logging.c: Logging implementation 
+*/
 
 #include <nvplayground.h>
-
 
 log_settings_t log_settings = {0};  
 
@@ -57,7 +64,7 @@ void Logging_Write(log_level level, const char* fmt, ...)
             prefix = "[DEBUG]: ";
             break;
         case log_level_message:
-            break; // not needed but shut up the compiler    
+            break; // not needed but shuts up the compiler    
         case log_level_warning:
             prefix = "[WARNING]: ";
             break;
