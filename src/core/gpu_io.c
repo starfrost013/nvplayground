@@ -1,3 +1,13 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    gpu_io.c: Implements I/O functions that are shared across all pieces of graphics hardware.
+*/
+
 #include "architecture/nv3/nv3_ref.h"
 #include "core/nvcore.h"
 #include "nvcore.h"

@@ -1,5 +1,10 @@
 /* 
- * NVPlayground © 2025 starfrost
+ * NVPlayground
+ * Copyright © 2025 starfrost
+ *
+ * Raw GPU programming for early Nvidia GPUs
+ * Licensed under the MIT license (see license file)
+ *
  * This file was taken from 86Box, <https://github.com/86Box/86Box>
  *
  * Configuration file manager header

@@ -1,3 +1,13 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    gpu_list.c: Enumerates all supported graphics hardware.
+*/
+
 #include "core/nvcore.h"
 // Architecture Includes
 #include <architecture/nv1/nv1.h>

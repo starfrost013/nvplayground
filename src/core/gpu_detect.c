@@ -1,3 +1,12 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    gpu_detect.c: Code for detecting graphics hardware
+*/
 
 #include "core/nvcore.h"
 

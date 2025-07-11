@@ -8,7 +8,6 @@
     util_string.c: String utilities (Mostly stolen from S7e)
 */
 
-
 #include <nvplayground.h>
 
 bool String_IsEntirelyWhitespace(char* fmt, uint32_t max)

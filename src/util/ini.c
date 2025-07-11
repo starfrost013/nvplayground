@@ -1,5 +1,10 @@
 /* 
- * NVPlayground © 2025 starfrost
+ * NVPlayground
+ * Copyright © 2025 starfrost
+ *
+ * Raw GPU programming for early Nvidia GPUs
+ * Licensed under the MIT license (see license file)
+ * 
  * This file was taken from 86Box, <https://github.com/86Box/86Box>
  *
  * Configuration file manager
@@ -8,7 +13,8 @@
  *          Miran Grca, <mgrca8@gmail.com>
  *          Fred N. van Kempen, <decwiz@yahoo.com>
  *          Overdoze,
- *          David Hrdlička, <hrdlickadavid@outlook.com>
+ *          David Hrdlička, <hrdlickadavid@outlook.com>,
+ *          Connor Hyde, <mario64crashed@gmail.com>,
  *
  *          Copyright 2008-2019 Sarah Walker.
  *          Copyright 2016-2019 Miran Grca.
@@ -18,7 +24,6 @@
  *
  */
 
- 
 #include <util/ini.h>
 
 typedef struct _list_ {

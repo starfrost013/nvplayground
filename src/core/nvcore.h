@@ -1,10 +1,16 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nvcore.h: Core headers
+*/
+
+
 #pragma once
 #include <nvplayground.h>
-
-/* 
-    Filename: nvcore.h
-    Purpose: Shared files between all NV cards, including core PCI defines
-*/
 
 #define STRING_EMPTY ""
 

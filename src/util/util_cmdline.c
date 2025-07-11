@@ -1,5 +1,13 @@
-// util_cmdline.c 
-#include "architecture/nv3/nv3_api.h"
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    util_cmdline.c: Command line implementation
+*/
+
 #include <string.h>
 #include <util/util.h>
 
@@ -41,7 +49,7 @@ bool Cmdline_Parse(int argc, char** argv)
         || !strcasecmp(current_arg, COMMAND_LINE_RUN_SCRIPT_FILE_FULL))
         {
             // logging not yet initialised
-            if (i - argc < 1)
+            if (argc - i < 1)
                 printf("No script file provided!\n");
             
             command_line.reg_script = true;
