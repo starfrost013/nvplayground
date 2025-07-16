@@ -94,37 +94,43 @@
 // PFB
 //
 
-#define NV1_PFB_BOOT_0                      0x600000
+#define NV1_PFB_BOOT_0                              0x600000
 
-#define NV1_PFB_BOOT_0_RAM_AMOUNT           0
-#define NV1_PFB_BOOT_0_RAM_AMOUNT_1MB       0x0
-#define NV1_PFB_BOOT_0_RAM_AMOUNT_2MB       0x1
-#define NV1_PFB_BOOT_0_RAM_AMOUNT_4MB       0x2
+#define NV1_PFB_BOOT_0_RAM_AMOUNT                   0
+#define NV1_PFB_BOOT_0_RAM_AMOUNT_1MB               0x0
+#define NV1_PFB_BOOT_0_RAM_AMOUNT_2MB               0x1
+#define NV1_PFB_BOOT_0_RAM_AMOUNT_4MB               0x2
 
 //
 // PEXTDEV
 //
 
-#define NV1_STRAPS                          0x608000
-#define NV1_STRAPS_STRAP_VENDOR             0
+#define NV1_STRAPS                                  0x608000
+#define NV1_STRAPS_STRAP_VENDOR                     0
 
 //
 // PRAM+RAMIN
 //
 
-#define NV1_PRAM_CONFIG                     0x602200
-#define NV1_PRAM_CONFIG_SIZE                0
-#define NV1_PRAM_CONFIG_12KB                0
-#define NV1_PRAM_CONFIG_20KB                1
-#define NV1_PRAM_CONFIG_36KB                2
-#define NV1_PRAM_CONFIG_68KB                3
+#define NV1_PRAM_CONFIG                             0x602200
+#define NV1_PRAM_CONFIG_SIZE                        0
+#define NV1_PRAM_CONFIG_12KB                        0
+#define NV1_PRAM_CONFIG_20KB                        1
+#define NV1_PRAM_CONFIG_36KB                        2
+#define NV1_PRAM_CONFIG_68KB                        3
 
 // Position of RAMPW in RAMIN
-#define NV1_RAMPW_POSITION_CONFIG0          0x2c00
-#define NV1_RAMPW_POSITION_CONFIG1          0x4c00
-#define NV1_RAMPW_POSITION_CONFIG2          0x8c00
-#define NV1_RAMPW_POSITION_CONFIG3          0x10c00
+#define NV1_RAMPW_POSITION_CONFIG0                  0x2c00
+#define NV1_RAMPW_POSITION_CONFIG1                  0x4c00
+#define NV1_RAMPW_POSITION_CONFIG2                  0x8c00
+#define NV1_RAMPW_POSITION_CONFIG3                  0x10c00
 
 // Static RAMPW mirror
-#define NV1_PRAMPW                          0x606000
-#define NV1_RAMPW_SIZE                      0x400
+#define NV1_PRAMPW                                  0x606000
+#define NV1_RAMPW_SIZE                              0x400
+
+//
+// PROM
+//
+#define NV1_PROM                                    0x601000
+#define NV1_PROM_SIZE                               32768

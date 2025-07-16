@@ -79,3 +79,6 @@ bool Cmdline_Parse(int argc, char** argv);
 
 bool String_IsEntirelyWhitespace(char* fmt, uint32_t max);
 char* String_GetTokenSeparatedPart(char* fmt, const char* delim, uint32_t n);
+
+char* String_LTrim(char* fmt, uint32_t max);
+char* String_RTrim(char* fmt, uint32_t max);

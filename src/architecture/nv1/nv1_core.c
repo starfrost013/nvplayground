@@ -175,6 +175,15 @@ bool nv1_init()
 
     Logging_Write(log_level_debug, "Done!\n");
 
+    // Read the chip token out
+    uint32_t chip_token_0 = (uint32_t)nv_mmio_read32(NV1_PAUTH_CHIP_TOKEN_0);
+    uint32_t chip_token_1 = (uint32_t)nv_mmio_read32(NV1_PAUTH_CHIP_TOKEN_1);
+
+    nv1_state.chip_token = ((uint64_t)chip_token_0 << 32) | (uint64_t)chip_token_1;
+
+    Logging_Write(log_level_message, "NV1 DRM: ChipToken (Unique ID for NV1 chip): = %08x%08x\n", chip_token_0, chip_token_1);
+
+
     return true; 
 }
 
@@ -201,11 +210,7 @@ bool nv1_security_breach()
     else 
         Logging_Write(log_level_message, "NV1 DRM:\tTripping the alarms...\n");
 
-    // Read the chip token out
-    uint32_t chip_token_0 = nv_mmio_read32(NV1_PAUTH_CHIP_TOKEN_0);
-    uint32_t chip_token_1 = nv_mmio_read32(NV1_PAUTH_CHIP_TOKEN_1);
-
-    Logging_Write(log_level_message, "NV1 DRM:\tChipToken (Unique ID for NV1 chip): 0x%04X%04X\n", chip_token_0, chip_token_1);
+    Logging_Write(log_level_message, "NV1 DRM:\tChipToken (Unique ID for NV1 chip): 0x%08X\n", nv1_state.chip_token);
 
     Logging_Write(log_level_debug, "Let's try PAUTH_PASSWORD\n");
 
@@ -267,4 +272,26 @@ bool nv1_security_breach()
     }
 
     return false; 
+}
+
+// Todo: Universal vbios dump function
+bool nv1_dump_vbios()
+{
+    Logging_Write(log_level_message, "Dumping Video BIOS...");
+
+    FILE* vbios = fopen("nv1bios.bin", "wb");
+
+    uint32_t vbios_bin[8192];
+
+    for (int32_t i = 0; i < 8192; i++)
+    {
+        vbios_bin[i] = nv_mmio_read32(NV1_PROM + i*4);
+    }   
+
+    fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
+
+    fclose(vbios);
+    Logging_Write(log_level_message, "Done!\n");
+
+    return true; 
 }

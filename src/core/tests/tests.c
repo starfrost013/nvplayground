@@ -25,6 +25,8 @@ nv_test_t nv_tests[] =
     { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", nv1_print_info},
     { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", nv1_security_breach},
     { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", nv1_security_breach},
+    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_DumpVBIOS", "NV1 Dump Video BIOS (Real Mode)", nv1_dump_vbios},
+    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_DumpVBIOS", "NV1 Dump Video BIOS (Real Mode)", nv1_dump_vbios},
 
     // NV3 tests
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", nv3_print_info},

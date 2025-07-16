@@ -122,7 +122,8 @@ bool Command_WriteRamin32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_ramin_write32(offset, value);    
+    nv_ramin_write32(offset, value);   
+     
     return true; 
 }
 

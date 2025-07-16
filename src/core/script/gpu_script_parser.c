@@ -78,10 +78,21 @@ void Script_Run()
 		if (String_IsEntirelyWhitespace(line_buf, MAX_STR))
 			continue; 
 
-		strncpy(last_command, line_buf, MAX_STR);
+		// trim any whitespace
+		// todo: string_rtrim (after the test rectangle script is verified to work.)
+		char* line_buf_trimmed = String_LTrim(String_RTrim(line_buf, MAX_STR), MAX_STR);
+
+		// skip commented lines
+		if (line_buf_trimmed[0] == '/'
+		&& line_buf_trimmed[1] == '/')
+			continue; 
+
+		Logging_Write(log_level_debug, "%s trimmed: %s\n", line_buf, line_buf_trimmed);
+
+		strncpy(last_command, line_buf_trimmed, MAX_STR);
 
 		// this gets the command
-		char* command_name = strtok(line_buf, " ");
+		char* command_name = strtok( line_buf_trimmed, " ");
 
 		int32_t script_command_id = 0;
 		gpu_script_command_t* script_command = &commands[script_command_id];
