@@ -183,7 +183,6 @@ bool nv1_init()
 
     Logging_Write(log_level_message, "NV1 DRM: ChipToken (Unique ID for NV1 chip): = %08x%08x\n", chip_token_0, chip_token_1);
 
-
     return true; 
 }
 
