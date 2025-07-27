@@ -32,3 +32,5 @@ bool nv1_print_info();
 bool nv1_print_pci_config();
 bool nv1_security_breach();
 bool nv1_dump_vbios();
+
+bool nv1_gpus_section_applies(uint32_t fourcc);

@@ -11,7 +11,6 @@
 #include <stdio.h>
 #include <core/nvcore.h>
 
-#include "limits.h"
 #include "util/util.h"
 #include <nvplayground.h>
 #include <config/config.h>

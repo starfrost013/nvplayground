@@ -104,9 +104,9 @@ bool pci_write_config_8(uint32_t bus_number, uint32_t function_number, uint32_t 
 bool pci_write_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value);
 bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value);
 
-/* PCI BIOS interrupt */
-#define INT_VIDEO		0x10
-#define INT_1A        	0x1A
+
+#define INT_VIDEO					0x10
+#define INT_1A        				0x1A		// PCI BIOS interrupt 
 
 /* Device definitions */
 #define PCI_VENDOR_SGS              0x104A      // Used for NV1, STG-2000 variant
@@ -174,15 +174,16 @@ bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t
 /* NVidia Device Definition */
 typedef struct nv_device_info_s
 {
-	uint32_t device_id; 		// Device ID of the GPU
-	uint32_t vendor_id;			// Vendor ID of the GPU
-	const char* name; 			// Friendly name of the GPU
-	bool (*init_function)();	// Function to call on entry point
+	uint32_t device_id; 								// Device ID of the GPU
+	uint32_t vendor_id;									// Vendor ID of the GPU
+	const char* name; 									// Friendly name of the GPU
+	bool (*init_function)();							// Function to call on entry point
 
-	void (*main_function)();	// Function to call on entry point
+	void (*main_function)();							// Function to call on entry point
 	
-	void (*shutdown_function)();	// Function to call on shutdown
-	void (*submit_function)();	// Function to call for graphics object submission
+	void (*shutdown_function)();						// Function to call on shutdown
+	bool (*gpus_section_applies)(uint32_t fourcc);		// Does this GPUS section apply for this GPU?
+	void (*gpus_section_parse)();						// Does this G
 } nv_device_info_t; 
 
 /* List of supported devices */
@@ -261,3 +262,55 @@ extern gpu_script_command_t commands[];
 /* Command utility stuff */
 const char* Command_Argv(uint32_t argv);
 uint32_t Command_Argc();
+
+//
+// SAVESTATES
+//
+
+#define GPUS_MAGIC				0x47505553	// 'GPUS'
+#define GPUS_VERSION			1
+
+#define GPUS_SECTIONS_MAX		32			// Sanity check heuristic; Maximum reasonable number of sections for a GPUS fine
+
+typedef struct gpus_header_s
+{
+	uint32_t magic; 
+	uint16_t version;			// Just in case...
+	uint16_t num_sections;		// Number of GPUS file sections
+	uint32_t device_id;
+} gpus_header_t; 
+
+typedef struct gpus_header_section_s
+{
+	uint32_t fourcc;
+	uint32_t offset;
+	uint32_t size; 
+} gpus_header_section_t;
+
+// Section names:
+// CRTC registers				'CRTC'
+// GDC registers				'VGAG'
+// Sequencer registers			'VGAS'
+// MMIO							'MMIO'
+// BAR1 (VRAM / RAMIN)			'BAR1'
+// On-die Texture Cache			'CACH'
+// EEPROM (nv1 only)			'NV1E'
+
+
+typedef enum gpus_sections_e
+{
+	gpus_section_vga_crtc = 0x43525443,
+
+	gpus_section_vga_gdc = 0x56474147,
+
+	gpus_section_vga_sequencer = 0x56474153,
+
+	gpus_section_mmio = 0x4D4D494F,
+
+	gpus_section_bar1 = 0x42415231,
+
+	gpus_section_cache = 0x43414348,
+
+	gpus_section_nv1e = 0x56314544,
+} gpus_sections; 
+
