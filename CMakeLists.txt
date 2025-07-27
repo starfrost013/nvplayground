@@ -34,6 +34,9 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/script/gpu_script_commands.c"
 "src/core/script/gpu_script_parser.c"
 
+# NVCore: GPU Savestate format
+"src/core/formats/formats_gpus.c"
+
 # Architecture: NV1
 "src/architecture/nv1/nv1_core.c"
 

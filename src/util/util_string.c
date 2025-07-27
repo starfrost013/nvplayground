@@ -8,7 +8,7 @@
     util_string.c: String utilities (Mostly stolen from S7e)
 */
 
-#include "core/nvcore.h"
+
 #include <nvplayground.h>
 #include <string.h>
 

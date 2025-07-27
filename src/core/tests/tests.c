@@ -9,7 +9,7 @@
 */
 
 #include <string.h>
-#include <core/nvcore.h>
+
 #include <core/tests/tests.h>
 
 // Architecture includes

@@ -9,7 +9,7 @@
 */
 
 #include <stdio.h>
-#include <core/nvcore.h>
+
 
 #include "util/util.h"
 #include <nvplayground.h>

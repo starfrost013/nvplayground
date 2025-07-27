@@ -8,9 +8,8 @@
     gpu_io.c: Implements I/O functions that are shared across all pieces of graphics hardware.
 */
 
+#include <nvplayground.h>
 #include "architecture/nv3/nv3_ref.h"
-#include "core/nvcore.h"
-#include "nvcore.h"
 #include "sys/farptr.h"
 #include <stdint.h>
 

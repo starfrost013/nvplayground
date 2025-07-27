@@ -12,7 +12,7 @@
 
 #pragma once
 #include <nvplayground.h>
-#include <core/nvcore.h>
+
 #include "nv1_ref.h"
 
 //

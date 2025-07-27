@@ -9,7 +9,7 @@
 */
 
 #include "config.h"
-#include "core/nvcore.h"
+
 #include "core/tests/tests.h"
 #include "util/ini.h"
 #include "util/util.h"

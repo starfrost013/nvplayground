@@ -8,7 +8,7 @@
     gpu_list.c: Enumerates all supported graphics hardware.
 */
 
-#include "core/nvcore.h"
+
 // Architecture Includes
 #include <architecture/nv1/nv1.h>
 #include <architecture/nv3/nv3.h>

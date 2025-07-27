@@ -10,7 +10,7 @@
 
 #include <architecture/nv1/nv1.h>
 #include <architecture/nv1/nv1_ref.h>
-#include "core/nvcore.h"
+
 #include "dpmi.h"
 #include "nv1_ref.h"
 #include "util/util.h"

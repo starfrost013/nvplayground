@@ -12,7 +12,7 @@
 #include "dpmi.h"
 #include "nvplayground.h"
 #include "util/util.h"
-#include <core/nvcore.h>
+
 #include <stdint.h>
 
 /* Discover the PCI BIOS */

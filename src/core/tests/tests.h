@@ -10,7 +10,7 @@
 
 #pragma once
 #include <nvplayground.h>
-#include <core/nvcore.h>
+
 
 /* Defines a single test (for the global list of tests) */
 typedef struct nv_test_s 

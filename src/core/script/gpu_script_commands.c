@@ -14,7 +14,7 @@
 */
 
 #include <stdio.h>
-#include <core/nvcore.h>
+
 
 #include "architecture/nv3/nv3_ref.h"
 #include "util/util.h"
