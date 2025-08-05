@@ -15,6 +15,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Main
 "src/main.c"
+"src/main_help.c"
 
 # PCI
 "src/core/pci/pci.c"
@@ -35,7 +36,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/script/gpu_script_parser.c"
 
 # NVCore: GPU Savestate format
-"src/core/formats/formats_gpus.c"
+"src/core/formats/format_gpus.c"
 
 # Architecture: NV1
 "src/architecture/nv1/nv1_core.c"

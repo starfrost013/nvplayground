@@ -76,6 +76,8 @@ void NVPlay_RunTests()
 		current_device.device_info.name, config.num_tests_enabled, tests_succeeded, config.num_tests_enabled, tests_failed);
 }
 
+
+
 void NVPlay_Run()
 {
 /* Make sure the GPU is supported */
@@ -91,8 +93,11 @@ void NVPlay_Run()
 		exit(4);
 	}	
 
-	if (command_line.reg_script)
+
+	if (command_line.load_reg_script)
 		Script_Run();
+	else if (command_line.load_savestate_file)
+		GPUS_Load();
 	else
 	{
 		/* If main_function is set, call it, otherwise run the tests from the INI */
@@ -107,8 +112,21 @@ void NVPlay_Run()
 			NVPlay_RunTests();
 		}
 	}
+}
 
+void NVPlay_Shutdown()
+{
+	if (current_device.device_info.shutdown_function)
+		current_device.device_info.shutdown_function();
 
+	Logging_Shutdown();
+	exit(0);
+}
+
+void NVPlay_ShowHelpAndExit()
+{
+	printf("%s", msg_help); // Done this way to shut up GCC
+	NVPlay_Shutdown();
 }
 
 int main(int argc, char** argv) 
@@ -130,25 +148,24 @@ int main(int argc, char** argv)
 
 	Logging_Write(log_level_message, APP_SIGNON_STRING);
 
+	// early return
+	if (command_line.show_help)
+	{
+		NVPlay_ShowHelpAndExit();
+		return 0;
+	}
+
 	if (!pci_bios_is_present())
 		exit(1);
 
-	if (!nv_detect())
+	if (!detect_gpu())
 		exit(2);
 
 	Config_Load(); 
 
 	NVPlay_Run();
 
-  	//__djgpp_nearptr_enable(); for dos rom
-	// kbhit() etc
-
-  	gdb_checkpoint();
-
-	if (current_device.device_info.shutdown_function)
-		current_device.device_info.shutdown_function();
-
-	Logging_Shutdown();
+	NVPlay_Shutdown();
 
  	return 0;
 }

@@ -15,7 +15,7 @@
 // The selected device after detection is done. 
 nv_device_t current_device = {0}; 
 
-bool nv_detect()
+bool detect_gpu()
 {
     nv_device_info_t current_device_info = supported_devices[0]; 
     int32_t i = 0; 

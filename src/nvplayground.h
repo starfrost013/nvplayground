@@ -36,6 +36,12 @@
 
 #define APP_SIGNON_STRING APP_NAME " Version " APP_VERSION_FULL
 
+/* Core */
+
+// The help string
+extern const char* msg_help; 
+void NVPlay_ShowHelpAndExit();
+
 // String
 #define STRING_EMPTY ""
 
@@ -238,7 +244,7 @@ typedef struct nv_device_s
 extern nv_device_t current_device;
 
 // Detection functions
-bool nv_detect(); 
+bool detect_gpu(); 
 
 //
 // READ/WRITE functions for GPU memory areas
@@ -321,7 +327,6 @@ typedef struct gpus_header_section_s
 // On-die Texture Cache			'CACH'
 // EEPROM (nv1 only)			'NV1E'
 
-
 typedef enum gpus_sections_e
 {
 	gpus_section_vga_crtc = 0x43525443,
@@ -339,3 +344,5 @@ typedef enum gpus_sections_e
 	gpus_section_nv1e = 0x56314544,
 } gpus_sections; 
 
+// GPUS functions
+bool GPUS_Load();

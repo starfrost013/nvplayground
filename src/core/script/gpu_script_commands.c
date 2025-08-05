@@ -172,7 +172,6 @@ bool Command_WriteCrtc()
 // maybe it requires a device plugged in
 bool Command_NV3Explode()
 {
-
     // Check the pci vendor 
     if (current_device.device_info.device_id == PCI_DEVICE_NV3
     || current_device.device_info.device_id == PCI_DEVICE_NV3T_ACPI)

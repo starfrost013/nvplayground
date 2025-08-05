@@ -66,8 +66,15 @@ typedef struct command_line_s
 {
     bool run_all_tests;             // Override test ini and run all tests
     bool dry_run;                   // don't run tests, but confirm the INI settings
-    bool reg_script;                // run a registry script file
+    bool load_reg_script;           // run a registry script file
+    bool load_savestate_file;       // Load a savestate file
+    bool load_replay_file;          // Load a replay file
+    bool show_help;                 // Show a help message
+  
     char reg_script_file[MAX_STR];  // The registry script file to use
+    char savestate_file[MAX_STR];   // The registry script file to use
+    char replay_file[MAX_STR];      // The registry script file to use
+
 } command_line_t;
 
 extern command_line_t command_line; 
@@ -82,3 +89,4 @@ char* String_GetTokenSeparatedPart(char* fmt, const char* delim, uint32_t n);
 
 char* String_LTrim(char* fmt, uint32_t max);
 char* String_RTrim(char* fmt, uint32_t max);
+
