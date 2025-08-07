@@ -1,9 +1,14 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.26)
 project(nvplay)
 
 set(CMAKE_GENERATOR Ninja)
+
+set(NVPLAY_OUTPUT_FILE_NAME "${CMAKE_PROJECT_NAME}.exe")
+set(NVPLAY_CONFIG_FILE_NAME "${CMAKE_PROJECT_NAME}.ini")
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 add_compile_options(-Wall -std=gnu99 -save-temps)
+
 
 file(GLOB sources CONFIGURE_DEPENDS 
 
@@ -65,9 +70,30 @@ elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
   target_compile_definitions(nvplay PRIVATE RELEASE)
 endif()
 
-add_custom_target(assets
+
+# create required folders
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out/assets)
+
+
+add_custom_command(TARGET nvplay POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+  ${CMAKE_BINARY_DIR}/${NVPLAY_OUTPUT_FILE_NAME}
+  ${CMAKE_BINARY_DIR}/out/${NVPLAY_OUTPUT_FILE_NAME}
+)
+
+add_custom_command(TARGET nvplay POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+  ${CMAKE_BINARY_DIR}/${NVPLAY_CONFIG_FILE_NAME}
+  ${CMAKE_BINARY_DIR}/out/${NVPLAY_CONFIG_FILE_NAME}
+)
+
+add_custom_command(TARGET nvplay POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_CURRENT_SOURCE_DIR}/assets
-    ${CMAKE_BINARY_DIR}/assets
+    ${CMAKE_BINARY_DIR}/out/assets
 )
-add_dependencies(nvplay assets)
+
+# delete duplicate nvplay.ini (it would be very stupid to move it to the root folder)
+add_custom_command(TARGET nvplay POST_BUILD COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_CURRENT_SOURCE_DIR}/assets/${NVPLAY_CONFIG_FILE_NAME})
+

@@ -13,7 +13,7 @@
 
 #include "time.h"
 #include "util/util.h"
-#include <architecture/nv3/driver/2d/nv3_driver.h>
+#include <driver/2d/nv3_driver.h>
 
 //
 // Globals
