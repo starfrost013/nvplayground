@@ -134,7 +134,6 @@ bool nv3driver_set_mode()
         Logging_Write(log_level_debug, "NV3 Driver Init: CRTC %02x: %02x\n", i, nv_crtc_read(i));
     }
     #endif
-    
 
     // enter into mode
     Logging_Write(log_level_debug, "NV3 Driver Init: CRTC programmed: an you hear me now?\n");

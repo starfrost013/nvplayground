@@ -14,7 +14,7 @@
 #define GPUS_DEVICE_ID_NV17         0x000A0007  // GeForce 4 MX
 #define GPUS_DEVICE_ID_NV18         0x000A0008  // GeForce 440MX-8X 
 #define GPUS_DEVICE_ID_NV19         0x000A0009  // GeForce 440MX PCIe
-
+    
 // 3Dfx
 #define GPUS_DEVICE_ID_SST1			0x01010000
 #define GPUS_DEVICE_ID_SST96		0x01010001

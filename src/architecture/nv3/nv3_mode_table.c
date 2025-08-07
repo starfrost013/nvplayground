@@ -12,9 +12,7 @@
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv3/nv3_api.h>
 /* 
-
-
-    Does 24bpp exist?
+    24bpp does not exist
 */
 nv3_mode_entry_t mode_table[] =
 {

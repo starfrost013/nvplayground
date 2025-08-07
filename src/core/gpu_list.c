@@ -17,7 +17,7 @@
 //
 nv_device_info_t supported_devices[] = 
 {
-	{ PCI_DEVICE_NV1_NV, PCI_VENDOR_SGS, "NV1 (STG-2000 DRAM version)", nv1_init, NULL, NULL, NULL, NULL, },
+	{ PCI_DEVICE_NV1_NV, PCI_VENDOR_SGS, "NV1 (STG-2000 DRAM version)", nv1_init, NULL, NULL, nv1_gpus_section_applies, nv1_gpus_parse_section, },
 	{ PCI_DEVICE_NV1_NV, PCI_VENDOR_NV, "NV1 (NV1 VRAM version)", nv1_init, NULL, NULL, NULL, NULL, },
     { PCI_DEVICE_NV2, PCI_VENDOR_NV, "NV2 (Mutara V08) (You don't have this)", NULL, NULL, NULL, NULL, NULL, },
 	{ PCI_DEVICE_NV3, PCI_VENDOR_SGS_NV, "RIVA 128 (NV3), or RIVA 128 ZX without ACPI support (NV3T)", nv3_init, NULL, NULL, NULL, NULL, }, 

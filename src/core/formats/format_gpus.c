@@ -8,6 +8,7 @@
     format_nvss.c: Implements the "NVSS" savestate format (.NVS extension)
 */
 
+#include <stdint.h>
 #include <stdio.h>
 
 
@@ -62,11 +63,60 @@ bool GPUS_Load()
             current_device.device_info.gpus_section_parse();
         }   
 
+        // *TECHNICALLY* declaration after label e.g. case is valid c23 but i am not taking chances
+        uint32_t num_crtc_registers = 0, num_gdc_registers = 0, num_seq_registers = 0, num_attr_registers = 0;
+
         switch (current_section.fourcc)
         {
             default:
                 Logging_Write(log_level_warning, "GPUS Parser: Section %04x was not implemented by either the standard or GPU-specific parser\n", current_section.fourcc);
                 break; 
+            case gpus_section_vga_crtc:
+                // start reading off crtc registers
+                num_crtc_registers = fread(&current_section, sizeof(uint32_t), 1, stream);
+
+                for (uint32_t crtc_registers = 0; crtc_registers < num_crtc_registers; crtc_registers++)
+                {
+                    uint8_t crtc_index = fread(&current_section, sizeof(uint8_t), 1, stream);
+                    uint8_t crtc_value = fread(&current_section, sizeof(uint8_t), 1, stream);
+
+                    vga_crtc_write(crtc_index, crtc_value);
+                }
+
+                break;
+            case gpus_section_vga_gdc:
+                num_gdc_registers = fread(&current_section, sizeof(uint32_t), 1, stream);
+
+                for (uint32_t gdc_registers = 0; gdc_registers < num_gdc_registers; gdc_registers++)
+                {
+                    uint8_t gdc_index = fread(&current_section, sizeof(uint8_t), 1, stream);
+                    uint8_t gdc_value = fread(&current_section, sizeof(uint8_t), 1, stream);
+
+                    vga_gdc_write(gdc_index, gdc_value);
+                }
+                break;
+            case gpus_section_vga_sequencer:
+                num_seq_registers = fread(&current_section, sizeof(uint32_t), 1, stream);
+
+                for (uint32_t seq_registers = 0; seq_registers < num_seq_registers; seq_registers++)
+                {
+                    uint8_t seq_index = fread(&current_section, sizeof(uint8_t), 1, stream);
+                    uint8_t seq_value = fread(&current_section, sizeof(uint8_t), 1, stream);
+
+                    vga_sequencer_write(seq_index, seq_value);
+                }
+                break;
+            case gpus_section_vga_attribute:
+                num_attr_registers = fread(&current_section, sizeof(uint32_t), 1, stream);
+
+                for (uint32_t attr_registers = 0; attr_registers < num_attr_registers; attr_registers++)
+                {
+                    uint8_t attr_index = fread(&current_section, sizeof(uint8_t), 1, stream);
+                    uint8_t attr_value = fread(&current_section, sizeof(uint8_t), 1, stream);
+
+                    vga_attribute_write(attr_index, attr_value);
+                }
+                break;
         }
     }
 

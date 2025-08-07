@@ -22,7 +22,6 @@
 
 nv3_state_t nv3_state = {0};                    // NV3 specific state 
 
-
 bool nv3_init()
 {
     // only top 8 bits actually matter
@@ -106,4 +105,15 @@ bool nv3_init()
     nv_mmio_write32(NV3_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
 
     return true; 
+}
+
+bool nv3_gpus_section_applies(uint32_t fourcc)
+{
+    
+    return true;  // temp
+}
+
+void nv3_gpus_parse_section(uint32_t fourcc)
+{
+
 }

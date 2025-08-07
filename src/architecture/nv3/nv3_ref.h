@@ -199,7 +199,7 @@
 #define NV3_PMC_ENABLE_PFIFO_ENABLED                    0x1
 #define NV3_PMC_ENABLE_PGRAPH                           12          // Determines if PGRAPH is enabled.
 #define NV3_PMC_ENABLE_PGRAPH_ENABLED                   0x1
-#define NV3_PMC_ENABLE_PPMI                             16
+#define NV3_PMC_ENABLE_PPMI                             16          // Determines if PTIMER + bus mastering is enabled
 #define NV3_PMC_ENABLE_PPMI_ENABLED                     0x1
 #define NV3_PMC_ENABLE_PFB                              20
 #define NV3_PMC_ENABLE_PFB_ENABLED                      0x1
@@ -208,7 +208,7 @@
 #define NV3_PMC_ENABLE_PVIDEO                           28
 #define NV3_PMC_ENABLE_PVIDEO_ENABLED                   0x1
 
-#define NV3_PMC_END                                     0xfff       // overlaps with CIO
+#define NV3_PMC_END                                     0xFFF       // overlaps with CIO
 #define NV3_CIO_START                                   0x3b0       // Legacy SVGA Emulation Subsystem
 #define NV3_CIO_END                                     0x3df
 #define NV3_PBUS_START                                  0x1000      // Bus Control Subsystem
@@ -221,7 +221,7 @@
 #define NV3_PBUS_END                                    0x1FFF
 #define NV3_PFIFO_START                                 0x2000      // FIFO for DMA Object Submission (uses hashtable to store the objects)
 
-#define NV3_PFIFO_MINIMUM_GUARANTEED_DEPTH                             0x7C
+#define NV3_PFIFO_MINIMUM_GUARANTEED_DEPTH              0x7C
 
 #define NV3_PFIFO_DELAY_0                               0x2040      // PFIFO Config Register
 #define NV3_PFIFO_DEBUG_0                               0x2080      // PFIFO Debug Register

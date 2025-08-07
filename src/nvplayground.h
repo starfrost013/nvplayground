@@ -272,7 +272,39 @@ void nv_ramin_write32(uint32_t offset, uint32_t val);
 void nv_crtc_lock_extended_registers();
 void nv_crtc_unlock_extended_registers();
 uint8_t nv_crtc_read(uint8_t index);
+uint8_t nv_gdc_read(uint8_t index);
+uint8_t nv_sequencer_read(uint8_t index);
 void nv_crtc_write(uint8_t index, uint8_t value);
+void nv_gdc_write(uint8_t index, uint8_t value);
+void nv_sequencer_write(uint8_t index, uint8_t value);
+
+//
+// VGA common stuff
+// (Can be used on all gpus theoretically)
+//
+
+#define VGA_PORT_ATTRIBUTE_REGISTER				0x3C0		// This doesn't use index
+#define VGA_PORT_ATTRIBUTE_DATA_WRITE			0x3C1
+#define VGA_PORT_MISCOUT						0x3C2
+#define VGA_PORT_SEQUENCER_INDEX				0x3C4
+#define VGA_PORT_SEQUENCER						0x3C5
+#define VGA_PORT_GRAPHICS_INDEX					0x3CE
+#define VGA_PORT_GRAPHICS						0x3CF
+#define VGA_PORT_MONO_CRTC_INDEX				0x3B4
+#define VGA_PORT_MONO_CRTC						0x3B5
+#define VGA_PORT_COLOR_CRTC_INDEX				0x3D4
+#define VGA_PORT_COLOR_CRTC						0x3D5
+#define VGA_PORT_INPUT0_MONO					0x3BA
+#define VGA_PORT_INPUT0_COLOR					0x3DA
+
+uint8_t vga_crtc_read(uint8_t index);
+uint8_t vga_gdc_read(uint8_t index);
+uint8_t vga_sequencer_read(uint8_t index);
+uint8_t vga_attribute_read(uint8_t index);
+void vga_crtc_write(uint8_t index, uint8_t value);
+void vga_gdc_write(uint8_t index, uint8_t value);
+void vga_sequencer_write(uint8_t index, uint8_t value);
+void vga_attribute_write(uint8_t index, uint8_t value);
 
 //
 // SCRIPT PARSER
@@ -322,6 +354,7 @@ typedef struct gpus_header_section_s
 // CRTC registers				'CRTC'
 // GDC registers				'VGAG'
 // Sequencer registers			'VGAS'
+// Attribute registers			'VGAA'
 // MMIO							'MMIO'
 // BAR1 (VRAM / RAMIN)			'BAR1'
 // On-die Texture Cache			'CACH'
@@ -334,6 +367,8 @@ typedef enum gpus_sections_e
 	gpus_section_vga_gdc = 0x56474147,
 
 	gpus_section_vga_sequencer = 0x56474153,
+
+	gpus_section_vga_attribute = 0x56474141,
 
 	gpus_section_mmio = 0x4D4D494F,
 

@@ -1323,6 +1323,21 @@ typedef struct nv3_mode_crtc_info_s
 
 } nv3_mode_crtc_info_t;
 
+typedef struct nv3_mode_gdc_info_s
+{
+
+} nv3_mode_gdc_info_t;
+
+typedef struct nv3_mode_sr_info_s
+{
+
+} nv3_mode_sr_info_t;
+
+typedef struct nv3_mode_attr_info_s
+{
+
+} nv3_mode_attr_info_t;
+
 /* Current mode setup */
 typedef struct nv3_mode_s
 {
@@ -1331,7 +1346,12 @@ typedef struct nv3_mode_s
     uint32_t res_vert;
     uint32_t bpp;
     uint32_t refresh_rate; 
+
+    // VGA modes
     nv3_mode_crtc_info_t crtc; 
+    nv3_mode_gdc_info_t gdc;
+    nv3_mode_sr_info_t sr;
+    nv3_mode_attr_info_t attr;
 
     nv3_mode_entry_t* mode_entry_ptr; 
 

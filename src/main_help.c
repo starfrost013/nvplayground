@@ -1,3 +1,13 @@
+/* 
+    NVPlayground
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    main_help.c: Implements help message
+*/
+
 #include <nvplayground.h>
 
 const char* msg_help = "nvPlay help:\n\n"
