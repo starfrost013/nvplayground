@@ -46,7 +46,7 @@ bool nv3_init()
     meminfo_bar1.size = NV3_MMIO_SIZE; //this will change
 
     current_device.bar1_dfb_start = bar1_base;
-    current_device.bar1_ramin_start = bar1_base + 0xC00000;
+    current_device.ramin_start = bar1_base + NV3_RAMIN_START;
 
     __dpmi_physical_address_mapping(&meminfo_bar0);
     __dpmi_physical_address_mapping(&meminfo_bar1);

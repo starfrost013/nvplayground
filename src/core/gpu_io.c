@@ -112,14 +112,16 @@ uint8_t nv_crtc_read(uint8_t index)
     return nv_mmio_read32(NV3_PRMCIO_CRTC_REGISTER_COLOR);
 }
 
+// TODO
 uint8_t nv_gdc_read(uint8_t index)
 {
-
+    return 0x00;
 }
 
+// TODO
 uint8_t nv_sequencer_read(uint8_t index)
 {
-
+    return 0x00;
 }
 
 void nv_crtc_write(uint8_t index, uint8_t value)

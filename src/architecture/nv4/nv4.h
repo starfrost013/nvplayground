@@ -18,4 +18,5 @@ typedef struct nv4_state_s
 } nv4_state_t; 
 
 bool nv4_init();
+bool nv4_dump_mfg_info();
 bool nv4_dump_mmio();

@@ -306,28 +306,28 @@ bool nv3_dump_mmio()
     return true; 
 }
 
-bool nv3_print_info()
+bool nv3_dump_mfg_info()
 {
     /* TODO: Read our Dumb Framebuffer */
     Logging_Write(log_level_message, "NV3 Manufacture-Time Configuration: \n");
-    Logging_Write(log_level_message, "NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
-    Logging_Write(log_level_message, "NV_PFB_BOOT_0           = %08lX\n", current_device.nv_pfb_boot_0);
+    Logging_Write(log_level_message, "NV_PMC_BOOT_0             = %08lX\n", current_device.nv_pmc_boot_0);
+    Logging_Write(log_level_message, "NV_PFB_BOOT_0             = %08lX\n", current_device.nv_pfb_boot_0);
     /* 
         Determine the amount of Video RAM 
         In theory this could be a shared function between all nv gpus, but in reality i'm not so sure
     */
 
-    Logging_Write(log_level_message, "Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
+    Logging_Write(log_level_message, "Video RAM Size            = %lu MB\n", (current_device.vram_amount / 1048576));
 
     /* Read in the straps */
-    Logging_Write(log_level_message, "Straps                  = %08lX\n", current_device.straps);
+    Logging_Write(log_level_message, "Straps                    = %08lX\n", current_device.straps);
 
     uint32_t vpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_PIXEL);
     uint32_t mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
     
     //todo: convert to MHz
-    Logging_Write(log_level_message, "Pixel Clock Coefficient = %08lX\n", vpll);
-    Logging_Write(log_level_message, "Memory Clock Coefficient= %08lX\n", mpll);
+    Logging_Write(log_level_message, "Pixel Clock Coefficient   = %08lX\n", vpll);
+    Logging_Write(log_level_message, "Core/Mem Clock Coefficient= %08lX\n", mpll);
     return true; 
 
 }

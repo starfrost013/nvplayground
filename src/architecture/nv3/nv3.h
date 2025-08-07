@@ -33,7 +33,7 @@ bool nv3_init();
 bool nv3_dump_vbios();
 bool nv3_dump_mmio();
 bool nv3_garbage_mmio_read();
-bool nv3_print_info();
+bool nv3_dump_mfg_info();
 bool nv3_test_overclock(); 
 
 

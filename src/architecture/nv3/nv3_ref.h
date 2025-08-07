@@ -36,8 +36,6 @@
 #define NV3_PFIFO_FIRST_VALID_GRAPHICS_OBJECT_ID        0x40
 #define NV3_PFIFO_LAST_VALID_GRAPHICS_OBJECT_ID         0x5F
 
-
-
 #define NV3_VRAM_SIZE_1MB                               0x100000 // 1MB (commented out in drivers)
 #define NV3_VRAM_SIZE_2MB                               0x200000 // 2MB
 #define NV3_VRAM_SIZE_4MB                               0x400000 // 4MB

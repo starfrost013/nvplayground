@@ -95,5 +95,5 @@ add_custom_command(TARGET nvplay POST_BUILD
 )
 
 # delete duplicate nvplay.ini (it would be very stupid to move it to the root folder)
-add_custom_command(TARGET nvplay POST_BUILD COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_CURRENT_SOURCE_DIR}/assets/${NVPLAY_CONFIG_FILE_NAME})
+add_custom_command(TARGET nvplay POST_BUILD COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/assets/${NVPLAY_CONFIG_FILE_NAME})
 
