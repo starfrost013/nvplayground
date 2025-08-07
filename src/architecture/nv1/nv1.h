@@ -1,12 +1,12 @@
 /*
-    NVPlayground
+    NVPlay
     Copyright © 2025 starfrost
 
 
     Raw GPU programming for early Nvidia GPUs
     Licensed under the MIT license (see license file)
     
-    nv1.h: NVPlayground NV1 core
+    nv1.h: NVPlay NV1 core
 */
 
 

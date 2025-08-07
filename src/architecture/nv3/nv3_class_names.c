@@ -1,6 +1,6 @@
 
 /* 
-    NVPlayground
+    NVPlay
     Copyright © 2025 starfrost
 
     Raw GPU programming for early Nvidia GPUs
