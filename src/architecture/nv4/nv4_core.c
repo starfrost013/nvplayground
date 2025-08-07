@@ -71,7 +71,7 @@ bool nv4_init()
     Logging_Write(log_level_debug, "NV4 Init: Enabling interrupts...");
     nv_mmio_write32(NV4_PMC_INTR_EN, (NV4_PMC_INTR_EN_HARDWARE | NV4_PMC_INTR_EN_SOFTWARE));
     Logging_Write(log_level_debug, "Done!\n");
-    
+    /*
     Logging_Write(log_level_debug, "NV4 Init: Ensuring user-programmable pixel, core and and memory clocks...\n");
     
     // ensure programmable pixel and memory clocks for driver & overclock testing
@@ -80,7 +80,7 @@ bool nv4_init()
     pramdac_pll_coeff_select |= (NV4_PRAMDAC_COEFF_SELECT_ALL_SOFTWARE << NV4_PRAMDAC_COEFF_SELECT_SOURCE);
 
     nv_mmio_write32(NV4_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
-
+*/
     return true; 
 }
 
