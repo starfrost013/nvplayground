@@ -14,7 +14,6 @@
 // Includes
 #include <nvplayground.h>
 #include <architecture/nv3/nv3.h>
-#include <architecture/nv3/nv3_api.h>
 #include <architecture/nv3/nv3_ref.h>
 #include <util/util.h>
 

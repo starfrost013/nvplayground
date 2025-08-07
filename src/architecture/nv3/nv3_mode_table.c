@@ -10,7 +10,6 @@
 
 // Architecture Includes
 #include <architecture/nv3/nv3.h>
-#include <architecture/nv3/nv3_api.h>
 /* 
     24bpp does not exist
 */
