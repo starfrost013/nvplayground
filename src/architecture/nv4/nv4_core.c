@@ -1,4 +1,6 @@
+#include "architecture/nv3/nv3_ref.h"
 #include "nv4_ref.h"
+#include "nvplayground.h"
 #include <architecture/nv4/nv4.h>
 
 bool nv4_init()
@@ -71,16 +73,29 @@ bool nv4_init()
     Logging_Write(log_level_debug, "NV4 Init: Enabling interrupts...");
     nv_mmio_write32(NV4_PMC_INTR_EN, (NV4_PMC_INTR_EN_HARDWARE | NV4_PMC_INTR_EN_SOFTWARE));
     Logging_Write(log_level_debug, "Done!\n");
-    /*
+    
     Logging_Write(log_level_debug, "NV4 Init: Ensuring user-programmable pixel, core and and memory clocks...\n");
     
     // ensure programmable pixel and memory clocks for driver & overclock testing
+    // we also need to actually *program* the clocks on NV4 if you set the PLL to programmable omde it seems. It really doesn't like it if you don't
+    // so store the old values
+
+    current_device.vpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_PIXEL);
+    current_device.mpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_MEMORY);
+    current_device.nvpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_CORE);
+
     uint32_t pramdac_pll_coeff_select = nv_mmio_read32(NV4_PRAMDAC_COEFF_SELECT);
 
     pramdac_pll_coeff_select |= (NV4_PRAMDAC_COEFF_SELECT_ALL_SOFTWARE << NV4_PRAMDAC_COEFF_SELECT_SOURCE);
 
     nv_mmio_write32(NV4_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
-*/
+
+    //go
+    nv_mmio_write32(NV4_PRAMDAC_CLOCK_CORE, current_device.nvpll);
+    nv_mmio_write32(NV4_PRAMDAC_CLOCK_MEMORY, current_device.mpll);
+    nv_mmio_write32(NV4_PRAMDAC_CLOCK_PIXEL, current_device.vpll);
+
+
     return true; 
 }
 
@@ -100,6 +115,7 @@ bool nv4_dump_mfg_info()
     /* Read in the straps */
     Logging_Write(log_level_message, "Straps                  = %08lX\n", current_device.straps);
 
+    // We store these but read the current values
     uint32_t vpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_PIXEL);
     uint32_t nvpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_CORE);
     uint32_t mpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_MEMORY);

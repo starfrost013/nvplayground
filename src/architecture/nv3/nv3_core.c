@@ -101,6 +101,11 @@ bool nv3_init()
     pramdac_pll_coeff_select |= (NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE_SOFTWARE << NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE);
     pramdac_pll_coeff_select |= (NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE_SOFTWARE << NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE);
 
+    // read these into device_info structure
+    // NV3 doesn't care what you set source to but NV4 does
+    current_device.vpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_PIXEL);
+    current_device.mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
+
     nv_mmio_write32(NV3_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
 
     return true; 

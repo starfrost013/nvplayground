@@ -239,6 +239,10 @@ typedef struct nv_device_s
 	uint32_t nv_pfb_boot_0;			// nv_pfb_boot_0 register read at boot
 	uint32_t nv_pmc_boot_0;			// nv_pmc_boot_0 register read at boot
 	uint32_t straps;				// Straps for oem-specific config
+
+	uint32_t mpll;					// [NV1+] Core Clock [NV4+] Memory Clock
+	uint32_t vpll;					// [NV1+] Video Clock
+	uint32_t nvpll;					// [NV4+] Core Clock
 } nv_device_t;
 
 extern nv_device_t current_device;
