@@ -60,7 +60,7 @@ bool GPUS_Load()
 
         if (current_device.device_info.gpus_section_applies(current_section.fourcc))
         {   
-            current_device.device_info.gpus_section_parse();
+            current_device.device_info.gpus_section_parse(current_section.fourcc, stream);
         }   
 
         // *TECHNICALLY* declaration after label e.g. case is valid c23 but i am not taking chances

@@ -60,7 +60,7 @@ bool nv4_init()
         current_device.vram_amount = NV4_VRAM_SIZE_2MB;
     else if (ram_amount_value == NV4_PFB_BOOT_RAM_AMOUNT_4MB)                           // 4MB (Never released)
         current_device.vram_amount = NV4_VRAM_SIZE_4MB;
-    else if (ram_amount_value == NV4_PFB_BOOT_RAM_AMOUNT_2MB)                           // 8MB
+    else if (ram_amount_value == NV4_PFB_BOOT_RAM_AMOUNT_8MB)                           // 8MB
         current_device.vram_amount = NV4_VRAM_SIZE_8MB;
     else if (ram_amount_value == NV4_PFB_BOOT_RAM_AMOUNT_16MB)                          // 16Mb
         current_device.vram_amount = NV4_VRAM_SIZE_16MB;

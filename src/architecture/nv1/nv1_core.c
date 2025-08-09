@@ -300,7 +300,7 @@ bool nv1_gpus_section_applies(uint32_t fourcc)
     return (fourcc == gpus_section_nv1e);
 }
 
-void nv1_gpus_parse_section(uint32_t fourcc)
+bool nv1_gpus_parse_section(uint32_t fourcc, FILE* stream)
 {
-    
+    return true; 
 }

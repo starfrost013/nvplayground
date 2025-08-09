@@ -119,11 +119,120 @@ bool nv3_init()
 
 bool nv3_gpus_section_applies(uint32_t fourcc)
 {
-    
-    return true;  // temp
+    return (fourcc == gpus_section_mmio
+        || fourcc == gpus_section_bar1
+        || fourcc == gpus_section_cache);
 }
 
-void nv3_gpus_parse_section(uint32_t fourcc)
+bool nv3_gpus_parse_section(uint32_t fourcc, FILE* stream)
 {
+    
+    // We only allocate one of these at once & try to avoid allocating when we don't need to
+    uint32_t* mmio_base = NULL;
+    uint32_t* bar1_base = NULL;
+    bool section_mmio_parsed = false;
+    bool section_bar1_parsed = false;
 
+    bool valid_file = true;
+
+    // Let's start with a basic implmenetation
+    switch (fourcc)
+    {
+        case gpus_section_mmio:
+            Logging_Write(log_level_debug, "NV3 GPUS Parser: Reading MMIO section\n");
+            mmio_base = calloc(1, NV3_MMIO_SIZE);
+            
+            for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
+            {
+                // TODO: Is 16 MB too little? We have to allocate the minimm amount.
+                // We allocate this so that the GPU state does not get hosed if e.g. there is an early end of file.
+        
+                if (feof(stream))
+                {
+                    valid_file = false;
+                    break;
+                }
+
+                if (!nv3_mmio_area_is_excluded(addr))
+                    fread((void*)&mmio_base[addr >> 2], sizeof(uint32_t), 1, stream);
+            }
+
+            free(mmio_base);
+
+            break;
+        case gpus_section_bar1:
+            Logging_Write(log_level_debug, "NV3 GPUS Parser: Reading BAR1 section\n");
+
+            bar1_base = calloc(1, NV3_MMIO_SIZE);
+            
+            for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
+            {
+                // TODO: Is 16 MB too little? We have to allocate the minimm amount.
+                // We allocate this so that the GPU state does not get hosed if e.g. there is an early end of file.
+    
+                if (feof(stream))
+                {
+                    valid_file = false;
+                    break;
+                }
+
+                if (!nv3_mmio_area_is_excluded(addr))
+                    fread((void*)&bar1_base[addr >> 2], sizeof(uint32_t), 1, stream);
+            }    
+
+            break;
+        case gpus_section_cache:
+            Logging_Write(log_level_warning, "PGRAPH_CACHE!\n");
+            break; 
+        default:
+            break;
+    }
+
+    // return if the file is not valid
+    if (!valid_file)
+    {
+        if (mmio_base)
+            free(mmio_base);
+
+        if (bar1_base)
+            free(bar1_base);
+
+        Logging_Write(log_level_error, "Invalid file!");
+        return false; 
+    }
+
+    Logging_Write(log_level_message, "NV3 GPUS Parser: Valid file. Committing writes to graphics hardware.\n"
+        "WARNING: Your graphics hardware may produce an invalid signal, glitch or crash your system.\n");
+
+    // TODO: How to disable rendering?
+
+    // Commit to GPU
+    // What does invalid MMIO WRITE do?
+
+    if (section_mmio_parsed)
+    {
+        // Submit BAR1. This submits RAMIN
+        Logging_Write(log_level_message, "NV3 GPUS Parser: Submitting VRAM & RAMIN\n");
+
+        for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
+        {
+            if (!nv3_mmio_area_is_excluded(addr))
+                nv_dfb_write32(addr,  bar1_base[addr >> 2]);
+        }
+    }
+
+    if (section_bar1_parsed)
+    {
+        // Then MMIO    
+
+        // We don't need to write 800000-ffffff due to the fact that this is PIO-mode submission and the state of the FIFO is knowable
+        for (uint32_t addr = 0; addr < NV3_USER_START; addr += 4)
+        {
+            if (!nv3_mmio_area_is_excluded(addr))
+                nv_mmio_write32(addr,  bar1_base[addr >> 2]);
+        }
+    }
+
+    // if we get here
+    return true; 
 }
