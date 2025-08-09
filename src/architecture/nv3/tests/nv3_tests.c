@@ -17,6 +17,7 @@
 
 #include <architecture/nv3/nv3_ref.h>
 
+#include "nvplayground.h"
 #include "util/util.h"
 
 //
@@ -109,29 +110,16 @@ bool nv3_test_overclock()
     Logging_Write(log_level_message, "The GPU will try to run for 60 seconds at each clock setting, gradually going from an underclock to an overclock. If it crashes, reboot, and the default 100Mhz MCLK will be restored.\n");
     Logging_Write(log_level_message, "Note: Some NVIDIA RIVA 128 ZX cards manufactured by TSMC run at 90Mhz and will have less overclocking potential!\n");
 
-    /* read the straps to find our base clock value */
-    uint32_t straps = nv_mmio_read32(NV3_PSTRAPS);
-
-    /* 
-        there are two possible clock bases here: 13.5 and 14.318 Mhz 
-        we need two different values for our start menu
-    */
-
-    float clock_base = 13500000.0f;
-    bool is_14318mhz_clock = false;     
-
-    if ((straps >> NV3_PSTRAPS_CRYSTAL) & 0x01)
-    {
-        clock_base = 14318180.0f;
-        is_14318mhz_clock = true; 
-    }
-        
     /* We vary the n-parameter of the MCLK to fine-tune the GPU clock speed. M can be used for large steps and P param can be used for very big steps */
 
     uint32_t clock_n_start = 0xA3; 
     uint32_t clock_m = 0x0B, clock_p = 0x01;
+    /*
+        there are two possible clock bases here: 13.5 and 14.318 Mhz 
+        we need two different values for our start menu
+    */
 
-    if (is_14318mhz_clock)
+    if (current_device.crystal_hz == NV_CLOCK_BASE_14318180)
     {
         clock_m = 0x0E;
         //base clock_n is 0xC4, so the gpu will be biased more towards underclocking
@@ -147,7 +135,7 @@ bool nv3_test_overclock()
         | clock_m;
 
         //not speed critical, use a double
-        double megahertz = (clock_base * clock_n) / (clock_m << clock_p) / 1000000.0f;
+        double megahertz = nv_clock_mnp_to_mhz(current_device.crystal_hz, final_clock);
 
         Logging_Write(log_level_message, "Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)...\n", megahertz, final_clock);
 
@@ -161,8 +149,9 @@ bool nv3_test_overclock()
     }
 
     Logging_Write(log_level_message, "We survived. Returning to 100Mhz...\n");
+
     /* restore original clock */
-    if (is_14318mhz_clock)
+    if (current_device.crystal_hz == NV_CLOCK_BASE_14318180)
         nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TEST_OVERCLOCK_BASE_14318);
     else
         nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TEST_OVERCLOCK_BASE_13500);
@@ -247,7 +236,7 @@ bool nv3_dump_mmio()
     // Flush every 64kb, because the real NV3 hardware may crash at some point?!
 
     /* 
-        Dump all known memory regions except write-only ones
+        Dump all known memory regions except write-only ones and ones that crash
         We don't use nv_mmio_* because those will account for other things in the future
     */
 
@@ -326,8 +315,12 @@ bool nv3_dump_mfg_info()
     uint32_t mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
     
     //todo: convert to MHz
-    Logging_Write(log_level_message, "Pixel Clock Coefficient   = %08lX\n", vpll);
-    Logging_Write(log_level_message, "Core/Mem Clock Coefficient= %08lX\n", mpll);
+
+    double vpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, vpll);
+    double mpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, mpll);
+
+    Logging_Write(log_level_message, "Pixel Clock Coefficient   = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
+    Logging_Write(log_level_message, "Core/Mem Clock Coefficient= %08lX (%.2f MHz)\n", mpll, mpll_mhz);
     return true; 
 
 }

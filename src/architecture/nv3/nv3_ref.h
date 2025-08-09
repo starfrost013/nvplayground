@@ -688,10 +688,10 @@
 // PRMCIO is redirected to SVGA subsystem
 #define NV3_PRMCIO_START                                0x601000
 
-#define NV3_PRMCIO_CRTC_REGISTER_INDEX_MONO         0x6013B4    // Current CRTC Register Index - Monochrome
-#define NV3_PRMCIO_CRTC_REGISTER_MONO               0x6013B5    // Currently Selected CRTC Register - Monochrome
-#define NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR        0x6013D4    // Current CRTC Register Index - Colour
-#define NV3_PRMCIO_CRTC_REGISTER_COLOR              0x6013D5    
+#define NV3_PRMCIO_CRTC_REGISTER_INDEX_MONO             0x6013B4    // Current CRTC Register Index - Monochrome
+#define NV3_PRMCIO_CRTC_REGISTER_MONO                   0x6013B5    // Currently Selected CRTC Register - Monochrome
+#define NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR            0x6013D4    // Current CRTC Register Index - Colour
+#define NV3_PRMCIO_CRTC_REGISTER_COLOR                  0x6013D5    
 #define NV3_PRMCIO_END                                  0x601FFF
 
 #define NV3_PDAC_START                                  0x680000    // OPTIONAL external DAC
@@ -929,6 +929,9 @@
 */
 #define NV3_PRMVIO_SR_INDEX                             0xC03C4 // Sequence registers
 #define NV3_PRMVIO_SR                                   0xC03C5 // Sequence registers
+
+#define NV3_PRMVIO_GR_INDEX                             0xC03CE
+#define NV3_PRMVIO_GR                                   0xC03CF
 
 #define NV3_PRMVIO_SR_INDEX_RESET                       0
 #define NV3_PRMVIO_SR_INDEX_CLOCK                       1

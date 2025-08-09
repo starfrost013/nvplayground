@@ -69,6 +69,10 @@
 
 #define NV4_PSTRAPS                                     0x101000
 
+#define NV4_PSTRAPS_CRYSTAL                             6
+#define NV4_PSTRAPS_CRYSTAL_13500K                      0x0
+#define NV4_PSTRAPS_CRYSTAL_14318180                    0x1
+
 //
 // PRAMDAC
 //

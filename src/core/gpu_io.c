@@ -12,10 +12,12 @@
 #include <architecture/nv1/nv1.h>
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv4/nv4.h>
+#include "architecture/nv3/nv3_ref.h"
 #include "architecture/nv4/nv4_ref.h"
 #include "pc.h"
 #include "sys/farptr.h"
 #include <stdint.h>
+#include <time.h>
 
 //
 // MMIO Functinos
@@ -158,13 +160,15 @@ uint8_t nv_crtc_read(uint8_t index)
 // TODO
 uint8_t nv_gdc_read(uint8_t index)
 {
-    return 0x00;
+    nv_mmio_write32(NV3_PRMVIO_GR_INDEX, index);
+    return nv_mmio_read32(NV3_PRMVIO_GR);
 }
 
 // TODO
 uint8_t nv_sequencer_read(uint8_t index)
 {
-    return 0x00;
+    nv_mmio_write32(NV3_PRMVIO_SR_INDEX, index);
+    return nv_mmio_read32(NV3_PRMVIO_SR);
 }
 
 void nv_crtc_write(uint8_t index, uint8_t value)
@@ -176,12 +180,14 @@ void nv_crtc_write(uint8_t index, uint8_t value)
 
 void nv_gdc_write(uint8_t index, uint8_t value)
 {
-
+    nv_mmio_write32(NV3_PRMVIO_GR_INDEX, index);
+    nv_mmio_write32(NV3_PRMVIO_GR,value);
 }
 
 void nv_sequencer_write(uint8_t index, uint8_t value)
 {
-
+    nv_mmio_write32(NV3_PRMVIO_SR_INDEX, index);
+    nv_mmio_write32(NV3_PRMVIO_SR,value);
 }
 
 //
@@ -278,3 +284,21 @@ void vga_attribute_write(uint8_t index, uint8_t value)
 
     // figure out what is being written next
 }
+
+
+//not speed critical, use a double for precision
+// NV3/NV4. Not sure about NV1
+double nv_clock_mnp_to_mhz(uint32_t clock_base, uint32_t mnp)
+{
+    // clock_base = 13500000 or 14318180
+
+    uint32_t clock_p, clock_n, clock_m;
+
+    clock_p = (clock_base >> 16) & 0xFF;
+    clock_n = (clock_base >> 8) & 0xFF;
+    clock_m = (clock_base & 0xFF); 
+
+    return ((double)clock_base * clock_n) / (clock_m << clock_p) / 1000000.0f;
+}
+
+// TODO: nv_clock_mhz_to_mnp

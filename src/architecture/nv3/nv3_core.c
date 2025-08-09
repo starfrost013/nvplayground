@@ -15,6 +15,7 @@
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv3/nv3_ref.h>
 
+#include "nvplayground.h"
 #include "util/util.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -83,6 +84,11 @@ bool nv3_init()
 
     current_device.straps = nv_mmio_read32(NV3_PSTRAPS);
 
+    if ((current_device.straps >> NV3_PSTRAPS_CRYSTAL) & 0x01)
+        current_device.crystal_hz = NV_CLOCK_BASE_14318180;
+    else
+        current_device.crystal_hz = NV_CLOCK_BASE_13500K;
+        
     /* Power up all GPU subsystems */
     Logging_Write(log_level_debug, "NV3 Init: Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
     nv_mmio_write32(NV3_PMC_ENABLE, 0x11111111);

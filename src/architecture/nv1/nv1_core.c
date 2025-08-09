@@ -96,7 +96,7 @@ bool nv1_print_pci_config()
 }
 
 // Type 0 (32-bit)
-// Bit 3 = 1, for prefetchable (Only Bits 32:24 matter for BAR, it must begin on)
+// Bit 3 = 1, for prefetchable (Only Bits 31:23 matter for BAR, it must begin on)
 #define NV1_MMIO_SPACE_TEST     0x84000008
 
 bool nv1_init()

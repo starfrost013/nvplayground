@@ -67,6 +67,11 @@ bool nv4_init()
 
     current_device.straps = nv_mmio_read32(NV4_PSTRAPS);
 
+    if ((current_device.straps >> NV4_PSTRAPS_CRYSTAL) & 0x01)
+        current_device.crystal_hz = NV_CLOCK_BASE_14318180;
+    else
+        current_device.crystal_hz = NV_CLOCK_BASE_13500K;
+
     /* Power up all GPU subsystems */
     Logging_Write(log_level_debug, "NV4 Init: Enabling all GPU subsystems (0x11111111 -> NV4_PMC_ENABLE)...");
     nv_mmio_write32(NV4_PMC_ENABLE, 0x11111111);
@@ -125,11 +130,15 @@ bool nv4_dump_mfg_info()
     uint32_t vpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_PIXEL);
     uint32_t nvpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_CORE);
     uint32_t mpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_MEMORY);
-    
+
+    double vpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, vpll);
+    double nvpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, nvpll);
+    double mpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, mpll);
+
     //todo: convert to MHz
-    Logging_Write(log_level_message, "Pixel Clock Coefficient = %08lX\n", vpll);
-    Logging_Write(log_level_message, "Core Clock Coefficient  = %08lX\n", nvpll);
-    Logging_Write(log_level_message, "VRAM Clock Coefficient  = %08lX\n", mpll);
+    Logging_Write(log_level_message, "Pixel Clock Coefficient = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
+    Logging_Write(log_level_message, "Core Clock Coefficient  = %08lX (%.2f MHz)\n", nvpll, nvpll_mhz);
+    Logging_Write(log_level_message, "VRAM Clock Coefficient  = %08lX (%.2f MHz)\n", mpll, mpll_mhz);
 
     return true; 
 }

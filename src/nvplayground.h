@@ -201,7 +201,6 @@ bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t
 #define NV_PMC_BOOT_NV4_A04			0x20034001		// NV4 Stepping A4							?August 1998?
 #define NV_PMC_BOOT_NV4_A05			0x20044001		// NV4 Stepping A5							?Late 1998>/
 
-
 /* NVidia Device Definition */
 typedef struct nv_device_info_s
 {
@@ -239,6 +238,7 @@ typedef struct nv_device_s
 	uint32_t nv_pfb_boot_0;			// nv_pfb_boot_0 register read at boot
 	uint32_t nv_pmc_boot_0;			// nv_pmc_boot_0 register read at boot
 	uint32_t straps;				// Straps for oem-specific config
+	double crystal_hz;				// Clock crystal base (TODO: fully refactor so this is not needed)
 
 	uint32_t mpll;					// [NV1+] Core Clock [NV4+] Memory Clock
 	uint32_t vpll;					// [NV1+] Video Clock
@@ -272,7 +272,7 @@ void nv_dfb_write32(uint32_t offset, uint32_t val);
 uint32_t nv_ramin_read32(uint32_t offset); 
 void nv_ramin_write32(uint32_t offset, uint32_t val);
 
-// CRTC
+// NV-VGA
 void nv_crtc_lock_extended_registers();
 void nv_crtc_unlock_extended_registers();
 uint8_t nv_crtc_read(uint8_t index);
@@ -281,6 +281,13 @@ uint8_t nv_sequencer_read(uint8_t index);
 void nv_crtc_write(uint8_t index, uint8_t value);
 void nv_gdc_write(uint8_t index, uint8_t value);
 void nv_sequencer_write(uint8_t index, uint8_t value);
+
+// Clock
+
+#define NV_CLOCK_BASE_13500K			13500000.0
+#define NV_CLOCK_BASE_14318180			14318180.0
+
+double nv_clock_mnp_to_mhz(uint32_t clock_base, uint32_t mnp);
 
 //
 // VGA common stuff
