@@ -143,6 +143,30 @@ bool nv4_dump_mfg_info()
     return true; 
 }
 
+// Dump NV4 BIOS
+// This needs to be turned into a "Universal" test
+bool nv4_dump_vbios()
+{
+    Logging_Write(log_level_message, "Dumping Video BIOS...");
+
+    FILE* vbios = fopen("nv4bios.bin", "wb");
+
+    uint32_t vbios_bin[8192];
+
+    for (int32_t i = 0; i < 8192; i++)
+    {
+        vbios_bin[i] = _farpeekl(_dos_ds, 0xC0000 + i*4);
+    }   
+
+    fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
+
+    fclose(vbios);
+    Logging_Write(log_level_message, "Done!\n");
+
+    return true; 
+}
+
+
 #define NV4_FLUSH_FREQUENCY     65536
 
 bool nv4_dump_mmio()

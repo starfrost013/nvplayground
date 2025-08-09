@@ -159,6 +159,7 @@ bool nv3_test_overclock()
     return true; 
 }
 
+// Dump NV4 BIOS
 bool nv3_dump_vbios()
 {
     Logging_Write(log_level_message, "Dumping Video BIOS...");
