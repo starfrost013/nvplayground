@@ -214,7 +214,7 @@ typedef struct nv_device_info_s
 	
 	void (*shutdown_function)();						// Function to call on shutdown
 	bool (*gpus_section_applies)(uint32_t fourcc);		// Does this GPUS section apply for this GPU?
-	void (*gpus_section_parse)();						// Does this G
+	void (*gpus_section_parse)();						// Parse a specific GPUS section
 } nv_device_info_t; 
 
 /* List of supported devices */

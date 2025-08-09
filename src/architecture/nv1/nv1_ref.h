@@ -17,59 +17,65 @@
 // PCI Bus Information
 //
 
-#define NV1_PCI_BAR0_SIZE                       0xFFFFFF
+#define NV1_PCI_BAR0_SIZE                           0xFFFFFF
 
 // 
 // VRAM
 //
-#define NV1_VRAM_SIZE_1MB                       0x100000
-#define NV1_VRAM_SIZE_2MB                       0x200000
-#define NV1_VRAM_SIZE_4MB                       0x400000
+#define NV1_VRAM_SIZE_1MB                           0x100000
+#define NV1_VRAM_SIZE_2MB                           0x200000
+#define NV1_VRAM_SIZE_4MB                           0x400000
 
 //
 // PMC
-//
-#define NV1_PMC_BOOT_0                          0x0
-#define NV1_PMC_BOOT_0_REVISION                 0
+// cvbb v
+#define NV1_PMC_BOOT_0                              0x0
+#define NV1_PMC_BOOT_0_REVISION                     0
 
-#define NV1_PMC_BOOT_0_REVISION_A               0x0             // Prototype (1994)
-#define NV1_PMC_BOOT_0_REVISION_B1              0x0             // Prototype (early 1995)
-#define NV1_PMC_BOOT_0_REVISION_B2              0x0             // Prototype (mid 1995)
-#define NV1_PMC_BOOT_0_REVISION_B3              0x0             // Final?
-#define NV1_PMC_BOOT_0_REVISION_C               0x0             // Final?
+#define NV1_PMC_BOOT_0_REVISION_A                   0x0             // Prototype (1994)
+#define NV1_PMC_BOOT_0_REVISION_B1                  0x0             // Prototype (early 1995)
+#define NV1_PMC_BOOT_0_REVISION_B2                  0x0             // Prototype (mid 1995)
+#define NV1_PMC_BOOT_0_REVISION_B3                  0x0             // Final?
+#define NV1_PMC_BOOT_0_REVISION_C                   0x0             // Final?
 
-#define NV1_PMC_BOOT_0_IMPLEMENTATION           8  
-#define NV1_PMC_BOOT_0_IMPLEMENTATION_NV0       1               // Nvidia Hardware Simulator (1993-1994)
-#define NV1_PMC_BOOT_0_IMPLEMENTATION_NV1_D32   2               // NV1 + DRAM + SGS-Thomson STG-1732/1764 DAC
-#define NV1_PMC_BOOT_0_IMPLEMENTATION_NV1_V32   3               // NV1 + VRAM + SGS-Thomson STG-1732/1764 DAC
-#define NV1_PMC_BOOT_0_IMPLEMENTATION_PICASSO   4               // NV1 + VRAM + NV 128-bit DAC
+#define NV1_PMC_BOOT_0_IMPLEMENTATION               8  
+#define NV1_PMC_BOOT_0_IMPLEMENTATION_NV0           0x1             // Nvidia Hardware Simulator (1993-1994)
+#define NV1_PMC_BOOT_0_IMPLEMENTATION_NV1_D32       0x2             // NV1 + DRAM + SGS-Thomson STG-1732/1764 DAC
+#define NV1_PMC_BOOT_0_IMPLEMENTATION_NV1_V32       0x3             // NV1 + VRAM + SGS-Thomson STG-1732/1764 DAC
+#define NV1_PMC_BOOT_0_IMPLEMENTATION_PICASSO       0x4             // NV1 + VRAM + NV 128-bit DAC
 
 
 // Defines the NV architecture version (NV1/NV2/...)
-#define NV1_PMC_BOOT_0_ARCHITECTURE             16
-#define NV1_PMC_BOOT_0_ARCHITECTURE_NV0         0               // Nvidia Hardware Simulator (1993-1994)   
-#define NV1_PMC_BOOT_0_ARCHITECTURE_NV1         1               // NV1 (1995)
-#define NV1_PMC_BOOT_0_ARCHITECTURE_NV2         2               // Mutara (1996, cancelled)
+#define NV1_PMC_BOOT_0_ARCHITECTURE                 16
+#define NV1_PMC_BOOT_0_ARCHITECTURE_NV0             0x0             // Nvidia Hardware Simulator (1993-1994)   
+#define NV1_PMC_BOOT_0_ARCHITECTURE_NV1             0x1             // NV1 (1995)
+#define NV1_PMC_BOOT_0_ARCHITECTURE_NV2             0x2             // Mutara (1996, cancelled)
 
-#define NV1_PMC_DEBUG_0                         0x80
+#define NV1_PMC_DEBUG_0                             0x80
 
-#define NV1_PMC_INTR_0                          0x100
-#define NV1_PMC_INTR_EN_0                       0x140
+#define NV1_PMC_INTR_0                              0x100
+#define NV1_PMC_INTR_EN_0                           0x140
 
-#define NV1_PMC_INTR_EN_0_INTA                  0
-#define NV1_PMC_INTR_EN_0_INTB                  4
-#define NV1_PMC_INTR_EN_0_INTC                  8
-#define NV1_PMC_INTR_EN_0_INTD                  12
+#define NV1_PMC_INTR_EN_0_INTA                      0
+#define NV1_PMC_INTR_EN_0_INTB                      4
+#define NV1_PMC_INTR_EN_0_INTC                      8
+#define NV1_PMC_INTR_EN_0_INTD                      12
 
-#define NV1_PMC_INTR_EN_0_DISABLED              0x0
-#define NV1_PMC_INTR_EN_0_HARDWARE              0x1
-#define NV1_PMC_INTR_EN_0_SOFTWARE              0x2
-#define NV1_PMC_INTR_EN_0_ALL                   0x3             // (HARDWARE | SOFTWARE)
+#define NV1_PMC_INTR_EN_0_DISABLED                  0x0
+#define NV1_PMC_INTR_EN_0_HARDWARE                  0x1
+#define NV1_PMC_INTR_EN_0_SOFTWARE                  0x2
+#define NV1_PMC_INTR_EN_0_ALL                       0x3             // (HARDWARE | SOFTWARE)
 
-#define NV1_PMC_INTR_READ                       0x160
+#define NV1_PMC_INTR_READ                           0x160
 
 //TODO: DEFINE bits
-#define NV1_PMC_ENABLE                          0x200
+#define NV1_PMC_ENABLE                              0x200
+
+//
+// PRAMIN
+//
+
+#define NV1_RAMIN_START                            0x100000
 
 //
 // PAUTH

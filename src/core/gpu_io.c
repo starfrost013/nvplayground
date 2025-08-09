@@ -9,7 +9,10 @@
 */
 
 #include <nvplayground.h>
-#include "architecture/nv3/nv3_ref.h"
+#include <architecture/nv1/nv1.h>
+#include <architecture/nv3/nv3.h>
+#include <architecture/nv4/nv4.h>
+#include "architecture/nv4/nv4_ref.h"
 #include "pc.h"
 #include "sys/farptr.h"
 #include <stdint.h>
@@ -82,12 +85,52 @@ void nv_dfb_write32(uint32_t offset, uint32_t val)
 /* Read 32-bit value from RAMIN */
 uint32_t nv_ramin_read32(uint32_t offset)
 {
-    return _farpeekl(current_device.bar1_selector, NV3_RAMIN_START + offset);
+    // I considered having this be a GPU-specific function, but RAMIN mapping did not change much after NV4 until NV40
+    // and direct RAMIN writes are fairly rare.
+    //
+    // If it turns out to be too slow we can change it
+
+    switch (current_device.device_info.device_id)
+    {
+        // RAMIN not usable on NV1 with CONFIG=2 due to hardware errata, see envytools
+        case PCI_DEVICE_NV1_NV:
+            return _farpeekl(current_device.bar0_selector, NV1_RAMIN_START + offset);
+        case PCI_DEVICE_NV3:
+        case PCI_DEVICE_NV3T_ACPI:
+            return _farpeekl(current_device.bar1_selector, NV3_RAMIN_START + offset);
+        // WARNING! WARNING! WARNING!
+        // 
+        // NV4 MMIO dumps show *PROM* (VBIOS mirror) at 0x700000 unlike 0x300000 as indicated by NV drivers. 
+        // RAMIN RAMFC RAMHT RAMRO structures always start at 0x10000 so NVIDIA never had to deal with this issue (for all practical purposes RAMIN starts at 710000)
+        // Therefore, it may not be possible, due to hardware errata, to write to RAMIN address below 0x10000!
+        case PCI_DEVICE_NV4:
+            return _farpeekl(current_device.bar0_selector, NV4_RAMIN_START + offset);
+    }
 }
 
 void nv_ramin_write32(uint32_t offset, uint32_t val)
 {
-    _farpokel(current_device.bar1_selector, NV3_RAMIN_START + offset, val);
+    // I considered having this be a GPU-specific function, but RAMIN mapping did not change much after NV4 until NV40
+    // and direct RAMIN writes are fairly rare.
+    //
+    // If it turns out to be too slow we can change it
+
+    switch (current_device.device_info.device_id)
+    {
+        // RAMIN not usable on NV1 with CONFIG=2 due to hardware errata, see envytools
+        case PCI_DEVICE_NV1_NV:
+            _farpokel(current_device.bar0_selector, NV1_RAMIN_START + offset, val);
+            break;
+        case PCI_DEVICE_NV3:
+        case PCI_DEVICE_NV3T_ACPI:
+            _farpokel(current_device.bar1_selector, NV3_RAMIN_START + offset, val);
+             break;
+        // See "WARNING" above for NV4 RAMIN writes!
+        case PCI_DEVICE_NV4:
+            _farpokel(current_device.bar0_selector, NV4_RAMIN_START + offset, val);    
+             break;
+    }
+
 }
 
 /* Accelerated nVIDIA VGA functions */
@@ -129,7 +172,6 @@ void nv_crtc_write(uint8_t index, uint8_t value)
     nv_mmio_write32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
     nv_mmio_write32(NV3_PRMCIO_CRTC_REGISTER_COLOR,value);
 }
-
 
 
 void nv_gdc_write(uint8_t index, uint8_t value)
