@@ -140,11 +140,11 @@ bool nv4_dump_mmio()
 {
     Logging_Write(log_level_message, "Dumping GPU PCI BARs (BAR0 = MMIO, BAR1 = VRAM/RAMIN)...\n");
 
-    FILE* vbios_bar0 = fopen("nv4bar0.bin", "wb");
-    FILE* vbios_bar1 = fopen("nv4bar1.bin", "wb");
+    FILE* mmio_bar0 = fopen("nv4bar0.bin", "wb");
+    FILE* mmio_bar1 = fopen("nv4bar1.bin", "wb");
 
-    if (!vbios_bar0
-    || !vbios_bar1)
+    if (!mmio_bar0
+    || !mmio_bar1)
         return false;
 
     uint32_t* mmio_dump_bar_buf = (uint32_t*)calloc(1, NV4_MMIO_SIZE);
@@ -167,8 +167,8 @@ bool nv4_dump_mmio()
             && bar0_pos > 0) // i'm lazy
         {
             Logging_Write(log_level_debug, "Dumped BAR0 up to: %08lX\n", bar0_pos);
-            fwrite(&mmio_dump_bar_buf[(bar0_pos - NV4_FLUSH_FREQUENCY) >> 2], NV4_FLUSH_FREQUENCY, 1, vbios_bar0);
-            fflush(vbios_bar0);
+            fwrite(&mmio_dump_bar_buf[(bar0_pos - NV4_FLUSH_FREQUENCY) >> 2], NV4_FLUSH_FREQUENCY, 1, mmio_bar0);
+            fflush(mmio_bar0);
 
             // don't try and read out of bounds
             if (bar0_pos == NV4_MMIO_SIZE)
@@ -180,7 +180,7 @@ bool nv4_dump_mmio()
 
     }
 
-    fclose(vbios_bar0);
+    fclose(mmio_bar0);
 
     for (int32_t bar1_pos = 0; bar1_pos <= NV4_MMIO_SIZE; bar1_pos += 4)
     {
@@ -188,8 +188,8 @@ bool nv4_dump_mmio()
             && bar1_pos > 0))
         {
             Logging_Write(log_level_debug, "Dumped BAR1 up to: %08lX\n", bar1_pos);
-            fwrite(&mmio_dump_bar_buf[(bar1_pos - NV4_FLUSH_FREQUENCY) >> 2], NV4_FLUSH_FREQUENCY, 1, vbios_bar1);
-            fflush(vbios_bar1);
+            fwrite(&mmio_dump_bar_buf[(bar1_pos - NV4_FLUSH_FREQUENCY) >> 2], NV4_FLUSH_FREQUENCY, 1, mmio_bar1);
+            fflush(mmio_bar1);
 
             // don't try and read out of bounds
             if (bar1_pos == NV4_MMIO_SIZE)
@@ -201,7 +201,7 @@ bool nv4_dump_mmio()
 
     }
 
-    fclose(vbios_bar1);
+    fclose(mmio_bar1);
     
     free(mmio_dump_bar_buf);
 
