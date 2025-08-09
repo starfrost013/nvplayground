@@ -214,4 +214,5 @@ bool nv4_shutdown()
 {
     // Restore original nonprogrammable VPLL/MPLL/NVPLL
     nv_mmio_write32(NV4_PRAMDAC_COEFF_SELECT, nv4_state.original_pll_setting);
+    return true; 
 }
