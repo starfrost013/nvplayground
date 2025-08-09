@@ -16,6 +16,7 @@
 #include "architecture/nv4/nv4_ref.h"
 #include "pc.h"
 #include "sys/farptr.h"
+#include "util/util.h"
 #include <stdint.h>
 #include <time.h>
 
@@ -108,6 +109,9 @@ uint32_t nv_ramin_read32(uint32_t offset)
         case PCI_DEVICE_NV4:
             return _farpeekl(current_device.bar0_selector, NV4_RAMIN_START + offset);
     }
+
+    Logging_Write(log_level_error, "nv_ramin_read32: Somehow reached here with an unsupported gpu\n");
+    return 0x00;
 }
 
 void nv_ramin_write32(uint32_t offset, uint32_t val)
@@ -131,6 +135,9 @@ void nv_ramin_write32(uint32_t offset, uint32_t val)
         case PCI_DEVICE_NV4:
             _farpokel(current_device.bar0_selector, NV4_RAMIN_START + offset, val);    
              break;
+        default:
+            Logging_Write(log_level_error, "nv_ramin_write32: Somehow reached here with an unsupported gpu\n");
+            break;
     }
 
 }
