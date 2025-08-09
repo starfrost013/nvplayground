@@ -3,6 +3,9 @@
 #include "nvplayground.h"
 #include <architecture/nv4/nv4.h>
 
+// Globals
+nv4_state_t nv4_state = {0};
+
 bool nv4_init()
 {
     // only top 8 bits actually matter
@@ -85,6 +88,9 @@ bool nv4_init()
     current_device.nvpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_CORE);
 
     uint32_t pramdac_pll_coeff_select = nv_mmio_read32(NV4_PRAMDAC_COEFF_SELECT);
+
+    // Save original NV4 PLL setting. 
+    nv4_state.original_pll_setting = pramdac_pll_coeff_select;
 
     pramdac_pll_coeff_select |= (NV4_PRAMDAC_COEFF_SELECT_ALL_SOFTWARE << NV4_PRAMDAC_COEFF_SELECT_SOURCE);
 
@@ -169,14 +175,8 @@ bool nv4_dump_mmio()
                 break;
         }
 
-        /*
-        // skip the address if it will crash 
-        if (nv4_mmio_area_is_excluded(bar0_pos))
-        {
-            mmio_dump_bar_buf[bar0_pos >> 2] = 0x4E4F4E45; // 'NONE'
-        }
-        else*/
-            mmio_dump_bar_buf[bar0_pos >> 2] = _farpeekl(current_device.bar0_selector, bar0_pos);
+        // Yay. NV4 does not crash reading register
+        mmio_dump_bar_buf[bar0_pos >> 2] = _farpeekl(current_device.bar0_selector, bar0_pos);
 
     }
 
@@ -208,4 +208,10 @@ bool nv4_dump_mmio()
     Logging_Write(log_level_message, "Done!\n");
 
     return true; 
+}
+
+bool nv4_shutdown()
+{
+    // Restore original nonprogrammable VPLL/MPLL/NVPLL
+    nv_mmio_write32(NV4_PRAMDAC_COEFF_SELECT, nv4_state.original_pll_setting);
 }
