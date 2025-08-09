@@ -89,7 +89,7 @@ void NVPlay_Run()
 
 	if (!current_device.device_info.init_function())
 	{
-		Logging_Write(log_level_error, "GPU initialisation failed\n");
+		Logging_Write(log_level_error, "GPU initialisation failed!\n");
 		exit(4);
 	}	
 
@@ -100,17 +100,7 @@ void NVPlay_Run()
 		GPUS_Load();
 	else
 	{
-		/* If main_function is set, call it, otherwise run the tests from the INI */
-		if (current_device.device_info.main_function)
-		{
-			Logging_Write(log_level_message, "Main function mode\n");
-
-			current_device.device_info.main_function();
-		}
-		else 
-		{
-			NVPlay_RunTests();
-		}
+		NVPlay_RunTests(); 
 	}
 }
 

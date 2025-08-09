@@ -207,10 +207,7 @@ typedef struct nv_device_info_s
 	uint32_t device_id; 								// Device ID of the GPU
 	uint32_t vendor_id;									// Vendor ID of the GPU
 	const char* name; 									// Friendly name of the GPU
-	bool (*init_function)();							// Function to call on entry point
-
-	void (*main_function)();							// Function to call on entry point
-	
+	bool (*init_function)();							// Function to call on entry point	
 	void (*shutdown_function)();						// Function to call on shutdown
 	bool (*gpus_section_applies)(uint32_t fourcc);		// Does this GPUS section apply for this GPU?
 	bool (*gpus_section_parse)(uint32_t fourcc, FILE* stream);		// Parse a specific GPUS section
