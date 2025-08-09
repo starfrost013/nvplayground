@@ -308,6 +308,8 @@ double nv_clock_mnp_to_mhz(uint32_t clock_base, uint32_t mnp);
 #define VGA_PORT_INPUT0_MONO					0x3BA
 #define VGA_PORT_INPUT0_COLOR					0x3DA
 
+#define VGA_REALMODE_VBIOS_LOCATION				0xC0000
+
 uint8_t vga_crtc_read(uint8_t index);
 uint8_t vga_gdc_read(uint8_t index);
 uint8_t vga_sequencer_read(uint8_t index);

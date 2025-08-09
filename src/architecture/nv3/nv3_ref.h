@@ -359,7 +359,7 @@
 #define NV3_PTIMER_END                                  0x9FFF
 #define NV3_VGA_VRAM_START                              0xA0000     // VGA Emulation VRAM
 #define NV3_VGA_VRAM_END                                0xBFFFF
-#define NV3_VGA_START                                   0xC0000     // VGA Emulation Registers
+#define NV3_VGA_START                                   VGA_REALMODE_VBIOS_LOCATION     // VGA Emulation Registers
 #define NV3_VGA_END                                     0xC7FFF
 #define NV3_PRMVIO_START                                NV3_VGA_START // VGA stuff written from main GPU
 #define NV3_PRMVIO_END                                  0xC0400

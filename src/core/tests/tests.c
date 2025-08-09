@@ -42,9 +42,9 @@ nv_test_t nv_tests[] =
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_GarbageMMIORead", "NV3 Garbage Test", nv3_garbage_mmio_read},
 
     // NV4 tests
-    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_DumpVBIOS", "NV3 Dump Video BIOS (Real Mode)", nv4_dump_vbios},
-    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_PrintMfgInfo", "NV3 Print Manufacturing Info", nv4_dump_mfg_info},
-    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_DumpMMIO", "NV3 Full BAR0/BAR1 Dump", nv4_dump_mmio},
+    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_DumpVBIOS", "NV4 Dump Video BIOS (Real Mode)", nv4_dump_vbios},
+    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_PrintMfgInfo", "NV4 Print Manufacturing Info", nv4_dump_mfg_info},
+    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_DumpMMIO", "NV4 Full BAR0/BAR1 Dump", nv4_dump_mmio},
 
     { 0x0000, 0x0000, "", "", NULL}, // Sentinel value, do not remove
 };

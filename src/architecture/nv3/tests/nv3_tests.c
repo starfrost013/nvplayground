@@ -171,7 +171,7 @@ bool nv3_dump_vbios()
 
     for (int32_t i = 0; i < 8192; i++)
     {
-        vbios_bin[i] = _farpeekl(_dos_ds, 0xC0000 + i*4);
+        vbios_bin[i] = _farpeekl(_dos_ds, VGA_REALMODE_VBIOS_LOCATION + i*4);
         //rom_location += 4; //dword 
     }   
 
