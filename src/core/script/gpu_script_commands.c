@@ -199,6 +199,21 @@ bool Command_PrintDebug()
     return true; 
 }
 
+// Prints a message on debug builds only.
+bool Command_PrintWarning()
+{
+    Logging_Write(log_level_warning, Command_Argv(1));
+    return true; 
+}
+
+// Prints a message on debug builds only.
+bool Command_PrintError()
+{
+    Logging_Write(log_level_error, Command_Argv(1));
+    return true; 
+}
+
+
 // Enumerates all supported commands.
 gpu_script_command_t commands[] =
 {    
@@ -217,8 +232,10 @@ gpu_script_command_t commands[] =
     { "rcrtcc", "readcrtcconsole", Command_ReadCrtcConsole },
     { "wcrtc", "writecrtc", Command_WriteCrtc },
     { "nv3_explode", "nv3_explode", Command_NV3Explode },
-    { "print", "printmessage", Command_Print},
-    { "printdebug", "printdebug", Command_PrintDebug},
+    { "print", "printmessage", Command_Print },
+    { "printdebug", "printdebug", Command_PrintDebug },
+    { "printwarning", "printwarning", Command_PrintWarning },
+    { "printerror", "printwarning", Command_PrintError },
     
     { NULL, NULL, NULL},            // Sentinel value for end of list.
 };
