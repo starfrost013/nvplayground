@@ -190,7 +190,7 @@ bool nv3_gpus_parse_section(uint32_t fourcc, FILE* stream)
         for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
         {
             if (addr % 0x10000 == 0)
-                Logging_Write(log_level_debug, "Submitted to %08x", addr);
+                Logging_Write(log_level_debug, "Submitted MMIO/RAMIN up to %08x\n", addr);
 
             if (!nv3_mmio_area_is_excluded(addr))
                 nv_mmio_write32(addr,  mmio_base[addr >> 2]);
@@ -207,9 +207,9 @@ bool nv3_gpus_parse_section(uint32_t fourcc, FILE* stream)
         for (uint32_t addr = 0; addr < NV3_USER_START; addr += 4)
         {            
             if (addr % 0x10000 == 0)
-                Logging_Write(log_level_debug, "Submitted to %08x", addr);
+                Logging_Write(log_level_debug, "Submitted BAR1 up to %08x\n", addr);
 
-            nv_dfb_write32(addr,  bar1_base[addr >> 2]);
+            nv_dfb_write32(addr, bar1_base[addr >> 2]);
         }
     }
 

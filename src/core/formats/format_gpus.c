@@ -94,7 +94,9 @@ bool GPUS_Load()
 
     // reac each section
     for (uint32_t i = 0; i < header.num_sections; i++)
-    {
+    {        
+        fread(&current_section, sizeof(gpus_header_section_t), 1, stream);
+
         Logging_Write(log_level_debug, "Parsing section %04X offset=%08X size=%08X\n", current_section.fourcc, current_section.offset, current_section.size);
         
         if (current_device.device_info.gpus_section_applies(current_section.fourcc))
