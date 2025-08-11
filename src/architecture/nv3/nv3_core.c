@@ -141,44 +141,16 @@ bool nv3_gpus_parse_section(uint32_t fourcc, FILE* stream)
             Logging_Write(log_level_debug, "NV3 GPUS Parser: Reading MMIO section\n");
             mmio_base = calloc(1, NV3_MMIO_SIZE);
             
-            for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
-            {
-                // TODO: Is 16 MB too little? We have to allocate the minimm amount.
-                // We allocate this so that the GPU state does not get hosed if e.g. there is an early end of file.
-        
-                if (feof(stream))
-                {
-                    valid_file = false;
-                    break;
-                }
-
-                if (!nv3_mmio_area_is_excluded(addr))
-                    fread((void*)&mmio_base[addr >> 2], sizeof(uint32_t), 1, stream);
-            }
-
-            free(mmio_base);
-
+            fread((void*)mmio_base, NV3_MMIO_SIZE, 1, stream);
             section_mmio_parsed = true; 
             break;
         case gpus_section_bar1:
             Logging_Write(log_level_debug, "NV3 GPUS Parser: Reading BAR1 section\n");
 
             bar1_base = calloc(1, NV3_MMIO_SIZE);
-            
-            for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
-            {
-                // TODO: Is 16 MB too little? We have to allocate the minimm amount.
-                // We allocate this so that the GPU state does not get hosed if e.g. there is an early end of file.
-    
-                if (feof(stream))
-                {
-                    valid_file = false;
-                    break;
-                }
 
-                if (!nv3_mmio_area_is_excluded(addr))
-                    fread((void*)&bar1_base[addr >> 2], sizeof(uint32_t), 1, stream);
-            }    
+            // we already verified the size
+            fread((void*)bar1_base, NV3_MMIO_SIZE, 1, stream);
 
             section_bar1_parsed = true; 
             break;
