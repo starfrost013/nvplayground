@@ -14,13 +14,15 @@
 
 typedef struct nv4_state_s
 {
-    uint32_t original_pll_setting;
+    uint32_t original_pll_setting;  
 } nv4_state_t; 
 
 extern nv4_state_t nv4_state; 
 
 bool nv4_init();
+
 bool nv4_dump_mfg_info();
 bool nv4_dump_mmio();
 bool nv4_dump_vbios(); 
-bool nv4_shutdown(); 
+
+void nv4_shutdown(); 

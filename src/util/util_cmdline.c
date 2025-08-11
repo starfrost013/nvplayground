@@ -77,6 +77,10 @@ bool Cmdline_Parse(int argc, char** argv)
             }
 
             command_line.load_savestate_file = true; 
+            strncpy(command_line.savestate_file, next_arg, MAX_STR);
+
+            //skip savestate
+            i++;
         }
         // help
         else if (!strcasecmp(current_arg, COMMAND_LINE_HELP)

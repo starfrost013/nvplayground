@@ -18,11 +18,25 @@
 
 bool GPUS_Load()
 {
-    gpus_header_t header  = {0}; 
+    gpus_header_t header = {0}; 
+
+    Logging_Write(log_level_message, "Opening GPUS file at %s\n", command_line.savestate_file);
 
     FILE* stream = fopen(command_line.savestate_file, "rb+");
 
+    if (!stream)
+    {
+        Logging_Write(log_level_error, "Failed to open GPUS file!\n");
+        return false;
+    }
+
     fread(&header, sizeof(gpus_header_t), 1, stream);
+
+    Logging_Write(log_level_debug, "GPUS Header Information:\n");
+    Logging_Write(log_level_debug, "Magic: %08X\n", header.magic);
+    Logging_Write(log_level_debug, "GPUS Version: %04X\n", header.version);
+    Logging_Write(log_level_debug, "Number of Sections: %04X\n", header.num_sections);
+    Logging_Write(log_level_debug, "Device ID: %04x\n", header.device_id);
 
     if (header.magic != GPUS_MAGIC)
     {
@@ -57,6 +71,8 @@ bool GPUS_Load()
     for (uint32_t i = 0; i < header.num_sections; i++)
     {
         fread(&current_section, sizeof(gpus_header_section_t), 1, stream);
+
+        Logging_Write(log_level_debug, "Reading section %04X offset=%08X size=%08X\n", current_section.fourcc, current_section.offset, current_section.size);
 
         if (current_device.device_info.gpus_section_applies(current_section.fourcc))
         {   

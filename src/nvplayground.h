@@ -31,7 +31,7 @@
 
 #define APP_NAME "NVPlay"
 #define APP_DESCRIPTION "Raw GPU programming for early Nvidia GPUs\n"
-#define APP_VERSION "0.4.0.0-rc2"
+#define APP_VERSION "0.4.0.0-rc3"
 #define APP_COMPILE_TIME __DATE__ " " __TIME__
 
 #define APP_VERSION_FULL APP_VERSION " (" APP_COMPILE_TIME ")\n" APP_DESCRIPTION
@@ -342,7 +342,7 @@ uint32_t Command_Argc();
 // SAVESTATES
 //
 
-#define GPUS_MAGIC				0x47505553	// 'GPUS'
+#define GPUS_MAGIC				0x53555047	// 'GPUS'
 #define GPUS_VERSION			1
 
 #define GPUS_SECTIONS_MAX		32			// Sanity check heuristic; Maximum reasonable number of sections for a GPUS fine
@@ -362,7 +362,7 @@ typedef struct gpus_header_section_s
 	uint32_t size; 
 } gpus_header_section_t;
 
-// Section names:
+// Section names (little endian):
 // CRTC registers				'CRTC'
 // GDC registers				'VGAG'
 // Sequencer registers			'VGAS'
@@ -374,21 +374,21 @@ typedef struct gpus_header_section_s
 
 typedef enum gpus_sections_e
 {
-	gpus_section_vga_crtc = 0x43525443,
+	gpus_section_vga_crtc = 0x43545243,
 
-	gpus_section_vga_gdc = 0x56474147,
+	gpus_section_vga_gdc = 0x47414756,
 
-	gpus_section_vga_sequencer = 0x56474153,
+	gpus_section_vga_sequencer = 0x53414756,
 
-	gpus_section_vga_attribute = 0x56474141,
+	gpus_section_vga_attribute = 0x41414756,
 
-	gpus_section_mmio = 0x4D4D494F,
+	gpus_section_mmio = 0x4F494D4D,
 
-	gpus_section_bar1 = 0x42415231,
+	gpus_section_bar1 = 0x31524142,
 
-	gpus_section_cache = 0x43414348,
+	gpus_section_cache = 0x48434143,
 
-	gpus_section_nv1e = 0x56314544,
+	gpus_section_nv1e = 0x44453136,
 } gpus_sections; 
 
 // GPUS functions

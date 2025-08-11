@@ -93,7 +93,6 @@ void NVPlay_Run()
 		exit(4);
 	}	
 
-
 	if (command_line.load_reg_script)
 		Script_Run();
 	else if (command_line.load_savestate_file)
