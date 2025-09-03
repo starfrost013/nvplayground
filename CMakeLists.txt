@@ -55,8 +55,6 @@ file(GLOB sources CONFIGURE_DEPENDS
 # Architecture: NV4
 "src/architecture/nv4/nv4_core.c"
 
-# Driver
-"src/driver/2d/nv3_driver_main.c"
 )
 
 add_executable(nvplay ${sources})

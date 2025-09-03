@@ -77,17 +77,10 @@ bool Cmdline_Parse(int argc, char** argv)
             }
 
             command_line.load_savestate_file = true; 
-        }
-        else if (!strcasecmp(current_arg, COMMAND_LINE_LOAD_REPLAY)
-        || !strcasecmp(current_arg, COMMAND_LINE_LOAD_REPLAY_FULL))
-        {
-            if (argc - i < 1)
-            {
-                printf("-replay provided, but no replay file provided!\n");
-                return false; 
-            }
+            strncpy(command_line.savestate_file, next_arg, MAX_STR);
 
-            command_line.load_replay_file = true;
+            //skip savestate
+            i++;
         }
         // help
         else if (!strcasecmp(current_arg, COMMAND_LINE_HELP)

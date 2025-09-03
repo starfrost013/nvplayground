@@ -68,7 +68,6 @@ typedef struct command_line_s
     bool dry_run;                   // don't run tests, but confirm the INI settings
     bool load_reg_script;           // run a registry script file
     bool load_savestate_file;       // Load a savestate file
-    bool load_replay_file;          // Load a replay file
     bool show_help;                 // Show a help message
   
     char reg_script_file[MAX_STR];  // The registry script file to use

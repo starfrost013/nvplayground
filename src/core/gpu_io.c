@@ -305,7 +305,7 @@ double nv_clock_mnp_to_mhz(uint32_t clock_base, uint32_t mnp)
     clock_n = (clock_base >> 8) & 0xFF;
     clock_m = (clock_base & 0xFF); 
 
-    return ((double)clock_base * clock_n) / (clock_m << clock_p) / 1000000.0f;
+    return ((double)clock_base * clock_n) / (double)(clock_m << clock_p) / 1000000.0f;
 }
 
 // TODO: nv_clock_mhz_to_mnp

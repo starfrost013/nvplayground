@@ -126,7 +126,6 @@ bool nv3_gpus_section_applies(uint32_t fourcc)
 
 bool nv3_gpus_parse_section(uint32_t fourcc, FILE* stream)
 {
-    
     // We only allocate one of these at once & try to avoid allocating when we don't need to
     uint32_t* mmio_base = NULL;
     uint32_t* bar1_base = NULL;
@@ -142,44 +141,18 @@ bool nv3_gpus_parse_section(uint32_t fourcc, FILE* stream)
             Logging_Write(log_level_debug, "NV3 GPUS Parser: Reading MMIO section\n");
             mmio_base = calloc(1, NV3_MMIO_SIZE);
             
-            for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
-            {
-                // TODO: Is 16 MB too little? We have to allocate the minimm amount.
-                // We allocate this so that the GPU state does not get hosed if e.g. there is an early end of file.
-        
-                if (feof(stream))
-                {
-                    valid_file = false;
-                    break;
-                }
-
-                if (!nv3_mmio_area_is_excluded(addr))
-                    fread((void*)&mmio_base[addr >> 2], sizeof(uint32_t), 1, stream);
-            }
-
-            free(mmio_base);
-
+            fread((void*)mmio_base, NV3_MMIO_SIZE, 1, stream);
+            section_mmio_parsed = true; 
             break;
         case gpus_section_bar1:
             Logging_Write(log_level_debug, "NV3 GPUS Parser: Reading BAR1 section\n");
 
             bar1_base = calloc(1, NV3_MMIO_SIZE);
-            
-            for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
-            {
-                // TODO: Is 16 MB too little? We have to allocate the minimm amount.
-                // We allocate this so that the GPU state does not get hosed if e.g. there is an early end of file.
-    
-                if (feof(stream))
-                {
-                    valid_file = false;
-                    break;
-                }
 
-                if (!nv3_mmio_area_is_excluded(addr))
-                    fread((void*)&bar1_base[addr >> 2], sizeof(uint32_t), 1, stream);
-            }    
+            // we already verified the size
+            fread((void*)bar1_base, NV3_MMIO_SIZE, 1, stream);
 
+            section_bar1_parsed = true; 
             break;
         case gpus_section_cache:
             Logging_Write(log_level_warning, "PGRAPH_CACHE!\n");
@@ -212,24 +185,31 @@ bool nv3_gpus_parse_section(uint32_t fourcc, FILE* stream)
     if (section_mmio_parsed)
     {
         // Submit BAR1. This submits RAMIN
-        Logging_Write(log_level_message, "NV3 GPUS Parser: Submitting VRAM & RAMIN\n");
+        Logging_Write(log_level_message, "NV3 GPUS Parser: Submitting MMIO & RAMIN\n");
 
         for (uint32_t addr = 0; addr < NV3_MMIO_SIZE; addr += 4)
         {
+            if (addr % 0x10000 == 0)
+                Logging_Write(log_level_debug, "Submitted MMIO/RAMIN up to %08x\n", addr);
+
             if (!nv3_mmio_area_is_excluded(addr))
-                nv_dfb_write32(addr,  bar1_base[addr >> 2]);
+                nv_mmio_write32(addr,  mmio_base[addr >> 2]);
         }
     }
 
     if (section_bar1_parsed)
     {
+        Logging_Write(log_level_message, "NV3 GPUS Parser: Submitting BAR1\n");
+
         // Then MMIO    
 
         // We don't need to write 800000-ffffff due to the fact that this is PIO-mode submission and the state of the FIFO is knowable
         for (uint32_t addr = 0; addr < NV3_USER_START; addr += 4)
-        {
-            if (!nv3_mmio_area_is_excluded(addr))
-                nv_mmio_write32(addr,  bar1_base[addr >> 2]);
+        {            
+            if (addr % 0x10000 == 0)
+                Logging_Write(log_level_debug, "Submitted BAR1 up to %08x\n", addr);
+
+            nv_dfb_write32(addr, bar1_base[addr >> 2]);
         }
     }
 
