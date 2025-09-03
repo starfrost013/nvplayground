@@ -1,0 +1,10 @@
+NVPlay test ideas:
+
+NV_HexEdit:
+NV_HexEditMMIO:
+
+Opens an MMIO/VRAM hex editor that supports all graphics cards.
+
+NV3_GraphicsDriver2D_*:
+
+Renders specific objects. 
