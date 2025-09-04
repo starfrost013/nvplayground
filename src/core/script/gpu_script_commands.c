@@ -34,6 +34,20 @@ bool Command_WriteMMIO8()
     return true; 
 }
 
+bool Command_WriteMMIORange8()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset++)
+    {
+        nv_mmio_write8(offset, value);
+    }
+
+    return true; 
+}
+
 bool Command_ReadMMIOConsole8()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
@@ -42,6 +56,7 @@ bool Command_ReadMMIOConsole8()
     Logging_Write(log_level_message, "Command_ReadMMIOConsole8: %02x = %02x\n", offset, value);
     return true; 
 }
+
 
 bool Command_WriteMMIO32()
 {
@@ -63,12 +78,40 @@ bool Command_ReadMMIOConsole32()
     return true; 
 }
 
+bool Command_WriteMMIORange32()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
+    {
+        nv_mmio_write32(offset, value);
+    }
+
+    return true; 
+}
+
 bool Command_WriteVRAM8()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     nv_dfb_write8(offset, value);
+    return true; 
+}
+
+bool Command_WriteVRAMRange8()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset++)
+    {
+        nv_dfb_write8(offset, value);
+    }
+
     return true; 
 }
 
@@ -90,6 +133,20 @@ bool Command_WriteVRAM16()
     return true; 
 }
 
+bool Command_WriteVRAMRange16()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset += 2)
+    {
+        nv_dfb_write16(offset, value);
+    }
+    
+    return true; 
+}
+
 bool Command_ReadVRAMConsole16()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
@@ -108,6 +165,20 @@ bool Command_WriteVRAM32()
     return true; 
 }
 
+bool Command_WriteVRAMRange32()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
+    {
+        nv_dfb_write32(offset, value);
+    }
+    
+    return true; 
+}
+
 bool Command_ReadVRAMConsole32()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
@@ -122,7 +193,21 @@ bool Command_WriteRamin32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_ramin_write32(offset, value);   
+    nv_ramin_write32(offset, value);
+
+    return true; 
+}
+
+bool Command_WriteRaminRange32()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
+    {
+        nv_ramin_write32(offset, value);
+    }
      
     return true; 
 }
@@ -219,16 +304,22 @@ gpu_script_command_t commands[] =
 {    
     { "wm8", "writemmio8", Command_WriteMMIO8 },
     { "rmc8", "readmmioconsole8", Command_ReadMMIOConsole8 },
+    { "wmrange8", "writemmiorange8", Command_WriteMMIORange8 },
     { "wm32", "writemmio32", Command_WriteMMIO32 },
+    { "wmrange32", "writemmiorange32", Command_WriteMMIORange32 },
     { "rmc32", "readmmioconsole32", Command_ReadMMIOConsole32 },
     { "wv8", "writevram8", Command_WriteVRAM8 },
     { "rvc8", "readvramconsole8", Command_ReadVRAMConsole8 },
+    { "wvrange8", "writevramrange8", Command_WriteVRAMRange8 },
     { "wv16", "writevram16", Command_WriteVRAM16 },
     { "rvc16", "readvramconsole16", Command_ReadVRAMConsole16 },
+    { "wvrange16", "writevramrange16", Command_WriteVRAMRange16 },
     { "wv32", "writevram32", Command_WriteVRAM32 },
     { "rvc32", "readmmioconsole32", Command_ReadVRAMConsole32 },
+    { "wvrange32", "writevramrange32", Command_WriteMMIORange32 },
     { "wr32", "writeramin32", Command_WriteRamin32 },
-    { "wr32", "readraminconsole32", Command_ReadRaminConsole32 },
+    { "rrc32", "readraminconsole32", Command_ReadRaminConsole32 },
+    { "wrrange32", "writeraminrange32", Command_WriteRaminRange32 },
     { "rcrtcc", "readcrtcconsole", Command_ReadCrtcConsole },
     { "wcrtc", "writecrtc", Command_WriteCrtc },
     { "nv3_explode", "nv3_explode", Command_NV3Explode },
