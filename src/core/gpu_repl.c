@@ -17,12 +17,13 @@ void GPURepl_Run()
 {
     char repl_string[MAX_STR] = {0};
 
-    Logging_Write(log_level_message, "NVPlay");
-    Logging_Write(log_level_message, "Type supported GPU commands. Type q or exit to exit.");
+    Logging_Write(log_level_message, "Welcome to NVPlay\n");
+    Logging_Write(log_level_message, "Type supported GPU commands. Type q or exit to exit.\n");
 
     while (repl_is_running)
     {
-        puts("gpu>");
+        // just raw printf
+        printf("gpu>");
 
         // paranoid version of using scanf for this with a strictly limited size
         fgets(repl_string, MAX_STR, stdin);
