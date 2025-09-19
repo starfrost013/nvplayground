@@ -65,6 +65,7 @@ void Logging_Shutdown();
 typedef struct command_line_s
 {
     bool run_all_tests;             // Override test ini and run all tests
+    bool use_test_ini;              // Use the test ini file
     bool dry_run;                   // don't run tests, but confirm the INI settings
     bool load_reg_script;           // run a registry script file
     bool load_savestate_file;       // Load a savestate file

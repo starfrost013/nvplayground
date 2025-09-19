@@ -97,10 +97,10 @@ void NVPlay_Run()
 		Script_Run();
 	else if (command_line.load_savestate_file)
 		GPUS_Load();
-	else
-	{
+	else if (command_line.use_test_ini)
 		NVPlay_RunTests(); 
-	}
+	else
+		GPURepl_Run();
 }
 
 void NVPlay_Shutdown()

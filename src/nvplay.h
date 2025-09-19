@@ -161,6 +161,8 @@ bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t
 #define PCI_DEVICE_NV10_DDR			0x0101		// GeForce 256 (DDR1)		1999
 #define PCI_DEVICE_NV10_QUADRO		0x0103		// Quadro					2000 (aka NV10GL)
 
+
+
 /* 
     NV_PFB_BOOT values 
     There's two ways to identify NV GPU: By reading PCI config registers and by reading the NV_PFB_BOOT register
@@ -323,6 +325,7 @@ void vga_attribute_write(uint8_t index, uint8_t value);
 //
 
 void Script_Run();
+void Script_RunCommand(char* line_buf);
 
 // This sucks. It's not a proper lexer/tokeniser, but we don't need one
 typedef struct gpu_script_command_s
@@ -393,3 +396,7 @@ typedef enum gpus_sections_e
 
 // GPUS functions
 bool GPUS_Load();
+
+/* REPL stuff */
+
+void GPURepl_Run(); 

@@ -55,6 +55,67 @@ const char* Command_Argv(uint32_t argv)
 	return str; 
 }
 
+void Script_RunCommand(char* line_buf)
+{
+	// skip blank lines if they exist
+	if (String_IsEntirelyWhitespace(line_buf, MAX_STR))
+		return; 
+
+	// trim any whitespace
+	// todo: string_rtrim (after the test rectangle script is verified to work.)
+	char* line_buf_trimmed = String_LTrim(String_RTrim(line_buf, MAX_STR), MAX_STR);
+
+	// skip commented lines
+	if (line_buf_trimmed[0] == '/'
+	&& line_buf_trimmed[1] == '/')
+		return; 
+
+	Logging_Write(log_level_debug, "%s trimmed: %s\n", line_buf, line_buf_trimmed);
+
+	strncpy(last_command, line_buf_trimmed, MAX_STR);
+
+	// this gets the command
+	char* command_name = strtok( line_buf_trimmed, " ");
+
+	int32_t script_command_id = 0;
+	gpu_script_command_t* script_command = &commands[script_command_id];
+
+	bool command_valid = false; 
+
+	// just use a valid abbreviated name
+	while (script_command->name_abbrev)
+	{
+		if (!strncmp(script_command->name_full, command_name, MAX_STR)
+		|| !strncmp(script_command->name_abbrev, command_name, MAX_STR))
+		{
+			command_valid = true; 
+
+			// command code uses Command_Argc and Command_Argv to get functions	
+			// don't terminate processing if a function pointer is not present though
+			if (!script_command->function)
+			{
+				Logging_Write(log_level_warning, "Command %s has no function!\n", script_command->name_full);
+				
+				// increment command id
+				script_command_id++;
+				script_command = &commands[script_command_id];
+				continue;
+			}
+
+			if (!script_command->function())
+			{
+				Logging_Write(log_level_error, "Command %s failed to execute!", script_command->name_full);
+			}
+		}
+
+		script_command_id++;
+		script_command = &commands[script_command_id];
+	}
+
+	if (!command_valid)
+		Logging_Write(log_level_warning, "Unknown command %s\n", last_token);
+}
+
 void Script_Run()
 {
 	FILE* script_file = fopen(command_line.reg_script_file, "rb+");
@@ -73,63 +134,6 @@ void Script_Run()
 		// start a new line
 		fgets(line_buf, MAX_STR, script_file);
 
-		// skip blank lines if they exist
-		if (String_IsEntirelyWhitespace(line_buf, MAX_STR))
-			continue; 
-
-		// trim any whitespace
-		// todo: string_rtrim (after the test rectangle script is verified to work.)
-		char* line_buf_trimmed = String_LTrim(String_RTrim(line_buf, MAX_STR), MAX_STR);
-
-		// skip commented lines
-		if (line_buf_trimmed[0] == '/'
-		&& line_buf_trimmed[1] == '/')
-			continue; 
-
-		Logging_Write(log_level_debug, "%s trimmed: %s\n", line_buf, line_buf_trimmed);
-
-		strncpy(last_command, line_buf_trimmed, MAX_STR);
-
-		// this gets the command
-		char* command_name = strtok( line_buf_trimmed, " ");
-
-		int32_t script_command_id = 0;
-		gpu_script_command_t* script_command = &commands[script_command_id];
-
-		bool command_valid = false; 
-
-		// just use a valid abbreviated name
-		while (script_command->name_abbrev)
-		{
-			if (!strncmp(script_command->name_full, command_name, MAX_STR)
-			|| !strncmp(script_command->name_abbrev, command_name, MAX_STR))
-			{
-				command_valid = true; 
-
-				// command code uses Command_Argc and Command_Argv to get functions	
-				// don't terminate processing if a function pointer is not present though
-				if (!script_command->function)
-				{
-					Logging_Write(log_level_warning, "Command %s has no function!\n", script_command->name_full);
-					
-					// increment command id
-					script_command_id++;
-					script_command = &commands[script_command_id];
-					continue;
-				}
-
-				if (!script_command->function())
-				{
-					Logging_Write(log_level_error, "Command %s failed to execute!", script_command->name_full);
-				}
-			}
-
-			script_command_id++;
-			script_command = &commands[script_command_id];
-		}
-
-		if (!command_valid)
-			Logging_Write(log_level_warning, "Unknown command %s\n", last_token);
-
+		Script_RunCommand(line_buf);
 	}
 }

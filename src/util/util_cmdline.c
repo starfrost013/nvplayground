@@ -101,6 +101,11 @@ bool Cmdline_Parse(int argc, char** argv)
         {
             command_line.show_help = true; 
         }
+        else if (!strcasecmp(current_arg, COMMAND_LINE_RUN_TEST_INI))
+        {
+            // Maybe make it so we can load custom INI files?
+            command_line.use_test_ini = true;
+        }
     
     }
 
