@@ -333,6 +333,7 @@ typedef struct gpu_script_command_s
 	const char* name_abbrev;
 	const char* name_full;		// don't really need an alias system
 	bool (*function)();
+	uint32_t num_parameters;		// for parameter size checking
 } gpu_script_command_t; 
 
 extern gpu_script_command_t commands[];

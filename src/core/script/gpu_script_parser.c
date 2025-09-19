@@ -95,19 +95,26 @@ void Script_RunCommand(char* line_buf)
 			if (!script_command->function)
 			{
 				Logging_Write(log_level_warning, "Command %s has no function!\n", script_command->name_full);
-				
-				// increment command id
-				script_command_id++;
-				script_command = &commands[script_command_id];
-				continue;
+				command_valid = false; 
+
 			}
 
-			if (!script_command->function())
+			if (Command_Argc() < script_command->num_parameters)
 			{
-				Logging_Write(log_level_error, "Command %s failed to execute!", script_command->name_full);
+				Logging_Write(log_level_warning, "Command %s does not have enough parameters!\n", script_command->name_full);
+				command_valid = false; 
 			}
+
+			if (command_valid)
+			{
+				if (!script_command->function())
+					Logging_Write(log_level_error, "Command %s failed to execute!", script_command->name_full);
+				// keep command_valid true
+			}
+
 		}
 
+		// increment command id
 		script_command_id++;
 		script_command = &commands[script_command_id];
 	}

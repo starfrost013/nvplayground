@@ -50,6 +50,12 @@ bool Command_WriteMMIORange8()
 
 bool Command_ReadMMIOConsole8()
 {
+    if (Command_Argc() < 2)
+    {
+        Logging_Write(log_level_warning, "Command_ReadMMIOConsole8: not enough parameters!");
+        return false; 
+    }
+
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
@@ -302,31 +308,31 @@ bool Command_PrintError()
 // Enumerates all supported commands.
 gpu_script_command_t commands[] =
 {    
-    { "wm8", "writemmio8", Command_WriteMMIO8 },
-    { "rmc8", "readmmioconsole8", Command_ReadMMIOConsole8 },
-    { "wmrange8", "writemmiorange8", Command_WriteMMIORange8 },
-    { "wm32", "writemmio32", Command_WriteMMIO32 },
-    { "wmrange32", "writemmiorange32", Command_WriteMMIORange32 },
-    { "rmc32", "readmmioconsole32", Command_ReadMMIOConsole32 },
-    { "wv8", "writevram8", Command_WriteVRAM8 },
-    { "rvc8", "readvramconsole8", Command_ReadVRAMConsole8 },
-    { "wvrange8", "writevramrange8", Command_WriteVRAMRange8 },
-    { "wv16", "writevram16", Command_WriteVRAM16 },
-    { "rvc16", "readvramconsole16", Command_ReadVRAMConsole16 },
-    { "wvrange16", "writevramrange16", Command_WriteVRAMRange16 },
-    { "wv32", "writevram32", Command_WriteVRAM32 },
-    { "rvc32", "readmmioconsole32", Command_ReadVRAMConsole32 },
-    { "wvrange32", "writevramrange32", Command_WriteMMIORange32 },
-    { "wr32", "writeramin32", Command_WriteRamin32 },
+    { "wm8", "writemmio8", Command_WriteMMIO8, 2 },
+    { "rmc8", "readmmioconsole8", Command_ReadMMIOConsole8, 3 },
+    { "wmrange8", "writemmiorange8", Command_WriteMMIORange8, 2 },
+    { "wm32", "writemmio32", Command_WriteMMIO32, 2},
+    { "wmrange32", "writemmiorange32", Command_WriteMMIORange32, 3 },
+    { "rmc32", "readmmioconsole32", Command_ReadMMIOConsole32, 1 },
+    { "wv8", "writevram8", Command_WriteVRAM8, 2 },
+    { "rvc8", "readvramconsole8", Command_ReadVRAMConsole8, 1 },
+    { "wvrange8", "writevramrange8", Command_WriteVRAMRange8, 3 },
+    { "wv16", "writevram16", Command_WriteVRAM16, 2 },
+    { "rvc16", "readvramconsole16", Command_ReadVRAMConsole16, 1 },
+    { "wvrange16", "writevramrange16", Command_WriteVRAMRange16, 3 },
+    { "wv32", "writevram32", Command_WriteVRAM32, 2 },
+    { "rvc32", "readmmioconsole32", Command_ReadVRAMConsole32, 1 },
+    { "wvrange32", "writevramrange32", Command_WriteMMIORange32, 3 },
+    { "wr32", "writeramin32", Command_WriteRamin32, 2 },
     { "rrc32", "readraminconsole32", Command_ReadRaminConsole32 },
-    { "wrrange32", "writeraminrange32", Command_WriteRaminRange32 },
-    { "rcrtcc", "readcrtcconsole", Command_ReadCrtcConsole },
-    { "wcrtc", "writecrtc", Command_WriteCrtc },
-    { "nv3_explode", "nv3_explode", Command_NV3Explode },
-    { "print", "printmessage", Command_Print },
-    { "printdebug", "printdebug", Command_PrintDebug },
-    { "printwarning", "printwarning", Command_PrintWarning },
-    { "printerror", "printwarning", Command_PrintError },
+    { "wrrange32", "writeraminrange32", Command_WriteRaminRange32, 3 },
+    { "rcrtcc", "readcrtcconsole", Command_ReadCrtcConsole, 1 },
+    { "wcrtc", "writecrtc", Command_WriteCrtc, 2 },
+    { "nv3_explode", "nv3_explode", Command_NV3Explode, 0 },
+    { "print", "printmessage", Command_Print, 1 },
+    { "printdebug", "printdebug", Command_PrintDebug, 1 },
+    { "printwarning", "printwarning", Command_PrintWarning, 1 },
+    { "printerror", "printwarning", Command_PrintError, 1 },
     
     { NULL, NULL, NULL},            // Sentinel value for end of list.
 };
