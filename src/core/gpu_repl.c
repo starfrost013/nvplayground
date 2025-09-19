@@ -27,7 +27,10 @@ void GPURepl_Run()
 
         // paranoid version of using scanf for this with a strictly limited size
         fgets(repl_string, MAX_STR, stdin);
-        
+    
+        // get rid of the newline (could call String_GetRTrim(String_GetLTrim) but that does a lot of unnecessary stuff we don't need yet)
+        repl_string [ strcspn(repl_string, "\r\n") ] = '\0';
+
         // gcc only so it is fine
         if (!strcasecmp(repl_string, "q")
         || !strcasecmp(repl_string, "exit"))

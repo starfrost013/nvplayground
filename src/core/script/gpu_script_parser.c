@@ -70,7 +70,7 @@ void Script_RunCommand(char* line_buf)
 	&& line_buf_trimmed[1] == '/')
 		return; 
 
-	Logging_Write(log_level_debug, "%s trimmed: %s\n", line_buf, line_buf_trimmed);
+	Logging_Write(log_level_debug, "Trimmed command string: %s\n", line_buf, line_buf_trimmed);
 
 	strncpy(last_command, line_buf_trimmed, MAX_STR);
 
