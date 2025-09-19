@@ -8,7 +8,7 @@
     util_logging.c: Logging implementation 
 */
 
-#include <nvplayground.h>
+#include <nvplay.h>
 
 log_settings_t log_settings = {0};  
 

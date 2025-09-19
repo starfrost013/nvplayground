@@ -10,7 +10,7 @@
 
 #pragma once 
 
-#include <nvplayground.h>
+#include <nvplay.h>
 #include <core/tests/tests.h>
 #include <util/util.h>
 

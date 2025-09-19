@@ -8,7 +8,7 @@
     main_help.c: Implements help message
 */
 
-#include <nvplayground.h>
+#include <nvplay.h>
 
 const char* msg_help = "nvPlay help:\n\n"
 "---COMMAND LINE OPTIONS---\n\n"

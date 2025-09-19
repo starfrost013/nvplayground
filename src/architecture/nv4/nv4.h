@@ -9,7 +9,7 @@
 */
 
 #pragma once 
-#include <nvplayground.h>
+#include <nvplay.h>
 #include <architecture/nv4/nv4_ref.h>
 
 typedef struct nv4_state_s

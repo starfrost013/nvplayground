@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <nvplayground.h>
+#include <nvplay.h>
 #include "nv3_ref.h"
 
 //

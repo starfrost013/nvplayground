@@ -11,7 +11,7 @@
 
 
 #pragma once
-#include <nvplayground.h>
+#include <nvplay.h>
 
 #include "nv1_ref.h"
 

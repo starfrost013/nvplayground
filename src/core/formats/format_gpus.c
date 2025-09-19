@@ -13,7 +13,7 @@
 
 
 #include "util/util.h"
-#include <nvplayground.h>
+#include <nvplay.h>
 #include <config/config.h>
 
 bool GPUS_Load()

@@ -8,9 +8,7 @@
     gpu_detect.c: Code for detecting graphics hardware
 */
 
-
-
-#include <nvplayground.h>
+#include <nvplay.h>
 
 // The selected device after detection is done. 
 nv_device_t current_device = {0}; 

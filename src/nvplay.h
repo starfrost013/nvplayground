@@ -5,7 +5,7 @@
     Raw GPU programming for early Nvidia GPUs
     Licensed under the MIT license (see license file)
 
-    nvplayground.h: Central include that everything uses.
+    nvplay.h: Central include that everything uses.
 */
 
 #pragma once

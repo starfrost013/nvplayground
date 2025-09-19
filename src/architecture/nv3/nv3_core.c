@@ -15,7 +15,7 @@
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv3/nv3_ref.h>
 
-#include "nvplayground.h"
+#include "nvplay.h"
 #include "util/util.h"
 #include <stdio.h>
 #include <stdlib.h>

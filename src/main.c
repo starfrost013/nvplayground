@@ -10,7 +10,7 @@
 
 #include "config/config.h"
 #include "util/util.h"
-#include <nvplayground.h>
+#include <nvplay.h>
 #include <config/config.h>
 #include <stdio.h>
 

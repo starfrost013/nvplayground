@@ -13,6 +13,7 @@
 
 command_line_t command_line = {0};
 
+#define COMMAND_LINE_RUN_TEST_INI "-test"
 #define COMMAND_LINE_RUN_ALL "-a"
 #define COMMAND_LINE_RUN_ALL_FULL "-all"
 #define COMMAND_LINE_DRY_RUN "-d"

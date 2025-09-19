@@ -38,7 +38,7 @@
 
 #pragma once
 
-#include <nvplayground.h>
+#include <nvplay.h>
 
 #ifdef __cplusplus
 extern "C" {

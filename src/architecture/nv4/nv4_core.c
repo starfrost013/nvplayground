@@ -1,6 +1,6 @@
 #include "architecture/nv3/nv3_ref.h"
 #include "nv4_ref.h"
-#include "nvplayground.h"
+#include "nvplay.h"
 #include <architecture/nv4/nv4.h>
 
 // Globals

@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include <nvplayground.h>
+#include <nvplay.h>
 
 
 /* Defines a single test (for the global list of tests) */

@@ -10,7 +10,7 @@
 
 #include "dos.h"
 #include "dpmi.h"
-#include "nvplayground.h"
+#include "nvplay.h"
 #include "util/util.h"
 
 #include <stdint.h>
