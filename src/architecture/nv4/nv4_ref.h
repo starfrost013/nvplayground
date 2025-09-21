@@ -84,7 +84,7 @@
 #define NV4_PRAMDAC_CURSOR_SIZE_Y                       32
 
 // Same for all 3 clocks
-#define NV4_PRAMDAC_CLOCK_VDIV                          0
+#define NV4_PRAMDAC_CLOCK_MDIV                          0
 #define NV4_PRAMDAC_CLOCK_NDIV                          8
 #define NV4_PRAMDAC_CLOCK_PDIV                          16
 

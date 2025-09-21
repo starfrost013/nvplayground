@@ -1,4 +1,12 @@
-NVPlay 0.4.0.0 is now available.
+NVPlay 0.5.0.0 is now available.
+
+Changes:
+* Added a "repl" loop that is the new default mode. Run "-test" to run tests. 
+* Commands now store number of parameters and check for them
+* Simplified terrible script parsing code
+* Renamed nvplayground.h to nvplay.h
+
+Old release notes:
 
 Changes:
 * Implemented a new ".NVS" savestate format

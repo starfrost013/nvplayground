@@ -714,7 +714,7 @@
 #define NV3_PRAMDAC_CURSOR_SIZE_Y                       32
 
 #define NV3_PRAMDAC_CLOCK_MEMORY                        0x680504
-#define NV3_PRAMDAC_CLOCK_MEMORY_VDIV                   0
+#define NV3_PRAMDAC_CLOCK_MEMORY_MDIV                   0
 #define NV3_PRAMDAC_CLOCK_MEMORY_NDIV                   8
 #define NV3_PRAMDAC_CLOCK_MEMORY_PDIV                   16
 
