@@ -8,6 +8,7 @@
     util_logging.c: Logging implementation 
 */
 
+#include "util.h"
 #include <nvplay.h>
 
 log_settings_t log_settings = {0};  
@@ -42,6 +43,13 @@ bool Logging_Init()
 
     }
 
+    if (log_settings.redirect & log_redirect_stdin)
+        freopen(log_settings.file_name, "w+", stdin);
+    if (log_settings.redirect & log_redirect_stdout)
+        freopen(log_settings.file_name, "r", stdout);
+    if (log_settings.redirect & log_redirect_stderr)
+        freopen(log_settings.file_name, "w+", stderr);
+    
     log_settings.open = true;
 
     return true; 

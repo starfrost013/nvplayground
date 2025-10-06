@@ -9,8 +9,8 @@ nv4_state_t nv4_state = {0};
 bool nv4_init()
 {
     // only top 8 bits actually matter
-    uint32_t bar0_base = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
-    uint32_t bar1_base = pci_read_config_32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR1);
+    uint32_t bar0_base = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
+    uint32_t bar1_base = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR1);
 
     /* According to the datasheet only the top 8 bits matter */
     bar0_base &= 0xFF000000;

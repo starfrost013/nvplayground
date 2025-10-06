@@ -13,7 +13,7 @@
 // The selected device after detection is done. 
 nv_device_t current_device = {0}; 
 
-bool detect_gpu()
+bool GPU_Detect()
 {
     nv_device_info_t current_device_info = supported_devices[0]; 
     int32_t i = 0; 
@@ -25,7 +25,7 @@ bool detect_gpu()
         
         Logging_Write(log_level_debug, "Trying to find GPU: %s\n", current_device_info.name);
 
-        if (pci_does_device_exist(current_device_info.device_id, current_device_info.vendor_id))
+        if (PCI_DevicePresent(current_device_info.device_id, current_device_info.vendor_id))
         {
             Logging_Write(log_level_message, "Detected GPU: %s\n", current_device_info.name);
 

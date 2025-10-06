@@ -22,8 +22,7 @@ void GPURepl_Run()
 
     while (repl_is_running)
     {
-        // just raw printf
-        printf("gpu>");
+        Logging_Write(log_level_message, "GPU>");
 
         // paranoid version of using scanf for this with a strictly limited size
         fgets(repl_string, MAX_STR, stdin);

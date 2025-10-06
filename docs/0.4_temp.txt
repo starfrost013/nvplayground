@@ -5,6 +5,8 @@ Changes:
 * Commands now store number of parameters and check for them
 * Simplified terrible script parsing code
 * Renamed nvplayground.h to nvplay.h
+* More consistent function naming scheme
+
 
 Old release notes:
 

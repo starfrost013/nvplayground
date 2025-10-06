@@ -21,13 +21,10 @@ typedef enum log_level
 {
     // A debug log message
     log_level_debug = 1,
-    
     // A normal log message
     log_level_message = 1 << 1,
-
     // A warning
     log_level_warning = 1 << 2,
-
     // A fatal error
     log_level_error = 1 << 3,
 } log_level;
@@ -36,9 +33,18 @@ typedef enum log_level
 typedef enum log_dest_e
 {
     log_dest_console = 1,
-    
     log_dest_file = 1 << 1,
 } log_dest; 
+
+// Log redirection flags
+// Determines which standard i/o should be redirected to the log file
+typedef enum log_redirect_e
+{
+    log_redirect_none = 0,
+    log_redirect_stdin = 1 << 1,                // Redirect STDIN to the log file
+    log_redirect_stdout = 1 << 2,               // Redirect STDOUT to the log file
+    log_redirect_stderr = 1 << 3,               // Redirect STDERR to the log file
+} log_redirect; 
 
 typedef struct log_settings_s
 {
@@ -48,6 +54,7 @@ typedef struct log_settings_s
     bool valid;                 // Determines if the log settings were actually set up
     bool open;                  // Determines if the log is actually open
     bool flush_on_line;         // Determines if we should flush every single line.
+    log_redirect redirect;      // Redirection flags
 } log_settings_t;
 
 extern log_settings_t log_settings; 

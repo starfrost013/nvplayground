@@ -118,7 +118,8 @@ void NVPlay_ShowHelpAndExit()
 	NVPlay_Shutdown();
 }
 
-int main(int argc, char** argv) 
+/* Initialise NVPlay! */
+bool NVPlay_Init(int32_t argc, char** argv)
 {
 	_gdb_start(); // gdb_start but it doesn't actually break into the debugger automatically
 
@@ -128,6 +129,7 @@ int main(int argc, char** argv)
 	log_settings.flush_on_line = true; //bad idea?
 	log_settings.level = (log_level_debug | log_level_message | log_level_warning | log_level_error);
 	log_settings.valid = true;
+	log_settings.redirect = log_redirect_stdin;
 	
 	if (!Logging_Init())
 	{
@@ -141,19 +143,32 @@ int main(int argc, char** argv)
 	if (command_line.show_help)
 	{
 		NVPlay_ShowHelpAndExit();
-		return 0;
+		return false;
 	}
 
-	if (!pci_bios_is_present())
+	if (!PCI_BiosIsPresent())
 		exit(1);
 
-	if (!detect_gpu())
+	if (!GPU_Detect())
 		exit(2);
 
 	Config_Load(); 
 
-	NVPlay_Run();
+	return true; 
+}
 
+int main(int argc, char** argv) 
+{
+	// Normally, initialisation errors would be handled, but if they aren't let's exit
+	if (!NVPlay_Init(argc, argv))
+	{
+		if (log_settings.open)
+			Logging_Write(log_level_warning, "Unknown fatal initialisation error!");
+		else
+		 	printf("Unknown fatal initialisation error!\n");
+	}
+
+	NVPlay_Run();
 	NVPlay_Shutdown();
 
  	return 0;

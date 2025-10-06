@@ -16,12 +16,12 @@
 #include <stdint.h>
 
 /* Discover the PCI BIOS */
-bool pci_bios_is_present(void) 
+bool PCI_BiosIsPresent(void) 
 { 
   __dpmi_regs regs = {0};
 
   regs.h.ah = PCI_FUNCTION_ID_BASE;
-  regs.h.al = PCI_BIOS_IS_PRESENT;
+  regs.h.al = PCI_BIOS_PRESENT;
 
   __dpmi_int(INT_1A, &regs);
 
@@ -35,7 +35,7 @@ bool pci_bios_is_present(void)
   return true; 
 }
 
-bool pci_does_device_exist(uint32_t device_id, uint32_t vendor_id)
+bool PCI_DevicePresent(uint32_t device_id, uint32_t vendor_id)
 {
     __dpmi_regs regs = {0};
 
@@ -68,7 +68,7 @@ bool pci_does_device_exist(uint32_t device_id, uint32_t vendor_id)
     return true; 
 }
 
-uint8_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset)
+uint8_t PCI_ReadConfig8(uint32_t bus_number, uint32_t function_number, uint32_t offset)
 {
     __dpmi_regs regs = {0};
 
@@ -90,12 +90,12 @@ uint8_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32_
     }
 }
 
-uint16_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset)
+uint16_t PCI_ReadConfig16(uint32_t bus_number, uint32_t function_number, uint32_t offset)
 {
     /* Offset must be dword aligned */
     if (offset % 0x02)
     {
-        Logging_Write(log_level_error, "BUG: pci_read_config_16 called with unaligned address");
+        Logging_Write(log_level_error, "BUG: PCI_ReadConfig16 called with unaligned address");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -119,12 +119,12 @@ uint16_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint3
 }
 
 /* Read the config dword for the current device */
-uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset)
+uint32_t PCI_ReadConfig32(uint32_t bus_number, uint32_t function_number, uint32_t offset)
 {
     /* Offset must be dword aligned. AND fucks up with 0x10 so just use mod */
     if (offset % 0x04)
     {
-        Logging_Write(log_level_error, "BUG: pci_read_config_32 called with unaligned address");
+        Logging_Write(log_level_error, "BUG: PCI_ReadConfig32 called with unaligned address");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -147,7 +147,7 @@ uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint3
     } 
 }
 
-bool pci_write_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint8_t value)
+bool PCI_WriteConfig8(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint8_t value)
 {
     __dpmi_regs regs = {0};
 
@@ -173,12 +173,12 @@ bool pci_write_config_8(uint32_t bus_number, uint32_t function_number, uint32_t 
 
 }
 
-bool pci_write_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value)
+bool PCI_WriteConfig16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value)
 {
     /* Offset must be dword aligned */
     if (offset % 0x02)
     {
-        Logging_Write(log_level_error, "BUG: pci_write_config_16 called with unaligned address!\n");
+        Logging_Write(log_level_error, "BUG: PCI_WriteConfig16 called with unaligned address!\n");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -206,12 +206,12 @@ bool pci_write_config_16(uint32_t bus_number, uint32_t function_number, uint32_t
 }
 
 /* Read the config dword for the current device */
-bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value)
+bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value)
 {
     /* Offset must be dword aligned. AND fucks up with 0x10 so just use mod */
     if (offset % 0x04)
     {
-        Logging_Write(log_level_error, "BUG: pci_write_config_32 called with unaligned address!\n");
+        Logging_Write(log_level_error, "BUG: PCI_WriteConfig32 called with unaligned address!\n");
         return 0x00; // it's not happening (TODO: error code)
     }
         

@@ -101,7 +101,7 @@ typedef enum
 	PCI_FUNCTION_ID_BASE = 0xB1,
 
 	// PCI BIOS SUBFUNCTIONS
-	PCI_BIOS_IS_PRESENT = 0x01,
+	PCI_BIOS_PRESENT = 0x01,
 	PCI_FIND_DEVICE = 0x02,
 	PCI_FIND_CLASS_CODE = 0x03,
 	PCI_GENERATE_SPECIAL_CYCLE = 0x06,
@@ -126,17 +126,16 @@ typedef enum
 } pci_errors_t; 
 
 /* PCI Functions */
-bool pci_bios_is_present(void);
-bool pci_does_device_exist(uint32_t device_id, uint32_t vendor_id);
+bool PCI_BiosIsPresent(void);
+bool PCI_DevicePresent(uint32_t device_id, uint32_t vendor_id);
 
-uint8_t pci_read_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset);
-uint16_t pci_read_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset);
-uint32_t pci_read_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+uint8_t PCI_ReadConfig8(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+uint16_t PCI_ReadConfig16(uint32_t bus_number, uint32_t function_number, uint32_t offset);
+uint32_t PCI_ReadConfig32(uint32_t bus_number, uint32_t function_number, uint32_t offset);
 
-bool pci_write_config_8(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint8_t value);
-bool pci_write_config_16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value);
-bool pci_write_config_32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value);
-
+bool PCI_WriteConfig8(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint8_t value);
+bool PCI_WriteConfig16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value);
+bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value);
 
 #define INT_VIDEO					0x10
 #define INT_1A        				0x1A		// PCI BIOS interrupt 
@@ -249,7 +248,7 @@ typedef struct nv_device_s
 extern nv_device_t current_device;
 
 // Detection functions
-bool detect_gpu(); 
+bool GPU_Detect(); 
 
 //
 // READ/WRITE functions for GPU memory areas
