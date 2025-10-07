@@ -11,6 +11,7 @@
 #include "config.h"
 
 #include "core/tests/tests.h"
+#include "nvplay.h"
 #include "util/ini.h"
 #include "util/util.h"
 #include <config/config.h>
@@ -66,6 +67,11 @@ bool Config_Load()
 
         bool test_is_available = (current_device.device_info.vendor_id == current_test.required_vendor_id
         && current_device.device_info.device_id == current_test.required_device_id);
+
+        // Allow a generic test to be used anywhere
+        if (current_test.required_device_id == PCI_DEVICE_GENERIC
+        && current_test.required_vendor_id == PCI_VENDOR_GENERIC)
+            test_is_available = true; 
 
         // apply the run all tests cmd line option
         if (command_line.run_all_tests)

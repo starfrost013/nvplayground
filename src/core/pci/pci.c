@@ -23,7 +23,7 @@ bool PCI_BiosIsPresent(void)
   regs.h.ah = PCI_FUNCTION_ID_BASE;
   regs.h.al = PCI_BIOS_PRESENT;
 
-  __dpmi_int(INT_1A, &regs);
+  __dpmi_int(INT_PCI_BIOS, &regs);
 
   if (regs.d.edx != PCI_BIOS_MAGIC) // "PCI "
   {
@@ -44,7 +44,7 @@ bool PCI_DevicePresent(uint32_t device_id, uint32_t vendor_id)
     regs.x.cx = device_id;
     regs.x.dx = vendor_id;
 
-    __dpmi_int(INT_1A, &regs);
+    __dpmi_int(INT_PCI_BIOS, &regs);
 
     if (regs.h.ah) // non-zero = error
     {
@@ -78,7 +78,7 @@ uint8_t PCI_ReadConfig8(uint32_t bus_number, uint32_t function_number, uint32_t 
     regs.h.bl = function_number;
     regs.x.di = offset;
 
-    __dpmi_int(INT_1A, &regs);
+    __dpmi_int(INT_PCI_BIOS, &regs);
 
     if (!regs.h.ah)
         return regs.h.cl;
@@ -107,7 +107,7 @@ uint16_t PCI_ReadConfig16(uint32_t bus_number, uint32_t function_number, uint32_
     regs.h.bl = function_number;
     regs.x.di = offset;
 
-    __dpmi_int(INT_1A, &regs);
+    __dpmi_int(INT_PCI_BIOS, &regs);
 
     if (!regs.h.ah)
         return regs.x.cx;
@@ -136,7 +136,7 @@ uint32_t PCI_ReadConfig32(uint32_t bus_number, uint32_t function_number, uint32_
     regs.h.bl = function_number;
     regs.x.di = offset;
 
-    __dpmi_int(INT_1A, &regs);
+    __dpmi_int(INT_PCI_BIOS, &regs);
 
     if (!regs.h.ah)
         return regs.d.ecx;
@@ -158,7 +158,7 @@ bool PCI_WriteConfig8(uint32_t bus_number, uint32_t function_number, uint32_t of
     regs.h.cl = value;
     regs.x.di = offset;
 
-    __dpmi_int(INT_1A, &regs);
+    __dpmi_int(INT_PCI_BIOS, &regs);
 
     if (!regs.h.ah)
         return false;
@@ -192,7 +192,7 @@ bool PCI_WriteConfig16(uint32_t bus_number, uint32_t function_number, uint32_t o
 
     regs.x.di = offset;
 
-    __dpmi_int(INT_1A, &regs);
+    __dpmi_int(INT_PCI_BIOS, &regs);
 
     if (!regs.h.ah)
         return false; 
@@ -224,7 +224,7 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
     regs.x.di = offset;
     regs.d.ecx = value; 
 
-    __dpmi_int(INT_1A, &regs);
+    __dpmi_int(INT_PCI_BIOS, &regs);
 
     if (!regs.h.ah)
         return false;

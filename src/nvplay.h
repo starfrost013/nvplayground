@@ -138,7 +138,11 @@ bool PCI_WriteConfig16(uint32_t bus_number, uint32_t function_number, uint32_t o
 bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value);
 
 #define INT_VIDEO					0x10
-#define INT_1A        				0x1A		// PCI BIOS interrupt 
+#define INT_PCI_BIOS        		0x1A		// PCI BIOS interrupt 
+
+/* Generic definition for all tests, used to prevent expanding the nv_test static initialisers */
+#define PCI_VENDOR_GENERIC			0x0000
+#define PCI_DEVICE_GENERIC			0x0000		
 
 /* Device definitions */
 #define PCI_VENDOR_SGS              0x104A      // Used for NV1, STG-2000 variant

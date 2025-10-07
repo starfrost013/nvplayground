@@ -6,7 +6,8 @@ Changes:
 * Simplified terrible script parsing code
 * Renamed nvplayground.h to nvplay.h
 * More consistent function naming scheme
-
+* Added log_settings.redirect to optionally redirect any of stdin, stdout and stderr to the log
+* Implemented "generic" tests that are available across every GPU
 
 Old release notes:
 

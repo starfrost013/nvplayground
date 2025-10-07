@@ -152,7 +152,8 @@ bool NVPlay_Init(int32_t argc, char** argv)
 	if (!GPU_Detect())
 		exit(2);
 
-	Config_Load(); 
+	if (!Config_Load())
+		exit(3); 
 
 	return true; 
 }
@@ -166,6 +167,8 @@ int main(int argc, char** argv)
 			Logging_Write(log_level_warning, "Unknown fatal initialisation error!");
 		else
 		 	printf("Unknown fatal initialisation error!\n");
+
+		exit(0x5042);
 	}
 
 	NVPlay_Run();
