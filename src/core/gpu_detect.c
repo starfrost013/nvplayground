@@ -61,25 +61,25 @@ extern inline bool GPU_IsNV3()
 }
 
 // Checks for NV3 only
-extern bool GPU_IsNV3AorB()
+extern inline bool GPU_IsNV3AorB()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV3_A00 
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV3_B00);
 }
 
-extern bool GPU_IsNV3T()
+extern inline bool GPU_IsNV3T()
 {
     return ((current_device.nv_pmc_boot_0 & 0xFFFFF) >> 12) == 0x30
     && (current_device.nv_pmc_boot_0 & 0xFF) >= 0x20; // Revision C
 }
 
-extern bool GPU_IsNV4()
+extern inline bool GPU_IsNV4()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV4_A01
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV4_A05);
 }
 
-extern bool GPU_IsNV4orBetter()
+extern inline bool GPU_IsNV4orBetter()
 {
     // Special-case NV4 a1 (even though it was probably only ever an ES) since its fabless ID number is less(!) than NV1/2/3!
     return (current_device.nv_pmc_boot_0 == NV_PMC_BOOT_NV4_A01
