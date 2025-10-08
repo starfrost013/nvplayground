@@ -192,6 +192,7 @@ nv3_dump_excluded_areas_t excluded_areas[] =
     { 0, 0 },                                                   // Sentinel value
 };
 
+// see nv_generic.c
 // Determines if an MMIO area is excluded.
 bool nv3_mmio_area_is_excluded(uint32_t addr)
 {
@@ -213,87 +214,6 @@ bool nv3_mmio_area_is_excluded(uint32_t addr)
     }
 
     return false;
-}
-
-#define NV3_FLUSH_FREQUENCY     65536
-
-bool nv3_dump_mmio()
-{
-    Logging_Write(log_level_message, "Dumping GPU PCI BARs (BAR0 = MMIO, BAR1 = VRAM/RAMIN)...\n");
-
-    FILE* mmio_bar0 = fopen("nv3bar0.bin", "wb");
-    FILE* mmio_bar1 = fopen("nv3bar1.bin", "wb");
-
-    if (!mmio_bar0
-    || !mmio_bar1)
-        return false;
-
-    uint32_t* mmio_dump_bar_buf = (uint32_t*)calloc(1, NV3_MMIO_SIZE);
-
-    if (!mmio_dump_bar_buf)
-        return false; 
-    
-    // use ldt to read out BAR0 and BAR1 MMIO 
-    // Flush every 64kb, because the real NV3 hardware may crash at some point?!
-
-    /* 
-        Dump all known memory regions except write-only ones and ones that crash
-        We don't use nv_mmio_* because those will account for other things in the future
-    */
-
-    for (int32_t bar0_pos = 0; bar0_pos <= NV3_MMIO_SIZE; bar0_pos += 4)
-    {
-        // subtract nv3_flush_frequency to start at 0
-        if (bar0_pos % NV3_FLUSH_FREQUENCY == 0 
-            && bar0_pos > 0) // i'm lazy
-        {
-            Logging_Write(log_level_debug, "Dumped BAR0 up to: %08lX\n", bar0_pos);
-            fwrite(&mmio_dump_bar_buf[(bar0_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, mmio_bar0);
-            fflush(mmio_bar0);
-
-            // don't try and read out of bounds
-            if (bar0_pos == NV3_MMIO_SIZE)
-                break;
-        }
-
-        // skip the address if it will crash 
-        if (nv3_mmio_area_is_excluded(bar0_pos))
-        {
-            mmio_dump_bar_buf[bar0_pos >> 2] = 0x4E4F4E45; // 'NONE'
-        }
-        else
-            mmio_dump_bar_buf[bar0_pos >> 2] = _farpeekl(current_device.bar0_selector, bar0_pos);
-
-    }
-
-    fclose(mmio_bar0);
-
-    for (int32_t bar1_pos = 0; bar1_pos <= NV3_MMIO_SIZE; bar1_pos += 4)
-    {
-        if ((bar1_pos % NV3_FLUSH_FREQUENCY == 0 
-            && bar1_pos > 0))
-        {
-            Logging_Write(log_level_debug, "Dumped BAR1 up to: %08lX\n", bar1_pos);
-            fwrite(&mmio_dump_bar_buf[(bar1_pos - NV3_FLUSH_FREQUENCY) >> 2], NV3_FLUSH_FREQUENCY, 1, mmio_bar1);
-            fflush(mmio_bar1);
-
-            // don't try and read out of bounds
-            if (bar1_pos == NV3_MMIO_SIZE)
-                break;
-        }
-
-        // no excluded areas needed
-        mmio_dump_bar_buf[bar1_pos >> 2] = _farpeekl(current_device.bar1_selector, bar1_pos);
-
-    }
-
-    fclose(mmio_bar1);
-    
-    free(mmio_dump_bar_buf);
-
-    Logging_Write(log_level_message, "Done!\n");
-
-    return true; 
 }
 
 bool nv3_dump_mfg_info()
@@ -322,6 +242,6 @@ bool nv3_dump_mfg_info()
 
     Logging_Write(log_level_message, "Pixel Clock Coefficient   = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
     Logging_Write(log_level_message, "Core/Mem Clock Coefficient= %08lX (%.2f MHz)\n", mpll, mpll_mhz);
+    
     return true; 
-
 }

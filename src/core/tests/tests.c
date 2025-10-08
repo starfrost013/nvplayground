@@ -8,20 +8,25 @@
     tests.c: Enumerates all available tests in test mode
 */
 
+#include "nvplay.h"
 #include <string.h>
 
 #include <core/tests/tests.h>
 
 // Architecture includes
+#include <architecture/generic/nv_generic.h>
 #include <architecture/nv1/nv1.h>
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv4/nv4.h>
 
 nv_test_t nv_tests[] = 
 {
+    // Generic tests
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpPCI", "NV Generic - Dump PCI", NVGeneric_DumpPCISpace},
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpMMIO", "NV Generic - Dump MMIO", NVGeneric_DumpMMIO},
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpVBIOS", "NV Generic - Dump VBIOS", NVGeneric_DumpVBIOS},
+
     // NV1 has two vendor ids
-    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_DumpPCICfgSpace", "NV1 Dump PCI Config Space", nv1_print_pci_config},
-    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_DumpPCICfgSpace", "NV1 Dump PCI Config Space", nv1_print_pci_config},
     { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", nv1_print_info},
     { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", nv1_print_info},
     { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", nv1_security_breach},
@@ -36,15 +41,10 @@ nv_test_t nv_tests[] =
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_SetOverclock", "NV3 Overclock Torture", nv3_test_overclock},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_DumpVBIOS", "NV3 Dump Video BIOS (Real Mode)", nv3_dump_vbios},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_DumpVBIOS", "NV3 Dump Video BIOS (Real Mode)", nv3_dump_vbios},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_DumpMMIO", "NV3 Full BAR0/BAR1 Dump", nv3_dump_mmio},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_DumpMMIO", "NV3 Full BAR0/BAR1 Dump", nv3_dump_mmio},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_GarbageMMIORead", "NV3 Garbage Test", nv3_garbage_mmio_read},
     { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_GarbageMMIORead", "NV3 Garbage Test", nv3_garbage_mmio_read},
 
     // NV4 tests
-    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_DumpVBIOS", "NV4 Dump Video BIOS (Real Mode)", nv4_dump_vbios},
-    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_PrintMfgInfo", "NV4 Print Manufacturing Info", nv4_dump_mfg_info},
-    { PCI_VENDOR_NV, PCI_DEVICE_NV4, "NV4_DumpMMIO", "NV4 Full BAR0/BAR1 Dump", nv4_dump_mmio},
 
     { 0x0000, 0x0000, "", "", NULL}, // Sentinel value, do not remove
 };

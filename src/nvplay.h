@@ -164,16 +164,17 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
 #define PCI_DEVICE_NV10_DDR			0x0101		// GeForce 256 (DDR1)		1999
 #define PCI_DEVICE_NV10_QUADRO		0x0103		// Quadro					2000 (aka NV10GL)
 
-
-
 /* 
-    NV_PFB_BOOT values 
-    There's two ways to identify NV GPU: By reading PCI config registers and by reading the NV_PFB_BOOT register
+    NV_PMC_BOOT values 
+    There's two ways to identify an NV GPU: By reading PCI config registers and by reading the NV_PMC_BOOT register
     We read PCI config registers to determine the overall model and hten read the pfb_boot register to get the stepping
 */
 
 // Default values for the boot information register.
 // Depends on the chip
+
+// One of the only registers that existed from NV1 on
+#define NV_PMC_BOOT					0x00000000
 
 // NV1 (1994-1995)
 
@@ -207,6 +208,17 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
 #define NV_PMC_BOOT_NV4_A01			0x20004000		// NV4 Stepping A1/A2/A3					?December 1997? (TSMC-manufactured)
 #define NV_PMC_BOOT_NV4_A04			0x20034001		// NV4 Stepping A4							?August 1998?
 #define NV_PMC_BOOT_NV4_A05			0x20044001		// NV4 Stepping A5							?Late 1998>/
+
+#define NV_PMC_BOOT_NV5_A01			0x20104000		// NV5/NV6 Stepping A1						?Late 1998?
+#define NV_PMC_BOOT_NV5_A02			0x20114000		// NV5/NV6 Stepping A2						?Early 1999?
+#define NV_PMC_BOOT_NV5_A03			0x20124000		// NV5/NV6 Stepping A3						?Early 1999?
+#define NV_PMC_BOOT_NV5_B01			0x20204000		// NV5/NV6 Stepping B1						?Early 1999?
+#define NV_PMC_BOOT_NV5_B02			0x20214000		// NV5/NV6 Stepping B2						?Early 1999?
+#define NV_PMC_BOOT_NV5_B03			0x20224000		// NV5/NV6 Stepping B3						?Early 1999?
+
+// NV10+ uses multiple device ids per gpu stepping and a hex representation of the stepping
+#define NV_PMC_BOOT_NV10_BASE		0x01000000
+
 
 /* NVidia Device Definition */
 typedef struct nv_device_info_s
@@ -254,6 +266,20 @@ extern nv_device_t current_device;
 // Detection functions
 bool GPU_Detect(); 
 
+// Allow easy range checks for generic tests 
+// Don't use #defines because some gpus have multiple ID "sets" and I don't like complex macros
+// NV1orBetter not needed
+
+inline bool GPU_IsNV1();
+inline bool GPU_IsNV2();
+inline bool GPU_IsNV3();
+inline bool GPU_IsNV3AorB();
+inline bool GPU_IsNV3T();
+inline bool GPU_IsNV4();
+inline bool GPU_IsNV4orBetter();	// NV4 Base
+inline bool GPU_IsNV5();
+inline bool GPU_IsNV10();
+
 //
 // READ/WRITE functions for GPU memory areas
 //
@@ -288,8 +314,8 @@ void nv_sequencer_write(uint8_t index, uint8_t value);
 
 // Clock
 
-#define NV_CLOCK_BASE_13500K			13500000.0
-#define NV_CLOCK_BASE_14318180			14318180.0
+#define NV_CLOCK_BASE_13500K				13500000.0
+#define NV_CLOCK_BASE_14318180				14318180.0
 
 double nv_clock_mnp_to_mhz(uint32_t clock_base, uint32_t mnp);
 

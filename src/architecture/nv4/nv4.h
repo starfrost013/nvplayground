@@ -23,6 +23,5 @@ bool nv4_init();
 
 bool nv4_dump_mfg_info();
 bool nv4_dump_mmio();
-bool nv4_dump_vbios(); 
 
 void nv4_shutdown(); 
