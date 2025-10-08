@@ -8,6 +8,8 @@ Changes:
 * More consistent function naming scheme
 * Added log_settings.redirect to optionally redirect any of stdin, stdout and stderr to the log
 * Implemented "generic" tests that are available across every GPU
+* -t added as an alias for -test
+* Added -boot / -bootonly command line option to initialise GPU and exit
 
 Old release notes:
 

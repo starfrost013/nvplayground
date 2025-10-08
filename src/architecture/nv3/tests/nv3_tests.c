@@ -222,6 +222,7 @@ bool nv3_dump_mfg_info()
     Logging_Write(log_level_message, "NV3 Manufacture-Time Configuration: \n");
     Logging_Write(log_level_message, "NV_PMC_BOOT_0             = %08lX\n", current_device.nv_pmc_boot_0);
     Logging_Write(log_level_message, "NV_PFB_BOOT_0             = %08lX\n", current_device.nv_pfb_boot_0);
+    
     /* 
         Determine the amount of Video RAM 
         In theory this could be a shared function between all nv gpus, but in reality i'm not so sure
@@ -242,6 +243,6 @@ bool nv3_dump_mfg_info()
 
     Logging_Write(log_level_message, "Pixel Clock Coefficient   = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
     Logging_Write(log_level_message, "Core/Mem Clock Coefficient= %08lX (%.2f MHz)\n", mpll, mpll_mhz);
-    
+
     return true; 
 }

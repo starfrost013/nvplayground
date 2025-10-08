@@ -13,7 +13,8 @@
 
 command_line_t command_line = {0};
 
-#define COMMAND_LINE_RUN_TEST_INI "-test"
+#define COMMAND_LINE_RUN_TEST_INI "-t"
+#define COMMAND_LINE_RUN_TEST_INI_FULL "-test"
 #define COMMAND_LINE_RUN_ALL "-a"
 #define COMMAND_LINE_RUN_ALL_FULL "-all"
 #define COMMAND_LINE_DRY_RUN "-d"
@@ -26,6 +27,9 @@ command_line_t command_line = {0};
 #define COMMAND_LINE_LOAD_REPLAY_FULL "-replay"
 #define COMMAND_LINE_HELP "-?"
 #define COMMAND_LINE_HELP_FULL "-help"
+#define COMMAND_LINE_BOOTONLY "-b"
+#define COMMAND_LINE_BOOTONLY_FULL "-bootonly"
+
 
 bool Cmdline_Parse(int argc, char** argv)
 {
@@ -101,12 +105,18 @@ bool Cmdline_Parse(int argc, char** argv)
         {
             command_line.show_help = true; 
         }
-        else if (!strcasecmp(current_arg, COMMAND_LINE_RUN_TEST_INI))
+        else if (!strcasecmp(current_arg, COMMAND_LINE_RUN_TEST_INI)
+        || !strcasecmp(current_arg, COMMAND_LINE_RUN_TEST_INI_FULL))
         {
             // Maybe make it so we can load custom INI files?
             command_line.use_test_ini = true;
         }
-    
+        else if (!strcasecmp(current_arg, COMMAND_LINE_BOOTONLY)
+        || !strcasecmp(current_arg, COMMAND_LINE_BOOTONLY_FULL))
+        {
+            // Maybe make it so we can load custom INI files?
+            command_line.use_test_ini = true;
+        }  
     }
 
     return true; 

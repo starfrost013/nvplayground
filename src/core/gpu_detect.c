@@ -42,31 +42,34 @@ bool GPU_Detect()
 
 }
 
+// Generic function checking if the installed GPU is an NV1
 extern inline bool GPU_IsNV1()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV1_A01
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV1_C01);
 }
 
+// Generic function checking if the installed GPU is an NV2
 extern inline bool GPU_IsNV2()
 {
     return (current_device.nv_pmc_boot_0 == NV_PMC_BOOT_NV2_A01);
 }
 
-// Checks for NV3 *AND* NV3T
+// Generic function checking if the installed GPU is an NV3 series card. Checks for NV3 *AND* NV3T
 extern inline bool GPU_IsNV3()
 {
     // NV3 has multiple manufacturing fabs, but also shares the architecture with certain NV4 steppings , so we have to be slightly clever and check for 0x30
     return ((current_device.nv_pmc_boot_0 & 0xFFFFF) >> 12) == 0x30;
 }
 
-// Checks for NV3 only
+// Generic function checking if the installed GPU is an NV3 revision A or B (2/4MB)
 extern inline bool GPU_IsNV3AorB()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV3_A00 
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV3_B00);
 }
 
+// Generic function checking if the installed GPU is an NV3T (Turbo) (RIVA 128 ZX)
 extern inline bool GPU_IsNV3T()
 {
     return ((current_device.nv_pmc_boot_0 & 0xFFFFF) >> 12) == 0x30

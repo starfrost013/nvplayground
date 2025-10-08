@@ -78,10 +78,10 @@ typedef struct command_line_s
     bool load_savestate_file;       // Load a savestate file
     bool load_replay_file;          // Load a replay file
     bool show_help;                 // Show a help message
-  
+    bool boot_only;                 // Boot the card and exit.
     char reg_script_file[MAX_STR];  // The registry script file to use
-    char savestate_file[MAX_STR];   // The registry script file to use
-    char replay_file[MAX_STR];      // The registry script file to use
+    char savestate_file[MAX_STR];   // The savestate file to use
+    char replay_file[MAX_STR];      // The replay file to use
 
 } command_line_t;
 

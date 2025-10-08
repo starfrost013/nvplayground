@@ -174,8 +174,11 @@ int main(int argc, char** argv)
 		exit(0x5042);
 	}
 
-	NVPlay_Run();
-	NVPlay_Shutdown();
-
+	if (!command_line.boot_only)
+	{
+		NVPlay_Run();
+		NVPlay_Shutdown();
+	}
+	
  	return 0;
 }
