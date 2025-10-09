@@ -351,7 +351,8 @@ gpu_script_command_t commands[] =
     { "print", "printmessage", Command_Print, 1 },
     { "printdebug", "printdebug", Command_PrintDebug, 1 },
     { "printwarning", "printwarning", Command_PrintWarning, 1 },
-    { "printerror", "printwarning", Command_PrintError, 1 },
+    { "printerror", "printerror", Command_PrintError, 1 },
+    { "printversion", "printversion", Command_PrintVersion, 0 },
     
     { NULL, NULL, NULL},            // Sentinel value for end of list.
 };
