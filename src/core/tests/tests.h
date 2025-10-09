@@ -9,8 +9,11 @@
 */
 
 #pragma once
+#include "config/config.h"
 #include <nvplay.h>
 
+// needed because config.h depends on us here
+typedef struct nv_config_test_entry_s nv_config_test_entry_t;
 
 /* Defines a single test (for the global list of tests) */
 typedef struct nv_test_s 
@@ -25,4 +28,6 @@ typedef struct nv_test_s
 extern nv_test_t nv_tests[];
 
 bool Test_IsAvailableForGPU(const char* test_name);
-nv_test_t* Test_Get(const char* test_name);             // Get a test
+nv_config_test_entry_t* Test_Get(const char* test_name);             // Get a test
+
+bool Test_Run(nv_config_test_entry_t* test);

@@ -14,7 +14,6 @@
 
 #include "util/util.h"
 #include <nvplay.h>
-#include <config/config.h>
 
 bool GPUS_Load()
 {

@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include <core/tests/tests.h>
+#include <config/config.h>
 
 // Architecture includes
 #include <architecture/generic/nv_generic.h>
@@ -75,22 +76,43 @@ bool Test_IsAvailableForGPU(const char* test_name)
     return false; 
 }
 
-/* Acquires the test with the name test_name */
-nv_test_t* Test_Get(const char* test_name)
+/* Acquires the test with the name test_name. The test must be loaded and supported */
+nv_config_test_entry_t* Test_Get(const char* test_name)
 {
-    uint32_t test_number = 0; 
-    nv_test_t nv_test = nv_tests[test_number];
+    nv_config_test_entry_t* test_entry = config.test_list_head;
 
     // iterate through each test
-    while (nv_test.test_function != NULL)
+    while (test_entry)
     {
-        if (!strcmp(nv_test.name, test_name))
-            return &nv_tests[test_number];
+        if (!strcmp(test_entry->name, test_name))
+            return test_entry;
 
-        test_number++;
-        nv_test = nv_tests[test_number];
-
+        test_entry = test_entry->next;
     }
 
     return NULL; 
+}
+
+bool Test_Run(nv_config_test_entry_t* test)
+{
+	/* 
+		TODO: Ini setting to disable this print in the case of graphical tests.
+		Otherwise we'll have to switch back to test mode every test.
+
+		Also, test logging. (after util_logging.c is done)
+	*/
+	if (test->test_function)
+	{
+		bool success = test->test_function();	
+
+		if (success)
+			Logging_Write(log_level_message, "Test %s succeeded\n", test->name);
+		else
+			Logging_Write(log_level_message, "Test %s failed! :(\n", test->name);
+	
+        return success; 
+    }
+    
+    //should never happen because we should explicitly check for this
+    return false; 
 }

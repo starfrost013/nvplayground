@@ -16,7 +16,9 @@
 #include <stdio.h>
 
 
+#include "architecture/nv3/nv3.h"
 #include "architecture/nv3/nv3_ref.h"
+#include "core/tests/tests.h"
 #include "util/util.h"
 #include <nvplay.h>
 #include <config/config.h>
@@ -276,6 +278,23 @@ bool Command_NV3Explode()
     return true; 
 }
 
+bool Command_RunTest()
+{
+    const char* test_name = Command_Argv(1);
+
+    nv_config_test_entry_t* test = Test_Get(test_name);
+
+    if (test)
+        return test->test_function();
+    else
+    {
+        Logging_Write(log_level_message, "Tried to run invalid test %s!", test_name);
+        return false;
+    }
+
+    return false; //shutup compiler even though this line cannot be reached under any circumstances
+}
+
 // Prints a message.
 bool Command_Print()
 {
@@ -329,6 +348,7 @@ gpu_script_command_t commands[] =
     { "rcrtcc", "readcrtcconsole", Command_ReadCrtcConsole, 1 },
     { "wcrtc", "writecrtc", Command_WriteCrtc, 2 },
     { "nv3_explode", "nv3_explode", Command_NV3Explode, 0 },
+    { "rt", "runtest", Command_RunTest, 1},
     { "print", "printmessage", Command_Print, 1 },
     { "printdebug", "printdebug", Command_PrintDebug, 1 },
     { "printwarning", "printwarning", Command_PrintWarning, 1 },

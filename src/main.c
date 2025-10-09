@@ -46,6 +46,14 @@ void NVPlay_RunTests()
 
 				Also, test logging. (after util_logging.c is done)
 			*/
+
+			bool success = Test_Run(current_entry);
+
+			if (!success)
+				tests_succeeded++;
+			else
+			 	tests_failed++;
+
 			if (current_entry->test_function)
 			{
 				bool success = current_entry->test_function();	

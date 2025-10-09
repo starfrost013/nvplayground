@@ -231,6 +231,13 @@ bool NVGeneric_DumpVBIOS()
 
 bool NVGeneric_DumpFIFO()
 {
+    uint32_t cache1_size = 32;
+
+    if (GPU_IsNV3T())
+        cache1_size = 64;
+    if (GPU_IsNV4orBetter())
+        cache1_size = 128;
+
     return true; 
 }
 
