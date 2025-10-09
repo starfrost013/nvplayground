@@ -10,10 +10,13 @@ Changes:
 * Implemented "generic" tests that are available across every GPU
 * -t added as an alias for -test
 * Added -boot / -bootonly command line option to initialise GPU and exit
+* Added "RunTest" command to run a test
+* Added "PrintVersion" command
+* Added GPU_IsNVx functions for GPU-specific behaviour in generic tests
 
 Old release notes:
 
-Changes:
+0.4.0.0-rcX Changes:
 * Implemented a new ".NVS" savestate format
 	* Load a .NVS file using the -savestate / -nvs command line option. This will load a savestate into the graphics hardware!
 	* Currently only full support on NV3, very experimental

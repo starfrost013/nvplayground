@@ -108,7 +108,8 @@ void Script_RunCommand(char* line_buf)
 			if (command_valid)
 			{
 				if (!script_command->function())
-					Logging_Write(log_level_error, "Command %s failed to execute!", script_command->name_full);
+					Logging_Write(log_level_error, "Command %s failed to execute!\n", script_command->name_full);
+
 				// keep command_valid true
 			}
 

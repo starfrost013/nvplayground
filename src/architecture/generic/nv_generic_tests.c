@@ -70,6 +70,8 @@ bool NVGeneric_DumpPCISpace()
     Logging_Write(log_level_message, "[PCI CFG] Interrupt Pin %02x\n", interrupt_pin);
     Logging_Write(log_level_message, "[PCI CFG] Minimum Grant %02x\n", minimum_grant);
     Logging_Write(log_level_message, "[PCI CFG] Maximum Latency %02x\n", maximum_latency);
+
+    return true; 
 }
 
 bool NVGeneric_DumpMMIO_NV1()

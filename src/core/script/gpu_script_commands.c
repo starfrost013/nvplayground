@@ -52,12 +52,6 @@ bool Command_WriteMMIORange8()
 
 bool Command_ReadMMIOConsole8()
 {
-    if (Command_Argc() < 2)
-    {
-        Logging_Write(log_level_warning, "Command_ReadMMIOConsole8: not enough parameters!");
-        return false; 
-    }
-
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
@@ -323,6 +317,11 @@ bool Command_PrintError()
     return true; 
 }
 
+bool Command_PrintVersion()
+{
+   	Logging_Write(log_level_message, APP_SIGNON_STRING);
+    return true; 
+}
 
 // Enumerates all supported commands.
 gpu_script_command_t commands[] =
