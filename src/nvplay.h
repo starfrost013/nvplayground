@@ -228,8 +228,6 @@ typedef struct nv_device_info_s
 	const char* name; 									// Friendly name of the GPU
 	bool (*init_function)();							// Function to call on entry point	
 	void (*shutdown_function)();						// Function to call on shutdown
-	bool (*gpus_section_applies)(uint32_t fourcc);		// Does this GPUS section apply for this GPU?
-	bool (*gpus_section_parse)(uint32_t fourcc, FILE* stream);		// Parse a specific GPUS section
 } nv_device_info_t; 
 
 /* List of supported devices */
@@ -270,15 +268,64 @@ bool GPU_Detect();
 // Don't use #defines because some gpus have multiple ID "sets" and I don't like complex macros
 // NV1orBetter not needed
 
-inline bool GPU_IsNV1();
-inline bool GPU_IsNV2();
-inline bool GPU_IsNV3();
-inline bool GPU_IsNV3AorB();
-inline bool GPU_IsNV3T();
-inline bool GPU_IsNV4();
-inline bool GPU_IsNV4orBetter();	// NV4 Base
-inline bool GPU_IsNV5();
-inline bool GPU_IsNV10();
+// Generic function checking if the installed GPU is an NV1
+inline bool GPU_IsNV1()
+{
+    return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV1_A01
+    && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV1_C01);
+}
+
+// Generic function checking if the installed GPU is an NV2
+inline bool GPU_IsNV2()
+{
+    return (current_device.nv_pmc_boot_0 == NV_PMC_BOOT_NV2_A01);
+}
+
+// Generic function checking if the installed GPU is an NV3 series card. Checks for NV3 *AND* NV3T
+inline bool GPU_IsNV3()
+{
+    // NV3 has multiple manufacturing fabs, but also shares the architecture with certain NV4 steppings , so we have to be slightly clever and check for 0x30
+    return ((current_device.nv_pmc_boot_0 & 0xFFFFF) >> 12) == 0x30;
+}
+
+// Generic function checking if the installed GPU is an NV3 revision A or B (2/4MB)
+inline bool GPU_IsNV3AorB()
+{
+    return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV3_A00 
+    && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV3_B00);
+}
+
+// Generic function checking if the installed GPU is an NV3T (Turbo) (RIVA 128 ZX)
+inline bool GPU_IsNV3T()
+{
+    return ((current_device.nv_pmc_boot_0 & 0xFFFFF) >> 12) == 0x30
+    && (current_device.nv_pmc_boot_0 & 0xFF) >= 0x20; // Revision C
+}
+
+inline bool GPU_IsNV4()
+{
+    return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV4_A01
+    && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV4_A05);
+}
+
+inline bool GPU_IsNV4orBetter()
+{
+    // Special-case NV4 a1 (even though it was probably only ever an ES) since its fabless ID number is less(!) than NV1/2/3!
+    return (current_device.nv_pmc_boot_0 == NV_PMC_BOOT_NV4_A01
+    || (current_device.nv_pmc_boot_0 & 0xFFFFFFF) >= 0x34001);
+}
+
+inline bool GPU_IsNV5()
+{
+    return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV5_A01
+    && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV5_B03);
+}
+
+inline bool GPU_IsNV10()
+{
+    // No pre-NV10 gpu has >=0x1000000 if fab removed
+    return (current_device.nv_pmc_boot_0 & 0xFFFFFFF) >= NV_PMC_BOOT_NV10_BASE;
+}
 
 //
 // READ/WRITE functions for GPU memory areas
@@ -370,62 +417,6 @@ extern gpu_script_command_t commands[];
 /* Command utility stuff */
 const char* Command_Argv(uint32_t argv);
 uint32_t Command_Argc();
-
-//
-// SAVESTATES
-//
-
-#define GPUS_MAGIC				0x53555047	// 'GPUS'
-#define GPUS_VERSION			1
-
-#define GPUS_SECTIONS_MAX		32			// Sanity check heuristic; Maximum reasonable number of sections for a GPUS fine
-
-typedef struct gpus_header_s
-{
-	uint32_t magic; 
-	uint16_t version;			// Just in case...
-	uint16_t num_sections;		// Number of GPUS file sections
-	uint32_t device_id;
-} gpus_header_t; 
-
-typedef struct gpus_header_section_s
-{
-	uint32_t fourcc;
-	uint32_t offset;
-	uint32_t size; 
-} gpus_header_section_t;
-
-// Section names (little endian):
-// CRTC registers				'CRTC'
-// GDC registers				'VGAG'
-// Sequencer registers			'VGAS'
-// Attribute registers			'VGAA'
-// MMIO							'MMIO'
-// BAR1 (VRAM / RAMIN)			'BAR1'
-// On-die Texture Cache			'CACH'
-// EEPROM (nv1 only)			'NV1E'
-
-typedef enum gpus_sections_e
-{
-	gpus_section_vga_crtc = 0x43545243,
-
-	gpus_section_vga_gdc = 0x47414756,
-
-	gpus_section_vga_sequencer = 0x53414756,
-
-	gpus_section_vga_attribute = 0x41414756,
-
-	gpus_section_mmio = 0x4F494D4D,
-
-	gpus_section_bar1 = 0x31524142,
-
-	gpus_section_cache = 0x48434143,
-
-	gpus_section_nv1e = 0x44453136,
-} gpus_sections; 
-
-// GPUS functions
-bool GPUS_Load();
 
 /* REPL stuff */
 

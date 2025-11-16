@@ -240,6 +240,9 @@ bool NVGeneric_DumpFIFO()
     if (GPU_IsNV4orBetter())
         cache1_size = 128;
 
+    // first dump Cache0
+        
+
     return true; 
 }
 
@@ -249,7 +252,7 @@ bool NVGeneric_DumpRAMHT()
     return true; 
 }
 
-// Dump all channels that are not context switched to
+// Dump all channels that are not the current
 bool NVGeneric_DumpRAMFC()
 {
     return true; 

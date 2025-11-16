@@ -40,10 +40,6 @@ extern nv3_dump_excluded_areas_t excluded_areas[];
 
 bool nv3_mmio_area_is_excluded(uint32_t addr);
 
-// GPUS stuff
-bool nv3_gpus_section_applies(uint32_t fourcc);
-bool nv3_gpus_parse_section(uint32_t fourcc, FILE* stream);
-
 // This is slower, but these need to map *****EXACTLY***** to the GPU PIO/DMA channel's layout so PGRAPH can accept it
 // or everything FUCKS UP
 //

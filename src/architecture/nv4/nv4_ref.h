@@ -74,6 +74,10 @@
 #define NV4_PSTRAPS_CRYSTAL_14318180                    0x1
 
 //
+// PFIFO
+//
+
+//
 // PRAMDAC
 //
 
