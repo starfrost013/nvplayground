@@ -75,7 +75,6 @@ typedef struct command_line_s
     bool use_test_ini;              // Use the test ini file
     bool dry_run;                   // don't run tests, but confirm the INI settings
     bool load_reg_script;           // run a registry script file
-    bool load_savestate_file;       // Load a savestate file
     bool load_replay_file;          // Load a replay file
     bool show_help;                 // Show a help message
     bool boot_only;                 // Boot the card and exit.

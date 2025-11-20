@@ -238,13 +238,3 @@ bool nv1_dump_vbios()
 
     return true; 
 }
-
-bool nv1_gpus_section_applies(uint32_t fourcc)
-{
-    return (fourcc == gpus_section_nv1e);
-}
-
-bool nv1_gpus_parse_section(uint32_t fourcc, FILE* stream)
-{
-    return true; 
-}

@@ -30,7 +30,6 @@ bool Config_Load()
     Logging_Write(log_level_message, "Loaded nvplay.ini\n");
 
     ini_section_t section_tests = ini_find_section(config.ini_file, "Tests");
-
     nv_test_t current_test = nv_tests[0];
 
     uint32_t test_id = 0;
@@ -79,10 +78,9 @@ bool Config_Load()
                 {
     
                     if (!current_test.test_function)
-                        Logging_Write(log_level_warning, "Test %s doesn't have a test function", new_test_entry->name);        
+                        Logging_Write(log_level_warning, "Test %s doesn't have a test function", current_test.name);        
                     else
                     {
-
                         nv_config_test_entry_t* new_test_entry = calloc(1, sizeof(nv_config_test_entry_t));
 
                         new_test_entry->test_function = current_test.test_function;

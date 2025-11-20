@@ -106,8 +106,6 @@ void NVPlay_Run()
 
 	if (command_line.load_reg_script)
 		Script_Run();
-	else if (command_line.load_savestate_file)
-		GPUS_Load();
 	else if (command_line.use_test_ini)
 		NVPlay_RunTests(); 
 	else

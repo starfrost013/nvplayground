@@ -269,59 +269,59 @@ bool GPU_Detect();
 // NV1orBetter not needed
 
 // Generic function checking if the installed GPU is an NV1
-inline bool GPU_IsNV1()
+static inline bool GPU_IsNV1()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV1_A01
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV1_C01);
 }
 
 // Generic function checking if the installed GPU is an NV2
-inline bool GPU_IsNV2()
+static inline bool GPU_IsNV2()
 {
     return (current_device.nv_pmc_boot_0 == NV_PMC_BOOT_NV2_A01);
 }
 
 // Generic function checking if the installed GPU is an NV3 series card. Checks for NV3 *AND* NV3T
-inline bool GPU_IsNV3()
+static inline bool GPU_IsNV3()
 {
     // NV3 has multiple manufacturing fabs, but also shares the architecture with certain NV4 steppings , so we have to be slightly clever and check for 0x30
     return ((current_device.nv_pmc_boot_0 & 0xFFFFF) >> 12) == 0x30;
 }
 
 // Generic function checking if the installed GPU is an NV3 revision A or B (2/4MB)
-inline bool GPU_IsNV3AorB()
+static inline bool GPU_IsNV3AorB()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV3_A00 
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV3_B00);
 }
 
 // Generic function checking if the installed GPU is an NV3T (Turbo) (RIVA 128 ZX)
-inline bool GPU_IsNV3T()
+static inline bool GPU_IsNV3T()
 {
     return ((current_device.nv_pmc_boot_0 & 0xFFFFF) >> 12) == 0x30
     && (current_device.nv_pmc_boot_0 & 0xFF) >= 0x20; // Revision C
 }
 
-inline bool GPU_IsNV4()
+static inline bool GPU_IsNV4()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV4_A01
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV4_A05);
 }
 
-inline bool GPU_IsNV4orBetter()
+static inline bool GPU_IsNV4orBetter()
 {
     // Special-case NV4 a1 (even though it was probably only ever an ES) since its fabless ID number is less(!) than NV1/2/3!
     return (current_device.nv_pmc_boot_0 == NV_PMC_BOOT_NV4_A01
     || (current_device.nv_pmc_boot_0 & 0xFFFFFFF) >= 0x34001);
 }
 
-inline bool GPU_IsNV5()
+static inline bool GPU_IsNV5()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV5_A01
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV5_B03);
 }
 
-inline bool GPU_IsNV10()
+static inline bool GPU_IsNV10()
 {
     // No pre-NV10 gpu has >=0x1000000 if fab removed
     return (current_device.nv_pmc_boot_0 & 0xFFFFFFF) >= NV_PMC_BOOT_NV10_BASE;
