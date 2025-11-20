@@ -12,6 +12,7 @@
 #include "architecture/nv1/nv1_ref.h"
 #include "nvplay.h"
 #include "nvplay.hpp"
+#include "util/util.h"
 #include <architecture/generic/nv_generic.h>
 #include <architecture/nv1/nv1.h>
 #include <architecture/nv3/nv3.h>
@@ -80,12 +81,12 @@ bool NVGeneric_DumpMMIO_NV1()
     // nv1 has a different setup
     Logging_Write(log_level_message, "Dumping GPU PCI BAR0...\n");
 
-    FILE* mmio_bar0 = fopen("nv3bar0.bin", "wb");
+    FILE* mmio_bar0 = fopen("nv1bar0.bin", "wb");
 
     if (!mmio_bar0)
         return false;
 
-    uint32_t* mmio_dump_bar_buf = (uint32_t*)calloc(1, NV3_MMIO_SIZE);
+    uint32_t* mmio_dump_bar_buf = (uint32_t*)calloc(1, NV_MMIO_SIZE);
 
     if (!mmio_dump_bar_buf)
         return false; 
@@ -106,7 +107,7 @@ bool NVGeneric_DumpMMIO_NV1()
             fflush(mmio_bar0);
 
             // don't try and read out of bounds
-            if (bar0_pos == NV3_MMIO_SIZE)
+            if (bar0_pos == NV_MMIO_SIZE)
                 break;
         }
 
@@ -132,7 +133,14 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
     || !mmio_bar1)
         return false;
 
-    uint32_t* mmio_dump_bar_buf = (uint32_t*)calloc(1, NV3_MMIO_SIZE);
+
+    // later devices have above 16mb of vram
+    uint32_t vram_dump_size = NV_MMIO_SIZE;
+
+    if (GPU_IsNV5() || GPU_IsNV10())
+        vram_dump_size = NV5_MAX_VRAM_SIZE;
+
+    uint32_t* mmio_dump_bar_buf = (uint32_t*)calloc(1, NV_MMIO_SIZE);
 
     if (!mmio_dump_bar_buf)
         return false; 
@@ -148,7 +156,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
         We don't use nv_mmio_* because those will account for other things in the future
     */
 
-    for (int32_t bar0_pos = 0; bar0_pos <= NV3_MMIO_SIZE; bar0_pos += 4)
+    for (int32_t bar0_pos = 0; bar0_pos <= NV_MMIO_SIZE; bar0_pos += 4)
     {
         // subtract nv3_flush_frequency to start at 0
         if (bar0_pos % NV_MMIO_DUMP_FLUSH_FREQUENCY == 0 
@@ -159,7 +167,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
             fflush(mmio_bar0);
 
             // don't try and read out of bounds
-            if (bar0_pos == NV3_MMIO_SIZE)
+            if (bar0_pos == NV_MMIO_SIZE)
                 break;
         }
 
@@ -175,7 +183,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
 
     fclose(mmio_bar0);
 
-    for (int32_t bar1_pos = 0; bar1_pos <= NV3_MMIO_SIZE; bar1_pos += 4)
+    for (int32_t bar1_pos = 0; bar1_pos <= vram_dump_size; bar1_pos += 4)
     {
         if ((bar1_pos % NV_MMIO_DUMP_FLUSH_FREQUENCY == 0 
             && bar1_pos > 0))
@@ -185,7 +193,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
             fflush(mmio_bar1);
 
             // don't try and read out of bounds
-            if (bar1_pos == NV3_MMIO_SIZE)
+            if (bar1_pos == vram_dump_size)
                 break;
         }
 
@@ -296,6 +304,12 @@ bool NVGeneric_DumpRAMRO()
 
 bool NVGeneric_DumpPGRAPHCache()
 {
+    if (GPU_IsNV10())
+    {
+        Logging_Write(log_level_error, "DumpPGRAPHCache is not yet supported on NV10 because NV10 has a much more complicated and larger cache");
+        return false; 
+    }
+
     char file_name[MSDOS_PATH_LENGTH] = {0};
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xcache.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");

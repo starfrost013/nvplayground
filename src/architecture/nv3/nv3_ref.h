@@ -13,7 +13,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define NV3_MMIO_SIZE                                   0x1000000       // Max MMIO size
+
 
 #define NV3_LFB_RAMIN_MIRROR_START                      0x400000        // Mirror of ramin (VERIFY ON HARDWARE)
 #define NV3_LFB_MIRROR_START                            0x800000        // The second half of LFB(?)

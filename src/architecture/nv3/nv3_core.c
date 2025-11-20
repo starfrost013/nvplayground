@@ -42,9 +42,9 @@ bool nv3_init()
     __dpmi_meminfo meminfo_bar1 = {0};
 
     meminfo_bar0.address = bar0_base;
-    meminfo_bar0.size = NV3_MMIO_SIZE;
+    meminfo_bar0.size = NV_MMIO_SIZE;
     meminfo_bar1.address = bar1_base;
-    meminfo_bar1.size = NV3_MMIO_SIZE; //this will change
+    meminfo_bar1.size = NV_MMIO_SIZE; //this will change
 
     current_device.bar1_dfb_start = bar1_base;
     current_device.ramin_start = bar1_base + NV3_RAMIN_START;
@@ -57,13 +57,13 @@ bool nv3_init()
     /* Set up two LDTs, we don't need one for ramin, because, it's just a part of bar1 we map differently */
     current_device.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar0_selector, meminfo_bar0.address);
-    __dpmi_set_segment_limit(current_device.bar0_selector, NV3_MMIO_SIZE - 1);
+    __dpmi_set_segment_limit(current_device.bar0_selector, NV_MMIO_SIZE - 1);
 
     Logging_Write(log_level_debug, "NV3 Init: Mapping BAR1 (DFB / RAMIN)...\n");
 
     current_device.bar1_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1.address);
-    __dpmi_set_segment_limit(current_device.bar1_selector, NV3_MMIO_SIZE - 1); // ultimately the same size
+    __dpmi_set_segment_limit(current_device.bar1_selector, NV_MMIO_SIZE - 1); // ultimately the same size
 
     /* store manufacture time configuratino */
     current_device.nv_pmc_boot_0 = nv_mmio_read32(NV3_PMC_BOOT);

@@ -344,6 +344,9 @@ static inline __attribute__((always_inline)) uint32_t GPU_NV_GetGeneration()
 // READ/WRITE functions for GPU memory areas
 //
 
+#define NV_MMIO_SIZE                                   	0x1000000       // Max MMIO size
+#define NV5_MAX_VRAM_SIZE                         		0x2000000
+
 // only 8 and 32 bit are really needed
 uint8_t nv_mmio_read8(uint32_t offset); 
 uint32_t nv_mmio_read32(uint32_t offset); 

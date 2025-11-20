@@ -7,12 +7,14 @@ Changes:
 * Renamed nvplayground.h to nvplay.h
 * More consistent function naming scheme
 * Added log_settings.redirect to optionally redirect any of stdin, stdout and stderr to the log
-* Implemented "generic" tests that are available across every GPU
+* Implemented "generic" tests that are available across every GPU (for some of them, PlayHal functions are required )
 * -t added as an alias for -test
 * Added -boot / -bootonly command line option to initialise GPU and exit
 * Added "RunTest" command to run a test
 * Added "PrintVersion" command
 * Added GPU_IsNVx functions for GPU-specific behaviour in generic tests
+* Added GPU_NV_GetGeneration functions to return a number equivalent to the NV codename for a chip
+* Allowed dumping amounts of vram that are not 16 MB 
 
 Old release notes:
 

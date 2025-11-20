@@ -1,3 +1,13 @@
+# 
+#   NVPlay
+#   Copyright © 2025 starfrost
+#
+#   Raw GPU programming for early Nvidia GPUs
+#   Licensed under the MIT license (see license file)
+#
+#   CMakeLists.txt: Core buildscript
+#
+
 cmake_minimum_required(VERSION 3.26)
 project(nvplay)
 
