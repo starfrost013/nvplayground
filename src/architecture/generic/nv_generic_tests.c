@@ -11,6 +11,7 @@
 
 #include "architecture/nv1/nv1_ref.h"
 #include "nvplay.h"
+#include "nvplay.hpp"
 #include <architecture/generic/nv_generic.h>
 #include <architecture/nv1/nv1.h>
 #include <architecture/nv3/nv3.h>
@@ -233,6 +234,11 @@ bool NVGeneric_DumpVBIOS()
 
 bool NVGeneric_DumpFIFO()
 {
+    // open a file
+    char file_name[MSDOS_PATH_LENGTH] = {0};
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xfifo.txt", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "r+");
+
     uint32_t cache1_size = 32;
 
     if (GPU_IsNV3T())
@@ -242,6 +248,9 @@ bool NVGeneric_DumpFIFO()
 
     // first dump Cache0
         
+    // then cache1
+
+    fclose(stream);
 
     return true; 
 }
@@ -249,23 +258,49 @@ bool NVGeneric_DumpFIFO()
 // Dump all currently loaded objects in the current channel
 bool NVGeneric_DumpRAMHT()
 {
+    // open a file
+
+    char file_name[MSDOS_PATH_LENGTH] = {0};
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xramht.txt", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "r+");
+
+    fclose(stream);
+
     return true; 
 }
 
 // Dump all channels that are not the current
 bool NVGeneric_DumpRAMFC()
-{
+{    
+    char file_name[MSDOS_PATH_LENGTH] = {0};
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xramfc.txt", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "r+");
+
+    fclose(stream);
+
     return true; 
 }
 
 // Dump any errors that may have occurred 
 bool NVGeneric_DumpRAMRO()
 {
+    char file_name[MSDOS_PATH_LENGTH] = {0};
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xramro.txt", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "r+");
+
+    fclose(stream);
+
     return true; 
 }                    
 
 
 bool NVGeneric_DumpPGRAPHCache()
 {
+    char file_name[MSDOS_PATH_LENGTH] = {0};
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xcache.txt", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "r+");
+
+    fclose(stream);
+
     return true; 
 }

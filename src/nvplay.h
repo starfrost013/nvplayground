@@ -46,6 +46,7 @@ void NVPlay_ShowHelpAndExit();
 
 // String
 #define STRING_EMPTY ""
+#define MSDOS_PATH_LENGTH					64			// maximum ms-dos path size is 64
 
 /* PCI */
 
@@ -325,6 +326,18 @@ static inline bool GPU_IsNV10()
 {
     // No pre-NV10 gpu has >=0x1000000 if fab removed
     return (current_device.nv_pmc_boot_0 & 0xFFFFFFF) >= NV_PMC_BOOT_NV10_BASE;
+}
+
+// Obtain the generation of Nvidia-based graphics hardware
+static inline __attribute__((always_inline)) uint32_t GPU_NV_GetGeneration()
+{
+	// We don't support any thing above Nv10 rn
+	
+	// NV10 is 0x0100 and doesn't use the nv1-5 era device id format
+	if (GPU_IsNV10())
+		return 0x10;
+	else
+		return (current_device.device_info.device_id & ~8) >> 3;
 }
 
 //
