@@ -55,6 +55,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/formats/format_gpus.c"
 
 # Architecture: Generic/Shared
+"src/architecture/generic/nv_generic_hal.c"
 "src/architecture/generic/nv_generic_tests.c"
 
 # Architecture: NV1

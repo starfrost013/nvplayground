@@ -30,8 +30,8 @@
 /* Version information */
 
 #define APP_NAME "NVPlay"
-#define APP_DESCRIPTION "Raw GPU programming for early Nvidia GPUs\n"
-#define APP_VERSION "0.5.0.0 (pre-release)"
+#define APP_DESCRIPTION "GPU research driver & raw programming tool\n"
+#define APP_VERSION "5.0.0 (pre-release)"
 #define APP_COMPILE_TIME __DATE__ " " __TIME__
 
 #define APP_VERSION_FULL APP_VERSION " (" APP_COMPILE_TIME ")\n" APP_DESCRIPTION
@@ -344,8 +344,6 @@ static inline __attribute__((always_inline)) uint32_t GPU_NV_GetGeneration()
 // READ/WRITE functions for GPU memory areas
 //
 
-#define NV_MMIO_SIZE                                   	0x1000000       // Max MMIO size
-#define NV5_MAX_VRAM_SIZE                         		0x2000000
 
 // only 8 and 32 bit are really needed
 uint8_t nv_mmio_read8(uint32_t offset); 

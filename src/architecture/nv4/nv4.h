@@ -20,8 +20,6 @@ typedef struct nv4_state_s
 extern nv4_state_t nv4_state; 
 
 bool nv4_init();
-
 bool nv4_dump_mfg_info();
 bool nv4_dump_mmio();
-
 void nv4_shutdown(); 
