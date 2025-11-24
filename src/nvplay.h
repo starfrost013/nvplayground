@@ -161,9 +161,28 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
 #define PCI_DEVICE_NV5_CRAP			0x002C		// Vanta					2000
 /* Yes this is considered "NV6" for some reason */
 #define PCI_DEVICE_NV6				0x002D		// RIVA TNT2 M64			1999
+
+// Celsius (NV1x; TnL)
 #define PCI_DEVICE_NV10				0x0100		// GeForce 256 (SDRAM)		1999
 #define PCI_DEVICE_NV10_DDR			0x0101		// GeForce 256 (DDR1)		1999
 #define PCI_DEVICE_NV10_QUADRO		0x0103		// Quadro					2000 (aka NV10GL)
+#define PCI_DEVICE_NV11_MX400		0x0110		// GeForce 2 MX400			2001 (has some stuff NV15 doesn't!)
+#define PCI_DEVICE_NV11_MX200		0x0111		// GeForce 2 MX100/200		2000 (has some stuff NV15 doesn't!)
+#define PCI_DEVICE_NV11_GO			0x0112		// GeForce 2 Go				2000 (has some stuff NV15 doesn't!)
+#define PCI_DEVICE_NV11_QUADRO		0x0113		// Quadro 2 MX				2000 (has some stuff NV15 doesn't!)
+#define PCI_DEVICE_NV15				0x0150		// GeForce 2				2000
+#define PCI_DEVICE_NV15_TI			0x0151		// GeForce 2 Ti				2000
+#define PCI_DEVICE_NV15_ULTRA		0x0152		// GeForce 2 Ultra			2001
+#define PCI_DEVICE_NV15_QUADRO		0x0153		// Quadro2					2000
+
+// NV17/18 (Many IDs)
+#define PCI_DEVICE_NV17_START		0x0170		// GeForce 4 MX				2002
+#define PCI_DEVICE_NV17_END			0x017F		// GeForce 4 MX				2002
+#define PCI_DEVICE_NV18_START		0x0180		// GeForce 4 MX AGP-8X		2002-2003
+#define PCI_DEVICE_NV18_END			0x018D		// GeForce 4 MX AGP-8X		2002-2003
+
+#define PCI_DEVICE_NV1A				0x01A0		// GeForce 2 IGP			~2000
+#define PCI_DEVICE_NV1F				0x01F0		// GeForce 4 MX IGP			2002
 
 /* 
     NV_PMC_BOOT values 
@@ -224,7 +243,8 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
 /* NVidia Device Definition */
 typedef struct nv_device_info_s
 {
-	uint32_t device_id; 								// Device ID of the GPU
+	uint32_t device_id_start;							// First device ID of the GPU
+	uint32_t device_id_end;								// Last device ID of the GPU
 	uint32_t vendor_id;									// Vendor ID of the GPU
 	const char* name; 									// Friendly name of the GPU
 	bool (*init_function)();							// Function to call on entry point	
@@ -238,6 +258,7 @@ extern nv_device_info_t supported_devices[];
 typedef struct nv_device_s
 {
 	nv_device_info_t device_info;
+	uint32_t real_device_id;		// real device id
 	uint32_t bus_number;			// PCI bus number
 	uint32_t function_number; 		// PCI function number
 	void* bar0;						// PCI BAR0 mapping - gpu stuff
@@ -245,13 +266,14 @@ typedef struct nv_device_s
 	int32_t bar0_selector;			// MUST BE USED FOR ACCESS TO BAR0
 	int32_t bar1_selector;			// MUST BE USED FOR ACCESS TO BAR1
 	uint32_t bar1_dfb_start;		// DFB start address
-	uint32_t ramin_start; 		// RAMIN start address
+	uint32_t ramin_start; 			// RAMIN start address
 
 	uint32_t vram_amount;			// Amount of Video RAM
 
 	/* Some registers shared between all gpus */
 	uint32_t nv_pfb_boot_0;			// nv_pfb_boot_0 register read at boot
 	uint32_t nv_pmc_boot_0;			// nv_pmc_boot_0 register read at boot
+	uint32_t nv10_pfb_cfg;			// nv10 pfb_cfg
 	uint32_t straps;				// Straps for oem-specific config
 	double crystal_hz;				// Clock crystal base (TODO: fully refactor so this is not needed)
 
@@ -337,7 +359,7 @@ static inline __attribute__((always_inline)) uint32_t GPU_NV_GetGeneration()
 	if (GPU_IsNV10())
 		return 0x10;
 	else
-		return (current_device.device_info.device_id & ~8) >> 3;
+		return (current_device.real_device_id & ~8) >> 3;
 }
 
 //

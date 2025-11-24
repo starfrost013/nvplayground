@@ -25,13 +25,17 @@ bool GPU_Detect()
         
         Logging_Write(log_level_debug, "Trying to find GPU: %s\n", current_device_info.name);
 
-        if (PCI_DevicePresent(current_device_info.device_id, current_device_info.vendor_id))
+        for (uint32_t device_id = current_device_info.device_id_start; device_id <= current_device_info.device_id_end; device_id++)
         {
-            Logging_Write(log_level_message, "Detected GPU: %s\n", current_device_info.name);
+            if (PCI_DevicePresent(device_id, current_device_info.vendor_id))
+            {
+                Logging_Write(log_level_message, "Detected GPU: %s\n", current_device_info.name);
 
-            // set up current info
-            current_device.device_info = current_device_info;
-            return true; 
+                // set up current info
+                current_device.device_info = current_device_info;
+                current_device.real_device_id = device_id; // since some have multiple
+                return true; 
+            }
         }
 
         i++;

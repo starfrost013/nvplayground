@@ -67,8 +67,11 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/architecture/nv3/nv3_core.c"
 "src/architecture/nv3/tests/nv3_tests.c"
 
-# Architecture: NV4
+# Architecture: NV4/5  
 "src/architecture/nv4/nv4_core.c"
+
+# Architecture: Celsius
+"src/architecture/nv10/nv10_core.c"
 
 )
 

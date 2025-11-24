@@ -260,8 +260,8 @@ bool Command_WriteCrtc()
 bool Command_NV3Explode()
 {
     // Check the pci vendor 
-    if (current_device.device_info.device_id == PCI_DEVICE_NV3
-    || current_device.device_info.device_id == PCI_DEVICE_NV3T_ACPI)
+    if (current_device.real_device_id == PCI_DEVICE_NV3
+    || current_device.real_device_id == PCI_DEVICE_NV3T_ACPI)
     {
         uint32_t pme_debug_0 = nv_mmio_read32(NV3_PME_DEBUG_0);
         nv_mmio_write32(NV3_PME_INTR, 0x11111111);

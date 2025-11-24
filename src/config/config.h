@@ -40,6 +40,9 @@ typedef struct nv_config_s
     nv_config_test_entry_t* test_list_head;         // The first test entry.
     nv_config_test_entry_t* test_list_tail;         // The last test entry.
     uint32_t num_tests_enabled;                     // The number of enabled tests.
+
+    // Debug settings
+    bool nv10_always_map_128m;                      // NV1x: Always map 128MB
 } nv_config_t;
 
 extern nv_config_t config; 

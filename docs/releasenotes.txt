@@ -2,6 +2,7 @@ NVPlay 0.5.0.0 is now available.
 
 Changes:
 * Added a "repl" loop that is the new default mode. Run "-test" to run tests. 
+* Added support for Celsius (NV1x) GPUs (untested!)
 * Commands now store number of parameters and check for them
 * Simplified terrible script parsing code
 * Renamed nvplayground.h to nvplay.h
@@ -15,7 +16,6 @@ Changes:
 * Added GPU_IsNVx functions for GPU-specific behaviour in generic tests
 * Added GPU_NV_GetGeneration functions to return a number equivalent to the NV codename for a chip
 * Allowed dumping amounts of vram that are not 16 MB 
-
 Old release notes:
 
 0.4.0.0-rcX Changes:

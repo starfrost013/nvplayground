@@ -11,7 +11,6 @@
 
 #include "architecture/nv1/nv1_ref.h"
 #include "nvplay.h"
-#include "nvplay.hpp"
 #include "util/util.h"
 #include <architecture/generic/nv_generic.h>
 #include <architecture/nv1/nv1.h>

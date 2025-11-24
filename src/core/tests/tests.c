@@ -51,19 +51,38 @@ bool Test_IsAvailableForGPU(const char* test_name)
 {
     // do we need to sanity check these?
     uint32_t vendor_id = current_device.device_info.vendor_id;
-    uint32_t device_id = current_device.device_info.device_id;
+    uint32_t device_id = current_device.real_device_id;
 
     uint32_t test_number = 0; 
-
     nv_test_t nv_test = nv_tests[test_number];
+
+    //make this code a bit faster
+    bool need_inner_loop = true;
+
+    if (current_device.device_info.device_id_start == current_device.device_info.device_id_end)
+        need_inner_loop = false;
 
     // iterate through each test
     while (nv_test.test_function != NULL)
     {
-        if (!strcmp(nv_test.name, test_name)
-        && vendor_id == nv_test.required_vendor_id
-        && device_id == nv_test.required_device_id)
-            return true; 
+        bool right_test = !strcmp(nv_test.name, test_name)
+        && vendor_id == nv_test.required_vendor_id;
+
+        if (right_test)
+        {
+            if (!need_inner_loop
+            && device_id == nv_test.required_device_id)
+                return true; 
+            else 
+            {
+                for (uint32_t device_id = current_device.device_info.device_id_start; device_id <= current_device.device_info.device_id_end; device_id++)
+                {
+                    if (device_id == nv_test.required_device_id)
+                        return true; 
+                }
+            }
+        }
+
 
         test_number++;
         nv_test = nv_tests[test_number];

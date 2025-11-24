@@ -12,13 +12,11 @@
 // Purpose: 
 //
 // Architecture Includes
+#include <architecture/generic/nv_generic.h>
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv3/nv3_ref.h>
-
 #include "nvplay.h"
 #include "util/util.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 nv3_state_t nv3_state = {0};                    // NV3 specific state 
 

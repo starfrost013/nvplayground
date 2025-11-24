@@ -41,3 +41,5 @@ typedef struct nvhal_entry_s
     void (*submit_object)(uint32_t name, uint32_t context);
     void (*submit_method)(uint32_t method, uint32_t param);
 } nvhal_entry_t;   
+
+extern nvhal_entry_t nvhal_entries[];

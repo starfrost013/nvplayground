@@ -1,4 +1,13 @@
-#include "architecture/nv3/nv3_ref.h"
+/* 
+    NVPlay
+    Copyright © 2025 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    nv4_core.c: NV4/NV5 (TNT series) initialisation and shutdown
+*/
+
 #include "nv4_ref.h"
 #include "nvplay.h"
 #include <architecture/nv4/nv4.h>

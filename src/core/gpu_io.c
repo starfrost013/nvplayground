@@ -93,7 +93,7 @@ uint32_t nv_ramin_read32(uint32_t offset)
     //
     // If it turns out to be too slow we can change it
 
-    switch (current_device.device_info.device_id)
+    switch (current_device.real_device_id) // temp
     {
         // RAMIN not usable on NV1 with CONFIG=2 due to hardware errata, see envytools
         case PCI_DEVICE_NV1_NV:
@@ -121,7 +121,7 @@ void nv_ramin_write32(uint32_t offset, uint32_t val)
     //
     // If it turns out to be too slow we can change it
 
-    switch (current_device.device_info.device_id)
+    switch (current_device.real_device_id)
     {
         // RAMIN not usable on NV1 with CONFIG=2 due to hardware errata, see envytools
         case PCI_DEVICE_NV1_NV:
