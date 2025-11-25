@@ -18,7 +18,7 @@ void GPURepl_Run()
     char repl_string[MAX_STR] = {0};
 
     Logging_Write(log_level_message, "Welcome to NVPlay\n");
-    Logging_Write(log_level_message, "Type supported GPU commands. Type q or exit to exit.\n");
+    Logging_Write(log_level_message, "Enter commands to interface with the GPU. Type q or exit to exit.\n");
 
     while (repl_is_running)
     {
