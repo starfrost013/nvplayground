@@ -8,7 +8,6 @@
     NV10_core.c: NV1x (GeForce 256, 2, 2MX, 4MX) / Celsius-based GPU architecture
 */
 
-#include "architecture/nv4/nv4_ref.h"
 #include "nvplay.h"
 #include <architecture/nv10/nv10.h>
 #include <config/config.h>
@@ -163,6 +162,7 @@ bool nv10_dump_mfg_info()
     Logging_Write(log_level_message, "Pixel Clock Coefficient = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
     Logging_Write(log_level_message, "Core Clock Coefficient  = %08lX (%.2f MHz)\n", nvpll, nvpll_mhz);
     Logging_Write(log_level_message, "VRAM Clock Coefficient  = %08lX (%.2f MHz)\n", mpll, mpll_mhz);
+
 
     return true; 
 }

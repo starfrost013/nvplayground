@@ -239,16 +239,33 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
 // NV10+ uses multiple device ids per gpu stepping and a hex representation of the stepping
 #define NV_PMC_BOOT_NV10_BASE		0x01000000
 
+// Hardware Abstraction Layer entry
+// All hardware-specific stuff
+typedef struct nvhal_entry_s
+{
+    bool (*init_function)();							// Function to call on entry point	
+	void (*shutdown_function)();						// Function to call on shutdown
 
-/* NVidia Device Definition */
+    // TEST functions
+    void (*dump_fifo_to_text_file)();
+    void (*dump_ramht_to_text_file)();
+    void (*dump_ramfc_to_text_file)();
+    void (*dump_ramro_to_text_file)();
+    void (*dump_cache_to_text_file)();
+
+    // RENDERING functions
+    void (*submit_object)(uint32_t name, uint32_t context);
+    void (*submit_method)(uint32_t method, uint32_t param);
+} nvhal_entry_t;   
+
+/* Graphics Device Definition */
 typedef struct nv_device_info_s
 {
 	uint32_t device_id_start;							// First device ID of the GPU
 	uint32_t device_id_end;								// Last device ID of the GPU
 	uint32_t vendor_id;									// Vendor ID of the GPU
 	const char* name; 									// Friendly name of the GPU
-	bool (*init_function)();							// Function to call on entry point	
-	void (*shutdown_function)();						// Function to call on shutdown
+	nvhal_entry_t* hal;									// HAL entry to use for the GPU
 } nv_device_info_t; 
 
 /* List of supported devices */
@@ -258,6 +275,7 @@ extern nv_device_info_t supported_devices[];
 typedef struct nv_device_s
 {
 	nv_device_info_t device_info;
+	nvhal_entry_t hal;				// HAL entry (function pointers aren't constant)
 	uint32_t real_device_id;		// real device id
 	uint32_t bus_number;			// PCI bus number
 	uint32_t function_number; 		// PCI function number

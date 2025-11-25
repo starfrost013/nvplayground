@@ -89,13 +89,13 @@ void NVPlay_RunTests()
 void NVPlay_Run()
 {
 /* Make sure the GPU is supported */
-	if (!current_device.device_info.init_function)
+	if (!current_device.device_info.hal->init_function)
 	{
 		Logging_Write(log_level_error, "This GPU is not yet supported :(\n");
 		exit(3);
 	}
 
-	if (!current_device.device_info.init_function())
+	if (!current_device.device_info.hal->init_function())
 	{
 		Logging_Write(log_level_error, "GPU initialisation failed!\n");
 		exit(4);
@@ -114,8 +114,8 @@ void NVPlay_Run()
 
 void NVPlay_Shutdown()
 {
-	if (current_device.device_info.shutdown_function)
-		current_device.device_info.shutdown_function();
+	if (current_device.device_info.hal->shutdown_function)
+		current_device.device_info.hal->shutdown_function();
 
 	Logging_Shutdown();
 	exit(0);

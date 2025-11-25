@@ -13,8 +13,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
-
 #define NV3_LFB_RAMIN_MIRROR_START                      0x400000        // Mirror of ramin (VERIFY ON HARDWARE)
 #define NV3_LFB_MIRROR_START                            0x800000        // The second half of LFB(?)
 #define NV3_LFB_RAMIN_START                             0xC00000        // RAMIN mapping start

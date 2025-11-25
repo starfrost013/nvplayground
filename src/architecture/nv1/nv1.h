@@ -31,4 +31,3 @@ bool nv1_init();
 bool nv1_print_info();
 bool nv1_print_pci_config();
 bool nv1_security_breach();
-bool nv1_dump_vbios();

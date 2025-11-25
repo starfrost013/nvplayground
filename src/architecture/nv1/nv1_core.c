@@ -217,24 +217,3 @@ bool nv1_security_breach()
     return false; 
 }
 
-// Todo: Universal vbios dump function
-bool nv1_dump_vbios()
-{
-    Logging_Write(log_level_message, "Dumping Video BIOS...");
-
-    FILE* vbios = fopen("nv1bios.bin", "wb");
-
-    uint32_t vbios_bin[8192];
-
-    for (int32_t i = 0; i < 8192; i++)
-    {
-        vbios_bin[i] = nv_mmio_read32(NV1_PROM + i*4);
-    }   
-
-    fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
-
-    fclose(vbios);
-    Logging_Write(log_level_message, "Done!\n");
-
-    return true; 
-}

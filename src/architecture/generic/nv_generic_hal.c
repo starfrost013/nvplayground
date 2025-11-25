@@ -14,37 +14,96 @@
 #include <architecture/nv4/nv4.h>
 #include <architecture/nv10/nv10.h>
 
-nvhal_entry_t nvhal_entries[] =
+// NV1 NVHAL entry
+const nvhal_entry_t nvhal_nv1 =
 {
-    // NV1
-    { 
-        nv1_init,
-        NULL,
-    },
+    // Init/shutdown functions
+    nv1_init,                       // Init
+    NULL,                           // Shutdown
 
-    // NV2
-    {
-        NULL,
-        NULL, 
-    },
+    // Dump functions
+    NULL,                           // Dump FIFO to text file
+    NULL,                           // Dump RAMHT to text file 
+    NULL,                           // Dump RAMFC to text file
+    NULL,                           // Dump RAMRO to text file
+    NULL,                           // Dump PGRAPH_CACHE to text file
 
-    // NV3
-    {
+    // Rendering functions
+    NULL,                           // Submit object in subchannel
+    NULL,                           // Submit method for existing subchannel
+}; 
 
-    },
+// NV2 NVHAL entry
+const nvhal_entry_t nvhal_nv2 =
+{
+    // Init/shutdown functions
+    NULL,                           // Init
+    NULL,                           // Shutdown
 
-    // NV4
-    {
+    // Dump functions
+    NULL,                           // Dump FIFO to text file
+    NULL,                           // Dump RAMHT to text file 
+    NULL,                           // Dump RAMFC to text file
+    NULL,                           // Dump RAMRO to text file
+    NULL,                           // Dump PGRAPH_CACHE to text file
 
-    },
+    // Rendering functions
+    NULL,                           // Submit object in subchannel
+    NULL,                           // Submit method for existing subchannel              
+};
 
-    // NV5
-    {
+const nvhal_entry_t nvhal_nv3 =
+{
+    // Init/shutdown functions
+    nv3_init,                       // Init
+    NULL,                           // Shutdown
 
-    },
+    // Dump functions
+    NULL,                           // Dump FIFO to text file
+    NULL,                           // Dump RAMHT to text file 
+    NULL,                           // Dump RAMFC to text file
+    NULL,                           // Dump RAMRO to text file
+    NULL,                           // Dump PGRAPH_CACHE to text file
 
-    // NV10
-    {
+    // Rendering functions
+    NULL,                           // Submit object in subchannel
+    NULL,                           // Submit method for existing subchannel 
+};
 
-    },
+// NV4-based GPU (NV4/NV5/NV6) HAL
+const nvhal_entry_t nvhal_nv4 =
+{
+    // Init/shutdown functions
+    nv4_init,                       // Init
+    nv4_shutdown,                   // Shutdown
+
+    // Dump functions
+    NULL,                           // Dump FIFO to text file
+    NULL,                           // Dump RAMHT to text file 
+    NULL,                           // Dump RAMFC to text file
+    NULL,                           // Dump RAMRO to text file
+    NULL,                           // Dump PGRAPH_CACHE to text file
+
+    // Rendering functions
+    NULL,                           // Submit object in subchannel
+    NULL,                           // Submit method for existing subchannel 
+};
+
+// Celsius (NV1x) HAL
+const nvhal_entry_t nvhal_celsius =
+{
+    // Init/shutdown functions
+    nv10_init,                      // Init
+    nv10_shutdown,                  // Shutdown
+
+    // Dump functions
+    NULL,                           // Dump FIFO to text file
+    NULL,                           // Dump RAMHT to text file 
+    NULL,                           // Dump RAMFC to text file
+    NULL,                           // Dump RAMRO to text file
+    NULL,                           // Dump PGRAPH_CACHE to text file
+
+    // Rendering functions
+    NULL,                           // Submit object in subchannel
+    NULL,                           // Submit method for existing subchannel 
 };

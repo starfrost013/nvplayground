@@ -30,7 +30,6 @@ typedef struct nv3_dump_excluded_areas_s
 bool nv3_init();
 
 /* NV3 Tests */
-bool nv3_dump_vbios();
 bool nv3_dump_mmio();
 bool nv3_garbage_mmio_read();
 bool nv3_dump_mfg_info();

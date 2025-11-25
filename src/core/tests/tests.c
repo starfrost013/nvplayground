@@ -19,6 +19,7 @@
 #include <architecture/nv1/nv1.h>
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv4/nv4.h>
+#include <architecture/nv10/nv10.h>
 
 nv_test_t nv_tests[] = 
 {

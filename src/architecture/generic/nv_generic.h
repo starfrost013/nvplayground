@@ -24,22 +24,9 @@ bool NVGeneric_DumpRAMFC();                         // Dump all channels that ar
 bool NVGeneric_DumpRAMRO();                         // Dump any errors that may have occurred 
 bool NVGeneric_DumpPGRAPHCache();
 
-// Hardware Abstraction Layer entry
-// All hardware-specific stuff
-typedef struct nvhal_entry_s
-{
-    bool (*init_function)();							// Function to call on entry point	
-	void (*shutdown_function)();						// Function to call on shutdown
-
-    // TEST functions
-    void (*dump_fifo_to_text_file)();
-    void (*dump_ramht_to_text_file)();
-    void (*dump_ramfc_to_text_file)();
-    void (*dump_ramro_to_text_file)();
-
-    // UTILISATION functions
-    void (*submit_object)(uint32_t name, uint32_t context);
-    void (*submit_method)(uint32_t method, uint32_t param);
-} nvhal_entry_t;   
-
-extern nvhal_entry_t nvhal_entries[];
+// I considered using an array, but we'd have to define hardcoded indicies anyway so we can just define these entries
+extern const nvhal_entry_t nvhal_nv1;
+extern const nvhal_entry_t nvhal_nv2;
+extern const nvhal_entry_t nvhal_nv3;
+extern const nvhal_entry_t nvhal_nv4;
+extern const nvhal_entry_t nvhal_celsius;

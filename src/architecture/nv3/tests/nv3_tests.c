@@ -159,30 +159,6 @@ bool nv3_test_overclock()
     return true; 
 }
 
-// Dump NV4 BIOS
-bool nv3_dump_vbios()
-{
-    Logging_Write(log_level_message, "Dumping Video BIOS...");
-
-    FILE* vbios = fopen("nv3bios.bin", "wb");
-
-    //uint32_t rom_location = NV3_PROM_START;
-    uint32_t vbios_bin[8192];
-
-    for (int32_t i = 0; i < 8192; i++)
-    {
-        vbios_bin[i] = _farpeekl(_dos_ds, VGA_REALMODE_VBIOS_LOCATION + i*4);
-        //rom_location += 4; //dword 
-    }   
-
-    fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
-
-    fclose(vbios);
-    Logging_Write(log_level_message, "Done!\n");
-
-    return true; 
-}
-
 // Areas of the GPU space that may crash the system. These are to be ignored while dumping with the EXCLUDED string written.
 nv3_dump_excluded_areas_t excluded_areas[] =
 {

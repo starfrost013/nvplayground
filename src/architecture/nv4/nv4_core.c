@@ -10,6 +10,7 @@
 
 #include "nv4_ref.h"
 #include "nvplay.h"
+
 #include <architecture/nv4/nv4.h>
 
 // Globals
