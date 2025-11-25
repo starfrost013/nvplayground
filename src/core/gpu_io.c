@@ -5,7 +5,7 @@
     Raw GPU programming for early Nvidia GPUs
     Licensed under the MIT license (see license file)
 
-    gpu_io.c: Implements I/O functions that are shared across all pieces of graphics hardware.
+    gpu_io.c: Implements I/O functions that are shared across all graphics hardware.
 */
 
 #include <nvplay.h>

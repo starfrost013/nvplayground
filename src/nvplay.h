@@ -31,7 +31,7 @@
 
 #define APP_NAME "NVPlay"
 #define APP_DESCRIPTION "GPU research driver & raw programming tool\n"
-#define APP_VERSION "5.0.0 (pre-release)"
+#define APP_VERSION "1.0.0 (pre-release)"
 #define APP_COMPILE_TIME __DATE__ " " __TIME__
 
 #define APP_VERSION_FULL APP_VERSION " (" APP_COMPILE_TIME ")\n" APP_DESCRIPTION
@@ -42,6 +42,7 @@
 
 // The help string
 extern const char* msg_help; 
+extern const char* msg_help_script;
 void NVPlay_ShowHelpAndExit();
 
 // String

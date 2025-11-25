@@ -74,7 +74,7 @@ void Script_RunCommand(char* line_buf)
 	strncpy(last_command, line_buf_trimmed, MAX_STR);
 
 	// this gets the command
-	char* command_name = strtok( line_buf_trimmed, " ");
+	char* command_name = strtok(line_buf_trimmed, " ");
 
 	int32_t script_command_id = 0;
 	gpu_script_command_t* script_command = &commands[script_command_id];

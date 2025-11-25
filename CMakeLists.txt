@@ -49,6 +49,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # NVCore: Script Engine
 "src/core/script/gpu_script_commands.c"
+"src/core/script/gpu_script_help.c"
 "src/core/script/gpu_script_parser.c"
 
 # NVCore: GPU Savestate format
