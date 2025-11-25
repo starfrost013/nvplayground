@@ -28,7 +28,6 @@ command_line_t command_line = {0};
 #define COMMAND_LINE_BOOTONLY "-b"
 #define COMMAND_LINE_BOOTONLY_FULL "-bootonly"
 
-
 bool Cmdline_Parse(int argc, char** argv)
 {
     if (!argc)
