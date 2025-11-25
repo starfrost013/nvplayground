@@ -38,7 +38,7 @@ nv_device_info_t supported_devices[] =
 	{ PCI_DEVICE_NV17_START, PCI_DEVICE_NV17_END, PCI_VENDOR_NV, "GeForce 4 MX-based GPU (NV17)", &nvhal_celsius },
 	{ PCI_DEVICE_NV18_START, PCI_DEVICE_NV18_END, PCI_VENDOR_NV, "GeForce 4 MX-based GPU with AGP 8X support (NV18)",& nvhal_celsius },
 	{ PCI_DEVICE_NV1A, PCI_DEVICE_NV1A, PCI_VENDOR_NV, "GeForce 2 IGP (NV1A)", &nvhal_celsius },
-	{ PCI_DEVICE_NV1F, PCI_DEVICE_NV1F, PCI_VENDOR_NV, "GeForce 4 MX IGP (NV1AF)", &nvhal_celsius },
+	{ PCI_DEVICE_NV1F, PCI_DEVICE_NV1F, PCI_VENDOR_NV, "GeForce 4 MX IGP (NV1F)", &nvhal_celsius },
 
 	{ 0, 0, 0, "", NULL }, // sentinel
 };
