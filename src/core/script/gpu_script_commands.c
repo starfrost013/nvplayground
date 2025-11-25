@@ -223,6 +223,106 @@ bool Command_ReadRaminConsole32()
     return true; 
 } 
 
+
+
+bool Command_WritePCI8()
+{
+    uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    PCI_WriteConfig8(current_device.bus_number, current_device.function_number, offset, value);
+    return true; 
+}
+
+bool Command_WritePCIRange8()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset++)
+    {
+        PCI_WriteConfig8(current_device.bus_number, current_device.function_number, offset, value);
+    }
+
+    return true; 
+}
+
+bool Command_ReadPCIConsole8()
+{
+    uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint8_t value = PCI_ReadConfig8(current_device.bus_number, current_device.fun, offset);
+
+    Logging_Write(log_level_message, "Command_ReadPCIConsole8: %03x = %02x\n", offset, value);
+    return true; 
+}
+
+bool Command_WritePCI16()
+{
+    uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    PCI_WriteConfig16(current_device.bus_number, current_device.function_number, offset, value);
+    return true; 
+}
+
+bool Command_WritePCIRange16()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset += 2)
+    {
+        PCI_WriteConfig16(current_device.bus_number, current_device.function_number, offset, value);
+    }
+    
+    return true; 
+}
+
+bool Command_ReadPCIConsole16()
+{
+    uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint8_t value = PCI_ReadConfig16(current_device.bus_number, current_device.fun, offset);
+
+    Logging_Write(log_level_message, "Command_ReadPCIConsole16: %04x = %04x\n", offset, value);
+    return true; 
+}
+
+bool Command_WritePCI32()
+{   
+    uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    PCI_WriteConfig32(current_device.bus_number, current_device.function_number, offset, value);
+
+    return true; 
+}
+
+bool Command_WritePCIRange32()
+{
+    uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
+    uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
+    {
+        PCI_WriteConfig32(current_device.bus_number, current_device.function_number, offset, value);
+    }
+    
+    return true; 
+}
+
+bool Command_ReadPCIConsole32()
+{
+    uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint8_t value = PCI_ReadConfig32(current_device.bus_number, current_device.fun, offset);
+
+    Logging_Write(log_level_message, "Command_ReadPCIConsole32: %08x = %08x\n", offset, value);
+    return true; 
+}
+
+// Read a single CRTC register and print it to the console.
 bool Command_ReadCrtcConsole()
 {
     uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
@@ -239,19 +339,153 @@ bool Command_ReadCrtcConsole()
     return true; 
 }
 
+// Write a CRTC register.
 bool Command_WriteCrtc()
 {
     uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
 
     if (index > NV3_CRTC_REGISTER_NVIDIA_END)  
     {
-        Logging_Write(log_level_warning, "Command_ReadCrtcConsole: Ignoring invalid index %02x\n", index);
+        Logging_Write(log_level_warning, "Command_WriteCrtc: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     nv_crtc_write(index, value);
+    return true; 
+}
+
+// Write a range of CRTC registers.
+bool Command_WriteCrtcRange()
+{
+    uint32_t index_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t index_end = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    if (index_start > NV3_CRTC_REGISTER_NVIDIA_END
+        || index_end > NV3_CRTC_REGISTER_NVIDIA_END)  
+    {
+        Logging_Write(log_level_warning, "Command_WriteCrtcRange: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    for (uint32_t index = index_start; index < index_end; index++)
+        nv_crtc_write(index, value);
+
+    return true; 
+}
+
+// Read a single GDC register and print it to the console.
+bool Command_ReadGdcConsole()
+{
+    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (index > NV3_PRMVIO_GR_INDEX_END)  
+    {
+        Logging_Write(log_level_warning, "Command_ReadGdcConsole: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = nv_gdc_read(index);
+
+    Logging_Write(log_level_message, "Command_ReadGdcConsole: CRTC[%02x] = %02x\n", index, value);
+    return true; 
+}
+
+// Write a CRTC register.
+bool Command_WriteGdc()
+{
+    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (index > NV3_PRMVIO_GR_INDEX_END)  
+    {
+        Logging_Write(log_level_warning, "Command_WriteGdc: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    nv_gdc_write(index, value);
+    return true; 
+}
+
+// Write a range of CRTC registers.
+bool Command_WriteGdcRange()
+{
+    uint32_t index_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t index_end = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    // same for all NVs
+    if (index_start > NV3_PRMVIO_GR_INDEX_END
+        || index_end > NV3_PRMVIO_GR_INDEX_END)  
+    {
+        Logging_Write(log_level_warning, "Command_WriteGdcRange: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    for (uint32_t index = index_start; index < index_end; index++)
+        nv_gdc_write(index, value);
+
+    return true; 
+}
+
+// Read a single CRTC register and print it to the console.
+bool Command_ReadSRConsole()
+{
+    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (index > NV3_PRMVIO_SR_INDEX_END)  
+    {
+        Logging_Write(log_level_warning, "Command_ReadSRConsole: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = nv_sequencer_read(index);
+
+    Logging_Write(log_level_message, "Command_ReadSRConsole: CRTC[%02x] = %02x\n", index, value);
+    return true; 
+}
+
+// Write a CRTC register.
+bool Command_WriteSR()
+{
+    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (index > NV3_PRMVIO_SR_INDEX_END)  
+    {
+        Logging_Write(log_level_warning, "Command_WriteSR: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    nv_sequencer_write(index, value);
+    return true; 
+}
+
+// Write a range of CRTC registers.
+bool Command_WriteSRRange()
+{
+    uint32_t index_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t index_end = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    // uint, can't be below 0
+    if (index_start > NV3_PRMVIO_SR_INDEX_END
+        || index_end > NV3_PRMVIO_SR_INDEX_END)  
+    {
+        Logging_Write(log_level_warning, "Command_WriteSRRange: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    for (uint32_t index = index_start; index < index_end; index++)
+        nv_sequencer_write(index, value);
+
     return true; 
 }
 
@@ -339,13 +573,30 @@ gpu_script_command_t commands[] =
     { "rvc16", "readvramconsole16", Command_ReadVRAMConsole16, 1 },
     { "wvrange16", "writevramrange16", Command_WriteVRAMRange16, 3 },
     { "wv32", "writevram32", Command_WriteVRAM32, 2 },
-    { "rvc32", "readmmioconsole32", Command_ReadVRAMConsole32, 1 },
+    { "rvc32", "readvramconsole32", Command_ReadVRAMConsole32, 1 },
     { "wvrange32", "writevramrange32", Command_WriteMMIORange32, 3 },
+    { "wp8", "writepci8", Command_WritePCI8, 2 },
+    { "rpc8", "readpciconsole8", Command_ReadPCIConsole8, 1 },
+    { "wprange8", "writepcirange8", Command_WritePCIRange8, 3 },
+    { "wp16", "writepci16", Command_WritePCI16, 2 },
+    { "rpc16", "readpciconsole16", Command_ReadPCIConsole16, 1 },
+    { "wprange16", "writepcirange16", Command_WritePCIRange16, 3 },
+    { "wp32", "writepci32", Command_WritePCI32, 2 },
+    { "rpc32", "readpciconsole32", Command_ReadPCIConsole32, 1 },
+    { "wprange32", "writepcirange32", Command_WritePCIRange32, 3 },
     { "wr32", "writeramin32", Command_WriteRamin32, 2 },
     { "rrc32", "readraminconsole32", Command_ReadRaminConsole32 },
     { "wrrange32", "writeraminrange32", Command_WriteRaminRange32, 3 },
     { "rcrtcc", "readcrtcconsole", Command_ReadCrtcConsole, 1 },
     { "wcrtc", "writecrtc", Command_WriteCrtc, 2 },
+    { "wcrtcrange", "writecrtcrange", Command_WriteCrtcRange, 3},
+    { "rgdcc", "readgdcconsole", Command_ReadCrtcConsole, 1 },
+    { "wgdcc", "writegdc", Command_WriteCrtc, 2 },
+    { "wgdcrange", "writegdcrange", Command_WriteCrtcRange, 3},
+    { "rsrc", "readsrconsole", Command_ReadCrtcConsole, 1 },
+    { "wsr", "writesr", Command_WriteCrtc, 2 },
+    { "wsrrange", "writesrrange", Command_WriteCrtcRange, 3},
+
     { "nv3_explode", "nv3_explode", Command_NV3Explode, 0 },
     { "rt", "runtest", Command_RunTest, 1},
     { "print", "printmessage", Command_Print, 1 },
@@ -354,5 +605,5 @@ gpu_script_command_t commands[] =
     { "printerror", "printerror", Command_PrintError, 1 },
     { "printversion", "printversion", Command_PrintVersion, 0 },
     
-    { NULL, NULL, NULL},            // Sentinel value for end of list.
+    { NULL, NULL, NULL, 0 },            // Sentinel value for end of list.
 };

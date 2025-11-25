@@ -72,7 +72,7 @@ void NVPlay_ShowHelpAndExit();
 #define PCI_CFG_OFFSET_HEADER_TYPE			0x0E
 #define PCI_CFG_OFFSET_BIST					0x0F
 
-/* BARs. Only 0/1 matter for supported NV cards and 0/1/2 for any NV cards but for PCI dumping code we dump everything 
+/* BARs. Only 0/1 matter for supported NV cards and 0/1/2 for NV20+ but for PCI dumping code we dump everything 
 
 Well, I guess they would all be used for 64-bit mapping. But we only care about 32-bit
 */

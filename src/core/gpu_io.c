@@ -21,7 +21,7 @@
 #include <time.h>
 
 //
-// MMIO Functinos
+// MMIO Functions
 //
 
 /* Read 8-bit value from the MMIO */
@@ -106,7 +106,7 @@ uint32_t nv_ramin_read32(uint32_t offset)
         // NV4 MMIO dumps show *PROM* (VBIOS mirror) at 0x700000 unlike 0x300000 as indicated by NV drivers. 
         // RAMIN RAMFC RAMHT RAMRO structures always start at 0x10000 so NVIDIA never had to deal with this issue (for all practical purposes RAMIN starts at 710000)
         // Therefore, it may not be possible, due to hardware errata, to write to RAMIN address below 0x10000!
-        case PCI_DEVICE_NV4:
+        case PCI_DEVICE_NV4 ... PCI_DEVICE_NV1F: // all NV1xsa re the same
             return _farpeekl(current_device.bar0_selector, NV4_RAMIN_START + offset);
     }
 

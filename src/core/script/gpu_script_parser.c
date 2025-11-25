@@ -25,7 +25,6 @@ uint32_t Command_Argc()
     // restore the original last command so we can parse it
 
     strncpy(last_token, last_command, MAX_STR);
-
 	uint32_t amount = 0;
 
 	// skip the command name

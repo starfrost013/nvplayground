@@ -931,12 +931,16 @@
 #define NV3_PRMVIO_GR_INDEX                             0xC03CE
 #define NV3_PRMVIO_GR                                   0xC03CF
 
+#define NV3_PRMVIO_GR_INDEX_END                         0x8
+
 #define NV3_PRMVIO_SR_INDEX_RESET                       0
 #define NV3_PRMVIO_SR_INDEX_CLOCK                       1
 #define NV3_PRMVIO_SR_INDEX_PLANE_MASK                  2
 #define NV3_PRMVIO_SR_INDEX_CHAR_MAP                    3
 #define NV3_PRMVIO_SR_INDEX_MEM_MODE                    4
 #define NV3_PRMVIO_SR_INDEX_LOCK                        5
+
+#define NV3_PRMVIO_SR_INDEX_END                         5
 
 #define NV3_PRMVIO_SR_INDEX_LOCK_LOCKED                 0x57
 #define NV3_PRMVIO_SR_INDEX_LOCK_UNLOCKED               0x99 //anything other than 0x57 but NV uses this
