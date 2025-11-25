@@ -243,7 +243,7 @@ bool NVGeneric_DumpFIFO()
 {
     // open a file
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xfifo.txt", GPU_NV_GetGeneration());
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxfifo.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
     uint32_t cache1_size = 32;
@@ -268,7 +268,7 @@ bool NVGeneric_DumpRAMHT()
     // open a file
 
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xramht.txt", GPU_NV_GetGeneration());
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramht.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
     fclose(stream);
@@ -280,7 +280,7 @@ bool NVGeneric_DumpRAMHT()
 bool NVGeneric_DumpRAMFC()
 {    
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xramfc.txt", GPU_NV_GetGeneration());
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramfc.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
     fclose(stream);
@@ -292,7 +292,7 @@ bool NVGeneric_DumpRAMFC()
 bool NVGeneric_DumpRAMRO()
 {
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xramro.txt", GPU_NV_GetGeneration());
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramro.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
     fclose(stream);
@@ -310,7 +310,7 @@ bool NVGeneric_DumpPGRAPHCache()
     }
 
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%xcache.txt", GPU_NV_GetGeneration());
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxcache.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
     fclose(stream);

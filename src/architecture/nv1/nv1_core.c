@@ -162,7 +162,7 @@ bool nv1_security_breach()
     // First write directly into PAUTH password register.
     for (uint32_t j = 0; j < 128; j++)
     {
-        Logging_Write(log_level_debug, "Write to index 0x%X (addr range=%06X-%06X)\n", j, NV1_PAUTH_PASSWORD_0(j), NV1_PAUTH_PASSWORD_3(j));
+        Logging_Write(log_level_debug, "Write to index 0x%lX (addr range=%06X-%06X)\n", j, NV1_PAUTH_PASSWORD_0(j), NV1_PAUTH_PASSWORD_3(j));
 
         // Write 128 bits of garbage data at a time into the PAUTH password registers
         random_value = (rand() << 16 | rand());
