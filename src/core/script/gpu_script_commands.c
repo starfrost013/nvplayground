@@ -223,8 +223,6 @@ bool Command_ReadRaminConsole32()
     return true; 
 } 
 
-
-
 bool Command_WritePCI8()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
@@ -283,7 +281,7 @@ bool Command_WritePCIRange16()
 bool Command_ReadPCIConsole16()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
-    uint8_t value = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, offset);
+    uint16_t value = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, offset);
 
     Logging_Write(log_level_message, "Command_ReadPCIConsole16: %04x = %04x\n", offset, value);
     return true; 
@@ -316,7 +314,7 @@ bool Command_WritePCIRange32()
 bool Command_ReadPCIConsole32()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
-    uint8_t value = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, offset);
+    uint32_t value = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, offset);
 
     Logging_Write(log_level_message, "Command_ReadPCIConsole32: %08x = %08x\n", offset, value);
     return true; 

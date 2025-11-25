@@ -80,6 +80,7 @@ void Script_RunCommand(char* line_buf)
 	gpu_script_command_t* script_command = &commands[script_command_id];
 
 	bool command_valid = false; 
+	bool command_found = false; 
 
 	// just use a valid abbreviated name
 	while (script_command->name_abbrev)
@@ -87,6 +88,8 @@ void Script_RunCommand(char* line_buf)
 		if (!strncmp(script_command->name_full, command_name, MAX_STR)
 		|| !strncmp(script_command->name_abbrev, command_name, MAX_STR))
 		{
+			// store one for found and one for valid
+			command_found = true; 
 			command_valid = true; 
 
 			// command code uses Command_Argc and Command_Argv to get functions	
@@ -95,7 +98,6 @@ void Script_RunCommand(char* line_buf)
 			{
 				Logging_Write(log_level_warning, "Command %s has no function!\n", script_command->name_full);
 				command_valid = false; 
-
 			}
 
 			if (Command_Argc() < script_command->num_parameters)
@@ -104,7 +106,8 @@ void Script_RunCommand(char* line_buf)
 				command_valid = false; 
 			}
 
-			if (command_valid)
+			if (command_found
+			&& command_valid)
 			{
 				if (!script_command->function())
 					Logging_Write(log_level_error, "Command %s failed to execute!\n", script_command->name_full);
@@ -119,7 +122,7 @@ void Script_RunCommand(char* line_buf)
 		script_command = &commands[script_command_id];
 	}
 
-	if (!command_valid)
+	if (!command_valid && !command_found)
 		Logging_Write(log_level_warning, "Unknown command %s\n", last_token);
 }
 
