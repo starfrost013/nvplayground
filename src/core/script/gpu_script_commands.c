@@ -388,7 +388,7 @@ bool Command_ReadGdcConsole()
 
     uint32_t value = nv_gdc_read(index);
 
-    Logging_Write(log_level_message, "Command_ReadGdcConsole: CRTC[%02x] = %02x\n", index, value);
+    Logging_Write(log_level_message, "Command_ReadGdcConsole: GR[%02x] = %02x\n", index, value);
     return true; 
 }
 
@@ -444,7 +444,7 @@ bool Command_ReadSRConsole()
 
     uint32_t value = nv_sequencer_read(index);
 
-    Logging_Write(log_level_message, "Command_ReadSRConsole: CRTC[%02x] = %02x\n", index, value);
+    Logging_Write(log_level_message, "Command_ReadSRConsole: SR[%02x] = %02x\n", index, value);
     return true; 
 }
 
