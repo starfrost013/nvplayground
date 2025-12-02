@@ -248,11 +248,11 @@ typedef struct nvhal_entry_s
 	void (*shutdown_function)();						// Function to call on shutdown
 
     // TEST functions
-    void (*dump_fifo_to_text_file)();
-    void (*dump_ramht_to_text_file)();
-    void (*dump_ramfc_to_text_file)();
-    void (*dump_ramro_to_text_file)();
-    void (*dump_cache_to_text_file)();
+    void (*dump_fifo_to_text_file)(FILE* stream);
+    void (*dump_ramht_to_text_file)(FILE* stream);
+    void (*dump_ramfc_to_text_file)(FILE* stream);
+    void (*dump_ramro_to_text_file)(FILE* stream);
+    void (*dump_cache_to_text_file)(FILE* stream);
 
     // RENDERING functions
     void (*submit_object)(uint32_t name, uint32_t context);

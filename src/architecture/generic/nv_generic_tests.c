@@ -246,14 +246,15 @@ bool NVGeneric_DumpFIFO()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxfifo.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
-    uint32_t cache1_size = 32;
-
-    if (GPU_IsNV3T())
-        cache1_size = 64;
-    if (GPU_IsNV4orBetter())
-        cache1_size = 128;
+    // call NVHAL function to dump hal
+    if (current_device.hal.dump_fifo_to_text_file)
+        current_device.hal.dump_fifo_to_text_file(stream);
+    else
+        Logging_Write(log_level_error, "HAL Failure: No dump_fifo_to_text_file function for GPU %s\n", current_device.device_info.name);
 
     // first dump Cache0
+
+
         
     // then cache1
 
@@ -271,6 +272,13 @@ bool NVGeneric_DumpRAMHT()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramht.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
+    // call NVHAL function to dump ramht
+    if (current_device.hal.dump_ramht_to_text_file)
+        current_device.hal.dump_ramht_to_text_file(stream);
+    else
+        Logging_Write(log_level_error, "HAL Failure: No dump_ramht_to_text_file function for GPU %s\n", current_device.device_info.name);
+
+
     fclose(stream);
 
     return true; 
@@ -282,6 +290,12 @@ bool NVGeneric_DumpRAMFC()
     char file_name[MSDOS_PATH_LENGTH] = {0};
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramfc.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
+
+    if (current_device.hal.dump_ramfc_to_text_file)
+        current_device.hal.dump_ramfc_to_text_file(stream);
+    else
+        Logging_Write(log_level_error, "HAL Failure: No dump_ramfc_to_text_file function for GPU %s\n", current_device.device_info.name);
+
 
     fclose(stream);
 
@@ -295,6 +309,11 @@ bool NVGeneric_DumpRAMRO()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramro.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
+    if (current_device.hal.dump_ramro_to_text_file)
+        current_device.hal.dump_ramro_to_text_file(stream);
+    else
+        Logging_Write(log_level_error, "HAL Failure: No dump_ramro_to_text_file function for GPU %s\n", current_device.device_info.name);
+
     fclose(stream);
 
     return true; 
@@ -305,13 +324,26 @@ bool NVGeneric_DumpPGRAPHCache()
 {
     if (GPU_IsNV10())
     {
-        Logging_Write(log_level_error, "DumpPGRAPHCache is not yet supported on NV10 because NV10 has a much more complicated and larger cache");
+        Logging_Write(log_level_error, "DumpPGRAPHCache is not yet supported on NV10 because NV10 has a much more complicated and larger cache\n");
         return false; 
     }
 
+    if (GPU_IsNV1())
+    {
+        Logging_Write(log_level_error, "NV1 doesn't have on-die cache, failing\n");
+        return false;
+    }   
+    
     char file_name[MSDOS_PATH_LENGTH] = {0};
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxcache.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
+
+    if (current_device.hal.dump_cache_to_text_file)
+        current_device.hal.dump_cache_to_text_file(stream);
+    else
+        Logging_Write(log_level_error, "HAL Failure: No dump_cache_to_text_file function for GPU %s\n", current_device.device_info.name);
+
+
 
     fclose(stream);
 

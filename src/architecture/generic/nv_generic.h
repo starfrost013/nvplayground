@@ -25,8 +25,8 @@ bool NVGeneric_DumpRAMRO();                         // Dump any errors that may 
 bool NVGeneric_DumpPGRAPHCache();
 
 // I considered using an array, but we'd have to define hardcoded indicies anyway so we can just define these entries
-extern const nvhal_entry_t nvhal_nv1;
-extern const nvhal_entry_t nvhal_nv2;
-extern const nvhal_entry_t nvhal_nv3;
-extern const nvhal_entry_t nvhal_nv4;
-extern const nvhal_entry_t nvhal_celsius;
+extern nvhal_entry_t nvhal_nv1;
+extern nvhal_entry_t nvhal_nv2;
+extern nvhal_entry_t nvhal_nv3;
+extern nvhal_entry_t nvhal_nv4;
+extern nvhal_entry_t nvhal_celsius;

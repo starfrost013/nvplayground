@@ -15,7 +15,7 @@
 #include <architecture/nv10/nv10.h>
 
 // NV1 NVHAL entry
-const nvhal_entry_t nvhal_nv1 =
+nvhal_entry_t nvhal_nv1 =
 {
     // Init/shutdown functions
     nv1_init,                       // Init
@@ -34,7 +34,7 @@ const nvhal_entry_t nvhal_nv1 =
 }; 
 
 // NV2 NVHAL entry
-const nvhal_entry_t nvhal_nv2 =
+nvhal_entry_t nvhal_nv2 =
 {
     // Init/shutdown functions
     NULL,                           // Init
@@ -52,7 +52,7 @@ const nvhal_entry_t nvhal_nv2 =
     NULL,                           // Submit method for existing subchannel              
 };
 
-const nvhal_entry_t nvhal_nv3 =
+nvhal_entry_t nvhal_nv3 =
 {
     // Init/shutdown functions
     nv3_init,                       // Init
@@ -71,7 +71,7 @@ const nvhal_entry_t nvhal_nv3 =
 };
 
 // NV4-based GPU (NV4/NV5/NV6) HAL
-const nvhal_entry_t nvhal_nv4 =
+nvhal_entry_t nvhal_nv4 =
 {
     // Init/shutdown functions
     nv4_init,                       // Init
@@ -90,7 +90,7 @@ const nvhal_entry_t nvhal_nv4 =
 };
 
 // Celsius (NV1x) HAL
-const nvhal_entry_t nvhal_celsius =
+nvhal_entry_t nvhal_celsius =
 {
     // Init/shutdown functions
     nv10_init,                      // Init
