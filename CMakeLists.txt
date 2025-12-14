@@ -100,15 +100,15 @@ add_custom_command(TARGET nvplay POST_BUILD
 )
 
 add_custom_command(TARGET nvplay POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_if_different
-  ${CMAKE_BINARY_DIR}/${NVPLAY_CONFIG_FILE_NAME}
-  ${CMAKE_BINARY_DIR}/out/${NVPLAY_CONFIG_FILE_NAME}
-)
-
-add_custom_command(TARGET nvplay POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_CURRENT_SOURCE_DIR}/assets
     ${CMAKE_BINARY_DIR}/out/assets
+)
+
+add_custom_command(TARGET nvplay POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+  ${CMAKE_BINARY_DIR}/out/${NVPLAY_CONFIG_FILE_NAME}
+  ${CMAKE_BINARY_DIR}/${NVPLAY_CONFIG_FILE_NAME}
 )
 
 # delete duplicate nvplay.ini (it would be very stupid to move it to the root folder)
