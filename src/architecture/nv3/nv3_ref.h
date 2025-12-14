@@ -614,6 +614,21 @@
 #define NV3_PGRAPH_TRAPPED_DATA                         0x4006B8
 #define NV3_PGRAPH_TRAPPED_INSTANCE                     0x4006BC
 
+#define NV3_PGRAPH_CACHE_INDEX                          0x4006C0    // On-die texture cache
+#define NV3_PGRAPH_CACHE_INDEX_BANK                     2
+#define NV3_PGRAPH_CACHE_INDEX_BANK_10                  0x0
+#define NV3_PGRAPH_CACHE_INDEX_BANK_32                  0x1
+#define NV3_PGRAPH_CACHE_INDEX_ADDRESS                  3
+#define NV3_PGRAPH_CACHE_INDEX_ADDRESS_0                0x0
+#define NV3_PGRAPH_CACHE_INDEX_ADDRESS_1024             0x400
+#define NV3_PGRAPH_CACHE_INDEX_OP                       13
+#define NV3_PGRAPH_CACHE_INDEX_OP_WRITE_CACHE           0x0
+#define NV3_PGRAPH_CACHE_INDEX_OP_READ_CACHE            0x1
+#define NV3_PGRAPH_CACHE_INDEX_OP_READ_INDEX            0x2
+
+//current data
+#define NV3_PGRAPH_CACHE_RAM                            0x4006C4    // Access porthole for on-die texture cache
+
 #define NV3_PGRAPH_DMA_INTR_0                           0x401100    // PGRAPH DMA Interrupt Status
 #define NV3_PGRAPH_DMA_INTR_INSTANCE                    0
 #define NV3_PGRAPH_DMA_INTR_PRESENT                     4

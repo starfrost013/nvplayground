@@ -10,6 +10,7 @@
 */
 
 #include "architecture/nv1/nv1_ref.h"
+#include "architecture/nv3/nv3_ref.h"
 #include "nvplay.h"
 #include "util/util.h"
 #include <architecture/generic/nv_generic.h>
@@ -317,8 +318,53 @@ bool NVGeneric_DumpRAMRO()
     fclose(stream);
 
     return true; 
-}                    
+}              
 
+void NVGeneric_DumpPGRAPHCacheBank_NV3(uint32_t initial_value, FILE* stream)
+{
+    // same format but in different mmio locations
+    uint32_t index_location = NV3_PGRAPH_CACHE_INDEX;
+    uint32_t ram_location = NV3_PGRAPH_CACHE_RAM;
+
+    if (GPU_IsNV4())
+    {
+        index_location = NV4_PGRAPH_CACHE_INDEX;
+        ram_location = NV4_PGRAPH_CACHE_RAM;
+    }
+
+
+    uint32_t value = 0;
+
+    // read to address.
+    for (uint32_t i = 0; i < NV3_PGRAPH_CACHE_INDEX_ADDRESS_1024; i++)
+    {
+        value = initial_value | (i << NV3_PGRAPH_CACHE_INDEX_ADDRESS);
+        nv_mmio_write32(index_location, value);
+        uint32_t ram = nv_mmio_read32(ram_location);
+        fwrite(&ram, sizeof(uint32_t), 1, stream);
+    }
+
+}
+
+// Dump PGRAPH cache - NV3/NV4 version 
+bool NVGeneric_DumpPGRAPHCache_NV3(FILE* stream)
+{
+
+    // read banks [1-0]
+    uint32_t initial_value = (NV3_PGRAPH_CACHE_INDEX_BANK_10 << NV3_PGRAPH_CACHE_INDEX_BANK)
+    | (NV3_PGRAPH_CACHE_INDEX_OP_READ_CACHE << NV3_PGRAPH_CACHE_INDEX_OP);
+
+    Logging_Write(log_level_message, "Dumping on-die texture cache banks [1-0]...\n");
+    NVGeneric_DumpPGRAPHCacheBank_NV3(initial_value, stream);
+
+    initial_value = (NV3_PGRAPH_CACHE_INDEX_BANK_32 << NV3_PGRAPH_CACHE_INDEX_BANK)
+    | (NV3_PGRAPH_CACHE_INDEX_OP_READ_CACHE << NV3_PGRAPH_CACHE_INDEX_OP);
+
+    Logging_Write(log_level_message, "Dumping on-die texture cache banks [3-2]...\n");
+    NVGeneric_DumpPGRAPHCacheBank_NV3(initial_value, stream);
+
+    return true; 
+}
 
 bool NVGeneric_DumpPGRAPHCache()
 {
@@ -335,17 +381,16 @@ bool NVGeneric_DumpPGRAPHCache()
     }   
     
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxcache.txt", GPU_NV_GetGeneration());
-    FILE* stream = fopen(file_name, "r+");
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxcache.bin", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "rb+");
 
     if (current_device.hal.dump_cache_to_text_file)
         current_device.hal.dump_cache_to_text_file(stream);
     else
         Logging_Write(log_level_error, "HAL Failure: No dump_cache_to_text_file function for GPU %s\n", current_device.device_info.name);
 
-
-
     fclose(stream);
 
     return true; 
 }
+
