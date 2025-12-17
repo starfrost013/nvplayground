@@ -346,7 +346,7 @@ void NVGeneric_DumpPGRAPHCacheBank_NV3(uint32_t initial_value, FILE* stream)
 }
 
 // Dump PGRAPH cache - NV3/NV4 version 
-bool NVGeneric_DumpPGRAPHCache_NV3(FILE* stream)
+void NVGeneric_DumpPGRAPHCache_NV3(FILE* stream)
 {
     // read banks [1-0]
     uint32_t initial_value = (NV3_PGRAPH_CACHE_INDEX_BANK_10 << NV3_PGRAPH_CACHE_INDEX_BANK)

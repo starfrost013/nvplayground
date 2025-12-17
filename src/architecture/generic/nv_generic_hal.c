@@ -63,7 +63,7 @@ nvhal_entry_t nvhal_nv3 =
     NULL,                           // Dump RAMHT to text file 
     NULL,                           // Dump RAMFC to text file
     NULL,                           // Dump RAMRO to text file
-    NULL,                           // Dump PGRAPH_CACHE to text file
+    NVGeneric_DumpPGRAPHCache_NV3,  // Dump PGRAPH_CACHE to text file
 
     // Rendering functions
     NULL,                           // Submit object in subchannel
@@ -82,7 +82,7 @@ nvhal_entry_t nvhal_nv4 =
     NULL,                           // Dump RAMHT to text file 
     NULL,                           // Dump RAMFC to text file
     NULL,                           // Dump RAMRO to text file
-    NULL,                           // Dump PGRAPH_CACHE to text file
+    NVGeneric_DumpPGRAPHCache_NV3,  // Dump PGRAPH_CACHE to text file (similar enough to nv3)
 
     // Rendering functions
     NULL,                           // Submit object in subchannel
