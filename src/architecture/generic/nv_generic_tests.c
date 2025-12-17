@@ -360,8 +360,6 @@ void NVGeneric_DumpPGRAPHCache_NV3(FILE* stream)
 
     Logging_Write(log_level_message, "Dumping on-die texture cache banks [3-2]...\n");
     NVGeneric_DumpPGRAPHCacheBank_NV3(initial_value, stream);
-
-    return true; 
 }
 
 bool NVGeneric_DumpPGRAPHCache()
