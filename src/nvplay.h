@@ -30,7 +30,7 @@
 /* Version information */
 
 #define APP_NAME "NVPlay"
-#define APP_DESCRIPTION "GPU research driver & raw programming tool\n"
+#define APP_DESCRIPTION "GPU research driver & raw programming tool\nCopyright (C) 2025-2026 starfrost"
 #define APP_VERSION "1.0.0 (pre-release)"
 #define APP_COMPILE_TIME __DATE__ " " __TIME__
 
@@ -276,7 +276,6 @@ extern nv_device_info_t supported_devices[];
 typedef struct nv_device_s
 {
 	nv_device_info_t device_info;
-	nvhal_entry_t hal;				// HAL entry (function pointers aren't constant)
 	uint32_t real_device_id;		// real device id
 	uint32_t bus_number;			// PCI bus number
 	uint32_t function_number; 		// PCI function number

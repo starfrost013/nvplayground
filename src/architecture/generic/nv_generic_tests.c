@@ -248,8 +248,8 @@ bool NVGeneric_DumpFIFO()
     FILE* stream = fopen(file_name, "r+");
 
     // call NVHAL function to dump hal
-    if (current_device.hal.dump_fifo_to_text_file)
-        current_device.hal.dump_fifo_to_text_file(stream);
+    if (current_device.device_info.hal->dump_fifo_to_text_file)
+        current_device.device_info.hal->dump_fifo_to_text_file(stream);
     else
         Logging_Write(log_level_error, "HAL Failure: No dump_fifo_to_text_file function for GPU %s\n", current_device.device_info.name);
 
@@ -274,8 +274,8 @@ bool NVGeneric_DumpRAMHT()
     FILE* stream = fopen(file_name, "r+");
 
     // call NVHAL function to dump ramht
-    if (current_device.hal.dump_ramht_to_text_file)
-        current_device.hal.dump_ramht_to_text_file(stream);
+    if (current_device.device_info.hal->dump_ramht_to_text_file)
+        current_device.device_info.hal->dump_ramht_to_text_file(stream);
     else
         Logging_Write(log_level_error, "HAL Failure: No dump_ramht_to_text_file function for GPU %s\n", current_device.device_info.name);
 
@@ -292,8 +292,8 @@ bool NVGeneric_DumpRAMFC()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramfc.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
-    if (current_device.hal.dump_ramfc_to_text_file)
-        current_device.hal.dump_ramfc_to_text_file(stream);
+    if (current_device.device_info.hal->dump_ramfc_to_text_file)
+        current_device.device_info.hal->dump_ramfc_to_text_file(stream);
     else
         Logging_Write(log_level_error, "HAL Failure: No dump_ramfc_to_text_file function for GPU %s\n", current_device.device_info.name);
 
@@ -310,8 +310,8 @@ bool NVGeneric_DumpRAMRO()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramro.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
-    if (current_device.hal.dump_ramro_to_text_file)
-        current_device.hal.dump_ramro_to_text_file(stream);
+    if (current_device.device_info.hal->dump_ramro_to_text_file)
+        current_device.device_info.hal->dump_ramro_to_text_file(stream);
     else
         Logging_Write(log_level_error, "HAL Failure: No dump_ramro_to_text_file function for GPU %s\n", current_device.device_info.name);
 
@@ -382,8 +382,8 @@ bool NVGeneric_DumpPGRAPHCache()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxcache.bin", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "rb+");
 
-    if (current_device.hal.dump_cache_to_text_file)
-        current_device.hal.dump_cache_to_text_file(stream);
+    if (current_device.device_info.hal->dump_cache_to_text_file)
+        current_device.device_info.hal->dump_cache_to_text_file(stream);
     else
         Logging_Write(log_level_error, "HAL Failure: No dump_cache_to_text_file function for GPU %s\n", current_device.device_info.name);
 
