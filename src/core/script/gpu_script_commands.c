@@ -15,7 +15,6 @@
 
 #include <stdio.h>
 
-
 #include "architecture/nv3/nv3.h"
 #include "architecture/nv3/nv3_ref.h"
 #include "core/tests/tests.h"
@@ -43,10 +42,8 @@ bool Command_WriteMMIORange8()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset++)
-    {
         nv_mmio_write8(offset, value);
-    }
-
+    
     return true; 
 }
 
@@ -87,9 +84,7 @@ bool Command_WriteMMIORange32()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
-    {
         nv_mmio_write32(offset, value);
-    }
 
     return true; 
 }
@@ -110,9 +105,7 @@ bool Command_WriteVRAMRange8()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset++)
-    {
         nv_dfb_write8(offset, value);
-    }
 
     return true; 
 }
@@ -142,10 +135,8 @@ bool Command_WriteVRAMRange16()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 2)
-    {
         nv_dfb_write16(offset, value);
-    }
-    
+
     return true; 
 }
 
@@ -174,10 +165,8 @@ bool Command_WriteVRAMRange32()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
-    {
         nv_dfb_write32(offset, value);
-    }
-    
+
     return true; 
 }
 
@@ -207,10 +196,8 @@ bool Command_WriteRaminRange32()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
-    {
         nv_ramin_write32(offset, value);
-    }
-     
+
     return true; 
 }
 
@@ -239,9 +226,7 @@ bool Command_WritePCIRange8()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset++)
-    {
         PCI_WriteConfig8(current_device.bus_number, current_device.function_number, offset, value);
-    }
 
     return true; 
 }
@@ -271,10 +256,8 @@ bool Command_WritePCIRange16()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 2)
-    {
         PCI_WriteConfig16(current_device.bus_number, current_device.function_number, offset, value);
-    }
-    
+
     return true; 
 }
 
@@ -304,9 +287,7 @@ bool Command_WritePCIRange32()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
-    {
         PCI_WriteConfig32(current_device.bus_number, current_device.function_number, offset, value);
-    }
     
     return true; 
 }
@@ -508,10 +489,10 @@ bool Command_RunTest()
 {
     const char* test_name = Command_Argv(1);
 
-    nv_config_test_entry_t* test = Test_Get(test_name);
+    nv_config_test_entry_t* test_entry = Test_Get(test_name);
 
-    if (test)
-        return test->test_function();
+    if (test_entry)
+        return test_entry->test->test_function();
     else
     {
         Logging_Write(log_level_message, "Tried to run invalid test %s!", test_name);

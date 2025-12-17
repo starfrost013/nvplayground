@@ -17,19 +17,6 @@
 #define INI_FILE_NAME "nvplay.ini"
 #define MAX_TEST_NAME_BUFFER_LEN    64
 
-// This is a linked list.
-// We can make a lot of simplifications by making some assumptions about or design; 
-// e.g. we don't need to ever remove these since the enabled tests are enumerated at init.
-
-// Holds information about tests that need to be run.
-typedef struct nv_config_test_entry_s
-{
-    char name[MAX_TEST_NAME_BUFFER_LEN]; 
-    struct nv_config_test_entry_s* prev; 
-    struct nv_config_test_entry_s* next; 
-    bool (*test_function)(); 
-
-} nv_config_test_entry_t; 
 
 
 // Main config struct 

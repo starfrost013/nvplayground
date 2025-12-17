@@ -33,31 +33,21 @@ bool Config_Load()
     ini_section_t section_debug = ini_find_section(config.ini_file, "Debug");
 
     if (section_debug)
-    {
         config.nv10_always_map_128m = ini_section_get_int(section_debug, "NV10_AlwaysMapFullBAR1", false);
-    }
 
     ini_section_t section_tests = ini_find_section(config.ini_file, "Tests");
 
     if (section_tests)
     {
-        nv_test_t current_test = nv_tests[0];
         uint32_t test_id = 0;
+        nv_test_t current_test = nv_tests[test_id];
 
-        while (current_test.test_function)
+        while (nv_tests[test_id].test_function)
         {
             // see if the tests specified in the ini file are for the GPU we have installed
 
-            if (!ini_has_entry(section_tests, current_test.name))
+            if (ini_has_entry(section_tests, current_test.name))
             {
-                Logging_Write(log_level_debug, "Test %s not in INI file (1)\n", current_test.name);
-                test_id++;
-                current_test = nv_tests[test_id];
-                continue; 
-            }
-            else
-            {
-
                 // call ini_section_get_int so we don't have to iterate through the INI sections again
                 int32_t enabled = ini_section_get_int(section_tests, current_test.name, 0);
 
@@ -66,6 +56,7 @@ bool Config_Load()
                     Logging_Write(log_level_debug, "Test %s disabled (2)\n", current_test.name);
                 else
                 {
+                    // Check the PCI device ID range of the test
                     bool test_is_available = (current_device.device_info.vendor_id == current_test.required_vendor_id
                     && (current_device.device_info.device_id_start >= current_test.required_device_id
                     || current_device.device_info.device_id_end <= current_test.required_device_id));
@@ -81,44 +72,34 @@ bool Config_Load()
 
                     if (!current_test.test_function)
                     {
-                        Logging_Write(log_level_warning, "Test %s (%s) does not have defined test function", current_test.name, current_test.name_friendly);
+                        Logging_Write(log_level_warning, "The test %s (%s) does not have defined test function!\n", current_test.name, current_test.name_friendly);
                         test_is_available = false;
                     }
 
                     if (test_is_available)
                     {
-        
-                        if (!current_test.test_function)
-                            Logging_Write(log_level_warning, "Test %s doesn't have a test function", current_test.name);        
-                        else
+                        nv_config_test_entry_t* new_test_entry = calloc(1, sizeof(nv_config_test_entry_t));
+                        new_test_entry->test = &current_test;
+
+                        /* 
+                            set up the test list and add the new test to the test list
+                            NOTE: we don't need to move things
+                        */
+
+                        config.num_tests_enabled++;
+
+                        if (!config.test_list_head)
                         {
-                            nv_config_test_entry_t* new_test_entry = calloc(1, sizeof(nv_config_test_entry_t));
-
-                            new_test_entry->test_function = current_test.test_function;
-
-                            /* 
-                                set up the test list and add the new test to the test list
-                                NOTE: we don't need to move things
-                            */
-
-                            config.num_tests_enabled++;
-
-                            if (!config.test_list_head)
-                            {
-                                config.test_list_head = config.test_list_tail = new_test_entry;
-                                config.test_list_head->prev = config.test_list_head->next = NULL;
-                            }
-                            else 
-                            {
-                                /* CASE: >= 1 element */
-                                config.test_list_tail->next = new_test_entry;
-                                new_test_entry->prev = config.test_list_tail;
-                                new_test_entry->next = NULL;
-                                config.test_list_tail = new_test_entry;
-                            }
-                                
-                            /* just copy up to 64 chars */
-                            strncpy(new_test_entry->name, current_test.name, MAX_TEST_NAME_BUFFER_LEN);
+                            config.test_list_head = config.test_list_tail = new_test_entry;
+                            config.test_list_head->prev = config.test_list_head->next = NULL;
+                        }
+                        else 
+                        {
+                            /* CASE: >= 1 element */
+                            config.test_list_tail->next = new_test_entry;
+                            new_test_entry->prev = config.test_list_tail;
+                            new_test_entry->next = NULL;
+                            config.test_list_tail = new_test_entry;
                         }
                     }
                 }
@@ -130,7 +111,6 @@ bool Config_Load()
             current_test = nv_tests[test_id];
         }
     }
-   
     
     config.loaded = true; 
     return true; 

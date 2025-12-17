@@ -105,7 +105,7 @@ nv_config_test_entry_t* Test_Get(const char* test_name)
     // iterate through each test
     while (test_entry)
     {
-        if (!strcmp(test_entry->name, test_name))
+        if (!strcmp(test_entry->test->name, test_name))
             return test_entry;
 
         test_entry = test_entry->next;
@@ -114,7 +114,7 @@ nv_config_test_entry_t* Test_Get(const char* test_name)
     return NULL; 
 }
 
-bool Test_Run(nv_config_test_entry_t* test)
+bool Test_Run(nv_config_test_entry_t* test_entry)
 {
 	/* 
 		TODO: Ini setting to disable this print in the case of graphical tests.
@@ -122,14 +122,14 @@ bool Test_Run(nv_config_test_entry_t* test)
 
 		Also, test logging. (after util_logging.c is done)
 	*/
-	if (test->test_function)
+	if (test_entry->test->test_function)
 	{
-		bool success = test->test_function();	
+		bool success = test_entry->test->test_function();	
 
 		if (success)
-			Logging_Write(log_level_message, "Test %s succeeded\n", test->name);
+			Logging_Write(log_level_message, "Test %s succeeded\n", test_entry->test->name);
 		else
-			Logging_Write(log_level_message, "Test %s failed! :(\n", test->name);
+			Logging_Write(log_level_message, "Test %s failed! :(\n", test_entry->test->name);
 	
         return success; 
     }

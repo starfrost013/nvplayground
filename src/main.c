@@ -17,7 +17,6 @@
 #define GDB_IMPLEMENTATION
 #include "gdbstub.h"
 
-
 void NVPlay_RunTests()
 {
 	Logging_Write(log_level_message, "GPU test mode\n");
@@ -54,29 +53,20 @@ void NVPlay_RunTests()
 			else
 			 	tests_failed++;
 
-			if (current_entry->test_function)
+			if (success)
 			{
-				bool success = current_entry->test_function();	
-
-				if (success)
-				{
-					tests_succeeded++;
-					Logging_Write(log_level_message, "Test %s succeeded\n", current_entry->name);
-
-				}
-				else
-				{
-					tests_failed++;
-					Logging_Write(log_level_message, "Test %s failed! :(\n", current_entry->name);
-
-				}
+				tests_succeeded++;
+				Logging_Write(log_level_message, "Test %s succeeded\n", current_entry->test->name);
+			}
+			else 
+			{
+				tests_failed++;
+				Logging_Write(log_level_message, "Test %s failed! :(\n", current_entry->test->name);
 			}
 		}
 		else
-		{
 			Logging_Write(log_level_message, "[DRY RUN - SKIP]\n");
-		}
-			
+
 		current_entry = current_entry->next; 
 	}
 
