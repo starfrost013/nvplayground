@@ -1,6 +1,6 @@
 /* 
     NVPlay
-    Copyright © 2025 starfrost
+    Copyright © 2025-2026 starfrost
 
     Raw GPU programming for early Nvidia GPUs
     Licensed under the MIT license (see license file)
@@ -27,6 +27,9 @@ command_line_t command_line = {0};
 #define COMMAND_LINE_HELP_FULL "-help"
 #define COMMAND_LINE_BOOTONLY "-b"
 #define COMMAND_LINE_BOOTONLY_FULL "-bootonly"
+
+// C23 constexpr pls
+#define ARG_LEFT    argc - i < 1
 
 bool Cmdline_Parse(int argc, char** argv)
 {
@@ -57,7 +60,7 @@ bool Cmdline_Parse(int argc, char** argv)
         || !strcasecmp(current_arg, COMMAND_LINE_RUN_SCRIPT_FILE_FULL))
         {
             // logging not yet initialised
-            if (argc - i < 1)
+            if (ARG_LEFT)
             {
                 printf("-script provided, but no registry script file provided!\n");
                 return false;
@@ -72,7 +75,7 @@ bool Cmdline_Parse(int argc, char** argv)
         else if (!strcasecmp(current_arg, COMMAND_LINE_LOAD_REPLAY)
         || !strcasecmp(current_arg, COMMAND_LINE_LOAD_REPLAY_FULL))
         {
-            if (argc - i < 1)
+            if (ARG_LEFT)
             {
                 printf("-replay provided, but no replay file provided!\n");
                 return false; 

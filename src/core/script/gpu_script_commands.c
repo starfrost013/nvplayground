@@ -1,6 +1,6 @@
 /* 
     NVPlay
-    Copyright © 2025 starfrost
+    Copyright © 2025-2026 starfrost
 
     Raw GPU programming for early Nvidia GPUs
     Licensed under the MIT license (see license file)
@@ -43,7 +43,7 @@ bool Command_WriteMMIORange8()
 
     for (uint32_t offset = offset_start; offset < offset_end; offset++)
         nv_mmio_write8(offset, value);
-    
+
     return true; 
 }
 

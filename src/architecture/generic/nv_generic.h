@@ -1,6 +1,6 @@
 /* 
     NVPlay
-    Copyright © 2025 starfrost
+    Copyright © 2025-2026 starfrost
 
     Raw GPU programming for early Nvidia GPUs
     Licensed under the MIT license (see license file)
