@@ -15,19 +15,6 @@
 
 #define CLASS_LAST                  0x7F
 #define SUPPORTED_BY_ALL_GENS       5090        // RTX 5090
-
-// DETERMINE WHEN STUFF WAS MADE OBSOLETE AND ALSO REMOVE ALL NON-HW CLASSES
-// would a hashmap be better??
-
-typedef struct nvrm_class_s
-{
-    uint32_t classid;
-    // the fastest way to represent this data?
-    uint32_t generation_minimum;                // below nv4 doesn't count but kept practicall
-    uint32_t generation_maximum;                // does not mean it is *unusable* just obsolete
-    const char* name;
-} nvrm_class_t;
-
 nvrm_class_t nvrm_class[] =
 {
     { 0x12, 1, SUPPORTED_BY_ALL_GENS, "NV01ContextBeta (012)" },      
