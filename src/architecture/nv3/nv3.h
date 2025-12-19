@@ -35,8 +35,11 @@ bool NV3_ReadGarbageMMIO();
 bool NV3_DumpMFGInfo();
 bool NV3_TestOverclock(); 
 
+void NV3_DumpFIFO(FILE* stream);
+void NV3_DumpRAMHT(FILE* stream);
+void NV3_DumpRAMFC(FILE* stream);
+void NV3_DumpRAMRO(FILE* stream);
 void NV3_DumpPGRAPHCache(FILE* stream);   // NV3-NV4 CACHE
-
 
 extern nv3_dump_excluded_areas_t excluded_areas[];
 

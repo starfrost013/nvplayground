@@ -14,8 +14,10 @@
 
 // Architecture Includes
 #include <architecture/nv3/nv3.h>
-
 #include <architecture/nv3/nv3_ref.h>
+
+// some stuff shared
+#include <architecture/nv4/nv4.h>
 
 #include "nvplay.h"
 #include "util/util.h"
@@ -221,4 +223,66 @@ bool NV3_DumpMFGInfo()
     Logging_Write(log_level_message, "Core/Mem Clock Coefficient= %08lX (%.2f MHz)\n", mpll, mpll_mhz);
 
     return true; 
+}
+
+void NV3_DumpFIFO(FILE* stream)
+{
+
+}
+
+void NV3_DumpRAMHT(FILE* stream)
+{
+    
+}
+
+void NV3_DumpRAMRO(FILE* stream)
+{
+    
+}
+
+void NV3_DumpRAMFC(FILE* stream)
+{
+    
+}
+
+void NV3_DumpPGRAPHCacheBank(uint32_t initial_value, FILE* stream)
+{
+    // same format but in different mmio locations
+    uint32_t index_location = NV3_PGRAPH_CACHE_INDEX;
+    uint32_t ram_location = NV3_PGRAPH_CACHE_RAM;
+
+    if (GPU_IsNV4())
+    {
+        index_location = NV4_PGRAPH_CACHE_INDEX;
+        ram_location = NV4_PGRAPH_CACHE_RAM;
+    }
+
+    uint32_t value = 0;
+
+    // read to address.
+    for (uint32_t i = 0; i < NV3_PGRAPH_CACHE_INDEX_ADDRESS_1024; i++)
+    {
+        value = initial_value | (i << NV3_PGRAPH_CACHE_INDEX_ADDRESS);
+        NV_WriteMMIO32(index_location, value);
+        uint32_t ram = NV_ReadMMIO32(ram_location);
+        fwrite(&ram, sizeof(uint32_t), 1, stream);
+    }
+
+}
+
+// Dump PGRAPH cache - NV3/NV4 version 
+void NV3_DumpPGRAPHCache(FILE* stream)
+{
+    // read banks [1-0]
+    uint32_t initial_value = (NV3_PGRAPH_CACHE_INDEX_BANK_10 << NV3_PGRAPH_CACHE_INDEX_BANK)
+    | (NV3_PGRAPH_CACHE_INDEX_OP_READ_CACHE << NV3_PGRAPH_CACHE_INDEX_OP);
+
+    Logging_Write(log_level_message, "Dumping on-die texture cache banks [1-0]...\n");
+    NV3_DumpPGRAPHCacheBank(initial_value, stream);
+
+    initial_value = (NV3_PGRAPH_CACHE_INDEX_BANK_32 << NV3_PGRAPH_CACHE_INDEX_BANK)
+    | (NV3_PGRAPH_CACHE_INDEX_OP_READ_CACHE << NV3_PGRAPH_CACHE_INDEX_OP);
+
+    Logging_Write(log_level_message, "Dumping on-die texture cache banks [3-2]...\n");
+    NV3_DumpPGRAPHCacheBank(initial_value, stream);
 }
