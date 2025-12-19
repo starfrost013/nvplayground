@@ -86,5 +86,5 @@ extern nv10_state_t nv10_state;
 #define NV10_PSTRAPS_CRYSTAL_13500K                      0x0
 #define NV10_PSTRAPS_CRYSTAL_14318180                    0x1
 
-bool nv10_init();
-void nv10_shutdown(); 
+bool NV10_Init();
+void NV10_Shutdown(); 

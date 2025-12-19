@@ -171,7 +171,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
         }
 
         // skip the address if it will crash 
-        if (piece_of_crap_cant_even_read_registers_without_crashing && nv3_mmio_area_is_excluded(bar0_pos))
+        if (piece_of_crap_cant_even_read_registers_without_crashing && NV3_MMIOAreaIsExcluded(bar0_pos))
         {
             mmio_dump_bar_buf[bar0_pos >> 2] = 0x4E4F4E45; // 'NONE'
         }
@@ -228,7 +228,7 @@ bool NVGeneric_DumpVBIOS()
 
     for (int32_t i = 0; i < 8192; i++)
     {
-        vbios_bin[i] = nv_mmio_read32(NV1_PROM + i*4);
+        vbios_bin[i] = NV_ReadMMIO32(NV1_PROM + i*4);
     }   
 
     fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
@@ -251,12 +251,6 @@ bool NVGeneric_DumpFIFO()
         current_device.device_info.hal->dump_fifo_to_text_file(stream);
     else
         Logging_Write(log_level_error, "HAL Failure: No dump_fifo_to_text_file function for GPU %s\n", current_device.device_info.name);
-
-    // first dump Cache0
-
-
-        
-    // then cache1
 
     fclose(stream);
 
@@ -337,15 +331,15 @@ void NVGeneric_DumpPGRAPHCacheBank_NV3(uint32_t initial_value, FILE* stream)
     for (uint32_t i = 0; i < NV3_PGRAPH_CACHE_INDEX_ADDRESS_1024; i++)
     {
         value = initial_value | (i << NV3_PGRAPH_CACHE_INDEX_ADDRESS);
-        nv_mmio_write32(index_location, value);
-        uint32_t ram = nv_mmio_read32(ram_location);
+        NV_WriteMMIO32(index_location, value);
+        uint32_t ram = NV_ReadMMIO32(ram_location);
         fwrite(&ram, sizeof(uint32_t), 1, stream);
     }
 
 }
 
 // Dump PGRAPH cache - NV3/NV4 version 
-void NVGeneric_DumpPGRAPHCache_NV3(FILE* stream)
+void NV3_DumpPGRAPHCache(FILE* stream)
 {
     // read banks [1-0]
     uint32_t initial_value = (NV3_PGRAPH_CACHE_INDEX_BANK_10 << NV3_PGRAPH_CACHE_INDEX_BANK)

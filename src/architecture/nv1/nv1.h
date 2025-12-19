@@ -28,7 +28,6 @@ typedef struct nv1_state_s
 extern nv1_state_t nv1_state;
 extern const char* nv1_class_names[];
 
-bool nv1_init();
-bool nv1_print_info();
-bool nv1_print_pci_config();
-bool nv1_security_breach();
+bool NV1_Init();
+bool NV1_PrintMFGInfo();
+bool NV1_BreachSecurity();

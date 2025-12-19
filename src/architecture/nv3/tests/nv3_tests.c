@@ -28,23 +28,23 @@
 #define NV3_GARBAGE_MMIO_AREA_02                0x344D90
 #define NV3_GARBAGE_MMIO_AREA_03                0x7E0C00
 
-#define NV3_GARBAGE_MMIO_READ_NUM_ITERATIONS    20000
+#define NV3_ReadGarbageMMIO_NUM_ITERATIONS    20000
 
 // Reads garbage MMIO so that we can see what reading unmapped mmio does
 
-bool nv3_garbage_mmio_read()
+bool NV3_ReadGarbageMMIO()
 {
     uint32_t last_area01_value = 0, current_area01_value = 0;
     uint32_t last_area02_value = 0, current_area02_value = 0;
     uint32_t last_area03_value = 0, current_area03_value = 0;
 
-    Logging_Write(log_level_message, "NV3_GarbageMMIORead: Iterations = %d\n", NV3_GARBAGE_MMIO_READ_NUM_ITERATIONS);
+    Logging_Write(log_level_message, "NV3_GarbageMMIORead: Iterations = %d\n", NV3_ReadGarbageMMIO_NUM_ITERATIONS);
 
-    for (uint32_t i = 0; i < NV3_GARBAGE_MMIO_READ_NUM_ITERATIONS; i++)
+    for (uint32_t i = 0; i < NV3_ReadGarbageMMIO_NUM_ITERATIONS; i++)
     {
-        current_area01_value = nv_mmio_read32(NV3_GARBAGE_MMIO_AREA_01);
-        current_area02_value = nv_mmio_read32(NV3_GARBAGE_MMIO_AREA_02);
-        current_area03_value = nv_mmio_read32(NV3_GARBAGE_MMIO_AREA_03);
+        current_area01_value = NV_ReadMMIO32(NV3_GARBAGE_MMIO_AREA_01);
+        current_area02_value = NV_ReadMMIO32(NV3_GARBAGE_MMIO_AREA_02);
+        current_area03_value = NV_ReadMMIO32(NV3_GARBAGE_MMIO_AREA_03);
 
         /* check if any values changed */
         if (current_area01_value != last_area01_value)
@@ -57,7 +57,7 @@ bool nv3_garbage_mmio_read()
             else
             {
                 Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 1 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
-                NV3_GARBAGE_MMIO_AREA_01, last_area01_value, current_area01_value, i, NV3_GARBAGE_MMIO_READ_NUM_ITERATIONS);
+                NV3_GARBAGE_MMIO_AREA_01, last_area01_value, current_area01_value, i, NV3_ReadGarbageMMIO_NUM_ITERATIONS);
             }
 
             last_area01_value = current_area01_value;
@@ -74,7 +74,7 @@ bool nv3_garbage_mmio_read()
             else
             {
                 Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 2 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
-                NV3_GARBAGE_MMIO_AREA_02, last_area02_value, current_area02_value, i, NV3_GARBAGE_MMIO_READ_NUM_ITERATIONS);
+                NV3_GARBAGE_MMIO_AREA_02, last_area02_value, current_area02_value, i, NV3_ReadGarbageMMIO_NUM_ITERATIONS);
             }
 
             last_area02_value = current_area02_value;
@@ -91,7 +91,7 @@ bool nv3_garbage_mmio_read()
             else
             {
                 Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 3 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
-                NV3_GARBAGE_MMIO_AREA_03, last_area03_value, current_area03_value, i, NV3_GARBAGE_MMIO_READ_NUM_ITERATIONS);
+                NV3_GARBAGE_MMIO_AREA_03, last_area03_value, current_area03_value, i, NV3_ReadGarbageMMIO_NUM_ITERATIONS);
             }
 
             last_area03_value = current_area03_value;
@@ -103,7 +103,7 @@ bool nv3_garbage_mmio_read()
 
 
 /* TEMPORARY test  function to test certain hardcoded overclocks */
-bool nv3_test_overclock()
+bool NV3_TestOverclock()
 {
     /* print out some helpful messages */
     Logging_Write(log_level_message, "Basic clockspeed test (text mode: best case scenario)\n");
@@ -135,16 +135,16 @@ bool nv3_test_overclock()
         | clock_m;
 
         //not speed critical, use a double
-        double megahertz = nv_clock_mnp_to_mhz(current_device.crystal_hz, final_clock);
+        double megahertz = NV_ClockMNPToMhz(current_device.crystal_hz, final_clock);
 
         Logging_Write(log_level_message, "Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)...\n", megahertz, final_clock);
 
-        nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, final_clock);
+        NV_WriteMMIO32(NV3_PRAMDAC_CLOCK_MEMORY, final_clock);
 
         uclock_t this_clock = uclock();
 
         // Sit in a spinloop until it's time to wake up
-        while (this_clock - start_clock < (UCLOCKS_PER_SEC * NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS))
+        while (this_clock - start_clock < (UCLOCKS_PER_SEC * NV3_TestOverclock_TIME_BETWEEN_RECLOCKS))
             this_clock = uclock();
     }
 
@@ -152,9 +152,9 @@ bool nv3_test_overclock()
 
     /* restore original clock */
     if (current_device.crystal_hz == NV_CLOCK_BASE_14318180)
-        nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TEST_OVERCLOCK_BASE_14318);
+        NV_WriteMMIO32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TestOverclock_BASE_14318);
     else
-        nv_mmio_write32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TEST_OVERCLOCK_BASE_13500);
+        NV_WriteMMIO32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TestOverclock_BASE_13500);
 
     return true; 
 }
@@ -170,7 +170,7 @@ nv3_dump_excluded_areas_t excluded_areas[] =
 
 // see nv_generic.c
 // Determines if an MMIO area is excluded.
-bool nv3_mmio_area_is_excluded(uint32_t addr)
+bool NV3_MMIOAreaIsExcluded(uint32_t addr)
 {
     nv3_dump_excluded_areas_t excluded_area = excluded_areas[0];
 
@@ -192,7 +192,7 @@ bool nv3_mmio_area_is_excluded(uint32_t addr)
     return false;
 }
 
-bool nv3_dump_mfg_info()
+bool NV3_DumpMFGInfo()
 {
     /* TODO: Read our Dumb Framebuffer */
     Logging_Write(log_level_message, "NV3 Manufacture-Time Configuration: \n");
@@ -209,13 +209,13 @@ bool nv3_dump_mfg_info()
     /* Read in the straps */
     Logging_Write(log_level_message, "Straps                    = %08lX\n", current_device.straps);
 
-    uint32_t vpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_PIXEL);
-    uint32_t mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
+    uint32_t vpll = NV_ReadMMIO32(NV3_PRAMDAC_CLOCK_PIXEL);
+    uint32_t mpll = NV_ReadMMIO32(NV3_PRAMDAC_CLOCK_MEMORY);
     
     //todo: convert to MHz
 
-    double vpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, vpll);
-    double mpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, mpll);
+    double vpll_mhz = NV_ClockMNPToMhz(current_device.crystal_hz, vpll);
+    double mpll_mhz = NV_ClockMNPToMhz(current_device.crystal_hz, mpll);
 
     Logging_Write(log_level_message, "Pixel Clock Coefficient   = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
     Logging_Write(log_level_message, "Core/Mem Clock Coefficient= %08lX (%.2f MHz)\n", mpll, mpll_mhz);

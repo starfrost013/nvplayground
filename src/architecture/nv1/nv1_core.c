@@ -18,7 +18,7 @@
 
 nv1_state_t nv1_state = {0};                    // NV1 specific state 
 
-bool nv1_print_info()
+bool NV1_PrintMFGInfo()
 {
     /* TODO: Read our Dumb Framebuffer */
     Logging_Write(log_level_message, "NV1 Manufacture-Time Configuration: \n");
@@ -43,7 +43,7 @@ bool nv1_print_info()
 // Bit 3 = 1, for prefetchable (Only Bits 31:23 matter for BAR, it must begin on)
 #define NV1_MMIO_SPACE_TEST     0x84000008
 
-bool nv1_init()
+bool NV1_Init()
 {
     // only top 8 bits actually matter
     uint32_t bar0_base = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
@@ -89,8 +89,8 @@ bool nv1_init()
     __dpmi_set_segment_limit(current_device.bar0_selector, NV1_PCI_BAR0_SIZE);
 
     /* store manufacture time configuratino */
-    current_device.nv_pmc_boot_0 = nv_mmio_read32(NV1_PMC_BOOT_0);
-    current_device.nv_pfb_boot_0 = nv_mmio_read32(NV1_PFB_BOOT_0);
+    current_device.nv_pmc_boot_0 = NV_ReadMMIO32(NV1_PMC_BOOT_0);
+    current_device.nv_pfb_boot_0 = NV_ReadMMIO32(NV1_PFB_BOOT_0);
 
     uint32_t ram_amount_value = (current_device.nv_pfb_boot_0 >> NV1_PFB_BOOT_0_RAM_AMOUNT) & 0x03; 
 
@@ -101,11 +101,11 @@ bool nv1_init()
     else if (ram_amount_value == NV1_PFB_BOOT_0_RAM_AMOUNT_1MB)                      // 1MB
         current_device.vram_amount = NV1_VRAM_SIZE_1MB;
 
-    current_device.straps = nv_mmio_read32(NV1_STRAPS);
+    current_device.straps = NV_ReadMMIO32(NV1_STRAPS);
 
     /* Power up all GPU subsystems */
     Logging_Write(log_level_debug, "Enabling all GPU subsystems (0x11111111 -> NV1_PMC_ENABLE)...");
-    nv_mmio_write32(NV1_PMC_ENABLE, 0x11111111);
+    NV_WriteMMIO32(NV1_PMC_ENABLE, 0x11111111);
     Logging_Write(log_level_debug, "Done!\n");
 
     /* Enable interrupts (test) */
@@ -115,13 +115,13 @@ bool nv1_init()
     | (NV1_PMC_INTR_EN_0_ALL >> NV1_PMC_INTR_EN_0_INTB)
     | (NV1_PMC_INTR_EN_0_ALL >> NV1_PMC_INTR_EN_0_INTA));
 
-    nv_mmio_write32(NV1_PMC_INTR_EN_0, enable_value);
+    NV_WriteMMIO32(NV1_PMC_INTR_EN_0, enable_value);
 
     Logging_Write(log_level_debug, "Done!\n");
 
     // Read the chip token out
-    uint32_t chip_token_0 = (uint32_t)nv_mmio_read32(NV1_PAUTH_CHIP_TOKEN_0);
-    uint32_t chip_token_1 = (uint32_t)nv_mmio_read32(NV1_PAUTH_CHIP_TOKEN_1);
+    uint32_t chip_token_0 = (uint32_t)NV_ReadMMIO32(NV1_PAUTH_CHIP_TOKEN_0);
+    uint32_t chip_token_1 = (uint32_t)NV_ReadMMIO32(NV1_PAUTH_CHIP_TOKEN_1);
 
     nv1_state.chip_token = ((uint64_t)chip_token_0 << 32) | (uint64_t)chip_token_1;
 
@@ -133,7 +133,7 @@ bool nv1_init()
 //
 // Enters the NV1 into "Security Breach" mode.
 //
-bool nv1_security_breach()
+bool NV1_BreachSecurity()
 {
     if (current_device.nv_pmc_boot_0 == NV_PMC_BOOT_NV1_A01)
     {
@@ -142,7 +142,7 @@ bool nv1_security_breach()
     }
 
     // First, let's read the PAUTH_DEBUG register to make sure the breach hasn't already ben done.
-    uint32_t pauth_debug_0 = nv_mmio_read32(NV1_PAUTH_DEBUG_0);
+    uint32_t pauth_debug_0 = NV_ReadMMIO32(NV1_PAUTH_DEBUG_0);
     bool breach_detected = (pauth_debug_0 >> NV1_PAUTH_DEBUG_0_BREACH_DETECTED) & 0x01;
 
     if (breach_detected)
@@ -166,18 +166,18 @@ bool nv1_security_breach()
 
         // Write 128 bits of garbage data at a time into the PAUTH password registers
         random_value = (rand() << 16 | rand());
-        nv_mmio_write32(NV1_PAUTH_PASSWORD_0(j), random_value);
+        NV_WriteMMIO32(NV1_PAUTH_PASSWORD_0(j), random_value);
         random_value = (rand() << 16 | rand());
-        nv_mmio_write32(NV1_PAUTH_PASSWORD_1(j), random_value);
+        NV_WriteMMIO32(NV1_PAUTH_PASSWORD_1(j), random_value);
         random_value = (rand() << 16 | rand());
-        nv_mmio_write32(NV1_PAUTH_PASSWORD_2(j), random_value);
+        NV_WriteMMIO32(NV1_PAUTH_PASSWORD_2(j), random_value);
         random_value = (rand() << 16 | rand());
-        nv_mmio_write32(NV1_PAUTH_PASSWORD_3(j), random_value);
+        NV_WriteMMIO32(NV1_PAUTH_PASSWORD_3(j), random_value);
 
     }
         
     // now let's see if that's enough to trip it
-    pauth_debug_0 = nv_mmio_read32(NV1_PAUTH_DEBUG_0);
+    pauth_debug_0 = NV_ReadMMIO32(NV1_PAUTH_DEBUG_0);
     breach_detected = (pauth_debug_0 >> NV1_PAUTH_DEBUG_0_BREACH_DETECTED) & 0x01;
 
     if (breach_detected)
@@ -196,11 +196,11 @@ bool nv1_security_breach()
     for (uint32_t rampw_offset = 0; rampw_offset < NV1_RAMPW_SIZE; rampw_offset += 4)   
     {
         random_value = (rand() << 16 | rand());
-        nv_mmio_write32(NV1_PRAMPW + rampw_offset, random_value);
+        NV_WriteMMIO32(NV1_PRAMPW + rampw_offset, random_value);
     }
 
     // now let's see if that's enough to trip it
-    pauth_debug_0 = nv_mmio_read32(NV1_PAUTH_DEBUG_0);
+    pauth_debug_0 = NV_ReadMMIO32(NV1_PAUTH_DEBUG_0);
     breach_detected = (pauth_debug_0 >> NV1_PAUTH_DEBUG_0_BREACH_DETECTED) & 0x01;
 
     if (breach_detected)

@@ -18,7 +18,7 @@
 nvhal_entry_t nvhal_nv1 =
 {
     // Init/shutdown functions
-    nv1_init,                       // Init
+    NV1_Init,                       // Init
     NULL,                           // Shutdown
 
     // Dump functions
@@ -55,7 +55,7 @@ nvhal_entry_t nvhal_nv2 =
 nvhal_entry_t nvhal_nv3 =
 {
     // Init/shutdown functions
-    nv3_init,                       // Init
+    NV3_Init,                       // Init
     NULL,                           // Shutdown
 
     // Dump functions
@@ -63,7 +63,7 @@ nvhal_entry_t nvhal_nv3 =
     NULL,                           // Dump RAMHT to text file 
     NULL,                           // Dump RAMFC to text file
     NULL,                           // Dump RAMRO to text file
-    NVGeneric_DumpPGRAPHCache_NV3,  // Dump PGRAPH_CACHE to text file
+    NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file
 
     // Rendering functions
     NULL,                           // Submit object in subchannel
@@ -74,15 +74,15 @@ nvhal_entry_t nvhal_nv3 =
 nvhal_entry_t nvhal_nv4 =
 {
     // Init/shutdown functions
-    nv4_init,                       // Init
-    nv4_shutdown,                   // Shutdown
+    NV4_Init,                       // Init
+    NV4_Shutdown,                   // Shutdown
 
     // Dump functions
-    NULL,                           // Dump FIFO to text file
-    NULL,                           // Dump RAMHT to text file 
-    NULL,                           // Dump RAMFC to text file
-    NULL,                           // Dump RAMRO to text file
-    NVGeneric_DumpPGRAPHCache_NV3,  // Dump PGRAPH_CACHE to text file (similar enough to nv3)
+    NV3_DumpFIFO,                   // Dump FIFO to text file
+    NV3_DumpRAMHT,                  // Dump RAMHT to text file 
+    NV3_DumpRAMFC,                  // Dump RAMFC to text file
+    NV3_DumpRAMRO ,                 // Dump RAMRO to text file
+    NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file (similar enough to nv3)
 
     // Rendering functions
     NULL,                           // Submit object in subchannel
@@ -93,8 +93,8 @@ nvhal_entry_t nvhal_nv4 =
 nvhal_entry_t nvhal_celsius =
 {
     // Init/shutdown functions
-    nv10_init,                      // Init
-    nv10_shutdown,                  // Shutdown
+    NV10_Init,                      // Init
+    NV10_Shutdown,                  // Shutdown
 
     // Dump functions
     NULL,                           // Dump FIFO to text file

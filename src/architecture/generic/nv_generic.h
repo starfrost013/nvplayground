@@ -23,7 +23,6 @@ bool NVGeneric_DumpRAMHT();                         // Dump all currently loaded
 bool NVGeneric_DumpRAMFC();                         // Dump all channels that are not context switched to
 bool NVGeneric_DumpRAMRO();                         // Dump any errors that may have occurred 
 bool NVGeneric_DumpPGRAPHCache();
-void NVGeneric_DumpPGRAPHCache_NV3(FILE* stream);   // NV3-NV4 CACHE
 
 // I considered using an array, but we'd have to define hardcoded indicies anyway so we can just define these entries
 extern nvhal_entry_t nvhal_nv1;

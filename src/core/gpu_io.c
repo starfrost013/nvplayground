@@ -25,23 +25,23 @@
 //
 
 /* Read 8-bit value from the MMIO */
-uint8_t nv_mmio_read8(uint32_t offset)
+uint8_t NV_ReadMMIO8(uint32_t offset)
 {
     return _farpeekb(current_device.bar0_selector, offset);
 }
 
 /* Read 32-bit value from the MMIO */
-uint32_t nv_mmio_read32(uint32_t offset)
+uint32_t NV_ReadMMIO32(uint32_t offset)
 {
     return _farpeekl(current_device.bar0_selector, offset);
 }
 
-void nv_mmio_write8(uint32_t offset, uint8_t val)
+void NV_WriteMMIO8(uint32_t offset, uint8_t val)
 {
     _farpokeb(current_device.bar0_selector, offset, val);
 }
 
-void nv_mmio_write32(uint32_t offset, uint32_t val)
+void NV_WriteMMIO32(uint32_t offset, uint32_t val)
 {
     _farpokel(current_device.bar0_selector, offset, val);
 }
@@ -51,42 +51,42 @@ void nv_mmio_write32(uint32_t offset, uint32_t val)
 //
 
 /* Read 8-bit value from the DFB */
-uint8_t nv_dfb_read8(uint32_t offset)
+uint8_t NV_ReadDfb8(uint32_t offset)
 {
     return _farpeekb(current_device.bar1_selector, offset);
 }
 
 /* Read 16-bit value from the DFB */
-uint16_t nv_dfb_read16(uint32_t offset)
+uint16_t NV_ReadDfb16(uint32_t offset)
 {
     return _farpeekw(current_device.bar1_selector, offset);
 }
 
 /* Read 32-bit value from the DFB */
-uint32_t nv_dfb_read32(uint32_t offset)
+uint32_t NV_ReadDfb32(uint32_t offset)
 {
     return _farpeekl(current_device.bar1_selector, offset);
 }
 
 /* Write 8-bit value to the DFB */
-void nv_dfb_write8(uint32_t offset, uint8_t val)
+void NV_WriteDfb8(uint32_t offset, uint8_t val)
 {
     _farpokeb(current_device.bar1_selector, offset, val);
 }
 
 /* Write 16-bit value to the DFB */
-void nv_dfb_write16(uint32_t offset, uint16_t val)
+void NV_WriteDfb16(uint32_t offset, uint16_t val)
 {
     _farpokew(current_device.bar1_selector, offset, val);
 }
 
-void nv_dfb_write32(uint32_t offset, uint32_t val)
+void NV_WriteDfb32(uint32_t offset, uint32_t val)
 {
     _farpokel(current_device.bar1_selector, offset, val);
 }
 
 /* Read 32-bit value from RAMIN */
-uint32_t nv_ramin_read32(uint32_t offset)
+uint32_t NV_ReadRamin32(uint32_t offset)
 {
     // I considered having this be a GPU-specific function, but RAMIN mapping did not change much after NV4 until NV40
     // and direct RAMIN writes are fairly rare.
@@ -110,11 +110,11 @@ uint32_t nv_ramin_read32(uint32_t offset)
             return _farpeekl(current_device.bar0_selector, NV4_RAMIN_START + offset);
     }
 
-    Logging_Write(log_level_error, "nv_ramin_read32: Somehow reached here with an unsupported gpu\n");
+    Logging_Write(log_level_error, "NV_ReadRamin32: Somehow reached here with an unsupported gpu\n");
     return 0x00;
 }
 
-void nv_ramin_write32(uint32_t offset, uint32_t val)
+void NV_WriteRamin32(uint32_t offset, uint32_t val)
 {
     // I considered having this be a GPU-specific function, but RAMIN mapping did not change much after NV4 until NV40
     // and direct RAMIN writes are fairly rare.
@@ -133,10 +133,11 @@ void nv_ramin_write32(uint32_t offset, uint32_t val)
              break;
         // See "WARNING" above for NV4 RAMIN writes!
         case PCI_DEVICE_NV4:
+        case PCI_DEVICE_NV10 ... PCI_DEVICE_NV18_END:       // NV1x uses 0x700000 BAR0 start too
             _farpokel(current_device.bar0_selector, NV4_RAMIN_START + offset, val);    
              break;
         default:
-            Logging_Write(log_level_error, "nv_ramin_write32: Somehow reached here with an unsupported gpu\n");
+            Logging_Write(log_level_error, "NV_WriteRamin32: Somehow reached here with an unsupported GPU\n");
             break;
     }
 
@@ -144,64 +145,62 @@ void nv_ramin_write32(uint32_t offset, uint32_t val)
 
 /* Accelerated nVIDIA VGA functions */
 
-void nv_crtc_lock_extended_registers()
+void NV_CRTCLockExtendedRegisters()
 {
     // To do: Does this need to be moved to NV3
-    nv_mmio_write32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
-    nv_mmio_write32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_LOCKED);
-
+    NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
+    NV_WriteMMIO32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_LOCKED);
 }
 
-void nv_crtc_unlock_extended_registers()
+void NV_CRTCUnlockExtendedRegisters()
 {
-    nv_mmio_write32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
-    nv_mmio_write32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_UNLOCKED);
+    NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
+    NV_WriteMMIO32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_UNLOCKED);
 }
 
-uint8_t nv_crtc_read(uint8_t index)
+uint8_t NV_ReadCRTC(uint8_t index)
 {
-    nv_mmio_write32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
-    return nv_mmio_read32(NV3_PRMCIO_CRTC_REGISTER_COLOR);
-}
-
-// TODO
-uint8_t nv_gdc_read(uint8_t index)
-{
-    nv_mmio_write32(NV3_PRMVIO_GR_INDEX, index);
-    return nv_mmio_read32(NV3_PRMVIO_GR);
+    NV_WriteMMIO32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
+    return NV_ReadMMIO32(NV3_PRMCIO_CRTC_REGISTER_COLOR);
 }
 
 // TODO
-uint8_t nv_sequencer_read(uint8_t index)
+uint8_t NV_ReadGDC(uint8_t index)
 {
-    nv_mmio_write32(NV3_PRMVIO_SR_INDEX, index);
-    return nv_mmio_read32(NV3_PRMVIO_SR);
+    NV_WriteMMIO32(NV3_PRMVIO_GR_INDEX, index);
+    return NV_ReadMMIO32(NV3_PRMVIO_GR);
 }
 
-void nv_crtc_write(uint8_t index, uint8_t value)
+// TODO
+uint8_t NV_ReadSequencer(uint8_t index)
 {
-    nv_mmio_write32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
-    nv_mmio_write32(NV3_PRMCIO_CRTC_REGISTER_COLOR,value);
+    NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, index);
+    return NV_ReadMMIO32(NV3_PRMVIO_SR);
 }
 
-
-void nv_gdc_write(uint8_t index, uint8_t value)
+void NV_WriteCRTC(uint8_t index, uint8_t value)
 {
-    nv_mmio_write32(NV3_PRMVIO_GR_INDEX, index);
-    nv_mmio_write32(NV3_PRMVIO_GR,value);
+    NV_WriteMMIO32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
+    NV_WriteMMIO32(NV3_PRMCIO_CRTC_REGISTER_COLOR,value);
 }
 
-void nv_sequencer_write(uint8_t index, uint8_t value)
+void NV_WriteGDC(uint8_t index, uint8_t value)
 {
-    nv_mmio_write32(NV3_PRMVIO_SR_INDEX, index);
-    nv_mmio_write32(NV3_PRMVIO_SR,value);
+    NV_WriteMMIO32(NV3_PRMVIO_GR_INDEX, index);
+    NV_WriteMMIO32(NV3_PRMVIO_GR,value);
+}
+
+void NV_WriteSequencer(uint8_t index, uint8_t value)
+{
+    NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, index);
+    NV_WriteMMIO32(NV3_PRMVIO_SR,value);
 }
 
 //
 // Universal VGA functions
 //
 
-uint8_t vga_crtc_read(uint8_t index)
+uint8_t VGA_ReadCRTC(uint8_t index)
 {
     uint8_t miscout = inportb(VGA_PORT_MISCOUT);
 
@@ -211,7 +210,7 @@ uint8_t vga_crtc_read(uint8_t index)
         return inportb(VGA_PORT_COLOR_CRTC_INDEX);
 }
 
-uint8_t vga_gdc_read(uint8_t index)
+uint8_t VGA_ReadGDC(uint8_t index)
 {
     outportb(VGA_PORT_GRAPHICS_INDEX, index);
 
@@ -219,7 +218,7 @@ uint8_t vga_gdc_read(uint8_t index)
 }
 
 // Read a byte from the VGA sequencer register with index index.
-uint8_t vga_sequencer_read(uint8_t index)
+uint8_t VGA_ReadSequencer(uint8_t index)
 {
     outportb(VGA_PORT_SEQUENCER_INDEX, index);
 
@@ -227,7 +226,7 @@ uint8_t vga_sequencer_read(uint8_t index)
 }
 
 // Read a VGA attribute register.
-uint8_t vga_attribute_read(uint8_t index)
+uint8_t VGA_ReadAttribute(uint8_t index)
 {
     // figure out if this is colour or mono
     uint8_t miscout = inportb(VGA_PORT_MISCOUT);
@@ -244,7 +243,7 @@ uint8_t vga_attribute_read(uint8_t index)
     return inportb(VGA_PORT_ATTRIBUTE_DATA_WRITE);
 }
 
-void vga_crtc_write(uint8_t index, uint8_t value)
+void VGA_WriteCRTC(uint8_t index, uint8_t value)
 {
     uint8_t miscout = inportb(VGA_PORT_MISCOUT);
 
@@ -260,19 +259,19 @@ void vga_crtc_write(uint8_t index, uint8_t value)
     }
 }
 
-void vga_gdc_write(uint8_t index, uint8_t value)
+void VGA_WriteGDC(uint8_t index, uint8_t value)
 {
     outportb(VGA_PORT_GRAPHICS_INDEX, index);
     outportb(VGA_PORT_GRAPHICS, value);
 }
 
-void vga_sequencer_write(uint8_t index, uint8_t value)
+void VGA_WriteSequencer(uint8_t index, uint8_t value)
 {
     outportb(VGA_PORT_SEQUENCER_INDEX, index);
     outportb(VGA_PORT_SEQUENCER, value);
 }
 
-void vga_attribute_write(uint8_t index, uint8_t value)
+void VGA_WriteAttribute(uint8_t index, uint8_t value)
 {
     // figure out if this is colour or mono
     uint8_t miscout = inportb(VGA_PORT_MISCOUT);
@@ -295,7 +294,7 @@ void vga_attribute_write(uint8_t index, uint8_t value)
 
 //not speed critical, use a double for precision
 // NV3/NV4. Not sure about NV1
-double nv_clock_mnp_to_mhz(uint32_t clock_base, uint32_t mnp)
+double NV_ClockMNPToMhz(uint32_t clock_base, uint32_t mnp)
 {
     // clock_base = 13500000 or 14318180
 

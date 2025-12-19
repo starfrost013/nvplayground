@@ -27,17 +27,20 @@ typedef struct nv3_dump_excluded_areas_s
 // Functions
 //
 
-bool nv3_init();
+bool NV3_Init();
 
 /* NV3 Tests */
-bool nv3_dump_mmio();
-bool nv3_garbage_mmio_read();
-bool nv3_dump_mfg_info();
-bool nv3_test_overclock(); 
+bool NV3_DumpMMIO();
+bool NV3_ReadGarbageMMIO();
+bool NV3_DumpMFGInfo();
+bool NV3_TestOverclock(); 
+
+void NV3_DumpPGRAPHCache(FILE* stream);   // NV3-NV4 CACHE
+
 
 extern nv3_dump_excluded_areas_t excluded_areas[];
 
-bool nv3_mmio_area_is_excluded(uint32_t addr);
+bool NV3_MMIOAreaIsExcluded(uint32_t addr);
 
 // This is slower, but these need to map *****EXACTLY***** to the GPU PIO/DMA channel's layout so PGRAPH can accept it
 // or everything FUCKS UP

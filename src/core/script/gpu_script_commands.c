@@ -31,7 +31,7 @@ bool Command_WriteMMIO8()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_mmio_write8(offset, value);
+    NV_WriteMMIO8(offset, value);
     return true; 
 }
 
@@ -42,7 +42,7 @@ bool Command_WriteMMIORange8()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset++)
-        nv_mmio_write8(offset, value);
+        NV_WriteMMIO8(offset, value);
 
     return true; 
 }
@@ -64,14 +64,14 @@ bool Command_WriteMMIO32()
  
     Logging_Write(log_level_debug, "Command_WriteMMIO32 %s:%08x %s:%08x\n", Command_Argv(1), offset, Command_Argv(2), value);
 
-    nv_mmio_write32(offset, value);
+    NV_WriteMMIO32(offset, value);
     return true; 
 }
 
 bool Command_ReadMMIOConsole32()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
-    uint32_t value = nv_mmio_read32(offset);
+    uint32_t value = NV_ReadMMIO32(offset);
 
     Logging_Write(log_level_message, "Command_ReadMMIOConsole32: %08x = %08x\n", offset, value);
     return true; 
@@ -84,7 +84,7 @@ bool Command_WriteMMIORange32()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
-        nv_mmio_write32(offset, value);
+        NV_WriteMMIO32(offset, value);
 
     return true; 
 }
@@ -94,7 +94,7 @@ bool Command_WriteVRAM8()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_dfb_write8(offset, value);
+    NV_WriteDfb8(offset, value);
     return true; 
 }
 
@@ -105,7 +105,7 @@ bool Command_WriteVRAMRange8()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset++)
-        nv_dfb_write8(offset, value);
+        NV_WriteDfb8(offset, value);
 
     return true; 
 }
@@ -113,7 +113,7 @@ bool Command_WriteVRAMRange8()
 bool Command_ReadVRAMConsole8()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
-    uint8_t value = nv_dfb_read8(offset);
+    uint8_t value = NV_ReadDfb8(offset);
 
     Logging_Write(log_level_message, "Command_ReadVRAMConsole8: %03x = %02x\n", offset, value);
     return true; 
@@ -124,7 +124,7 @@ bool Command_WriteVRAM16()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_dfb_write16(offset, value);
+    NV_WriteDfb16(offset, value);
     return true; 
 }
 
@@ -135,7 +135,7 @@ bool Command_WriteVRAMRange16()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 2)
-        nv_dfb_write16(offset, value);
+        NV_WriteDfb16(offset, value);
 
     return true; 
 }
@@ -143,7 +143,7 @@ bool Command_WriteVRAMRange16()
 bool Command_ReadVRAMConsole16()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
-    uint16_t value = nv_dfb_read16(offset);
+    uint16_t value = NV_ReadDfb16(offset);
 
     Logging_Write(log_level_message, "Command_ReadVRAMConsole16: %04x = %04x\n", offset, value);
     return true; 
@@ -154,7 +154,7 @@ bool Command_WriteVRAM32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_dfb_write32(offset, value);    
+    NV_WriteDfb32(offset, value);    
     return true; 
 }
 
@@ -165,7 +165,7 @@ bool Command_WriteVRAMRange32()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
-        nv_dfb_write32(offset, value);
+        NV_WriteDfb32(offset, value);
 
     return true; 
 }
@@ -173,7 +173,7 @@ bool Command_WriteVRAMRange32()
 bool Command_ReadVRAMConsole32()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
-    uint32_t value = nv_dfb_read32(offset);
+    uint32_t value = NV_ReadDfb32(offset);
 
     Logging_Write(log_level_message, "Command_ReadVRAMConsole32: %08x = %08x\n", offset, value);
     return true; 
@@ -184,7 +184,7 @@ bool Command_WriteRamin32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_ramin_write32(offset, value);
+    NV_WriteRamin32(offset, value);
 
     return true; 
 }
@@ -196,7 +196,7 @@ bool Command_WriteRaminRange32()
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
-        nv_ramin_write32(offset, value);
+        NV_WriteRamin32(offset, value);
 
     return true; 
 }
@@ -204,7 +204,7 @@ bool Command_WriteRaminRange32()
 bool Command_ReadRaminConsole32()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
-    uint32_t value = nv_ramin_read32(offset);
+    uint32_t value = NV_ReadRamin32(offset);
 
     Logging_Write(log_level_message, "Command_ReadRaminConsole32: %08x = %08x\n", offset, value);
     return true; 
@@ -312,7 +312,7 @@ bool Command_ReadCrtcConsole()
         return false; 
     }
 
-    uint32_t value = nv_crtc_read(index);
+    uint32_t value = NV_ReadCRTC(index);
 
     Logging_Write(log_level_message, "Command_ReadCrtcConsole: CRTC[%02x] = %02x\n", index, value);
     return true; 
@@ -331,7 +331,7 @@ bool Command_WriteCrtc()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_crtc_write(index, value);
+    NV_WriteCRTC(index, value);
     return true; 
 }
 
@@ -351,7 +351,7 @@ bool Command_WriteCrtcRange()
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        nv_crtc_write(index, value);
+        NV_WriteCRTC(index, value);
 
     return true; 
 }
@@ -367,7 +367,7 @@ bool Command_ReadGdcConsole()
         return false; 
     }
 
-    uint32_t value = nv_gdc_read(index);
+    uint32_t value = NV_ReadGDC(index);
 
     Logging_Write(log_level_message, "Command_ReadGdcConsole: GR[%02x] = %02x\n", index, value);
     return true; 
@@ -386,7 +386,7 @@ bool Command_WriteGdc()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_gdc_write(index, value);
+    NV_WriteGDC(index, value);
     return true; 
 }
 
@@ -407,7 +407,7 @@ bool Command_WriteGdcRange()
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        nv_gdc_write(index, value);
+        NV_WriteGDC(index, value);
 
     return true; 
 }
@@ -423,7 +423,7 @@ bool Command_ReadSRConsole()
         return false; 
     }
 
-    uint32_t value = nv_sequencer_read(index);
+    uint32_t value = NV_ReadSequencer(index);
 
     Logging_Write(log_level_message, "Command_ReadSRConsole: SR[%02x] = %02x\n", index, value);
     return true; 
@@ -442,7 +442,7 @@ bool Command_WriteSR()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    nv_sequencer_write(index, value);
+    NV_WriteSequencer(index, value);
     return true; 
 }
 
@@ -463,7 +463,7 @@ bool Command_WriteSRRange()
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        nv_sequencer_write(index, value);
+        NV_WriteSequencer(index, value);
 
     return true; 
 }
@@ -476,8 +476,8 @@ bool Command_NV3Explode()
     if (current_device.real_device_id == PCI_DEVICE_NV3
     || current_device.real_device_id == PCI_DEVICE_NV3T_ACPI)
     {
-        uint32_t pme_debug_0 = nv_mmio_read32(NV3_PME_DEBUG_0);
-        nv_mmio_write32(NV3_PME_INTR, 0x11111111);
+        uint32_t pme_debug_0 = NV_ReadMMIO32(NV3_PME_DEBUG_0);
+        NV_WriteMMIO32(NV3_PME_INTR, 0x11111111);
 
         Logging_Write(log_level_debug, "Mediaport is alive (NV3Explode succeeded) NV3_PME_DEBUG_0=%08x\n", pme_debug_0);
     }

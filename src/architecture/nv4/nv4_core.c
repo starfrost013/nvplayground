@@ -16,7 +16,7 @@
 // Globals
 nv4_state_t nv4_state = {0};
 
-bool nv4_init()
+bool NV4_Init()
 {
     // only top 8 bits actually matter
     uint32_t bar0_base = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
@@ -60,8 +60,8 @@ bool nv4_init()
     __dpmi_set_segment_limit(current_device.bar1_selector, NV4_MMIO_SIZE - 1); // ultimately the same size
 
     /* store manufacture time configuratino */
-    current_device.nv_pmc_boot_0 = nv_mmio_read32(NV4_PMC_BOOT);
-    current_device.nv_pfb_boot_0 = nv_mmio_read32(NV4_PFB_BOOT);
+    current_device.nv_pmc_boot_0 = NV_ReadMMIO32(NV4_PMC_BOOT);
+    current_device.nv_pfb_boot_0 = NV_ReadMMIO32(NV4_PFB_BOOT);
 
     uint32_t ram_amount_value = (current_device.nv_pfb_boot_0 >> NV4_PFB_BOOT_RAM_AMOUNT) & 0x03; 
     
@@ -75,7 +75,7 @@ bool nv4_init()
     else if (ram_amount_value == NV4_PFB_BOOT_RAM_AMOUNT_16MB)                          // 16Mb
         current_device.vram_amount = NV4_VRAM_SIZE_16MB;
 
-    current_device.straps = nv_mmio_read32(NV4_PSTRAPS);
+    current_device.straps = NV_ReadMMIO32(NV4_PSTRAPS);
 
     if ((current_device.straps >> NV4_PSTRAPS_CRYSTAL) & 0x01)
         current_device.crystal_hz = NV_CLOCK_BASE_14318180;
@@ -84,12 +84,12 @@ bool nv4_init()
 
     /* Power up all GPU subsystems */
     Logging_Write(log_level_debug, "NV4 Init: Enabling all GPU subsystems (0x11111111 -> NV4_PMC_ENABLE)...");
-    nv_mmio_write32(NV4_PMC_ENABLE, 0x11111111);
+    NV_WriteMMIO32(NV4_PMC_ENABLE, 0x11111111);
     Logging_Write(log_level_debug, "Done!\n");
 
     /* Enable interrupts (test) */
     Logging_Write(log_level_debug, "NV4 Init: Enabling interrupts...");
-    nv_mmio_write32(NV4_PMC_INTR_EN, (NV4_PMC_INTR_EN_HARDWARE | NV4_PMC_INTR_EN_SOFTWARE));
+    NV_WriteMMIO32(NV4_PMC_INTR_EN, (NV4_PMC_INTR_EN_HARDWARE | NV4_PMC_INTR_EN_SOFTWARE));
     Logging_Write(log_level_debug, "Done!\n");
     
     Logging_Write(log_level_debug, "NV4 Init: Ensuring user-programmable pixel, core and memory clocks...\n");
@@ -98,29 +98,29 @@ bool nv4_init()
     // we also need to actually *program* the clocks on NV4 if you set the PLL to programmable omde it seems. It really doesn't like it if you don't
     // so store the old values
 
-    current_device.vpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_PIXEL);
-    current_device.mpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_MEMORY);
-    current_device.nvpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_CORE);
+    current_device.vpll = NV_ReadMMIO32(NV4_PRAMDAC_CLOCK_PIXEL);
+    current_device.mpll = NV_ReadMMIO32(NV4_PRAMDAC_CLOCK_MEMORY);
+    current_device.nvpll = NV_ReadMMIO32(NV4_PRAMDAC_CLOCK_CORE);
 
-    uint32_t pramdac_pll_coeff_select = nv_mmio_read32(NV4_PRAMDAC_COEFF_SELECT);
+    uint32_t pramdac_pll_coeff_select = NV_ReadMMIO32(NV4_PRAMDAC_COEFF_SELECT);
 
     // Save original NV4 PLL setting. 
     nv4_state.original_pll_setting = pramdac_pll_coeff_select;
 
     pramdac_pll_coeff_select |= (NV4_PRAMDAC_COEFF_SELECT_ALL_SOFTWARE << NV4_PRAMDAC_COEFF_SELECT_SOURCE);
 
-    nv_mmio_write32(NV4_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
+    NV_WriteMMIO32(NV4_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
 
     //go
-    nv_mmio_write32(NV4_PRAMDAC_CLOCK_CORE, current_device.nvpll);
-    nv_mmio_write32(NV4_PRAMDAC_CLOCK_MEMORY, current_device.mpll);
-    nv_mmio_write32(NV4_PRAMDAC_CLOCK_PIXEL, current_device.vpll);
+    NV_WriteMMIO32(NV4_PRAMDAC_CLOCK_CORE, current_device.nvpll);
+    NV_WriteMMIO32(NV4_PRAMDAC_CLOCK_MEMORY, current_device.mpll);
+    NV_WriteMMIO32(NV4_PRAMDAC_CLOCK_PIXEL, current_device.vpll);
 
 
     return true; 
 }
 
-bool nv4_dump_mfg_info()
+bool NV4_DumpMFGInfo()
 {
         /* TODO: Read our Dumb Framebuffer */
     Logging_Write(log_level_message, "NV4 Manufacture-Time Configuration: \n");
@@ -137,13 +137,13 @@ bool nv4_dump_mfg_info()
     Logging_Write(log_level_message, "Straps                  = %08lX\n", current_device.straps);
 
     // We store these but read the current values
-    uint32_t vpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_PIXEL);
-    uint32_t nvpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_CORE);
-    uint32_t mpll = nv_mmio_read32(NV4_PRAMDAC_CLOCK_MEMORY);
+    uint32_t vpll = NV_ReadMMIO32(NV4_PRAMDAC_CLOCK_PIXEL);
+    uint32_t nvpll = NV_ReadMMIO32(NV4_PRAMDAC_CLOCK_CORE);
+    uint32_t mpll = NV_ReadMMIO32(NV4_PRAMDAC_CLOCK_MEMORY);
 
-    double vpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, vpll);
-    double nvpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, nvpll);
-    double mpll_mhz = nv_clock_mnp_to_mhz(current_device.crystal_hz, mpll);
+    double vpll_mhz = NV_ClockMNPToMhz(current_device.crystal_hz, vpll);
+    double nvpll_mhz = NV_ClockMNPToMhz(current_device.crystal_hz, nvpll);
+    double mpll_mhz = NV_ClockMNPToMhz(current_device.crystal_hz, mpll);
 
     //todo: convert to MHz
     Logging_Write(log_level_message, "Pixel Clock Coefficient = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
@@ -153,9 +153,9 @@ bool nv4_dump_mfg_info()
     return true; 
 }
 
-void nv4_shutdown()
+void NV4_Shutdown()
 {
     // Restore original nonprogrammable VPLL/MPLL/NVPLL
-    nv_mmio_write32(NV4_PRAMDAC_COEFF_SELECT, nv4_state.original_pll_setting);
+    NV_WriteMMIO32(NV4_PRAMDAC_COEFF_SELECT, nv4_state.original_pll_setting);
     return; 
 }

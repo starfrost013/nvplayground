@@ -221,9 +221,9 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
 #define NV_PMC_BOOT_NV3T_A03_TSMC 	0x20030122		// NV3 Stepping C2/C3 / NV3 Stepping A3/A4	1998/9			(TSMC-manufactured)
 
 /* Temp stuff */
-#define NV3_TEST_OVERCLOCK_TIME_BETWEEN_RECLOCKS        60
-#define NV3_TEST_OVERCLOCK_BASE_13500                   0x1A30B
-#define NV3_TEST_OVERCLOCK_BASE_14318					0x1C40E
+#define NV3_TestOverclock_TIME_BETWEEN_RECLOCKS        60
+#define NV3_TestOverclock_BASE_13500                   0x1A30B
+#define NV3_TestOverclock_BASE_14318					0x1C40E
 
 // RIVA TNT1 (1998)
 #define NV_PMC_BOOT_NV4_A01			0x20004000		// NV4 Stepping A1/A2/A3					?December 1997? (TSMC-manufactured)
@@ -386,39 +386,39 @@ static inline __attribute__((always_inline)) uint32_t GPU_NV_GetGeneration()
 
 
 // only 8 and 32 bit are really needed
-uint8_t nv_mmio_read8(uint32_t offset); 
-uint32_t nv_mmio_read32(uint32_t offset); 
-void nv_mmio_write8(uint32_t offset, uint8_t val);
-void nv_mmio_write32(uint32_t offset, uint32_t val);
+uint8_t NV_ReadMMIO8(uint32_t offset); 
+uint32_t NV_ReadMMIO32(uint32_t offset); 
+void NV_WriteMMIO8(uint32_t offset, uint8_t val);
+void NV_WriteMMIO32(uint32_t offset, uint32_t val);
 
 /* Requires some special dispensations if the bus size is 64-bit and there is only 2 MB of VRAM */
-uint8_t nv_dfb_read8(uint32_t offset); 
-uint16_t nv_dfb_read16(uint32_t offset); 
-uint32_t nv_dfb_read32(uint32_t offset); 
-void nv_dfb_write8(uint32_t offset, uint8_t val);
-void nv_dfb_write16(uint32_t offset, uint16_t val);
-void nv_dfb_write32(uint32_t offset, uint32_t val);
+uint8_t NV_ReadDfb8(uint32_t offset); 
+uint16_t NV_ReadDfb16(uint32_t offset); 
+uint32_t NV_ReadDfb32(uint32_t offset); 
+void NV_WriteDfb8(uint32_t offset, uint8_t val);
+void NV_WriteDfb16(uint32_t offset, uint16_t val);
+void NV_WriteDfb32(uint32_t offset, uint32_t val);
 
 // RAMIN is always read as 32bit
-uint32_t nv_ramin_read32(uint32_t offset); 
-void nv_ramin_write32(uint32_t offset, uint32_t val);
+uint32_t NV_ReadRamin32(uint32_t offset); 
+void NV_WriteRamin32(uint32_t offset, uint32_t val);
 
 // NV-VGA
-void nv_crtc_lock_extended_registers();
-void nv_crtc_unlock_extended_registers();
-uint8_t nv_crtc_read(uint8_t index);
-uint8_t nv_gdc_read(uint8_t index);
-uint8_t nv_sequencer_read(uint8_t index);
-void nv_crtc_write(uint8_t index, uint8_t value);
-void nv_gdc_write(uint8_t index, uint8_t value);
-void nv_sequencer_write(uint8_t index, uint8_t value);
+void NV_CRTCLockExtendedRegisters();
+void NV_CRTCUnlockExtendedRegisters();
+uint8_t NV_ReadCRTC(uint8_t index);
+uint8_t NV_ReadGDC(uint8_t index);
+uint8_t NV_ReadSequencer(uint8_t index);
+void NV_WriteCRTC(uint8_t index, uint8_t value);
+void NV_WriteGDC(uint8_t index, uint8_t value);
+void NV_WriteSequencer(uint8_t index, uint8_t value);
 
 // Clock
 
 #define NV_CLOCK_BASE_13500K				13500000.0
 #define NV_CLOCK_BASE_14318180				14318180.0
 
-double nv_clock_mnp_to_mhz(uint32_t clock_base, uint32_t mnp);
+double NV_ClockMNPToMhz(uint32_t clock_base, uint32_t mnp);
 
 //
 // VGA common stuff
@@ -441,14 +441,14 @@ double nv_clock_mnp_to_mhz(uint32_t clock_base, uint32_t mnp);
 
 #define VGA_REALMODE_VBIOS_LOCATION				0xC0000
 
-uint8_t vga_crtc_read(uint8_t index);
-uint8_t vga_gdc_read(uint8_t index);
-uint8_t vga_sequencer_read(uint8_t index);
-uint8_t vga_attribute_read(uint8_t index);
-void vga_crtc_write(uint8_t index, uint8_t value);
-void vga_gdc_write(uint8_t index, uint8_t value);
-void vga_sequencer_write(uint8_t index, uint8_t value);
-void vga_attribute_write(uint8_t index, uint8_t value);
+uint8_t VGA_ReadCRTC(uint8_t index);
+uint8_t VGA_ReadGDC(uint8_t index);
+uint8_t VGA_ReadSequencer(uint8_t index);
+uint8_t VGA_ReadAttribute(uint8_t index);
+void VGA_WriteCRTC(uint8_t index, uint8_t value);
+void VGA_WriteGDC(uint8_t index, uint8_t value);
+void VGA_WriteSequencer(uint8_t index, uint8_t value);
+void VGA_WriteAttribute(uint8_t index, uint8_t value);
 
 //
 // SCRIPT PARSER

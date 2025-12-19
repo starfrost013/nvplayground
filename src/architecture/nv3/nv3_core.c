@@ -20,7 +20,7 @@
 
 nv3_state_t nv3_state = {0};                    // NV3 specific state 
 
-bool nv3_init()
+bool NV3_Init()
 {
     // only top 8 bits actually matter
     uint32_t bar0_base = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
@@ -64,8 +64,8 @@ bool nv3_init()
     __dpmi_set_segment_limit(current_device.bar1_selector, NV_MMIO_SIZE - 1); // ultimately the same size
 
     /* store manufacture time configuratino */
-    current_device.nv_pmc_boot_0 = nv_mmio_read32(NV3_PMC_BOOT);
-    current_device.nv_pfb_boot_0 = nv_mmio_read32(NV3_PFB_BOOT);
+    current_device.nv_pmc_boot_0 = NV_ReadMMIO32(NV3_PMC_BOOT);
+    current_device.nv_pfb_boot_0 = NV_ReadMMIO32(NV3_PFB_BOOT);
 
     uint32_t ram_amount_value = (current_device.nv_pfb_boot_0 >> NV3_PFB_BOOT_RAM_AMOUNT) & 0x03; 
     bool ram_extension_8mb = (current_device.nv_pfb_boot_0 >> NV3_PFB_BOOT_RAM_EXTENSION) & 0x01;      // Needed for RIVA128 ZX
@@ -80,7 +80,7 @@ bool nv3_init()
     else if (!ram_amount_value && ram_extension_8mb == NV3_PFB_BOOT_RAM_EXTENSION_NONE) // 1MB (never existed)
         current_device.vram_amount = NV3_VRAM_SIZE_1MB;
 
-    current_device.straps = nv_mmio_read32(NV3_PSTRAPS);
+    current_device.straps = NV_ReadMMIO32(NV3_PSTRAPS);
 
     if ((current_device.straps >> NV3_PSTRAPS_CRYSTAL) & 0x01)
         current_device.crystal_hz = NV_CLOCK_BASE_14318180;
@@ -89,28 +89,28 @@ bool nv3_init()
         
     /* Power up all GPU subsystems */
     Logging_Write(log_level_debug, "NV3 Init: Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
-    nv_mmio_write32(NV3_PMC_ENABLE, 0x11111111);
+    NV_WriteMMIO32(NV3_PMC_ENABLE, 0x11111111);
     Logging_Write(log_level_debug, "Done!\n");
 
     /* Enable interrupts (test) */
     Logging_Write(log_level_debug, "NV3 Init: Enabling interrupts...");
-    nv_mmio_write32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
+    NV_WriteMMIO32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
     Logging_Write(log_level_debug, "Done!\n");
     
     Logging_Write(log_level_debug, "NV3 Init: Ensuring user-programmable pixel and memory clocks...\n");
     
     // ensure programmable pixel and memory clocks for driver & overclock testing
-    uint32_t pramdac_pll_coeff_select = nv_mmio_read32(NV3_PRAMDAC_COEFF_SELECT);
+    uint32_t pramdac_pll_coeff_select = NV_ReadMMIO32(NV3_PRAMDAC_COEFF_SELECT);
 
     pramdac_pll_coeff_select |= (NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE_SOFTWARE << NV3_PRAMDAC_COEFF_SELECT_MPLL_SOURCE);
     pramdac_pll_coeff_select |= (NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE_SOFTWARE << NV3_PRAMDAC_COEFF_SELECT_VPLL_SOURCE);
 
     // read these into device_info structure
     // NV3 doesn't care what you set source to but NV4 does
-    current_device.vpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_PIXEL);
-    current_device.mpll = nv_mmio_read32(NV3_PRAMDAC_CLOCK_MEMORY);
+    current_device.vpll = NV_ReadMMIO32(NV3_PRAMDAC_CLOCK_PIXEL);
+    current_device.mpll = NV_ReadMMIO32(NV3_PRAMDAC_CLOCK_MEMORY);
 
-    nv_mmio_write32(NV3_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
+    NV_WriteMMIO32(NV3_PRAMDAC_COEFF_SELECT, pramdac_pll_coeff_select);
 
     return true; 
 }

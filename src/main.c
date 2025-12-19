@@ -92,7 +92,7 @@ void NVPlay_Run()
 	}	
 
 	// Make sure that nv_pmc_boot_0 got set
-	current_device.nv_pmc_boot_0 = nv_mmio_read32(NV_PMC_BOOT);
+	current_device.nv_pmc_boot_0 = NV_ReadMMIO32(NV_PMC_BOOT);
 
 	if (command_line.load_reg_script)
 		Script_Run();
