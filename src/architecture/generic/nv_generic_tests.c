@@ -133,7 +133,6 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
     || !mmio_bar1)
         return false;
 
-
     // later devices have above 16mb of vram
     uint32_t vram_dump_size = NV_MMIO_SIZE;
 

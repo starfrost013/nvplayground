@@ -61,6 +61,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Architecture: NV1
 "src/architecture/nv1/nv1_core.c"
+"src/architecture/nv1/nv1_class_names.c"
 
 # Architecture: NV3
 "src/architecture/nv3/nv3_class_names.c"
