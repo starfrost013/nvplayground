@@ -139,4 +139,5 @@
 #define NV4_PRAMDAC_GENERAL_CONTROL_ALT_MODE            12
 
 
-#define NV4_RAMIN_START                                0x700000
+#define NV4_RAMIN_START                                 0x700000
+#define NV4_REAL_PROM_START                             0x700000        // ramin is acutally at 701000

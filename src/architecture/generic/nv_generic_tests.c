@@ -218,18 +218,33 @@ bool NVGeneric_DumpMMIO()
         return NVGeneric_DumpMMIO_NV3AndLater();
 }
 
+#define VBIOS_LENGTH    8192
+
 bool NVGeneric_DumpVBIOS()
 {
     Logging_Write(log_level_message, "Dumping Video BIOS...");
 
     FILE* vbios = fopen("nvbios.bin", "wb");
 
-    uint32_t vbios_bin[8192];
+    uint32_t vbios_bin[VBIOS_LENGTH];
 
-    for (int32_t i = 0; i < 8192; i++)
+    uint32_t generation = GPU_NV_GetGeneration();
+    uint32_t base_location = 0;
+
+    switch (generation)
     {
-        vbios_bin[i] = NV_ReadMMIO32(NV1_PROM + i*4);
-    }   
+        case 1:
+            base_location = NV1_PROM;
+            break;
+        case 3:
+            base_location = NV3_PROM_START;
+            break;
+        case 4 ... 0x10:
+            base_location = NV4_RAMIN_START;
+    }
+
+    for (int32_t i = 0; i < VBIOS_LENGTH; i++)
+        vbios_bin[i] = NV_ReadMMIO32(base_location + i*4);
 
     fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
 
@@ -246,8 +261,8 @@ bool NVGeneric_DumpRAMHT()
     // open a file
 
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramht.txt", GPU_NV_GetGeneration());
-    FILE* stream = fopen(file_name, "r+");
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramht.bin", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "rb+");
 
     // call NVHAL function to dump ramht
     if (current_device.device_info.hal->dump_ramht_to_text_file)
@@ -265,8 +280,8 @@ bool NVGeneric_DumpRAMHT()
 bool NVGeneric_DumpRAMFC()
 {    
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramfc.txt", GPU_NV_GetGeneration());
-    FILE* stream = fopen(file_name, "r+");
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramfc.bin", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "rb+");
 
     if (current_device.device_info.hal->dump_ramfc_to_text_file)
         current_device.device_info.hal->dump_ramfc_to_text_file(stream);
@@ -283,8 +298,8 @@ bool NVGeneric_DumpRAMFC()
 bool NVGeneric_DumpRAMRO()
 {
     char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramro.txt", GPU_NV_GetGeneration());
-    FILE* stream = fopen(file_name, "r+");
+    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramro.bin", GPU_NV_GetGeneration());
+    FILE* stream = fopen(file_name, "rb+");
 
     if (current_device.device_info.hal->dump_ramro_to_text_file)
         current_device.device_info.hal->dump_ramro_to_text_file(stream);

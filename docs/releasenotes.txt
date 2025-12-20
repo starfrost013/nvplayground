@@ -1,15 +1,20 @@
 NVPlay 1.0 is now available.
 
 Changes:
-* Changed version system (since version 0.x will go on forever otherwise)
+* Changed version number system (since version 0.x will go on forever otherwise)
 * Added a "repl" loop that is the new default mode. Run "-test" to run tests. 
 	* "?" or "help" at the REPL loop prints help.
 	* "q" or "exit" exits.
-* Added support for Celsius (NV1x) GPUs (untested!)
+* Riva 128 (NV3):
+	* AGP defines added
+	* Removed nv3_api.h, merged it with nv3.h
+* Riva TNT (NV4) support
+	* Currently: NV4_DumpVBIOS, NV4_DumpMMIO, NV4_PrintMfgInfo tests
+	* Tested working on 16MB STB Velocity 4400 (VBIOS Version 1.01, 24 August 1998)
+* Added support for TNT2 (NV5) and Celsius (NV1x) GPUs (untested!)
 * Added HAL system
 	* GPUs now store pointers to arrays of function pointers (not C++ yet...) to avoid GPU list having huge numbers of function pointers and to make calling GPU specific functions
 	more elegant
-
 * Implemented "generic" tests that are available across every GPU (for some of them, Hal functions are required )
 * Commands now store number of parameters and check for them
 * Simplified terrible script parsing code
@@ -20,39 +25,25 @@ Changes:
 	* Write CRTC range
 	* Read to console and write VGA Sequencer registers
 	* Read to console and write VGA GDC registers
+	* PrintVersion command
+	* Run a test (RunTest)
 * Renamed nvplayground.h to nvplay.h
 * More consistent function naming scheme
 * Added log_settings.redirect to optionally redirect any of stdin, stdout and stderr to the log
 * -t added as an alias for -test
 * Added -boot /  command line option to initialise GPU and exit
-* Added "RunTest" command to run a test
-* Added "PrintVersion" command
 * Added GPU_IsNVx functions for GPU-specific behaviour in generic tests
+* Added DumpRAMHT, DumpRAMFC and DumpRAMRO to dump RAMHT, RAMFC, and RAMRO
+	* Currently NV3 only
 * Added GPU_NV_GetGeneration functions to return a number equivalent to the NV codename for a chip
 * Allowed dumping amounts of vram that are not 16 MB 
-
-
-Old release notes:
-
-0.4.0.0-rcX Changes:
-* Implemented a new ".NVS" savestate format
-	* Load a .NVS file using the -savestate / -nvs command line option. This will load a savestate into the graphics hardware!
-	* Currently only full support on NV3, very experimental
-	* File sections can be shared between every single GPU or per-GPU. Currently only NV3 per function sections are implemented
-* A very basic command engine
+* Implemented a  very basic command engine
 	* Load a .NVP file using the -s / -script command line option
 	* Various test scripts are provided
-* Riva 128 (NV3):
-	* AGP defines added
-	* Removed nv3_api.h, merged it with nv3.h
-* Riva TNT (NV4) support
-	* Currently: NV4_DumpVBIOS, NV4_DumpMMIO, NV4_PrintMfgInfo tests
-	* Tested working on 16MB STB Velocity 4400 (VBIOS Version 1.01, 24 August 1998)
 * Added VGA attribute, sequencer and graphics register functions
 * Added a help message (use -?)
 * Fixed RAMIN reading for non-NV3 cards
 * NVxPrintMfgInfo tests now print clockspeed in MHz for NV3/NV4 
-
 * Removed never-used "main function mode"
 
 0.4.0.0-rc2:
