@@ -26,7 +26,6 @@ typedef struct nv1_state_s
 } nv1_state_t;
 
 extern nv1_state_t nv1_state;
-extern const char* nv1_class_names[];
 
 bool NV1_Init();
 bool NV1_PrintMFGInfo();

@@ -50,12 +50,6 @@ bool NV3_MMIOAreaIsExcluded(uint32_t addr);
 // DO NOT REMOVE! DO NOT REMOVE! DO NOT REMOVE! OR YOU DIE!!!!
 #pragma pack(push, 1)
 
-// CLass names for debugging
-extern const char* nv3_class_names[];
-
-// Defines the version of the NV3 API (Increment if this is ever standalone)
-#define NV3_API_VERSION          1
-
 /* Defines valid classes. */
 typedef enum nv3_pgraph_class_e
 {
