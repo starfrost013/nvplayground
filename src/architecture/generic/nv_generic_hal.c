@@ -59,10 +59,11 @@ nvhal_entry_t nvhal_nv3 =
     NULL,                           // Shutdown
 
     // Dump functions
-    NULL,                           // Dump FIFO to text file
-    NULL,                           // Dump RAMHT to text file 
-    NULL,                           // Dump RAMFC to text file
-    NULL,                           // Dump RAMRO to text file
+    NV3_DumpFIFO,                   // Dump FIFO to text file
+    NV3_DumpRAMHT,                  // Dump RAMHT to text file 
+    NV3_DumpRAMFC,                  // Dump RAMFC to text file
+    NV3_DumpRAMRO ,                 // Dump RAMRO to text file
+
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file
 
     // Rendering functions
@@ -78,10 +79,10 @@ nvhal_entry_t nvhal_nv4 =
     NV4_Shutdown,                   // Shutdown
 
     // Dump functions
-    NV3_DumpFIFO,                   // Dump FIFO to text file
-    NV3_DumpRAMHT,                  // Dump RAMHT to text file 
-    NV3_DumpRAMFC,                  // Dump RAMFC to text file
-    NV3_DumpRAMRO ,                 // Dump RAMRO to text file
+    NULL,                           // Dump FIFO to text file
+    NULL,                           // Dump RAMHT to text file 
+    NULL,                           // Dump RAMFC to text file
+    NULL,                           // Dump RAMRO to text file
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file (similar enough to nv3)
 
     // Rendering functions
