@@ -1,4 +1,9 @@
-NVPlay 1.0 is now available.
+NVPlay 1.0.0-rc2 is now available.
+
+Changes:
+	* Much shorter and less verbose help text.
+
+NVPlay 1.0.0-rc1 is now available.
 
 Changes:
 * Changed version number system (since version 0.x will go on forever otherwise)
