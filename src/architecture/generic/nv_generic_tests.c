@@ -241,6 +241,7 @@ bool NVGeneric_DumpVBIOS()
             break;
         case 4 ... 0x10:
             base_location = NV4_RAMIN_START;
+            break;
     }
 
     for (int32_t i = 0; i < VBIOS_LENGTH; i++)
