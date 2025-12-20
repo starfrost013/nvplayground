@@ -75,7 +75,6 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Architecture: Celsius
 "src/architecture/nv10/nv10_core.c"
-
 )
 
 add_executable(nvplay ${sources})

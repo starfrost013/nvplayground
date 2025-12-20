@@ -24,6 +24,6 @@ file(WRITE ${HEADER_FILE} "/* Version information (Auto-generated; modify using 
 #define APP_STATE \"pre-release\"
 #define APP_COMPILE_TIME __DATE__ \" \" __TIME__
 
-#define APP_VERSION_FULL APP_VERSION \"; (\" APP_STATE \" ; \" APP_COMPILE_TIME \")\\n \" APP_DESCRIPTION 
+#define APP_VERSION_FULL APP_VERSION \" (\" APP_STATE \"; \" APP_COMPILE_TIME \")\\n \" APP_DESCRIPTION 
 
 #define APP_SIGNON_STRING APP_NAME \" Version \" APP_VERSION_FULL")

@@ -62,6 +62,4 @@ nvrm_class_t nvrm_class[] =
     { 0x76, 4, SUPPORTED_BY_ALL_GENS, "Nv04StretchedImageFromCpu (076)" },
     { 0x77, 4, SUPPORTED_BY_ALL_GENS, "Nv04ScaledImageFromMemory (077)" },
 
-
-
 };
