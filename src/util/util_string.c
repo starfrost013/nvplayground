@@ -8,7 +8,6 @@
     util_string.c: String utilities (Mostly stolen from S7e)
 */
 
-
 #include <nvplay.h>
 #include <string.h>
 
@@ -91,7 +90,7 @@ char* String_GetTokenSeparatedPart(char* fmt, const char* delim, uint32_t n)
 {
     /* sanity checks */
 
-    if (!fmt ||  !delim)
+    if (!fmt || !delim)
         return NULL; 
 
     size_t fmt_len = strlen(fmt);

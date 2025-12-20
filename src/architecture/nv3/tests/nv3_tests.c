@@ -225,24 +225,77 @@ bool NV3_DumpMFGInfo()
     return true; 
 }
 
+// these are only needed here
+// todo: we need to actually interpret these
+#define RAMHT_SIZE_MAX      0x8000
+#define RAMRO_SIZE_MAX      0x2000
+#define RAMFC_SIZE          0x1000 // non configurabel
+
 void NV3_DumpFIFO(FILE* stream)
 {
 
 }
 
+
 void NV3_DumpRAMHT(FILE* stream)
 {
-    
+    uint32_t ramht_cfg = NV_ReadMMIO32(NV3_PFIFO_CONFIG_RAMHT);
+    uint32_t ramht_location = ramht_cfg & 0xFFF;       // 12:0
+    uint32_t ramht_size = (ramht_cfg >> NV3_PFIFO_CONFIG_RAMHT_SIZE) & 0x03;
+
+    if (ramht_size == NV3_PFIFO_CONFIG_RAMHT_SIZE_4K)
+        ramht_size = 0x1000;
+    else if (ramht_size == NV3_PFIFO_CONFIG_RAMHT_SIZE_8K)
+        ramht_size = 0x2000;
+    else if (ramht_size == NV3_PFIFO_CONFIG_RAMHT_SIZE_16K)
+        ramht_size = 0x4000;
+    else if (ramht_size == NV3_PFIFO_CONFIG_RAMHT_SIZE_32K)
+        ramht_size = 0x8000;
+
+    // easier to do 
+    uint32_t ramht[RAMHT_SIZE_MAX >> 2];
+
+    for (uint32_t i = 0; i < ramht_size; i += 4)
+        ramht[i] = NV_ReadRamin32(ramht_location + i);
+
+    fwrite(ramht, ramht_size, 1, stream);
 }
 
 void NV3_DumpRAMRO(FILE* stream)
 {
-    
+    uint32_t ramro_cfg = NV_ReadMMIO32(NV3_PFIFO_CONFIG_RAMRO);
+    uint32_t ramro_location = ramro_cfg & 0xFFF;       // 12:0
+    uint32_t ramro_size = (ramro_cfg >> NV3_PFIFO_CONFIG_RAMRO_SIZE) & 0x03;
+
+    if (ramro_size == NV3_PFIFO_CONFIG_RAMRO_SIZE_512B)
+        ramro_size = 0x200;
+    else if (ramro_size == NV3_PFIFO_CONFIG_RAMRO_SIZE_8K)
+        ramro_size = 0x2000;
+
+    // easier to do 
+    uint32_t ramro[RAMRO_SIZE_MAX >> 2];
+
+    for (uint32_t i = 0; i < ramro_size; i += 4)
+        ramro[i] = NV_ReadRamin32(ramro_location + i);
+
+    fwrite(ramro, ramro_size, 1, stream);
 }
 
 void NV3_DumpRAMFC(FILE* stream)
 {
-    
+    // NV1 - RAMFC size is (ramro_size>>1)
+    // NV3 - RAMFC size is 0x1000 bytes 
+
+    uint32_t ramfc_cfg = NV_ReadMMIO32(NV3_PFIFO_CONFIG_RAMFC);
+    uint32_t ramfc_location = ramfc_cfg & 0xFFF;       // 12:0
+
+    // easier to do 
+    uint32_t ramfc[RAMFC_SIZE >> 2];
+
+    for (uint32_t i = 0; i < RAMFC_SIZE; i += 4)
+        ramfc[i] = NV_ReadRamin32(ramfc_location + i);
+
+    fwrite(ramfc, RAMFC_SIZE, 1, stream);
 }
 
 void NV3_DumpPGRAPHCacheBank(uint32_t initial_value, FILE* stream)
