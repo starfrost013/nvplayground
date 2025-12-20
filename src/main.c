@@ -11,6 +11,7 @@
 #include "config/config.h"
 #include "util/util.h"
 #include <nvplay.h>
+#include <cmake/nvplay_version.h>
 #include <config/config.h>
 #include <stdio.h>
 

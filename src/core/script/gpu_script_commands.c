@@ -17,6 +17,7 @@
 
 #include "architecture/nv3/nv3.h"
 #include "architecture/nv3/nv3_ref.h"
+#include <cmake/nvplay_version.h>
 #include "core/tests/tests.h"
 #include "util/util.h"
 #include <nvplay.h>

@@ -27,8 +27,6 @@
 // #pragma once my beloved
 #include <util/util.h>
 
-#include <cmake/nvplay_version.h>
-
 /* Core */
 
 // The help string
