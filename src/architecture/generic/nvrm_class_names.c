@@ -12,6 +12,7 @@
 */
 
 #include <nvplay.h>
+#include <architecture/generic/nv_generic.h>
 
 #define CLASS_LAST                  0x7F
 #define SUPPORTED_BY_ALL_GENS       5090        // RTX 5090

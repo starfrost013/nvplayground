@@ -2,7 +2,7 @@
 
 #define APP_NAME "NVPlay"
 #define APP_DESCRIPTION "GPU research driver & raw programming tool\nCopyright (C) 2025-2026 starfrost"
-#define APP_VERSION "2.0.0.1"
+#define APP_VERSION "2.0.0.2"
 #define APP_STATE "pre-release"
 #define APP_COMPILE_TIME __DATE__ " " __TIME__
 

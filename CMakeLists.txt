@@ -58,6 +58,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 # Architecture: Generic/Shared
 "src/architecture/generic/nv_generic_hal.c"
 "src/architecture/generic/nv_generic_tests.c"
+"src/architecture/generic/nvrm_class_names.c"
 
 # Architecture: NV1
 "src/architecture/nv1/nv1_core.c"
