@@ -9,7 +9,6 @@
 */
 
 #include "config.h"
-
 #include "core/tests/tests.h"
 #include "nvplay.h"
 #include "util/ini.h"

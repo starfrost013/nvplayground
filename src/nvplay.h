@@ -27,18 +27,7 @@
 // #pragma once my beloved
 #include <util/util.h>
 
-/* Version information */
-
-#define APP_NAME "NVPlay"
-#define APP_DESCRIPTION "GPU research driver & raw programming tool\nCopyright (C) 2025-2026 starfrost"
-#define APP_VERSION "2.0.0"
-#define APP_BUILD_NUMBER "0"
-#define APP_STATE "pre-release"
-#define APP_COMPILE_TIME __DATE__ " " __TIME__
-
-#define APP_VERSION_FULL APP_VERSION " (" APP_COMPILE_TIME ")\n" APP_DESCRIPTION
-
-#define APP_SIGNON_STRING APP_NAME " Version " APP_VERSION_FULL
+#include <cmake/nvplay_version.h>
 
 /* Core */
 

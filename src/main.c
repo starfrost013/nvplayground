@@ -40,8 +40,7 @@ void NVPlay_RunTests()
 		if (!command_line.dry_run)
 		{
 			/* 
-				TODO: Ini setting to disable this print in the case of graphical tests.
-				Otherwise we'll have to switch back to test mode every test.
+				TODO: Ini setting to disable this print in the case of graphical tests. Otherwise we'll have to switch back to test mode every test.
 
 				Also, test logging. (after util_logging.c is done)
 			*/

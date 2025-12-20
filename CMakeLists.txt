@@ -88,12 +88,16 @@ elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
   target_compile_definitions(nvplay PRIVATE RELEASE)
 endif()
 
-
 # create required folders
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out/assets)
 
+# increment the build number
+add_custom_command(TARGET nvplay PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -P "${PROJECT_SOURCE_DIR}/src/cmake/VersionInfo.cmake"
+)
 
+# copy assets
 add_custom_command(TARGET nvplay POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_if_different
   ${CMAKE_BINARY_DIR}/${NVPLAY_OUTPUT_FILE_NAME}
