@@ -218,18 +218,32 @@ bool NVGeneric_DumpMMIO()
         return NVGeneric_DumpMMIO_NV3AndLater();
 }
 
+#define VBIOS_LENGTH    8192
 bool NVGeneric_DumpVBIOS()
 {
     Logging_Write(log_level_message, "Dumping Video BIOS...");
 
     FILE* vbios = fopen("nvbios.bin", "wb");
 
-    uint32_t vbios_bin[8192];
+    uint32_t vbios_bin[VBIOS_LENGTH];
 
-    for (int32_t i = 0; i < 8192; i++)
+    uint32_t generation = GPU_NV_GetGeneration();
+    uint32_t base_location = 0;
+
+    switch (generation)
     {
-        vbios_bin[i] = NV_ReadMMIO32(NV1_PROM + i*4);
-    }   
+        case 1:
+            base_location = NV1_PROM;
+            break;
+        case 3:
+            base_location = NV3_PROM_START;
+            break;
+        case 4 ... 0x10:
+            base_location = NV4_RAMIN_START;
+    }
+
+    for (int32_t i = 0; i < VBIOS_LENGTH; i++)
+        vbios_bin[i] = NV_ReadMMIO32(base_location + i*4);
 
     fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
 
@@ -238,6 +252,7 @@ bool NVGeneric_DumpVBIOS()
 
     return true; 
 }
+
 
 bool NVGeneric_DumpFIFO()
 {
