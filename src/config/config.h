@@ -14,10 +14,8 @@
 #include <core/tests/tests.h>
 #include <util/util.h>
 
-#define INI_FILE_NAME "nvplay.ini"
+#define INI_FILE_NAME               "nvplay.ini"
 #define MAX_TEST_NAME_BUFFER_LEN    64
-
-
 
 // Main config struct 
 typedef struct nv_config_s
