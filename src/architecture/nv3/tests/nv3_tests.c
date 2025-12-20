@@ -231,12 +231,6 @@ bool NV3_DumpMFGInfo()
 #define RAMRO_SIZE_MAX      0x2000
 #define RAMFC_SIZE          0x1000 // non configurabel
 
-void NV3_DumpFIFO(FILE* stream)
-{
-
-}
-
-
 void NV3_DumpRAMHT(FILE* stream)
 {
     uint32_t ramht_cfg = NV_ReadMMIO32(NV3_PFIFO_CONFIG_RAMHT);

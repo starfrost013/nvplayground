@@ -27,7 +27,6 @@ nv_test_t nv_tests[] =
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpPCI", "NV Generic - Dump PCI", NVGeneric_DumpPCISpace},
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpMMIO", "NV Generic - Dump MMIO", NVGeneric_DumpMMIO},
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpVBIOS", "NV Generic - Dump VBIOS", NVGeneric_DumpVBIOS},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpFIFO", "NV Generic - Dump FIFO State", NVGeneric_DumpVBIOS},
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMHT", "NV Generic - Dump RAMHT", NVGeneric_DumpRAMHT},
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMFC", "NV Generic - Dump RAMFC", NVGeneric_DumpRAMFC},
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMRO", "NV Generic - Dump RAMRO", NVGeneric_DumpRAMRO},

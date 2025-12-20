@@ -18,7 +18,6 @@
 bool NVGeneric_DumpPCISpace();
 bool NVGeneric_DumpMMIO();
 bool NVGeneric_DumpVBIOS();
-bool NVGeneric_DumpFIFO();
 bool NVGeneric_DumpRAMHT();                         // Dump all currently loaded objects in the current channel
 bool NVGeneric_DumpRAMFC();                         // Dump all channels that are not context switched to
 bool NVGeneric_DumpRAMRO();                         // Dump any errors that may have occurred 

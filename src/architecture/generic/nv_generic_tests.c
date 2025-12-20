@@ -239,23 +239,6 @@ bool NVGeneric_DumpVBIOS()
     return true; 
 }
 
-bool NVGeneric_DumpFIFO()
-{
-    // open a file
-    char file_name[MSDOS_PATH_LENGTH] = {0};
-    snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxfifo.txt", GPU_NV_GetGeneration());
-    FILE* stream = fopen(file_name, "r+");
-
-    // call NVHAL function to dump hal
-    if (current_device.device_info.hal->dump_fifo_to_text_file)
-        current_device.device_info.hal->dump_fifo_to_text_file(stream);
-    else
-        Logging_Write(log_level_error, "HAL Failure: No dump_fifo_to_text_file function for GPU %s\n", current_device.device_info.name);
-
-    fclose(stream);
-
-    return true; 
-}
 
 // Dump all currently loaded objects in the current channel
 bool NVGeneric_DumpRAMHT()
