@@ -103,8 +103,6 @@ void NVPlay_DetectWindows()
                 nvplay_state.os_level = NVPLAY_OS_WINUNKNOWN;   // Some ME pre-alpha builds were version5 
             break; 
     }
-
-
 }
 
 bool GPU_Detect()

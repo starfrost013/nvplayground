@@ -76,8 +76,6 @@ void NVPlay_RunTests()
 		current_device.device_info.name, config.num_tests_enabled, tests_succeeded, config.num_tests_enabled, tests_failed);
 }
 
-
-
 void NVPlay_Run()
 {
 /* Make sure the GPU is supported */
