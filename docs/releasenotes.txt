@@ -1,7 +1,8 @@
 NVPlay 1.0.0-rc2 is now available.
 
 Changes:
-	* Much shorter and less verbose help text.
+	* Fixed test mode. 
+	* Much shorter and less verbose help text with colours.
 
 NVPlay 1.0.0-rc1 is now available.
 
