@@ -29,14 +29,31 @@
 
 /* Core */
 
-// The help string
+//
+// STRINGS
+//
 extern const char* msg_help; 
 extern const char* msg_help_script;
+
 void NVPlay_ShowHelpAndExit();
+void NVPlay_Shutdown(uint32_t exit_code);
+void NVPlay_DetectWindows();
 
 // String
 #define STRING_EMPTY ""
 #define MSDOS_PATH_LENGTH					64			// maximum ms-dos path size is 64
+
+// Exit codes (MS-DOS is 8 bit only)
+#define NVPLAY_EXIT_CODE_SUCCESS			0			// Normal exit	
+#define NVPLAY_EXIT_CODE_NO_PCI				1			// Computer too old - No PCI BIOS 2.0
+#define NVPLAY_EXIT_CODE_UNSUPPORTED_GPU	2			// Unsupported GPU
+#define NVPLAY_EXIT_CODE_CONFIG_LOAD_FAIL	3			// Configuration load failure
+#define NVPLAY_EXIT_CODE_UNIMPLEMENTED_GPU	4			// GPU will be supported in the future
+#define NVPLAY_EXIT_CODE_NO_GPU_INIT		5			// No GPU initialisation function
+#define NVPLAY_EXIT_CODE_NO_TESTS			6			// Nothing to do
+#define NVPLAY_EXIT_CODE_LOG_INIT_FAIL		7			// Failed to initialise logging engine
+#define NVPLAY_EXIT_CODE_HELP_MENU			8			// Help menu
+#define NVPLAY_EXIT_CODE_UNKNOWN_FATAL		0x67		// 6-7
 
 /* PCI */
 
@@ -130,6 +147,7 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
 
 #define INT_VIDEO					0x10
 #define INT_PCI_BIOS        		0x1A		// PCI BIOS interrupt 
+#define INT_DOS						0x21		// MS-DOS API
 
 /* Generic definition for all tests, used to prevent expanding the nv_test static initialisers */
 #define PCI_VENDOR_GENERIC			0x0000
@@ -229,6 +247,32 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
 // NV10+ uses multiple device ids per gpu stepping and a hex representation of the stepping
 #define NV_PMC_BOOT_NV10_BASE		0x01000000
 
+// Operating systems that nvplay runs on.
+// (Windows/386 could theoretically run DJGPP, but it is not DPMI aware)
+typedef enum nvplay_os_state_e
+{
+	NVPLAY_OS_DOS = 0,				// MS-DOS box
+	NVPLAY_OS_WIN30 = 1,			// Windows 3.0 enhanced mode
+	NVPLAY_OS_WIN31 = 2,			// Windows 3.1 enhanced mode
+	NVPLAY_OS_WIN95 = 3,			// Windows 95 (4.00 = 950, 4.03 = OSR2)
+	NVPLAY_OS_WIN98 = 4,			// Windows 98 (4.10)
+	NVPLAY_OS_WINME = 5,			// Windows ME (4.90)
+	// Failsafe - you can turn off 2F/1600 which means you can't detect the Windows version. 
+	// We have to assume as late as possible except NT (you can't do it on NT)
+	NVPLAY_OS_WINUNKNOWN = 6,			
+	// TODO: How to detect NTVDM version? It must be possible
+	NVPLAY_OS_NT = 7,				// Windows NT NTVDM
+} nvplay_os_state;
+
+// globals
+// TODO: move current_device here
+typedef struct nvplay_state_s
+{
+	nvplay_os_state os_level; 
+} nvplay_state_t;
+
+extern nvplay_state_t nvplay_state;
+
 // Hardware Abstraction Layer entry
 // All hardware-specific stuff
 typedef struct nvhal_entry_s
@@ -280,13 +324,15 @@ typedef struct nv_device_s
 	/* Some registers shared between all gpus */
 	uint32_t nv_pfb_boot_0;			// nv_pfb_boot_0 register read at boot
 	uint32_t nv_pmc_boot_0;			// nv_pmc_boot_0 register read at boot
-	uint32_t nv10_pfb_cfg;			// nv10 pfb_cfg
+	uint32_t nv10_pfb_cfg;			// [NV10+] nv10 pfb_cfg
 	uint32_t straps;				// Straps for oem-specific config
 	double crystal_hz;				// Clock crystal base (TODO: fully refactor so this is not needed)
 
 	uint32_t mpll;					// [NV1+] Core Clock [NV4+] Memory Clock
 	uint32_t vpll;					// [NV1+] Video Clock
 	uint32_t nvpll;					// [NV4+] Core Clock
+
+	bool initialised;				// Initialsied
 } nv_device_t;
 
 extern nv_device_t current_device;
@@ -443,8 +489,8 @@ void VGA_WriteAttribute(uint8_t index, uint8_t value);
 // SCRIPT PARSER
 //
 
-void Script_Run();
-void Script_RunCommand(char* line_buf);
+void NVPlay_RunScript();
+void NVPlay_RunScriptCommand(char* line_buf);
 
 // This sucks. It's not a proper lexer/tokeniser, but we don't need one
 typedef struct gpu_script_command_s
@@ -463,4 +509,4 @@ uint32_t Command_Argc();
 
 /* REPL stuff */
 
-void GPURepl_Run(); 
+void NVPlay_Repl(); 

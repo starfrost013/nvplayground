@@ -54,7 +54,7 @@ const char* Command_Argv(uint32_t argv)
 	return str; 
 }
 
-void Script_RunCommand(char* line_buf)
+void NVPlay_RunScriptCommand(char* line_buf)
 {
 	// skip blank lines if they exist
 	if (String_IsEntirelyWhitespace(line_buf, MAX_STR))
@@ -126,7 +126,7 @@ void Script_RunCommand(char* line_buf)
 		Logging_Write(log_level_warning, "Unknown command %s\n", last_token);
 }
 
-void Script_Run()
+void NVPlay_RunScript()
 {
 	FILE* script_file = fopen(command_line.reg_script_file, "rb+");
 	char line_buf[MAX_STR] = {0};
@@ -144,6 +144,6 @@ void Script_Run()
 		// start a new line
 		fgets(line_buf, MAX_STR, script_file);
 
-		Script_RunCommand(line_buf);
+		NVPlay_RunScriptCommand(line_buf);
 	}
 }

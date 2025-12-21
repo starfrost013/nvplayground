@@ -62,8 +62,7 @@ nvhal_entry_t nvhal_nv3 =
     NV3_DumpFIFO,                   // Dump FIFO to text file
     NV3_DumpRAMHT,                  // Dump RAMHT to text file 
     NV3_DumpRAMFC,                  // Dump RAMFC to text file
-    NV3_DumpRAMRO ,                 // Dump RAMRO to text file
-
+    NV3_DumpRAMRO,                  // Dump RAMRO to text file
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file
 
     // Rendering functions

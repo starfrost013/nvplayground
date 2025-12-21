@@ -24,7 +24,7 @@ void GPURepl_Help()
     printf("%s", msg_help_script);
 }
 
-void GPURepl_Run()
+void NVPlay_Repl()
 {
     char repl_string[MAX_STR] = {0};
 
@@ -54,7 +54,7 @@ void GPURepl_Run()
         }
         else 
         {
-            Script_RunCommand(repl_string);        
+            NVPlay_RunScriptCommand(repl_string);        
         }
     }
 }

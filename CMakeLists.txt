@@ -38,11 +38,12 @@ file(GLOB sources CONFIGURE_DEPENDS
 # Config
 "src/config/config.c"
 
-# NVCore
-"src/core/gpu_list.c"
-"src/core/gpu_detect.c"
-"src/core/gpu_io.c"
-"src/core/gpu_repl.c"
+# Core
+"src/core/core_detect.c"
+
+"src/core/gpu/gpu_list.c"
+"src/core/gpu/gpu_io.c"
+"src/core/gpu/gpu_repl.c"
 
 # NVCore: Tests
 "src/core/tests/tests.c"
