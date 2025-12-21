@@ -1,8 +1,10 @@
 NVPlay 2.0 is now available.
 
 Release notes:
-	* L arge refactor of main.c. define exit codes, always call nvplay_shutdown
-
+	* Large refactor of main.c. define exit codes, always call nvplay_shutdown
+	* Implemented Windows detection code. It can detect Windows NT, 3.x and 9x.
+	* Removed the never used gdbstub 
+	
 Old release notes:
 
 

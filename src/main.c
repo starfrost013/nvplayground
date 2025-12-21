@@ -17,7 +17,6 @@
 #include <stdio.h>
 
 #define GDB_IMPLEMENTATION
-#include "gdbstub.h"
 
 nvplay_state_t nvplay_state;
 
@@ -116,8 +115,6 @@ void NVPlay_ShowHelpAndExit()
 /* Initialise NVPlay! */
 bool NVPlay_Init(int32_t argc, char** argv)
 {
-	_gdb_start(); // gdb_start but it doesn't actually break into the debugger automatically
-
 	Cmdline_Parse(argc, argv);
 
 	log_settings.destination = (log_dest_file | log_dest_console);
