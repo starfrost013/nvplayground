@@ -32,7 +32,6 @@ All of this functionality is fairly early and is subject to change at any time. 
 
 ### Not supported, but will be supported in the future 
 
-
 **ATI Rage series (3D Rage/3D Rage II/Rage Pro/Rage128...)**: Low priority. Some background research is happening on supporting these
 
 ### Not supported, and is not intended to be supported in the future
@@ -56,8 +55,8 @@ will only be added if someone wishes to add it, merged into main at my, as the m
 
 ### Some support
 
-**Windows 9x DOS box**: Should work (and may be required for NV1 until the correct initialisation procedure is determined) but be wary of running tests, especially graphics tests, while the drivers are running. Nvidia's drivers, especially their old ones, are infamously temperamental and may not like being interfered with.
+**Windows 9x DOS box**: Should work but be wary of running tests, especially graphics tests, while the drivers are running. Nvidia's drivers, especially their old ones, are infamously temperamental and may not like being interfered with.
 
 ### Not supported
 
-**Windows NT (NTVDM)**: The PCI BIOS is not emulated, so, until if/when the PCI bus is manually enumerated, NTVDM will not work.
+**Windows NT (NTVDM)**: The PCI BIOS is not emulated and raw hardware access is likely not allowed. Therefore, NTVDM will not work.

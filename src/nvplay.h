@@ -53,6 +53,7 @@ void NVPlay_DetectWindows();
 #define NVPLAY_EXIT_CODE_NO_TESTS			6			// Nothing to do
 #define NVPLAY_EXIT_CODE_LOG_INIT_FAIL		7			// Failed to initialise logging engine
 #define NVPLAY_EXIT_CODE_HELP_MENU			8			// Help menu
+#define NVPLAY_EXIT_CODE_UNSUPPORTED_OS		9			// Operating system not supported
 #define NVPLAY_EXIT_CODE_UNKNOWN_FATAL		0x67		// 6-7
 
 /* PCI */

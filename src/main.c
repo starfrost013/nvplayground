@@ -78,7 +78,7 @@ void NVPlay_RunTests()
 
 void NVPlay_Run()
 {
-/* Make sure the GPU is supported */
+	/* Make sure the GPU is supported */
 	if (!current_device.device_info.hal->init_function)
 	{
 		Logging_Write(log_level_error, "This GPU is not yet supported :(\n");
@@ -137,6 +137,16 @@ bool NVPlay_Init(int32_t argc, char** argv)
 	}
 
 	NVPlay_DetectWindows();
+
+	if (nvplay_state.os_level == NVPLAY_OS_NT)
+	{
+		Logging_Write(log_level_message, "NVPlay requires raw hardware access and is not supported under Windows NT-based operating systems.\n"
+		"Please run under a supported operating system such as MS-DOS, Windows 3.1 or Windows 9x.");
+		getchar();
+
+		NVPlay_Shutdown(NVPLAY_EXIT_CODE_UNSUPPORTED_OS);
+		return true; 
+	}
 
 	if (!PCI_BiosIsPresent())
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_NO_PCI);
