@@ -9,7 +9,6 @@
 */
 
 #include "config.h"
-
 #include "core/tests/tests.h"
 #include "nvplay.h"
 #include "util/ini.h"
@@ -40,46 +39,46 @@ bool Config_Load()
     if (section_tests)
     {
         uint32_t test_id = 0;
-        nv_test_t current_test = nv_tests[test_id];
+        nv_test_t* current_test = &nv_tests[test_id];
 
-        while (nv_tests[test_id].test_function)
+        while (current_test->test_function)
         {
             // see if the tests specified in the ini file are for the GPU we have installed
 
-            if (ini_has_entry(section_tests, current_test.name))
+            if (ini_has_entry(section_tests, current_test->name))
             {
                 // call ini_section_get_int so we don't have to iterate through the INI sections again
-                int32_t enabled = ini_section_get_int(section_tests, current_test.name, 0);
+                int32_t enabled = ini_section_get_int(section_tests, current_test->name, 0);
 
                 // check if it's enabled. if it's not just skip
                 if (!enabled)
-                    Logging_Write(log_level_debug, "Test %s disabled (2)\n", current_test.name);
+                    Logging_Write(log_level_debug, "Test %s disabled (2)\n", current_test->name);
                 else
                 {
                     // Check the PCI device ID range of the test
-                    bool test_is_available = (current_device.device_info.vendor_id == current_test.required_vendor_id
-                    && (current_device.device_info.device_id_start >= current_test.required_device_id
-                    || current_device.device_info.device_id_end <= current_test.required_device_id));
+                    bool test_is_available = (current_device.device_info.vendor_id == current_test->required_vendor_id
+                    && (current_device.device_info.device_id_start >= current_test->required_device_id
+                    || current_device.device_info.device_id_end <= current_test->required_device_id));
 
                     // Allow a generic test to be used anywhere
-                    if (current_test.required_device_id == PCI_DEVICE_GENERIC
-                    && current_test.required_vendor_id == PCI_VENDOR_GENERIC)
+                    if (current_test->required_device_id == PCI_DEVICE_GENERIC
+                    && current_test->required_vendor_id == PCI_VENDOR_GENERIC)
                         test_is_available = true; 
 
                     // apply the run all tests cmd line option
                     if (command_line.run_all_tests)
                         test_is_available = true; 
 
-                    if (!current_test.test_function)
+                    if (!current_test->test_function)
                     {
-                        Logging_Write(log_level_warning, "The test %s (%s) does not have defined test function!\n", current_test.name, current_test.name_friendly);
+                        Logging_Write(log_level_warning, "The test %s (%s) does not have defined test function!\n", current_test->name, current_test->name_friendly);
                         test_is_available = false;
                     }
 
                     if (test_is_available)
                     {
                         nv_config_test_entry_t* new_test_entry = calloc(1, sizeof(nv_config_test_entry_t));
-                        new_test_entry->test = &current_test;
+                        new_test_entry->test = current_test;
 
                         /* 
                             set up the test list and add the new test to the test list
@@ -108,7 +107,7 @@ bool Config_Load()
             // check if the test is available
 
             test_id++;
-            current_test = nv_tests[test_id];
+            current_test = &nv_tests[test_id];
         }
     }
     
