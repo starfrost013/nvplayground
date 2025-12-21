@@ -56,7 +56,7 @@ will only be added if someone wishes to add it, merged into main at my, as the m
 
 ### Some support
 
-**Windows 9x DOS box**: Should work (and may be required for NV1 until the correct initialisation procedure is determined) but be wary of running tests, especially graphics tests, while the drivers are running. Nvidia's drivers, especially their old ones, are infamously temperamental and may not like being interfered with.
+**Windows 9x DOS box**: Should work, but be wary of running tests, especially graphics tests, while the drivers are running. Nvidia's drivers, especially their old ones, are infamously temperamental and may not like being interfered with.
 
 ### Not supported
 
