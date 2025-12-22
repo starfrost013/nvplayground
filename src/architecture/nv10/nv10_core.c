@@ -105,7 +105,7 @@ bool NV10_Init()
     NV_WriteMMIO32(NV10_PMC_INTR_EN, (NV10_PMC_INTR_EN_HARDWARE | NV10_PMC_INTR_EN_SOFTWARE));
     Logging_Write(log_level_debug, "Done!\n");
     
-    Logging_Write(log_level_debug, "NV4 Init: Ensuring user-programmable pixel, core and memory clocks...\n");
+    Logging_Write(log_level_debug, "Celsius Init: Ensuring user-programmable pixel, core and memory clocks...\n");
     
     // ensure programmable pixel and memory clocks for driver & overclock testing
     // we also need to actually *program* the clocks on NV4 if you set the PLL to programmable omde it seems. It really doesn't like it if you don't

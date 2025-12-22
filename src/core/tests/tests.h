@@ -11,7 +11,6 @@
 #pragma once
 #include <nvplay.h>
 
-
 /* Defines a single test (for the global list of tests) */
 typedef struct nv_test_s 
 {
