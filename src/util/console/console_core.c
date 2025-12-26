@@ -91,7 +91,8 @@ void Console_Shutdown()
     free(console.buf);
     
     // Prevent any weirdness caused by displaying a freed buffer.
-    console.size = 0;
+    console.size = console.flush_amount = console.read_ptr = console.write_ptr = 0;
     Console_Clear();
+    console.buf = NULL;
 
 }
