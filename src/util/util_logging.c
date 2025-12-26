@@ -2,7 +2,7 @@
     NVPlay
     Copyright © 2025-2026 starfrost
 
-    Raw GPU programming for early Nvidia GPUs
+    Raw GPU programming for early Nvidia GPUs 
     Licensed under the MIT license (see license file)
 
     util_logging.c: Logging implementation 
@@ -29,7 +29,7 @@ bool Logging_Init()
 
     if (!log_settings.level)
     {
-        printf("Warning: No log channels specified. Nothing will be logged.\n");
+        printf("Warning: No log channels specified. Nothing will be logged!\n");
         return true; 
     }
 

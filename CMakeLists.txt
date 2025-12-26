@@ -28,6 +28,8 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/util/util_logging.c"
 "src/util/util_string.c"
 
+"src/util/console/console_core.c"
+
 # Main
 "src/main.c"
 "src/main_help.c"

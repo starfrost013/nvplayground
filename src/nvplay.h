@@ -10,6 +10,7 @@
 
 #pragma once
 #include <bios.h>
+#include <conio.h>
 #include <ctype.h>
 #include <dpmi.h>
 #include <go32.h>
@@ -29,9 +30,9 @@
 
 /* Core */
 
-//
-// STRINGS
-//
+
+/* Strings */
+
 extern const char* msg_help; 
 extern const char* msg_help_script;
 
@@ -39,11 +40,11 @@ void NVPlay_ShowHelpAndExit();
 void NVPlay_Shutdown(uint32_t exit_code);
 void NVPlay_DetectWindows();
 
-// String
+
 #define STRING_EMPTY ""
 #define MSDOS_PATH_LENGTH					64			// maximum ms-dos path size is 64
 
-// Exit codes (MS-DOS is 8 bit only)
+/* Exit codes (8 bit  only for MS-DOS )*/ 
 #define NVPLAY_EXIT_CODE_SUCCESS			0			// Normal exit	
 #define NVPLAY_EXIT_CODE_NO_PCI				1			// Computer too old - No PCI BIOS 2.0
 #define NVPLAY_EXIT_CODE_UNSUPPORTED_GPU	2			// Unsupported GPU
@@ -52,9 +53,40 @@ void NVPlay_DetectWindows();
 #define NVPLAY_EXIT_CODE_NO_GPU_INIT		5			// No GPU initialisation function
 #define NVPLAY_EXIT_CODE_NO_TESTS			6			// Nothing to do
 #define NVPLAY_EXIT_CODE_LOG_INIT_FAIL		7			// Failed to initialise logging engine
-#define NVPLAY_EXIT_CODE_HELP_MENU			8			// Help menu
+#define NVPLAY_EXIT_CODE_HELP_MENU			8			// Help menu	
 #define NVPLAY_EXIT_CODE_UNSUPPORTED_OS		9			// Operating system not supported
 #define NVPLAY_EXIT_CODE_UNKNOWN_FATAL		0x67		// 6-7
+
+/* Video & System BIOS */
+
+#define INT_VIDEO							0x10		// VBIOS Services
+#define INT_VIDEO_SET_MODE					0x00
+
+#define INT_PCI_BIOS        				0x1A		// PCI BIOS interrupt 
+#define INT_DOS								0x21		// MS-DOS API
+
+// Unaccelerated video modes
+#define UNACCEL_VIDEO_TEXT_40_MONO			0x00		// 40x25 text 16 shades	of grey	[CGA+]
+#define UNACCEL_VIDEO_TEXT_40_COLOR			0x01		// 40x25 text 16 colours		[CGA+]
+#define UNACCEL_VIDEO_TEXT_80_MONO			0x02		// 80x25 text 16 shades	of grey	[CGA+]
+#define UNACCEL_VIDEO_TEXT_80_COLOR			0x03		// 80x25 text 16 colours		[CGA+]
+#define UNACCEL_VIDEO_320X200_2BPP			0x04		// 320x200 4 colours			[CGA+]
+#define UNACCEL_VIDEO_320X200_2BPP_MONO		0x05		// 320x200 4 shades of grey		[CGA+]
+#define UNACCEL_VIDEO_640X200_1BPP			0x06		// 320x200 2 colour mono		[CGA+]
+#define UNACCEL_VIDEO_TEXT_MDA				0x07		// "Mono" 80x25 text			[MDA+, 16 colours unused]
+#define UNACCEL_VIDEO_160X200_4BPP			0x08		// 160x200 16 colours 			[PCjr+]
+#define UNACCEL_VIDEO_320X200_4BPP			0x09		// 320x200 16 colours			[PCjr+]
+#define UNACCEL_VIDEO_640X200_2BPP			0x0A		// 320x200 4 colours			[PCjr+]
+// 0B, 0C reserved (EGA Internal)
+#define UNACCEL_VIDEO_320X200_4BPP_EGA		0x0D		// 320x200 16 colours			[EGA+]
+#define UNACCEL_VIDEO_640X200_4BPP			0x0E		// 640x200 16 colours			[EGA+]
+#define UNACCEL_VIDEO_640X350_1BPP			0x0F		// 640x350 2 colour mono		[VGA+]
+#define UNACCEL_VIDEO_640X350_4BPP			0x10		// 640x350 16 colours			[EGA+, 4 colours if 64KB VRAM]
+#define UNACCEL_VIDEO_640X480_1BPP			0x11		// 640x480 2 colour mono		[VGA+]
+#define UNACCEL_VIDEO_640X480_4BPP			0x12		// 640x480 16 colours			[VGA+]
+#define UNACCEL_VIDEO_320X200_8BPP			0x13		// 320x200 256 colours			[VGA+]
+
+// VESA (VBE1.2) goes here...VBE2/3 require querying Video BIOS
 
 /* PCI */
 
@@ -146,9 +178,6 @@ bool PCI_WriteConfig8(uint32_t bus_number, uint32_t function_number, uint32_t of
 bool PCI_WriteConfig16(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint16_t value);
 bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t offset, uint32_t value);
 
-#define INT_VIDEO					0x10
-#define INT_PCI_BIOS        		0x1A		// PCI BIOS interrupt 
-#define INT_DOS						0x21		// MS-DOS API
 
 /* Generic definition for all tests, used to prevent expanding the nv_test static initialisers */
 #define PCI_VENDOR_GENERIC			0x0000

@@ -103,6 +103,39 @@ void NVPlay_DetectWindows()
                 nvplay_state.os_level = NVPLAY_OS_WINUNKNOWN;   // Some ME pre-alpha builds were version5 
             break; 
     }
+
+#ifdef DEBUG
+    const char* os_string = "Operating system: DOS\n";
+
+    switch (nvplay_state.os_level)
+    {
+        case NVPLAY_OS_DOS:
+            break; // shut up GCC, we set it above
+        case NVPLAY_OS_WINUNKNOWN:
+            os_string = "Operating system: unknown Windows (or something pretending to be Windows)\n";
+            break;
+        case NVPLAY_OS_WIN30:
+            os_string = "Operating system: Windows 3.0\n";
+            break;
+        case NVPLAY_OS_WIN31:
+            os_string = "Operating system: Windows 3.1\n";
+            break;
+        case NVPLAY_OS_WIN95:
+            os_string = "Operating system: Windows 95\n";
+            break;
+        case NVPLAY_OS_WIN98:
+            os_string = "Operating system: Windows 98\n";
+            break;
+        case NVPLAY_OS_WINME:
+            os_string = "Operating system: Windows ME\n";
+            break;
+        case NVPLAY_OS_NT:
+            os_string = "Operating system: Windows NT-based\n";
+            break;
+    }
+
+    Logging_Write(log_level_debug, os_string);
+#endif
 }
 
 bool GPU_Detect()
