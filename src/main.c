@@ -115,6 +115,8 @@ bool NVPlay_Init(int32_t argc, char** argv)
 {
 	Cmdline_Parse(argc, argv);
 
+	Console_Init(DEFAULT_CONSOLE_SIZE);
+
 	log_settings.destination = (log_dest_file | log_dest_console);
 	log_settings.flush_on_line = true; //bad idea?
 	log_settings.level = (log_level_debug | log_level_message | log_level_warning | log_level_error);

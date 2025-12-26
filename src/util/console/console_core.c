@@ -84,6 +84,8 @@ void Console_PushLine(char* buf)
     memcpy(&console.buf[console.write_ptr], buf, size);; 
     
     console.write_ptr += size; 
+    
+    puts(buf);
 }
 
 void Console_Shutdown()

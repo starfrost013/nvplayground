@@ -40,7 +40,6 @@ bool Logging_Init()
             log_file_stream = fopen(log_settings.file_name, "w+"); // open in text mode
         else
             log_file_stream = fopen(LOG_FILE_DEFAULT_NAME, "w+");
-
     }
 
     if (log_settings.redirect & log_redirect_stdin)

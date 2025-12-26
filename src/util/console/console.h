@@ -23,7 +23,7 @@ typedef struct console_s
     size_t write_ptr;                           // write pointer (write)
 } console_t;
 
-#define DEFAULT_CONSOLE_LINES       1024
+#define DEFAULT_CONSOLE_SIZE        65536       // 64 KB
 #define DEFAULT_CONSOLE_COLUMNS     80          // 80 columns
 
 #define MAX_REASONABLE_LOG_LENGTH   1024
@@ -33,5 +33,6 @@ extern console_t console;
 void Console_Init(size_t console_buf_size);
 void Console_Clear();
 void Console_PushLine(char* buf);
+// need to set this so we don't have to withdraw the screen and it's just a sliding buffer
 void Console_OnKey();
 void Console_Shutdown();

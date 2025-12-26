@@ -18,8 +18,9 @@
 #define COMMAND_HELP_VERBOSE    "help"
 
 bool repl_is_running = true; 
+uint32_t command_history_id = 0;
 
-void GPURepl_Help()
+void NVPlay_ReplHelp()
 {
     printf("%s", msg_help_script);
 }
@@ -50,7 +51,7 @@ void NVPlay_Repl()
         else if (!strcasecmp(repl_string, COMMAND_HELP)
         || !strcasecmp(repl_string, COMMAND_HELP_VERBOSE))
         {
-            GPURepl_Help();
+            NVPlay_ReplHelp();
         }
         else 
         {
