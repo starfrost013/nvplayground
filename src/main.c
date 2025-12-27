@@ -143,8 +143,10 @@ bool NVPlay_Init(int32_t argc, char** argv)
 
 	if (nvplay_state.os_level == NVPLAY_OS_NT)
 	{
-		Logging_Write(LOG_LEVEL_MESSAGE, "NVPlay requires raw hardware access and is not supported under Windows NT-based operating systems.\n"
-		"Please run under a supported operating system such as MS-DOS, Windows 3.1 or Windows 9x.");
+		Logging_Write(LOG_LEVEL_MESSAGE, 
+		"NVPlay requires raw hardware access and is not supported under Windows NT-based\n"
+		"operating systems. Please run under a supported operating system such as MS-DOS,\n"
+		"Windows 3.x or Windows 9x.");
 		getchar();
 
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_UNSUPPORTED_OS);

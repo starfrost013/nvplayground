@@ -11,6 +11,7 @@
 #pragma once
 #include <nvplay.h>
 
+#define AUTOEXEC_FILENAME               "autoexec.nvs"
 
 void NVPlay_RunScript();
 void NVPlay_RunScriptCommand(char* line_buf);

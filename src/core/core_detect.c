@@ -166,7 +166,7 @@ bool GPU_Detect()
         i++;
     }
 
-    Logging_Write(LOG_LEVEL_ERROR, "No supported Nvidia GPU found\n");
+    Logging_Write(LOG_LEVEL_ERROR, "A supported GPU was not found.\n");
     return false; 
 
 }
