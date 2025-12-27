@@ -24,6 +24,7 @@ Changes:
 * Added HAL system
 	* GPUs now store pointers to arrays of function pointers (not C++ yet...) to avoid GPU list having huge numbers of function pointers and to make calling GPU specific functions
 	more elegant
+* Removed NVS files
 * Implemented "generic" tests that are available across every GPU (for some of them, Hal functions are required )
 * Commands now store number of parameters and check for them
 * Simplified terrible script parsing code
@@ -43,7 +44,7 @@ Changes:
 * Added "PrintVersion" command
 * Added GPU_IsNVx functions for GPU-specific behaviour in generic tests
 * Added GPU_NV_GetGeneration functions to return a number equivalent to the NV codename for a chip
-* Allowed dumping amounts of vram that are not 16 MB 
+* Allowed dumping amounts of VRAM that are not 16 MB 
 * Consistent function casing
 
 Old release notes:

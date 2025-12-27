@@ -126,9 +126,9 @@ void NVPlay_RunScriptCommand(char* line_buf)
 		Logging_Write(LOG_LEVEL_WARNING, "Unknown command %s\n", last_token);
 }
 
-void NVPlay_RunScript()
+void NVPlay_RunScript(const char* filename)
 {
-	FILE* script_file = fopen(nvplay_state.reg_script_file, "rb+");
+	FILE* script_file = fopen(filename, "rb+");
 	char line_buf[MAX_STR] = {0};
 
 	if (!script_file)

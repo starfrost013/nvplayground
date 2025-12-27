@@ -13,7 +13,7 @@
 
 #define AUTOEXEC_FILENAME               "autoexec.nvs"
 
-void NVPlay_RunScript();
+void NVPlay_RunScript(const char* filename);
 void NVPlay_RunScriptCommand(char* line_buf);
 
 // This sucks. It's not a proper lexer/tokeniser, but we don't need one

@@ -92,7 +92,7 @@ void NVPlay_Run()
 			NVPlay_Repl();
 			break;
 		case NVPLAY_MODE_SCRIPT:
-			NVPlay_RunScript();
+			NVPlay_RunScript(nvplay_state.reg_script_file);
 			break;
 		case NVPLAY_MODE_TESTS:
 			NVPlay_RunTests();
