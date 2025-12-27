@@ -5,6 +5,7 @@ Release notes:
 	* Implemented Windows detection code. It can detect Windows NT, 3.x and 9x. NT is blocked
 	* Removed the never used gdbstub 
 	* Split nvplay.h into header files for each category of functionality.
+			* Merged tests.h and config.h into nvplay.h
 	* Implemented BIOS basic "extended" keyboard input library
 	* More consistent file naming 
 	* Merged command line into core code. Added nvplay_state_t
@@ -15,7 +16,7 @@ Release notes:
 	* Removed legacy test mode 
 		* nvplay.ini no longer stores tests to run in test mode.
 		* Dry run and run all tests removed
-
+	
 Old release notes:
 
 NVPlay 1.0 is now available.

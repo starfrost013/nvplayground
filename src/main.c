@@ -29,12 +29,18 @@ void NVPlay_Run()
 
 	switch (nvplay_state.run_mode)
 	{
+		// help mode handled earlier
+		default:
+			break; 
 		case NVPLAY_MODE_BOOTGPU:
+			Logging_Write(LOG_LEVEL_DEBUG, "Initialised graphics hardware. Exiting...\n");
 			break; // we don't have to do anything
 		case NVPLAY_MODE_REPL:
+			Logging_Write(LOG_LEVEL_DEBUG, "Entering REPL...\n");
 			NVPlay_Repl();
 			break;
 		case NVPLAY_MODE_SCRIPT:
+			Logging_Write(LOG_LEVEL_DEBUG, "Running script and exiting...");
 			NVPlay_RunScript(nvplay_state.reg_script_file);
 			break;
 		case NVPLAY_MODE_REPLAY:
