@@ -142,6 +142,8 @@ void Console_Update()
             new_buf = console.size;
 
         console.read_ptr = new_buf; 
+
+        Console_UpdateRedraw();
     }
 }
 
