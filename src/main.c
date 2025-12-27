@@ -9,6 +9,7 @@
 */
 
 #include "config/config.h"
+#include "core/script/script.h"
 #include "nvplay.h"
 #include "util/util.h"
 #include <nvplay.h>
@@ -78,11 +79,13 @@ void NVPlay_RunTests()
 
 void NVPlay_Run()
 {
-
 	current_device.initialised = true; 
 
 	// Make sure that nv_pmc_boot_0 got set
 	current_device.nv_pmc_boot_0 = NV_ReadMMIO32(NV_PMC_BOOT);
+
+	// Run autoexec.nvs if it exists
+	NVPlay_RunScript(AUTOEXEC_FILENAME);
 
 	switch (nvplay_state.run_mode)
 	{

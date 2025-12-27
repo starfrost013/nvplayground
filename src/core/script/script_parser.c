@@ -11,6 +11,7 @@
 #include <stdio.h>
 
 
+#include "core/script/script.h"
 #include "util/util.h"
 #include <nvplay.h>
 #include <config/config.h>
@@ -131,7 +132,9 @@ void NVPlay_RunScript(const char* filename)
 	FILE* script_file = fopen(filename, "rb+");
 	char line_buf[MAX_STR] = {0};
 
-	if (!script_file)
+	// Don't log if the string is not autoexec.nvs
+	if (!script_file 
+		&& strcmp(filename, AUTOEXEC_FILENAME))
 	{
 		Logging_Write(LOG_LEVEL_ERROR, "Couldn't open script file %s\n");
 		return;
