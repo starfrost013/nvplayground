@@ -72,7 +72,7 @@ bool NVPlay_Init(int32_t argc, char** argv)
 	Logging_Write(LOG_LEVEL_MESSAGE, APP_SIGNON_STRING);
 
 	// early return
-	if (nvplay_state.show_help)
+	if (nvplay_state.run_mode == NVPLAY_MODE_HELP)
 	{
 		NVPlay_ShowHelpAndExit();
 		return true;

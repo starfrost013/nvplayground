@@ -65,9 +65,10 @@ typedef enum nvplay_os_state_e
 typedef enum nvplay_run_mode_e
 {
 	NVPLAY_MODE_REPL = 0,			// Enter REPL loop
-	NVPLAY_MODE_SCRIPT = 2,			// Run script file
-	NVPLAY_MODE_REPLAY = 3,			// Run "GPU replay" file [FUTURE]
-	NVPLAY_MODE_BOOTGPU = 4,		// Initialise graphics hardware and exit
+	NVPLAY_MODE_SCRIPT = 1,			// Run script file
+	NVPLAY_MODE_REPLAY = 2,			// Run "GPU replay" file [FUTURE]
+	NVPLAY_MODE_BOOTGPU = 3,		// Initialise graphics hardware and exit
+	NVPLAY_MODE_HELP = 4,			// Print help and exit
 	// Should help be a mode?
 	// Dry run is not a mode - it's a variant of TESTS mode, same for all tests
 } nvplay_run_mode;
@@ -132,7 +133,6 @@ typedef struct nvplay_state_s
 {
 	nvplay_os_state os_level; 
 	nvplay_run_mode run_mode; 
-    bool show_help;                 // Show a help message
     char reg_script_file[MAX_STR];  // The registry script file to use
     char savestate_file[MAX_STR];   // The savestate file to use
     char replay_file[MAX_STR];      // The replay file to use

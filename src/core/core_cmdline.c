@@ -77,7 +77,7 @@ bool NVPlay_ParseCmdline(int argc, char** argv)
         else if (!strcasecmp(current_arg, COMMAND_LINE_HELP)
         || !strcasecmp(current_arg, COMMAND_LINE_HELP_FULL))
         {
-            nvplay_state.show_help = true; 
+            nvplay_state.run_mode = NVPLAY_MODE_HELP;
         }
         else if (!strcasecmp(current_arg, COMMAND_LINE_BOOTONLY)
         || !strcasecmp(current_arg, COMMAND_LINE_BOOTONLY_FULL))
