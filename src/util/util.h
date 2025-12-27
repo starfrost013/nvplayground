@@ -9,7 +9,8 @@
 */
 
 #pragma once
-#include "ini.h"
+#include <util/util_ini.h>
+#include <util/util_scancodes.h>
 
 /* General definitions */
 #define MAX_STR							260 
@@ -98,6 +99,9 @@ char* String_LTrim(char* fmt, uint32_t max);
 char* String_RTrim(char* fmt, uint32_t max);
 
 // Input utils
+// using a char may defy the scancode differences. 
+
+
 
 #define KEYBOARD_MOD_RIGHT_SHIFT            (1 << 1)
 #define KEYBOARD_MOD_LEFT_SHIFT             (1 << 2)
@@ -115,5 +119,5 @@ char* String_RTrim(char* fmt, uint32_t max);
 #define KEYBOARD_MOD_CAPS_LOCK_PRESSED      (1 << 14)
 #define KEYBOARD_MOD_SYSRQ                  (1 << 15)
 
-bool Input_KeyDown(char keyboard); 
+bool Input_KeyDown(uint8_t scancode); 
 bool Input_ModState(uint16_t mod_flags);

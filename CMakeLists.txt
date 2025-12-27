@@ -23,7 +23,7 @@ add_compile_options(-Wall -std=gnu99 -save-temps)
 file(GLOB sources CONFIGURE_DEPENDS 
 
 # Util
-"src/util/ini.c"
+"src/util/util_ini.c"
 "src/util/util_cmdline.c"
 "src/util/util_input_keyboard.c"
 "src/util/util_logging.c"

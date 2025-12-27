@@ -3,8 +3,9 @@ NVPlay 2.0 is now available.
 Release notes:
 	* Large refactor of main.c. define exit codes, always call nvplay_shutdown
 	* Implemented Windows detection code. It can detect Windows NT, 3.x and 9x. NT is blocked
-	* Split nvplay.h into header files for each category of functionality.
 	* Removed the never used gdbstub 
+	* Split nvplay.h into header files for each category of functionality.
+	* Implemented BIOS basic "extended" keyboard input library
 	
 Old release notes:
 

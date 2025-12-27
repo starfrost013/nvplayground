@@ -2,7 +2,7 @@
 
 /* 
     I am lazy as hell 
-    This code is non-portable, requires switching to real mode and basically ignores the scancode and all non-english keyboard layouts (Sorry!)
+    This code is non-portable, requires switching to real mode and basically ignores all non-english keyboard layouts (Sorry!)
 */
 
 #define BIOSKEY_GET_STATE           0x10
@@ -10,20 +10,19 @@
 
 #define PREFIX_START                0xE0 
 
-bool Input_KeyDown(char keyboard)
+bool Input_KeyDown(uint8_t scancode)
 {
     int32_t read_key = bioskey(BIOSKEY_GET_STATE);
 
-    /* Extended keys have E0 prefix. So we have to strip that. */
+    /* Extended keys have E0 prefix. So we have to read another key that. */
     if (read_key != PREFIX_START)
-        return (read_key & 0xFF) == read_key; // low 8 bits are key, upper 8 bits are scancode
+        return ((read_key >> 8) & 0xFF) == scancode; // low 8 bits are key, upper 8 bits are scancode
     else
     {
         // read again to get the real key 
         read_key = bioskey(BIOSKEY_GET_STATE);
-        
-        return (read_key & 0xFF) == read_key; // low 8 bits are key, upper 8 bits are scancode
 
+        return ((read_key >> 8) & 0xFF) == read_key; // low 8 bits are key, upper 8 bits are scancode
     }
 }
 
