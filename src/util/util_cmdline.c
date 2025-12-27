@@ -21,8 +21,6 @@ command_line_t command_line = {0};
 #define COMMAND_LINE_DRY_RUN_FULL "-dry"
 #define COMMAND_LINE_RUN_SCRIPT_FILE "-s"
 #define COMMAND_LINE_RUN_SCRIPT_FILE_FULL "-script"
-#define COMMAND_LINE_LOAD_REPLAY "-nvr"
-#define COMMAND_LINE_LOAD_REPLAY_FULL "-replay"
 #define COMMAND_LINE_HELP "-?"
 #define COMMAND_LINE_HELP_FULL "-help"
 #define COMMAND_LINE_BOOTONLY "-b"
@@ -71,18 +69,6 @@ bool Cmdline_Parse(int argc, char** argv)
         
             //skip script file
             i++;
-        }
-        else if (!strcasecmp(current_arg, COMMAND_LINE_LOAD_REPLAY)
-        || !strcasecmp(current_arg, COMMAND_LINE_LOAD_REPLAY_FULL))
-        {
-            if (ARG_LEFT)
-            {
-                printf("-replay provided, but no replay file provided!\n");
-                return false; 
-            }
-
-            command_line.load_replay_file = true;
-            strncpy(command_line.replay_file, next_arg, MAX_STR);
         }
         // help
         else if (!strcasecmp(current_arg, COMMAND_LINE_HELP)
