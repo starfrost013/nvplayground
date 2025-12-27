@@ -1,3 +1,14 @@
+NVPlay 1.0.0-rc4 is now available.
+
+Changes:
+	* Strip symbols in release mode builds
+	* Fix -bootonly
+
+NVPlay 1.0.0-rc3 is now available.
+
+Changes:
+	* Some text fixes 
+
 NVPlay 1.0.0-rc2 is now available.
 
 Changes:
@@ -52,20 +63,20 @@ Changes:
 * NVxPrintMfgInfo tests now print clockspeed in MHz for NV3/NV4 
 * Removed never-used "main function mode"
 
-0.4.0.0-rc2:
+0.4.0.0-rc5:
+Try to change NVS reading
 
-Add NV4 to help
-Fix 0.00 Mhz display
+0.4.0.0-rc4:
+Fix NVS reading
 
 0.4.0.0-rc3:
 Fix -nvs parsing
 Endianness fixes
 Define NVS functions for nv3
-Fix NVS ssection parsing
+Fix NVS section parsing
 Fix nv4 shutdown function
 
-0.4.0.0-rc4:
-Fix NVS reading
+0.4.0.0-rc2:
+Add NV4 to help effort for that one
+Fix 0.00 Mhz display
 
-0.4.0.0-rc5:
-Try to change NVS reading
