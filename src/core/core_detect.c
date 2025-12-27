@@ -30,7 +30,7 @@ nv_device_t current_device = {0};
 // It is not possible to run under Windows/386.
 // It's possible to hide it so we have to use multiple ways
 //
-void NVPlay_DetectWindows()
+void NVPlay_DetectOS()
 {
     __dpmi_regs regs = {0};
 

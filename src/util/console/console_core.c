@@ -12,6 +12,7 @@
 #include "dpmi.h"
 #include "nvplay.h"
 #include "util/util.h"
+#include <string.h>
 #include <util/console/console.h>
 
 console_t console;
@@ -27,6 +28,7 @@ void Console_Init(size_t console_buf_size)
 
     Logging_Write(LOG_LEVEL_DEBUG, "Console initialised: Ring buffer size %d", console_buf_size);
 }
+
 
 void Console_Clear()
 {
@@ -84,9 +86,65 @@ void Console_PushLine(char* buf)
     memcpy(&console.buf[console.write_ptr], buf, size);; 
     
     console.write_ptr += size; 
+    console.read_ptr = console.write_ptr - size; // by default you want to read it
     
     puts(buf);
 }
+
+void Console_UpdateRedraw()
+{
+    Console_Clear(); 
+
+    uint32_t cur_ptr = console.read_ptr; 
+
+    for (uint32_t i = 0; i < DEFAULT_CONSOLE_ROWS; i++)
+    {
+        char* string = &console.buf[cur_ptr];
+        puts(string);
+
+        uint32_t length = strlen(string) + 1; //+1 to include null terminator
+
+        // if the string ends with a newline
+        if (strchr(string, '\n'))
+            i--;    // don't increment row
+
+        if (cur_ptr + length > console.size)
+            break; 
+        
+        // bad idea!
+        cur_ptr += length; 
+    }
+}
+
+void Console_Update()
+{
+    bool scroll_up = (Input_KeyDown(SCANCODE_CHAR_UPARROW));
+    bool scroll_down = (Input_KeyDown(SCANCODE_CHAR_DOWNARROW));
+
+    // single line scroll
+    if (scroll_up 
+        || scroll_down)
+    {
+        uint32_t new_buf = console.read_ptr - 1; // get past 0 byte
+
+        while (console.buf[new_buf] != '\0')
+        {
+            if (scroll_up)
+                new_buf--;
+            else
+                new_buf++;
+        }
+
+        if (new_buf < 0)
+            new_buf = 0;
+
+        if (new_buf > console.size)
+            new_buf = console.size;
+
+        console.read_ptr = new_buf; 
+    }
+}
+
 
 void Console_Shutdown()
 {

@@ -123,6 +123,7 @@ typedef struct nv_config_s
 
     // Debug settings
     bool nv10_always_map_128m;                      // NV1x: Always map 128MB
+	bool dumb_console;								// Use dumb console
 } nv_config_t;
 
 bool Config_Load();
@@ -143,7 +144,7 @@ extern nvplay_state_t nvplay_state;
 
 void NVPlay_ShowHelpAndExit();
 void NVPlay_Shutdown(uint32_t exit_code);
-void NVPlay_DetectWindows();
+void NVPlay_DetectOS();
 
 //cannot use int32_t because it's defined as long
 bool NVPlay_ParseCmdline(int argc, char** argv);

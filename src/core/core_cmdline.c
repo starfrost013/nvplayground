@@ -13,20 +13,22 @@
 #include <util/util.h>
 
 
-#define COMMAND_LINE_RUN_TEST_INI "-t"
-#define COMMAND_LINE_RUN_TEST_INI_FULL "-test"
-#define COMMAND_LINE_RUN_ALL "-a"
-#define COMMAND_LINE_RUN_ALL_FULL "-all"
-#define COMMAND_LINE_DRY_RUN "-d"
-#define COMMAND_LINE_DRY_RUN_FULL "-dry"
-#define COMMAND_LINE_RUN_SCRIPT_FILE "-s"
-#define COMMAND_LINE_RUN_SCRIPT_FILE_FULL "-script"
-#define COMMAND_LINE_LOAD_REPLAY "-nvr"
-#define COMMAND_LINE_LOAD_REPLAY_FULL "-replay"
-#define COMMAND_LINE_HELP "-?"
-#define COMMAND_LINE_HELP_FULL "-help"
-#define COMMAND_LINE_BOOTONLY "-b"
-#define COMMAND_LINE_BOOTONLY_FULL "-bootonly"
+#define COMMAND_LINE_RUN_TEST_INI               "-t"
+#define COMMAND_LINE_RUN_TEST_INI_FULL          "-test"
+#define COMMAND_LINE_RUN_ALL                    "-a"
+#define COMMAND_LINE_RUN_ALL_FULL               "-all"
+#define COMMAND_LINE_DRY_RUN                    "-d"
+#define COMMAND_LINE_DRY_RUN_FULL               "-dry"
+#define COMMAND_LINE_RUN_SCRIPT_FILE            "-s"
+#define COMMAND_LINE_RUN_SCRIPT_FILE_FULL       "-script"
+#define COMMAND_LINE_LOAD_REPLAY                "-nvr"
+#define COMMAND_LINE_LOAD_REPLAY_FULL           "-replay"
+#define COMMAND_LINE_HELP                       "-?"
+#define COMMAND_LINE_HELP_FULL                  "-help"
+#define COMMAND_LINE_BOOTONLY                   "-b"
+#define COMMAND_LINE_BOOTONLY_FULL              "-bootonly"
+#define COMMAND_LINE_DUMBCONSOLE                "-d"
+#define COMMAND_LINE_DUMBCONSOLE_FULL           "-dumbconsole"
 
 // C23 constexpr pls
 #define ARG_LEFT    argc - i < 1
@@ -84,6 +86,12 @@ bool NVPlay_ParseCmdline(int argc, char** argv)
         {
             // Maybe make it so we can load custom INI files?
             nvplay_state.run_mode = NVPLAY_MODE_BOOTGPU;
+        }  
+        else if (!strcasecmp(current_arg, COMMAND_LINE_DUMBCONSOLE)
+        || !strcasecmp(current_arg, COMMAND_LINE_DUMBCONSOLE_FULL))
+        {
+            // Maybe make it so we can load custom INI files?
+            nvplay_state.config.dumb_console = true; 
         }  
     }
 

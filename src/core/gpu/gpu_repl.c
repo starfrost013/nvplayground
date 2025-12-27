@@ -34,6 +34,10 @@ void NVPlay_Repl()
 
     while (repl_is_running)
     {
+        // Update console
+        if (!nvplay_state.config.dumb_console)
+            Console_Update();
+
         Logging_Write(LOG_LEVEL_MESSAGE, "GPU>");
 
         // paranoid version of using scanf for this with a strictly limited size

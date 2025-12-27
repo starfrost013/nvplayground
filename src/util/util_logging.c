@@ -8,6 +8,7 @@
     util_logging.c: Logging implementation 
 */
 
+#include "console/console.h"
 #include "util.h"
 #include <nvplay.h>
 
@@ -97,7 +98,12 @@ void Logging_Write(log_level level, const char* fmt, ...)
 
     // don't print a newline after
     if (log_settings.destination & LOG_DEST_CONSOLE)
-         fputs(log_string, stdout);
+    {
+        if (nvplay_state.config.dumb_console)
+            fputs(log_string, stdout);
+        else 
+            Console_PushLine(log_string);
+    }
 
     if (log_settings.destination & LOG_DEST_FILE)
         fwrite(log_string, strlen(log_string), 1, log_file_stream);

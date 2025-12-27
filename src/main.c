@@ -77,6 +77,9 @@ bool NVPlay_Init(int32_t argc, char** argv)
 
 	Logging_Write(LOG_LEVEL_MESSAGE, APP_SIGNON_STRING);
 
+	if (!Config_Load())
+		NVPlay_Shutdown(NVPLAY_EXIT_CODE_CONFIG_LOAD_FAIL); 
+
 	// early return
 	if (nvplay_state.run_mode == NVPLAY_MODE_HELP)
 	{
@@ -84,7 +87,7 @@ bool NVPlay_Init(int32_t argc, char** argv)
 		return true;
 	}
 
-	NVPlay_DetectWindows();
+	NVPlay_DetectOS();
 
 	if (nvplay_state.os_level == NVPLAY_OS_NT)
 	{
@@ -103,9 +106,6 @@ bool NVPlay_Init(int32_t argc, char** argv)
 
 	if (!GPU_Detect())
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_UNSUPPORTED_GPU);
-
-	if (!Config_Load())
-		NVPlay_Shutdown(NVPLAY_EXIT_CODE_CONFIG_LOAD_FAIL); 
 
 	/* Make sure the GPU is supported */
 	if (!current_device.device_info.hal->init_function)
