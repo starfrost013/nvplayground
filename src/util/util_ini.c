@@ -24,7 +24,7 @@
  *
  */
 
-#include <util/ini.h>
+#include <util/util_ini.h>
 
 typedef struct _list_ {
     struct _list_ *next;

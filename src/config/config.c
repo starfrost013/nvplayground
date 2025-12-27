@@ -11,8 +11,7 @@
 #include "config.h"
 #include "core/tests/tests.h"
 #include "nvplay.h"
-#include "util/ini.h"
-#include "util/util.h"
+#include <util/util.h>
 #include <config/config.h>
 
 // Globals

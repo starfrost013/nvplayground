@@ -53,12 +53,9 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/tests/tests.c"
 
 # NVCore: Script Engine
-"src/core/script/gpu_script_commands.c"
-"src/core/script/gpu_script_help.c"
-"src/core/script/gpu_script_parser.c"
-
-# NVCore: GPU Savestate format
-"src/core/formats/format_gpus.c"
+"src/core/script/script_commands.c"
+"src/core/script/script_help.c"
+"src/core/script/script_parser.c"
 
 # Architecture: Generic/Shared
 "src/architecture/generic/nv_generic_hal.c"
