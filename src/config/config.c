@@ -65,7 +65,7 @@ bool Config_Load()
                         test_is_available = true; 
 
                     // apply the run all tests cmd line option
-                    if (command_line.run_all_tests)
+                    if (nvplay_state.run_all_tests)
                         test_is_available = true; 
 
                     if (!current_test->test_function)

@@ -94,9 +94,9 @@
 #define NV_PMC_BOOT_NV3T_A03_TSMC 	0x20030122		// NV3 Stepping C2/C3 / NV3 Stepping A3/A4	1998/9			(TSMC-manufactured)
 
 /* Temp stuff */
-#define NV3_TestOverclock_TIME_BETWEEN_RECLOCKS        60
-#define NV3_TestOverclock_BASE_13500                   0x1A30B
-#define NV3_TestOverclock_BASE_14318					0x1C40E
+#define NV3_TESTOVERCLOCK_TIME_BETWEEN_RECLOCKS        60
+#define NV3_TESTOVERCLOCK_BASE_13500                   0x1A30B
+#define NV3_TESTOVERCLOCK_BASE_14318					0x1C40E
 
 // RIVA TNT1 (1998)
 #define NV_PMC_BOOT_NV4_A01			0x20004000		// NV4 Stepping A1/A2/A3					?December 1997? (TSMC-manufactured)
@@ -112,32 +112,6 @@
 
 // NV10+ uses multiple device ids per gpu stepping and a hex representation of the stepping
 #define NV_PMC_BOOT_NV10_BASE		0x01000000
-
-// Operating systems that nvplay runs on.
-// (Windows/386 could theoretically run DJGPP, but it is not DPMI aware)
-typedef enum nvplay_os_state_e
-{
-	NVPLAY_OS_DOS = 0,				// MS-DOS box
-	NVPLAY_OS_WIN30 = 1,			// Windows 3.0 enhanced mode
-	NVPLAY_OS_WIN31 = 2,			// Windows 3.1 enhanced mode
-	NVPLAY_OS_WIN95 = 3,			// Windows 95 (4.00 = 950, 4.03 = OSR2)
-	NVPLAY_OS_WIN98 = 4,			// Windows 98 (4.10)
-	NVPLAY_OS_WINME = 5,			// Windows ME (4.90)
-	// Failsafe - you can turn off 2F/1600 which means you can't detect the Windows version. 
-	// We have to assume as late as possible except NT (you can't do it on NT)
-	NVPLAY_OS_WINUNKNOWN = 6,			
-	// TODO: How to detect NTVDM version? It must be possible
-	NVPLAY_OS_NT = 7,				// Windows NT NTVDM
-} nvplay_os_state;
-
-// globals
-// TODO: move current_device here
-typedef struct nvplay_state_s
-{
-	nvplay_os_state os_level; 
-} nvplay_state_t;
-
-extern nvplay_state_t nvplay_state;
 
 // Hardware Abstraction Layer entry
 // All hardware-specific stuff

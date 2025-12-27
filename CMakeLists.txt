@@ -23,7 +23,6 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Util
 "src/util/util_ini.c"
-"src/util/util_cmdline.c"
 "src/util/util_input_keyboard.c"
 "src/util/util_logging.c"
 "src/util/util_string.c"
@@ -42,6 +41,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/config/config.c"
 
 # Core
+"src/core/core_cmdline.c"
 "src/core/core_detect.c"
 
 "src/core/gpu/gpu_list.c"

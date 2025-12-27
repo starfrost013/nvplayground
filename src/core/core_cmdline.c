@@ -8,10 +8,10 @@
     util_cmdline.c: Command line implementation
 */
 
+#include "nvplay.h"
 #include <string.h>
 #include <util/util.h>
 
-command_line_t command_line = {0};
 
 #define COMMAND_LINE_RUN_TEST_INI "-t"
 #define COMMAND_LINE_RUN_TEST_INI_FULL "-test"
@@ -31,7 +31,7 @@ command_line_t command_line = {0};
 // C23 constexpr pls
 #define ARG_LEFT    argc - i < 1
 
-bool Cmdline_Parse(int argc, char** argv)
+bool NVPlay_ParseCmdline(int argc, char** argv)
 {
     if (!argc)
         return true; 
@@ -49,12 +49,12 @@ bool Cmdline_Parse(int argc, char** argv)
         if (!strcasecmp(current_arg, COMMAND_LINE_RUN_ALL)
         || !strcasecmp(current_arg, COMMAND_LINE_RUN_ALL_FULL))
         {
-            command_line.run_all_tests = true; 
+            nvplay_state.run_all_tests = true; 
         }
         else if (!strcasecmp(current_arg, COMMAND_LINE_DRY_RUN)
         || !strcasecmp(current_arg, COMMAND_LINE_DRY_RUN_FULL))
         {
-            command_line.dry_run = true; 
+            nvplay_state.dry_run = true; 
         }
         else if (!strcasecmp(current_arg, COMMAND_LINE_RUN_SCRIPT_FILE)
         || !strcasecmp(current_arg, COMMAND_LINE_RUN_SCRIPT_FILE_FULL))
@@ -66,8 +66,8 @@ bool Cmdline_Parse(int argc, char** argv)
                 return false;
             }
             
-            command_line.load_reg_script = true;
-            strncpy(command_line.reg_script_file, next_arg, MAX_STR);
+            nvplay_state.run_mode = NVPLAY_MODE_SCRIPT;
+            strncpy(nvplay_state.reg_script_file, next_arg, MAX_STR);
         
             //skip script file
             i++;
@@ -81,26 +81,26 @@ bool Cmdline_Parse(int argc, char** argv)
                 return false; 
             }
 
-            command_line.load_replay_file = true;
-            strncpy(command_line.replay_file, next_arg, MAX_STR);
+            nvplay_state.run_mode = NVPLAY_MODE_REPLAY;
+            strncpy(nvplay_state.replay_file, next_arg, MAX_STR);
         }
         // help
         else if (!strcasecmp(current_arg, COMMAND_LINE_HELP)
         || !strcasecmp(current_arg, COMMAND_LINE_HELP_FULL))
         {
-            command_line.show_help = true; 
+            nvplay_state.show_help = true; 
         }
         else if (!strcasecmp(current_arg, COMMAND_LINE_RUN_TEST_INI)
         || !strcasecmp(current_arg, COMMAND_LINE_RUN_TEST_INI_FULL))
         {
             // Maybe make it so we can load custom INI files?
-            command_line.use_test_ini = true;
+            nvplay_state.run_mode = NVPLAY_MODE_TESTS;
         }
         else if (!strcasecmp(current_arg, COMMAND_LINE_BOOTONLY)
         || !strcasecmp(current_arg, COMMAND_LINE_BOOTONLY_FULL))
         {
             // Maybe make it so we can load custom INI files?
-            command_line.use_test_ini = true;
+            nvplay_state.run_mode = NVPLAY_MODE_BOOTGPU;
         }  
     }
 

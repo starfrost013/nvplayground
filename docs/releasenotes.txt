@@ -7,7 +7,9 @@ Release notes:
 	* Split nvplay.h into header files for each category of functionality.
 	* Implemented BIOS basic "extended" keyboard input library
 	* More consistent file naming 
-	
+	* Merged command line into core code. Added nvplay_state_t
+		* Changed to state enum instead of booleans for run mode
+
 Old release notes:
 
 NVPlay 1.0 is now available.

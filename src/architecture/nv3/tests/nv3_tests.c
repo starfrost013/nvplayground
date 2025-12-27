@@ -146,7 +146,7 @@ bool NV3_TestOverclock()
         uclock_t this_clock = uclock();
 
         // Sit in a spinloop until it's time to wake up
-        while (this_clock - start_clock < (UCLOCKS_PER_SEC * NV3_TestOverclock_TIME_BETWEEN_RECLOCKS))
+        while (this_clock - start_clock < (UCLOCKS_PER_SEC * NV3_TESTOVERCLOCK_TIME_BETWEEN_RECLOCKS))
             this_clock = uclock();
     }
 
@@ -154,9 +154,9 @@ bool NV3_TestOverclock()
 
     /* restore original clock */
     if (current_device.crystal_hz == NV_CLOCK_BASE_14318180)
-        NV_WriteMMIO32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TestOverclock_BASE_14318);
+        NV_WriteMMIO32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TESTOVERCLOCK_BASE_14318);
     else
-        NV_WriteMMIO32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TestOverclock_BASE_13500);
+        NV_WriteMMIO32(NV3_PRAMDAC_CLOCK_MEMORY, NV3_TESTOVERCLOCK_BASE_13500);
 
     return true; 
 }

@@ -13,7 +13,6 @@
 #include <util/util_scancodes.h>
 
 /* General definitions */
-#define MAX_STR							260 
 
 /* Logging system */
 #define LOG_FILE_DEFAULT_NAME           "nvplay.log"   
@@ -61,34 +60,8 @@ typedef struct log_settings_s
 extern log_settings_t log_settings; 
 
 bool Logging_Init();
-
 void Logging_Write(log_level level, const char* fmt, ...);
-
 void Logging_Shutdown();
-
-//
-// Commandline parser 
-//
-
-typedef struct command_line_s
-{
-    bool run_all_tests;             // Override test ini and run all tests
-    bool use_test_ini;              // Use the test ini file
-    bool dry_run;                   // don't run tests, but confirm the INI settings
-    bool load_reg_script;           // run a registry script file
-    bool load_replay_file;          // Load a replay file
-    bool show_help;                 // Show a help message
-    bool boot_only;                 // Boot the card and exit.
-    char reg_script_file[MAX_STR];  // The registry script file to use
-    char savestate_file[MAX_STR];   // The savestate file to use
-    char replay_file[MAX_STR];      // The replay file to use
-
-} command_line_t;
-
-extern command_line_t command_line; 
-
-//cannot use int32_t because it's defined as long
-bool Cmdline_Parse(int argc, char** argv);
 
 // String utils
 

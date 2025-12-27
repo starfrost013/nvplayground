@@ -40,7 +40,7 @@ void NVPlay_RunTests()
 	while (current_entry)
 	{
 		/* First check for dry-run */
-		if (!command_line.dry_run)
+		if (!nvplay_state.dry_run)
 		{
 			/* 
 				TODO: Ini setting to disable this print in the case of graphical tests. Otherwise we'll have to switch back to test mode every test.
@@ -78,30 +78,31 @@ void NVPlay_RunTests()
 
 void NVPlay_Run()
 {
-	/* Make sure the GPU is supported */
-	if (!current_device.device_info.hal->init_function)
-	{
-		Logging_Write(log_level_error, "This GPU is not yet supported :(\n");
-		NVPlay_Shutdown(NVPLAY_EXIT_CODE_UNIMPLEMENTED_GPU);
-	}
-
-	if (!current_device.device_info.hal->init_function())
-	{
-		Logging_Write(log_level_error, "GPU initialisation failed!\n");
-		NVPlay_Shutdown(NVPLAY_EXIT_CODE_NO_GPU_INIT);
-	}	
 
 	current_device.initialised = true; 
 
 	// Make sure that nv_pmc_boot_0 got set
 	current_device.nv_pmc_boot_0 = NV_ReadMMIO32(NV_PMC_BOOT);
 
-	if (command_line.load_reg_script)
-		NVPlay_RunScript();
-	else if (command_line.use_test_ini)
-		NVPlay_RunTests(); 
-	else
-		NVPlay_Repl();
+	switch (nvplay_state.run_mode)
+	{
+		case NVPLAY_MODE_BOOTGPU:
+			break; // we don't have to do anything
+		case NVPLAY_MODE_REPL:
+			NVPlay_Repl();
+			break;
+		case NVPLAY_MODE_SCRIPT:
+			NVPlay_RunScript();
+			break;
+		case NVPLAY_MODE_TESTS:
+			NVPlay_RunTests();
+			break;
+		case NVPLAY_MODE_REPLAY:
+			Logging_Write(log_level_warning, "Replay mode is not yet implemented!\n");
+			break;
+
+	}
+
 }
 
 void NVPlay_ShowHelpAndExit()
@@ -113,7 +114,7 @@ void NVPlay_ShowHelpAndExit()
 /* Initialise NVPlay! */
 bool NVPlay_Init(int32_t argc, char** argv)
 {
-	Cmdline_Parse(argc, argv);
+	NVPlay_ParseCmdline(argc, argv);
 
 	Console_Init(DEFAULT_CONSOLE_SIZE);
 
@@ -132,7 +133,7 @@ bool NVPlay_Init(int32_t argc, char** argv)
 	Logging_Write(log_level_message, APP_SIGNON_STRING);
 
 	// early return
-	if (command_line.show_help)
+	if (nvplay_state.show_help)
 	{
 		NVPlay_ShowHelpAndExit();
 		return true;
@@ -158,6 +159,19 @@ bool NVPlay_Init(int32_t argc, char** argv)
 
 	if (!Config_Load())
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_CONFIG_LOAD_FAIL); 
+
+	/* Make sure the GPU is supported */
+	if (!current_device.device_info.hal->init_function)
+	{
+		Logging_Write(log_level_error, "This GPU is not yet supported :(\n");
+		NVPlay_Shutdown(NVPLAY_EXIT_CODE_UNIMPLEMENTED_GPU);
+	}
+
+	if (!current_device.device_info.hal->init_function())
+	{
+		Logging_Write(log_level_error, "GPU initialisation failed!\n");
+		NVPlay_Shutdown(NVPLAY_EXIT_CODE_NO_GPU_INIT);
+	}	
 
 	return true; 
 }
@@ -185,11 +199,8 @@ int main(int argc, char** argv)
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_UNKNOWN_FATAL);
 	}
 
-	if (!command_line.boot_only)
-	{
-		NVPlay_Run();
-		NVPlay_Shutdown(NVPLAY_EXIT_CODE_SUCCESS);
-	}
+	NVPlay_Run();
+	NVPlay_Shutdown(NVPLAY_EXIT_CODE_SUCCESS);
 	
  	return 0;
 }

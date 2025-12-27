@@ -128,7 +128,7 @@ void NVPlay_RunScriptCommand(char* line_buf)
 
 void NVPlay_RunScript()
 {
-	FILE* script_file = fopen(command_line.reg_script_file, "rb+");
+	FILE* script_file = fopen(nvplay_state.reg_script_file, "rb+");
 	char line_buf[MAX_STR] = {0};
 
 	if (!script_file)
@@ -137,7 +137,7 @@ void NVPlay_RunScript()
 		exit(7);
 	}
 
-	Logging_Write(log_level_message, "Running script file %s\n", command_line.reg_script_file);
+	Logging_Write(log_level_message, "Running script file %s\n", nvplay_state.reg_script_file);
 
 	while (!feof(script_file))
 	{
