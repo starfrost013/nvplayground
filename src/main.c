@@ -8,74 +8,14 @@
     main.c: Runs main function and test mode
 */
 
-#include "config/config.h"
 #include "core/script/script.h"
 #include "nvplay.h"
 #include "util/util.h"
 #include <nvplay.h>
 #include <cmake/nvplay_version.h>
-#include <config/config.h>
 #include <stdio.h>
 
-#define GDB_IMPLEMENTATION
-
 nvplay_state_t nvplay_state;
-
-void NVPlay_RunTests()
-{
-	Logging_Write(LOG_LEVEL_MESSAGE, "GPU test mode\n");
-
-	if (config.num_tests_enabled == 0)
-	{
-		Logging_Write(LOG_LEVEL_WARNING, "No tests to run. Exiting...\n");
-		NVPlay_Shutdown(NVPLAY_EXIT_CODE_NO_TESTS);
-	}
-
-	Logging_Write(LOG_LEVEL_MESSAGE, "Running %ld tests...\n", config.num_tests_enabled);
-
-	/* run each loaded test in order */
-	nv_config_test_entry_t* current_entry = config.test_list_head; 
-
-	uint32_t tests_succeeded = 0, tests_failed = 0;
-
-	while (current_entry)
-	{
-		/* First check for dry-run */
-		if (!nvplay_state.dry_run)
-		{
-			/* 
-				TODO: Ini setting to disable this print in the case of graphical tests. Otherwise we'll have to switch back to test mode every test.
-
-				Also, test logging. (after util_logging.c is done)
-			*/
-
-			bool success = Test_Run(current_entry);
-
-			if (!success)
-				tests_succeeded++;
-			else
-			 	tests_failed++;
-
-			if (success)
-			{
-				tests_succeeded++;
-				Logging_Write(LOG_LEVEL_MESSAGE, "Test %s succeeded\n", current_entry->test->name);
-			}
-			else 
-			{
-				tests_failed++;
-				Logging_Write(LOG_LEVEL_MESSAGE, "Test %s failed! :(\n", current_entry->test->name);
-			}
-		}
-		else
-			Logging_Write(LOG_LEVEL_MESSAGE, "[DRY RUN - SKIP]\n");
-
-		current_entry = current_entry->next; 
-	}
-
-	Logging_Write(LOG_LEVEL_MESSAGE, "%s: %lu tests ran, %lu/%lu succeeded (%lu failed)", 
-		current_device.device_info.name, config.num_tests_enabled, tests_succeeded, config.num_tests_enabled, tests_failed);
-}
 
 void NVPlay_Run()
 {
@@ -97,13 +37,9 @@ void NVPlay_Run()
 		case NVPLAY_MODE_SCRIPT:
 			NVPlay_RunScript(nvplay_state.reg_script_file);
 			break;
-		case NVPLAY_MODE_TESTS:
-			NVPlay_RunTests();
-			break;
 		case NVPLAY_MODE_REPLAY:
 			Logging_Write(LOG_LEVEL_WARNING, "Replay mode is not yet implemented!\n");
 			break;
-
 	}
 
 }

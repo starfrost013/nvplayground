@@ -1,3 +1,4 @@
+#include <bios.h>
 #include <util/util.h>
 
 /* 

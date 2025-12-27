@@ -30,9 +30,10 @@
 #include <core/gpu/gpu_repl.h>
 #include <core/pci/pci.h>
 #include <core/script/script.h>
-#include <core/tests/tests.h>
 #include <util/util.h>
+#include <util/util_ini.h>
 #include <util/console/console.h>
+
 
 /* Strings */
 
@@ -64,7 +65,6 @@ typedef enum nvplay_os_state_e
 typedef enum nvplay_run_mode_e
 {
 	NVPLAY_MODE_REPL = 0,			// Enter REPL loop
-	NVPLAY_MODE_TESTS = 1,			// Run tests from INI
 	NVPLAY_MODE_SCRIPT = 2,			// Run script file
 	NVPLAY_MODE_REPLAY = 3,			// Run "GPU replay" file [FUTURE]
 	NVPLAY_MODE_BOOTGPU = 4,		// Initialise graphics hardware and exit
@@ -72,18 +72,71 @@ typedef enum nvplay_run_mode_e
 	// Dry run is not a mode - it's a variant of TESTS mode, same for all tests
 } nvplay_run_mode;
 
+/* Configuration stuff */
+
+#define INI_FILE_NAME               "nvplay.ini"
+#define MAX_TEST_NAME_BUFFER_LEN    64
+
+/* Defines a single test (for the global list of tests) */
+typedef struct nv_test_s 
+{
+    uint32_t required_vendor_id;
+    uint32_t required_device_id;
+    const char* name;
+    const char* name_friendly;                          // Name presented to the user.
+    bool (*test_function)(); 
+} nv_test_t; 
+
+extern nv_test_t nv_tests[];
+
+// This is a linked list.
+// We can make a lot of simplifications by making some assumptions about or design; 
+// e.g. we don't need to ever remove these since the enabled tests are enumerated at init.
+
+// Holds information about tests that need to be run.
+typedef struct nv_config_test_entry_s
+{
+    nv_test_t* test; 
+    struct nv_config_test_entry_s* prev; 
+    struct nv_config_test_entry_s* next; 
+} nv_config_test_entry_t; 
+
+//
+// FUNCTIONS
+//
+
+bool Test_IsAvailableForGPU(const char* test_name);
+nv_config_test_entry_t* Test_Get(const char* test_name);             // Get a test
+
+bool Test_Run(nv_config_test_entry_t* test_entry);
+
+
+// Main config struct (Should this be moved to nvplay.h?) 
+typedef struct nv_config_s
+{
+    bool loaded;                                    // Determines if the configuration file has been loaded.
+    ini_t ini_file;
+    nv_config_test_entry_t* test_list_head;         // The first test entry.
+    nv_config_test_entry_t* test_list_tail;         // The last test entry.
+    uint32_t num_tests_enabled;                     // The number of enabled tests.
+
+    // Debug settings
+    bool nv10_always_map_128m;                      // NV1x: Always map 128MB
+} nv_config_t;
+
+bool Config_Load();
+
 // globals
 // TODO: move current_device here
 typedef struct nvplay_state_s
 {
 	nvplay_os_state os_level; 
 	nvplay_run_mode run_mode; 
-	bool run_all_tests;             // [Test mode] Override test ini and run all tests
-    bool dry_run;                   // don't run tests, but confirm the INI settings
     bool show_help;                 // Show a help message
     char reg_script_file[MAX_STR];  // The registry script file to use
     char savestate_file[MAX_STR];   // The savestate file to use
     char replay_file[MAX_STR];      // The replay file to use
+	nv_config_t config;				// The configuration information loaded frromt he INI file
 } nvplay_state_t;
 
 extern nvplay_state_t nvplay_state;
@@ -94,7 +147,6 @@ void NVPlay_DetectWindows();
 
 //cannot use int32_t because it's defined as long
 bool NVPlay_ParseCmdline(int argc, char** argv);
-
 
 /* Exit codes (8 bit  only for MS-DOS )*/ 
 #define NVPLAY_EXIT_CODE_SUCCESS			0			// Normal exit	

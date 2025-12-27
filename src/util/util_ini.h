@@ -20,7 +20,7 @@
  *          Copyright 2016-2019 Miran Grca.
  *          Copyright 2017-2019 Fred N. van Kempen.
  *          Copyright 2018-2019 David Hrdlička.
- *          Copyright 2025      Connor Hyde
+ *          Copyright 2025-2026 Connor Hyde
  *
  * NOTE:
  *          This version has been cut down for use in nvplay 
@@ -38,7 +38,13 @@
 
 #pragma once
 
-#include <nvplay.h>
+#include <ctype.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {

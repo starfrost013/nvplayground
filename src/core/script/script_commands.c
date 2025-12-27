@@ -18,10 +18,9 @@
 #include "architecture/nv3/nv3.h"
 #include "architecture/nv3/nv3_ref.h"
 #include <cmake/nvplay_version.h>
-#include "core/tests/tests.h"
+#include "script.h"
 #include "util/util.h"
 #include <nvplay.h>
-#include <config/config.h>
 #include <stdlib.h>
 
 // bad
@@ -505,7 +504,7 @@ bool Command_RunTest()
 
 bool Command_RunScript()
 {
-    Logging_Write(LOG_LEVEL_ERROR, "IMPLEMENT THIS!");
+    NVPlay_RunScript(Command_Argv(1));
     return true; 
 }
 

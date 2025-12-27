@@ -45,18 +45,7 @@ bool NVPlay_ParseCmdline(int argc, char** argv)
         char* current_arg = argv[i];
         char* next_arg = argv[i + 1];
 
-        // use strcasecmp since it exists here
-        if (!strcasecmp(current_arg, COMMAND_LINE_RUN_ALL)
-        || !strcasecmp(current_arg, COMMAND_LINE_RUN_ALL_FULL))
-        {
-            nvplay_state.run_all_tests = true; 
-        }
-        else if (!strcasecmp(current_arg, COMMAND_LINE_DRY_RUN)
-        || !strcasecmp(current_arg, COMMAND_LINE_DRY_RUN_FULL))
-        {
-            nvplay_state.dry_run = true; 
-        }
-        else if (!strcasecmp(current_arg, COMMAND_LINE_RUN_SCRIPT_FILE)
+        if (!strcasecmp(current_arg, COMMAND_LINE_RUN_SCRIPT_FILE)
         || !strcasecmp(current_arg, COMMAND_LINE_RUN_SCRIPT_FILE_FULL))
         {
             // logging not yet initialised
@@ -89,12 +78,6 @@ bool NVPlay_ParseCmdline(int argc, char** argv)
         || !strcasecmp(current_arg, COMMAND_LINE_HELP_FULL))
         {
             nvplay_state.show_help = true; 
-        }
-        else if (!strcasecmp(current_arg, COMMAND_LINE_RUN_TEST_INI)
-        || !strcasecmp(current_arg, COMMAND_LINE_RUN_TEST_INI_FULL))
-        {
-            // Maybe make it so we can load custom INI files?
-            nvplay_state.run_mode = NVPLAY_MODE_TESTS;
         }
         else if (!strcasecmp(current_arg, COMMAND_LINE_BOOTONLY)
         || !strcasecmp(current_arg, COMMAND_LINE_BOOTONLY_FULL))

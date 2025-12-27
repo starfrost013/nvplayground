@@ -9,7 +9,12 @@ Release notes:
 	* More consistent file naming 
 	* Merged command line into core code. Added nvplay_state_t
 		* Changed to state enum instead of booleans for run mode
-	* Made enum casing UPPER CASE as recommended
+	* Made enum casing UPPER CASE as recommended for C language
+	* A script called "autoexec.nvs" is now run automatically if it exists.
+	* Scripts can call other scripts with the runscript command 
+	* Removed legacy test mode 
+		* nvplay.ini no longer stores tests to run in test mode.
+		* Dry run and run all tests removed
 
 Old release notes:
 

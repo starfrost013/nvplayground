@@ -11,8 +11,6 @@
 #include "nvplay.h"
 #include <string.h>
 
-#include <core/tests/tests.h>
-#include <config/config.h>
 
 // Architecture includes
 #include <architecture/generic/nv_generic.h>
@@ -100,7 +98,7 @@ bool Test_IsAvailableForGPU(const char* test_name)
 /* Acquires the test with the name test_name. The test must be loaded and supported */
 nv_config_test_entry_t* Test_Get(const char* test_name)
 {
-    nv_config_test_entry_t* test_entry = config.test_list_head;
+    nv_config_test_entry_t* test_entry = nvplay_state.config.test_list_head;
 
     // iterate through each test
     while (test_entry)

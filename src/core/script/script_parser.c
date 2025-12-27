@@ -14,7 +14,6 @@
 #include "core/script/script.h"
 #include "util/util.h"
 #include <nvplay.h>
-#include <config/config.h>
 
 /* This is probably not threadsafe */
 char last_command[MAX_STR] = {0};

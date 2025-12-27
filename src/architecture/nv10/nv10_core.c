@@ -10,7 +10,6 @@
 
 #include "nvplay.h"
 #include <architecture/nv10/nv10.h>
-#include <config/config.h>
 
 // Globals
 nv10_state_t nv10_state = {0};
@@ -72,7 +71,7 @@ bool NV10_Init()
     uint32_t limit = current_device.vram_amount - 1;
     
     // map 32mb to preserve address space. always map max amount
-    if (config.nv10_always_map_128m)
+    if (nvplay_state.config.nv10_always_map_128m)
         limit = 0x7FFFFFF;
     else
     {
