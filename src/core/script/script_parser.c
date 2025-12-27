@@ -134,7 +134,7 @@ void NVPlay_RunScript(const char* filename)
 	if (!script_file)
 	{
 		Logging_Write(LOG_LEVEL_ERROR, "Couldn't open script file %s\n");
-		exit(7);
+		return;
 	}
 
 	Logging_Write(LOG_LEVEL_MESSAGE, "Running script file %s\n", nvplay_state.reg_script_file);
