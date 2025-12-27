@@ -40,7 +40,7 @@ void NVPlay_Run()
 			NVPlay_Repl();
 			break;
 		case NVPLAY_MODE_SCRIPT:
-			Logging_Write(LOG_LEVEL_DEBUG, "Running script and exiting...");
+			Logging_Write(LOG_LEVEL_DEBUG, "Running script and exiting...\n");
 			NVPlay_RunScript(nvplay_state.reg_script_file);
 			break;
 		case NVPLAY_MODE_REPLAY:

@@ -132,14 +132,16 @@ void NVPlay_RunScript(const char* filename)
 	char line_buf[MAX_STR] = {0};
 
 	// Don't log if the string is not autoexec.nvs
-	if (!script_file 
-		&& strcmp(filename, AUTOEXEC_FILENAME))
+	if (!script_file)
 	{
-		Logging_Write(LOG_LEVEL_ERROR, "Couldn't open script file %s\n");
+		// don't log
+		if (!strcmp(filename, AUTOEXEC_FILENAME))
+			Logging_Write(LOG_LEVEL_ERROR, "Couldn't open script file %s\n");
+		
 		return;
 	}
 
-	Logging_Write(LOG_LEVEL_MESSAGE, "Running script file %s\n", nvplay_state.reg_script_file);
+	Logging_Write(LOG_LEVEL_MESSAGE, "Running script file %s\n", script_file);
 
 	while (!feof(script_file))
 	{
