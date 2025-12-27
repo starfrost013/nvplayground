@@ -136,7 +136,7 @@ void NVPlay_RunScript(const char* filename)
 	{
 		// don't log
 		if (strcmp(filename, AUTOEXEC_FILENAME))
-			Logging_Write(LOG_LEVEL_ERROR, "Couldn't open script file %s\n");
+			Logging_Write(LOG_LEVEL_ERROR, "Couldn't open script file %s\n", filename);
 
 		return;
 	}
