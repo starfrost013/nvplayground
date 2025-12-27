@@ -20,30 +20,30 @@
 typedef enum log_level 
 {
     // A debug log message
-    log_level_debug = 1,
+    LOG_LEVEL_DEBUG = 1,
     // A normal log message
-    log_level_message = 1 << 1,
+    LOG_LEVEL_MESSAGE = 1 << 1,
     // A warning
-    log_level_warning = 1 << 2,
+    LOG_LEVEL_WARNING = 1 << 2,
     // A fatal error
-    log_level_error = 1 << 3,
+    LOG_LEVEL_ERROR = 1 << 3,
 } log_level;
 
 // Enumerates (as a bitfield) the available logging destinations.
 typedef enum log_dest_e
 {
-    log_dest_console = 1,
-    log_dest_file = 1 << 1,
+    LOG_DEST_CONSOLE = 1,
+    LOG_DEST_FILE = 1 << 1,
 } log_dest; 
 
 // Log redirection flags
 // Determines which standard i/o should be redirected to the log file
 typedef enum log_redirect_e
 {
-    log_redirect_none = 0,
-    log_redirect_stdin = 1 << 1,                // Redirect STDIN to the log file
-    log_redirect_stdout = 1 << 2,               // Redirect STDOUT to the log file
-    log_redirect_stderr = 1 << 3,               // Redirect STDERR to the log file
+    LOG_REDIRECT_NONE = 0,
+    LOG_REDIRECT_STDIN = 1 << 1,                // Redirect STDIN to the log file
+    LOG_REDIRECT_STDOUT = 1 << 2,               // Redirect STDOUT to the log file
+    LOG_REDIRECT_STDERR = 1 << 3,               // Redirect STDERR to the log file
 } log_redirect; 
 
 typedef struct log_settings_s
@@ -73,8 +73,6 @@ char* String_RTrim(char* fmt, uint32_t max);
 
 // Input utils
 // using a char may defy the scancode differences. 
-
-
 
 #define KEYBOARD_MOD_RIGHT_SHIFT            (1 << 1)
 #define KEYBOARD_MOD_LEFT_SHIFT             (1 << 2)

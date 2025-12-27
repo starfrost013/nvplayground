@@ -86,7 +86,7 @@ void NVPlay_DetectWindows()
             break;
         case INT_MULTIPLEX_WIN386_OLD:
         case INT_MULTIPLEX_WIN386_NEW:
-            Logging_Write(log_level_message, "Someone strapped a DPMI client to Windows/386 2.x???\n");
+            Logging_Write(LOG_LEVEL_MESSAGE, "Someone strapped a DPMI client to Windows/386 2.x???\n");
             break;
         default: // windows version
             if (regs.h.al == 3 && regs.h.ah == 0)
@@ -134,7 +134,7 @@ void NVPlay_DetectWindows()
             break;
     }
 
-    Logging_Write(log_level_debug, os_string);
+    Logging_Write(LOG_LEVEL_DEBUG, os_string);
 #endif
 }
 
@@ -148,13 +148,13 @@ bool GPU_Detect()
     {
         current_device_info = supported_devices[i];
         
-        Logging_Write(log_level_debug, "Trying to find GPU: %s\n", current_device_info.name);
+        Logging_Write(LOG_LEVEL_DEBUG, "Trying to find GPU: %s\n", current_device_info.name);
 
         for (uint32_t device_id = current_device_info.device_id_start; device_id <= current_device_info.device_id_end; device_id++)
         {
             if (PCI_DevicePresent(device_id, current_device_info.vendor_id))
             {
-                Logging_Write(log_level_message, "Detected GPU: %s\n", current_device_info.name);
+                Logging_Write(LOG_LEVEL_MESSAGE, "Detected GPU: %s\n", current_device_info.name);
 
                 // set up current info
                 current_device.device_info = current_device_info;
@@ -166,7 +166,7 @@ bool GPU_Detect()
         i++;
     }
 
-    Logging_Write(log_level_error, "No supported Nvidia GPU found\n");
+    Logging_Write(LOG_LEVEL_ERROR, "No supported Nvidia GPU found\n");
     return false; 
 
 }

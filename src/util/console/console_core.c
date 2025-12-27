@@ -25,7 +25,7 @@ void Console_Init(size_t console_buf_size)
     if (console.flush_amount > console.size)
         console.flush_amount = console.size - (console.size >> 3);
 
-    Logging_Write(log_level_debug, "Console initialised: Ring buffer size %d", console_buf_size);
+    Logging_Write(LOG_LEVEL_DEBUG, "Console initialised: Ring buffer size %d", console_buf_size);
 }
 
 void Console_Clear()
@@ -70,9 +70,9 @@ void Console_PushLine(char* buf)
     {
         // TODO: Do a bit of a hack so that we don't explode.
         uint32_t orig = log_settings.destination;
-        log_settings.destination &= ~(log_dest_console);
+        log_settings.destination &= ~(LOG_DEST_CONSOLE);
 
-        Logging_Write(log_level_error, "Stopped logging an unreasonable amount of stuff (Likely memory corruption!) Size was %d\n", size);
+        Logging_Write(LOG_LEVEL_ERROR, "Stopped logging an unreasonable amount of stuff (Likely memory corruption!) Size was %d\n", size);
 
         log_settings.destination = orig; 
         return;

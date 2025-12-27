@@ -27,11 +27,11 @@ bool PCI_BiosIsPresent(void)
 
   if (regs.d.edx != PCI_BIOS_MAGIC) // "PCI "
   {
-    Logging_Write(log_level_error, "PCI BIOS not found, or PCI BIOS specification was below version 2.0c\n");
+    Logging_Write(LOG_LEVEL_ERROR, "PCI BIOS not found, or PCI BIOS specification was below version 2.0c\n");
     return false;
   }
 
-  Logging_Write(log_level_message, "Found PCI BIOS, specification version %x.%x\n", regs.h.bh, regs.h.bl); // %x as a cheap way of printing it as BCD
+  Logging_Write(LOG_LEVEL_MESSAGE, "Found PCI BIOS, specification version %x.%x\n", regs.h.bh, regs.h.bl); // %x as a cheap way of printing it as BCD
   return true; 
 }
 
@@ -51,10 +51,10 @@ bool PCI_DevicePresent(uint32_t device_id, uint32_t vendor_id)
         switch (regs.h.ah)
         {
             case PCI_ERROR_UNSUPPORTED_FUNCTION:
-                Logging_Write(log_level_error, "PCI BIOS was not specification level 2.0c or higher compatible after all\n");
+                Logging_Write(LOG_LEVEL_ERROR, "PCI BIOS was not specification level 2.0c or higher compatible after all\n");
                 break;
             case PCI_ERROR_BAD_VENDOR_ID:
-                Logging_Write(log_level_error, "[BUG] BAD vendor id %08lX", vendor_id);
+                Logging_Write(LOG_LEVEL_ERROR, "[BUG] BAD vendor id %08lX", vendor_id);
                 break; 
         }
 
@@ -85,7 +85,7 @@ uint8_t PCI_ReadConfig8(uint32_t bus_number, uint32_t function_number, uint32_t 
     else 
     {
         //todo fatal error code
-        Logging_Write(log_level_error, "FAILED to read PCI bus %lu function %lu offset %08lX info (8bit)\n", bus_number, function_number, offset);
+        Logging_Write(LOG_LEVEL_ERROR, "FAILED to read PCI bus %lu function %lu offset %08lX info (8bit)\n", bus_number, function_number, offset);
         return 0x00;
     }
 }
@@ -95,7 +95,7 @@ uint16_t PCI_ReadConfig16(uint32_t bus_number, uint32_t function_number, uint32_
     /* Offset must be dword aligned */
     if (offset % 0x02)
     {
-        Logging_Write(log_level_error, "BUG: PCI_ReadConfig16 called with unaligned address");
+        Logging_Write(LOG_LEVEL_ERROR, "BUG: PCI_ReadConfig16 called with unaligned address");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -113,7 +113,7 @@ uint16_t PCI_ReadConfig16(uint32_t bus_number, uint32_t function_number, uint32_
         return regs.x.cx;
     else 
     {
-        Logging_Write(log_level_error, "FAILED to read PCI bus %lu function %lu offset %08lX info (16bit)\n", bus_number, function_number, offset);
+        Logging_Write(LOG_LEVEL_ERROR, "FAILED to read PCI bus %lu function %lu offset %08lX info (16bit)\n", bus_number, function_number, offset);
         return 0x00;
     }
 }
@@ -124,7 +124,7 @@ uint32_t PCI_ReadConfig32(uint32_t bus_number, uint32_t function_number, uint32_
     /* Offset must be dword aligned. AND fucks up with 0x10 so just use mod */
     if (offset % 0x04)
     {
-        Logging_Write(log_level_error, "BUG: PCI_ReadConfig32 called with unaligned address");
+        Logging_Write(LOG_LEVEL_ERROR, "BUG: PCI_ReadConfig32 called with unaligned address");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -142,7 +142,7 @@ uint32_t PCI_ReadConfig32(uint32_t bus_number, uint32_t function_number, uint32_
         return regs.d.ecx;
     else 
     {
-        Logging_Write(log_level_error, "FAILED to read PCI bus %lu function %lu offset %08lX info (32bit)\n", bus_number, function_number, offset);
+        Logging_Write(LOG_LEVEL_ERROR, "FAILED to read PCI bus %lu function %lu offset %08lX info (32bit)\n", bus_number, function_number, offset);
         return 0x00;
     } 
 }
@@ -165,7 +165,7 @@ bool PCI_WriteConfig8(uint32_t bus_number, uint32_t function_number, uint32_t of
     else 
     {
         //todo fatal error code
-        Logging_Write(log_level_error, "FAILED to write PCI bus %lu function %lu offset %08lX info (8bit)\n", bus_number, function_number, offset);
+        Logging_Write(LOG_LEVEL_ERROR, "FAILED to write PCI bus %lu function %lu offset %08lX info (8bit)\n", bus_number, function_number, offset);
         return true;
     }
     
@@ -178,7 +178,7 @@ bool PCI_WriteConfig16(uint32_t bus_number, uint32_t function_number, uint32_t o
     /* Offset must be dword aligned */
     if (offset % 0x02)
     {
-        Logging_Write(log_level_error, "BUG: PCI_WriteConfig16 called with unaligned address!\n");
+        Logging_Write(LOG_LEVEL_ERROR, "BUG: PCI_WriteConfig16 called with unaligned address!\n");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -198,7 +198,7 @@ bool PCI_WriteConfig16(uint32_t bus_number, uint32_t function_number, uint32_t o
         return false; 
     else 
     {
-        Logging_Write(log_level_error, "FAILED to write PCI bus %lu function %lu offset %08lX info (16bit)\n", bus_number, function_number, offset);
+        Logging_Write(LOG_LEVEL_ERROR, "FAILED to write PCI bus %lu function %lu offset %08lX info (16bit)\n", bus_number, function_number, offset);
         return true;
     }
 
@@ -211,7 +211,7 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
     /* Offset must be dword aligned. AND fucks up with 0x10 so just use mod */
     if (offset % 0x04)
     {
-        Logging_Write(log_level_error, "BUG: PCI_WriteConfig32 called with unaligned address!\n");
+        Logging_Write(LOG_LEVEL_ERROR, "BUG: PCI_WriteConfig32 called with unaligned address!\n");
         return 0x00; // it's not happening (TODO: error code)
     }
         
@@ -230,7 +230,7 @@ bool PCI_WriteConfig32(uint32_t bus_number, uint32_t function_number, uint32_t o
         return false;
     else 
     {
-        Logging_Write(log_level_error, "FAILED to write PCI bus %lu function %lu offset %08lX info (32bit)\n", bus_number, function_number, offset);
+        Logging_Write(LOG_LEVEL_ERROR, "FAILED to write PCI bus %lu function %lu offset %08lX info (32bit)\n", bus_number, function_number, offset);
         return true;
     }
 

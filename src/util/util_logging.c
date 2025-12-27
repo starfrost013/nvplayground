@@ -34,7 +34,7 @@ bool Logging_Init()
     }
 
     // First try and open the log file. This truncates it if it doesn't exist
-    if (log_settings.destination & log_dest_file)
+    if (log_settings.destination & LOG_DEST_FILE)
     {
         if (log_settings.file_name)
             log_file_stream = fopen(log_settings.file_name, "w+"); // open in text mode
@@ -42,11 +42,11 @@ bool Logging_Init()
             log_file_stream = fopen(LOG_FILE_DEFAULT_NAME, "w+");
     }
 
-    if (log_settings.redirect & log_redirect_stdin)
+    if (log_settings.redirect & LOG_REDIRECT_STDIN)
         freopen(log_settings.file_name, "w+", stdin);
-    if (log_settings.redirect & log_redirect_stdout)
+    if (log_settings.redirect & LOG_REDIRECT_STDOUT)
         freopen(log_settings.file_name, "r", stdout);
-    if (log_settings.redirect & log_redirect_stderr)
+    if (log_settings.redirect & LOG_REDIRECT_STDERR)
         freopen(log_settings.file_name, "w+", stderr);
     
     log_settings.open = true;
@@ -64,18 +64,18 @@ void Logging_Write(log_level level, const char* fmt, ...)
     const char* prefix = NULL;
     char log_string[LOG_STRING_BUF_SIZE] = {0};
 
-    // ignore prefix if log_level_message
+    // ignore prefix if LOG_LEVEL_MESSAGE
     switch (level)
     {
-        case log_level_debug:
+        case LOG_LEVEL_DEBUG:
             prefix = "[DEBUG]: ";
             break;
-        case log_level_message:
+        case LOG_LEVEL_MESSAGE:
             break; // not needed but shuts up the compiler    
-        case log_level_warning:
+        case LOG_LEVEL_WARNING:
             prefix = "[WARNING]: ";
             break;
-        case log_level_error:
+        case LOG_LEVEL_ERROR:
             prefix = "[ERROR]: ";
             break;
     }
@@ -83,10 +83,10 @@ void Logging_Write(log_level level, const char* fmt, ...)
     // write out the prefix separately, it simplifies the code below
     if (prefix)
     {
-        if (log_settings.destination & log_dest_console)
+        if (log_settings.destination & LOG_DEST_CONSOLE)
             fputs(prefix, stdout);
 
-        if (log_settings.destination & log_dest_file)
+        if (log_settings.destination & LOG_DEST_FILE)
             fwrite(prefix, strlen(prefix), 1, log_file_stream);
     }
 
@@ -96,10 +96,10 @@ void Logging_Write(log_level level, const char* fmt, ...)
     vsnprintf(log_string, LOG_STRING_BUF_SIZE, fmt, ap);
 
     // don't print a newline after
-    if (log_settings.destination & log_dest_console)
+    if (log_settings.destination & LOG_DEST_CONSOLE)
          fputs(log_string, stdout);
 
-    if (log_settings.destination & log_dest_file)
+    if (log_settings.destination & LOG_DEST_FILE)
         fwrite(log_string, strlen(log_string), 1, log_file_stream);
 
     va_end(ap);

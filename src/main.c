@@ -22,15 +22,15 @@ nvplay_state_t nvplay_state;
 
 void NVPlay_RunTests()
 {
-	Logging_Write(log_level_message, "GPU test mode\n");
+	Logging_Write(LOG_LEVEL_MESSAGE, "GPU test mode\n");
 
 	if (config.num_tests_enabled == 0)
 	{
-		Logging_Write(log_level_warning, "No tests to run. Exiting...\n");
+		Logging_Write(LOG_LEVEL_WARNING, "No tests to run. Exiting...\n");
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_NO_TESTS);
 	}
 
-	Logging_Write(log_level_message, "Running %ld tests...\n", config.num_tests_enabled);
+	Logging_Write(LOG_LEVEL_MESSAGE, "Running %ld tests...\n", config.num_tests_enabled);
 
 	/* run each loaded test in order */
 	nv_config_test_entry_t* current_entry = config.test_list_head; 
@@ -58,21 +58,21 @@ void NVPlay_RunTests()
 			if (success)
 			{
 				tests_succeeded++;
-				Logging_Write(log_level_message, "Test %s succeeded\n", current_entry->test->name);
+				Logging_Write(LOG_LEVEL_MESSAGE, "Test %s succeeded\n", current_entry->test->name);
 			}
 			else 
 			{
 				tests_failed++;
-				Logging_Write(log_level_message, "Test %s failed! :(\n", current_entry->test->name);
+				Logging_Write(LOG_LEVEL_MESSAGE, "Test %s failed! :(\n", current_entry->test->name);
 			}
 		}
 		else
-			Logging_Write(log_level_message, "[DRY RUN - SKIP]\n");
+			Logging_Write(LOG_LEVEL_MESSAGE, "[DRY RUN - SKIP]\n");
 
 		current_entry = current_entry->next; 
 	}
 
-	Logging_Write(log_level_message, "%s: %lu tests ran, %lu/%lu succeeded (%lu failed)", 
+	Logging_Write(LOG_LEVEL_MESSAGE, "%s: %lu tests ran, %lu/%lu succeeded (%lu failed)", 
 		current_device.device_info.name, config.num_tests_enabled, tests_succeeded, config.num_tests_enabled, tests_failed);
 }
 
@@ -98,7 +98,7 @@ void NVPlay_Run()
 			NVPlay_RunTests();
 			break;
 		case NVPLAY_MODE_REPLAY:
-			Logging_Write(log_level_warning, "Replay mode is not yet implemented!\n");
+			Logging_Write(LOG_LEVEL_WARNING, "Replay mode is not yet implemented!\n");
 			break;
 
 	}
@@ -118,11 +118,11 @@ bool NVPlay_Init(int32_t argc, char** argv)
 
 	Console_Init(DEFAULT_CONSOLE_SIZE);
 
-	log_settings.destination = (log_dest_file | log_dest_console);
+	log_settings.destination = (LOG_DEST_FILE | LOG_DEST_CONSOLE);
 	log_settings.flush_on_line = true; //bad idea?
-	log_settings.level = (log_level_debug | log_level_message | log_level_warning | log_level_error);
+	log_settings.level = (LOG_LEVEL_DEBUG | LOG_LEVEL_MESSAGE | LOG_LEVEL_WARNING | LOG_LEVEL_ERROR);
 	log_settings.valid = true;
-	log_settings.redirect = log_redirect_stdin;
+	log_settings.redirect = LOG_REDIRECT_STDIN;
 	
 	if (!Logging_Init())
 	{
@@ -130,7 +130,7 @@ bool NVPlay_Init(int32_t argc, char** argv)
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_LOG_INIT_FAIL);
 	}
 
-	Logging_Write(log_level_message, APP_SIGNON_STRING);
+	Logging_Write(LOG_LEVEL_MESSAGE, APP_SIGNON_STRING);
 
 	// early return
 	if (nvplay_state.show_help)
@@ -143,7 +143,7 @@ bool NVPlay_Init(int32_t argc, char** argv)
 
 	if (nvplay_state.os_level == NVPLAY_OS_NT)
 	{
-		Logging_Write(log_level_message, "NVPlay requires raw hardware access and is not supported under Windows NT-based operating systems.\n"
+		Logging_Write(LOG_LEVEL_MESSAGE, "NVPlay requires raw hardware access and is not supported under Windows NT-based operating systems.\n"
 		"Please run under a supported operating system such as MS-DOS, Windows 3.1 or Windows 9x.");
 		getchar();
 
@@ -163,13 +163,13 @@ bool NVPlay_Init(int32_t argc, char** argv)
 	/* Make sure the GPU is supported */
 	if (!current_device.device_info.hal->init_function)
 	{
-		Logging_Write(log_level_error, "This GPU is not yet supported :(\n");
+		Logging_Write(LOG_LEVEL_ERROR, "This GPU is not yet supported :(\n");
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_UNIMPLEMENTED_GPU);
 	}
 
 	if (!current_device.device_info.hal->init_function())
 	{
-		Logging_Write(log_level_error, "GPU initialisation failed!\n");
+		Logging_Write(LOG_LEVEL_ERROR, "GPU initialisation failed!\n");
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_NO_GPU_INIT);
 	}	
 
@@ -192,7 +192,7 @@ int main(int argc, char** argv)
 	if (!NVPlay_Init(argc, argv))
 	{
 		if (log_settings.open)
-			Logging_Write(log_level_warning, "Unknown fatal initialisation error!");
+			Logging_Write(LOG_LEVEL_WARNING, "Unknown fatal initialisation error!");
 		else
 		 	printf("Unknown fatal initialisation error!\n");
 

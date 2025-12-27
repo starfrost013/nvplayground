@@ -29,12 +29,12 @@ void NVPlay_Repl()
 {
     char repl_string[MAX_STR] = {0};
 
-    Logging_Write(log_level_message, "Welcome to NVPlay\n");
-    Logging_Write(log_level_message, "Enter commands to interface with the GPU. Type ? or help for help. Type q or exit to exit.\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Welcome to NVPlay\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Enter commands to interface with the GPU. Type ? or help for help. Type q or exit to exit.\n");
 
     while (repl_is_running)
     {
-        Logging_Write(log_level_message, "GPU>");
+        Logging_Write(LOG_LEVEL_MESSAGE, "GPU>");
 
         // paranoid version of using scanf for this with a strictly limited size
         fgets(repl_string, MAX_STR, stdin);

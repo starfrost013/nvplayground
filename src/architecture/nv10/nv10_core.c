@@ -25,8 +25,8 @@ bool NV10_Init()
     bar0_base &= 0xFF000000;
     bar1_base &= 0xFF000000;
 
-    Logging_Write(log_level_debug, "Celsius - PCI BAR0 0x%08lX\n", bar0_base);
-    Logging_Write(log_level_debug, "Celsius - PCI BAR1 0x%08lX\n", bar1_base);
+    Logging_Write(LOG_LEVEL_DEBUG, "Celsius - PCI BAR0 0x%08lX\n", bar0_base);
+    Logging_Write(LOG_LEVEL_DEBUG, "Celsius - PCI BAR1 0x%08lX\n", bar1_base);
     
     /* We need to allocate an LDT for this */
     /* So start by allocating a physical mapping. */
@@ -45,14 +45,14 @@ bool NV10_Init()
     __dpmi_physical_address_mapping(&meminfo_bar0);
     __dpmi_physical_address_mapping(&meminfo_bar1);
     
-    Logging_Write(log_level_debug, "Celsius Init: Mapping BAR0 (MMIO + RAMIN)...\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Celsius Init: Mapping BAR0 (MMIO + RAMIN)...\n");
 
     /* Set up two LDTs, we don't need one for ramin, because, it's just a part of bar1 we map differently */
     current_device.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar0_selector, meminfo_bar0.address);
     __dpmi_set_segment_limit(current_device.bar0_selector, NV10_MMIO_SIZE - 1);
 
-    Logging_Write(log_level_debug, "Celsius Init: Mapping BAR1 (VRAM aperture)...\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Celsius Init: Mapping BAR1 (VRAM aperture)...\n");
 
     current_device.bar1_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1.address);
@@ -96,16 +96,16 @@ bool NV10_Init()
         current_device.crystal_hz = NV_CLOCK_BASE_13500K;
 
     /* Power up all GPU subsystems */
-    Logging_Write(log_level_debug, "Celsius Init: Enabling all GPU subsystems (0x11111111 -> NV10_PMC_ENABLE)...");
+    Logging_Write(LOG_LEVEL_DEBUG, "Celsius Init: Enabling all GPU subsystems (0x11111111 -> NV10_PMC_ENABLE)...");
     NV_WriteMMIO32(NV10_PMC_ENABLE, 0x11111111);
-    Logging_Write(log_level_debug, "Done!\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Done!\n");
 
     /* Enable interrupts (test) */
-    Logging_Write(log_level_debug, "Celsius Init: Enabling interrupts...");
+    Logging_Write(LOG_LEVEL_DEBUG, "Celsius Init: Enabling interrupts...");
     NV_WriteMMIO32(NV10_PMC_INTR_EN, (NV10_PMC_INTR_EN_HARDWARE | NV10_PMC_INTR_EN_SOFTWARE));
-    Logging_Write(log_level_debug, "Done!\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Done!\n");
     
-    Logging_Write(log_level_debug, "Celsius Init: Ensuring user-programmable pixel, core and memory clocks...\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Celsius Init: Ensuring user-programmable pixel, core and memory clocks...\n");
     
     // ensure programmable pixel and memory clocks for driver & overclock testing
     // we also need to actually *program* the clocks on NV4 if you set the PLL to programmable omde it seems. It really doesn't like it if you don't
@@ -135,19 +135,19 @@ bool NV10_Init()
 bool nv10_dump_mfg_info()
 {
         /* TODO: Read our Dumb Framebuffer */
-    Logging_Write(log_level_message, "Nvidia Celsius-based Graphics Hardware (NV1x) Manufacture-Time Configuration: \n");
-    Logging_Write(log_level_message, "NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
-    Logging_Write(log_level_message, "NV_PFB_CFG              = %08lX\n", current_device.nv_pfb_boot_0);
-    Logging_Write(log_level_message, "NV_PFB_CSTATUS          = %08lX\n", current_device.nv10_pfb_cfg);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Nvidia Celsius-based Graphics Hardware (NV1x) Manufacture-Time Configuration: \n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV_PFB_CFG              = %08lX\n", current_device.nv_pfb_boot_0);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV_PFB_CSTATUS          = %08lX\n", current_device.nv10_pfb_cfg);
     /* 
         Determine the amount of Video RAM 
         In theory this could be a shared function between all nv gpus, but in reality i'm not so sure
     */
 
-    Logging_Write(log_level_message, "Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
+    Logging_Write(LOG_LEVEL_MESSAGE, "Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
 
     /* Read in the straps */
-    Logging_Write(log_level_message, "Straps                  = %08lX\n", current_device.straps);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Straps                  = %08lX\n", current_device.straps);
 
     // We store these but read the current values
     uint32_t vpll = NV_ReadMMIO32(NV10_PRAMDAC_CLOCK_PIXEL);
@@ -159,9 +159,9 @@ bool nv10_dump_mfg_info()
     double mpll_mhz = NV_ClockMNPToMhz(current_device.crystal_hz, mpll);
 
     //todo: convert to MHz
-    Logging_Write(log_level_message, "Pixel Clock Coefficient = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
-    Logging_Write(log_level_message, "Core Clock Coefficient  = %08lX (%.2f MHz)\n", nvpll, nvpll_mhz);
-    Logging_Write(log_level_message, "VRAM Clock Coefficient  = %08lX (%.2f MHz)\n", mpll, mpll_mhz);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Pixel Clock Coefficient = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Core Clock Coefficient  = %08lX (%.2f MHz)\n", nvpll, nvpll_mhz);
+    Logging_Write(LOG_LEVEL_MESSAGE, "VRAM Clock Coefficient  = %08lX (%.2f MHz)\n", mpll, mpll_mhz);
 
 
     return true; 

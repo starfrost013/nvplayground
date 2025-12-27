@@ -39,7 +39,6 @@
 extern const char* msg_help; 
 extern const char* msg_help_script;
 
-
 #define STRING_EMPTY ""
 #define MSDOS_PATH_LENGTH					64			// maximum ms-dos path size is 64
 #define MAX_STR								260 

@@ -53,7 +53,7 @@ bool Command_ReadMMIOConsole8()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    Logging_Write(log_level_message, "Command_ReadMMIOConsole8: %02x = %02x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadMMIOConsole8: %02x = %02x\n", offset, value);
     return true; 
 }
 
@@ -63,7 +63,7 @@ bool Command_WriteMMIO32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
  
-    Logging_Write(log_level_debug, "Command_WriteMMIO32 %s:%08x %s:%08x\n", Command_Argv(1), offset, Command_Argv(2), value);
+    Logging_Write(LOG_LEVEL_DEBUG, "Command_WriteMMIO32 %s:%08x %s:%08x\n", Command_Argv(1), offset, Command_Argv(2), value);
 
     NV_WriteMMIO32(offset, value);
     return true; 
@@ -74,7 +74,7 @@ bool Command_ReadMMIOConsole32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = NV_ReadMMIO32(offset);
 
-    Logging_Write(log_level_message, "Command_ReadMMIOConsole32: %08x = %08x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadMMIOConsole32: %08x = %08x\n", offset, value);
     return true; 
 }
 
@@ -116,7 +116,7 @@ bool Command_ReadVRAMConsole8()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint8_t value = NV_ReadDfb8(offset);
 
-    Logging_Write(log_level_message, "Command_ReadVRAMConsole8: %03x = %02x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadVRAMConsole8: %03x = %02x\n", offset, value);
     return true; 
 }
 
@@ -146,7 +146,7 @@ bool Command_ReadVRAMConsole16()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint16_t value = NV_ReadDfb16(offset);
 
-    Logging_Write(log_level_message, "Command_ReadVRAMConsole16: %04x = %04x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadVRAMConsole16: %04x = %04x\n", offset, value);
     return true; 
 }
 
@@ -176,7 +176,7 @@ bool Command_ReadVRAMConsole32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = NV_ReadDfb32(offset);
 
-    Logging_Write(log_level_message, "Command_ReadVRAMConsole32: %08x = %08x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadVRAMConsole32: %08x = %08x\n", offset, value);
     return true; 
 }
 
@@ -207,7 +207,7 @@ bool Command_ReadRaminConsole32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = NV_ReadRamin32(offset);
 
-    Logging_Write(log_level_message, "Command_ReadRaminConsole32: %08x = %08x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadRaminConsole32: %08x = %08x\n", offset, value);
     return true; 
 } 
 
@@ -237,7 +237,7 @@ bool Command_ReadPCIConsole8()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint8_t value = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, offset);
 
-    Logging_Write(log_level_message, "Command_ReadPCIConsole8: %03x = %02x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadPCIConsole8: %03x = %02x\n", offset, value);
     return true; 
 }
 
@@ -267,7 +267,7 @@ bool Command_ReadPCIConsole16()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint16_t value = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, offset);
 
-    Logging_Write(log_level_message, "Command_ReadPCIConsole16: %04x = %04x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadPCIConsole16: %04x = %04x\n", offset, value);
     return true; 
 }
 
@@ -298,7 +298,7 @@ bool Command_ReadPCIConsole32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, offset);
 
-    Logging_Write(log_level_message, "Command_ReadPCIConsole32: %08x = %08x\n", offset, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadPCIConsole32: %08x = %08x\n", offset, value);
     return true; 
 }
 
@@ -309,13 +309,13 @@ bool Command_ReadCrtcConsole()
 
     if (index > NV3_CRTC_REGISTER_NVIDIA_END)  
     {
-        Logging_Write(log_level_warning, "Command_ReadCrtcConsole: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_ReadCrtcConsole: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
     uint32_t value = NV_ReadCRTC(index);
 
-    Logging_Write(log_level_message, "Command_ReadCrtcConsole: CRTC[%02x] = %02x\n", index, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadCrtcConsole: CRTC[%02x] = %02x\n", index, value);
     return true; 
 }
 
@@ -326,7 +326,7 @@ bool Command_WriteCrtc()
 
     if (index > NV3_CRTC_REGISTER_NVIDIA_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteCrtc: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteCrtc: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
@@ -345,7 +345,7 @@ bool Command_WriteCrtcRange()
     if (index_start > NV3_CRTC_REGISTER_NVIDIA_END
         || index_end > NV3_CRTC_REGISTER_NVIDIA_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteCrtcRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteCrtcRange: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
@@ -364,13 +364,13 @@ bool Command_ReadGdcConsole()
 
     if (index > NV3_PRMVIO_GR_INDEX_END)  
     {
-        Logging_Write(log_level_warning, "Command_ReadGdcConsole: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_ReadGdcConsole: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
     uint32_t value = NV_ReadGDC(index);
 
-    Logging_Write(log_level_message, "Command_ReadGdcConsole: GR[%02x] = %02x\n", index, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadGdcConsole: GR[%02x] = %02x\n", index, value);
     return true; 
 }
 
@@ -381,7 +381,7 @@ bool Command_WriteGdc()
 
     if (index > NV3_PRMVIO_GR_INDEX_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteGdc: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGdc: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
@@ -401,7 +401,7 @@ bool Command_WriteGdcRange()
     if (index_start > NV3_PRMVIO_GR_INDEX_END
         || index_end > NV3_PRMVIO_GR_INDEX_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteGdcRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGdcRange: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
@@ -420,13 +420,13 @@ bool Command_ReadSRConsole()
 
     if (index > NV3_PRMVIO_SR_INDEX_END)  
     {
-        Logging_Write(log_level_warning, "Command_ReadSRConsole: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_ReadSRConsole: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
     uint32_t value = NV_ReadSequencer(index);
 
-    Logging_Write(log_level_message, "Command_ReadSRConsole: SR[%02x] = %02x\n", index, value);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadSRConsole: SR[%02x] = %02x\n", index, value);
     return true; 
 }
 
@@ -437,7 +437,7 @@ bool Command_WriteSR()
 
     if (index > NV3_PRMVIO_SR_INDEX_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteSR: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteSR: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
@@ -457,7 +457,7 @@ bool Command_WriteSRRange()
     if (index_start > NV3_PRMVIO_SR_INDEX_END
         || index_end > NV3_PRMVIO_SR_INDEX_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteSRRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteSRRange: Ignoring invalid index %02x\n", index);
         return false; 
     }
 
@@ -480,7 +480,7 @@ bool Command_NV3Explode()
         uint32_t pme_debug_0 = NV_ReadMMIO32(NV3_PME_DEBUG_0);
         NV_WriteMMIO32(NV3_PME_INTR, 0x11111111);
 
-        Logging_Write(log_level_debug, "Mediaport is alive (NV3Explode succeeded) NV3_PME_DEBUG_0=%08x\n", pme_debug_0);
+        Logging_Write(LOG_LEVEL_DEBUG, "Mediaport is alive (NV3Explode succeeded) NV3_PME_DEBUG_0=%08x\n", pme_debug_0);
     }
 
     return true; 
@@ -496,44 +496,50 @@ bool Command_RunTest()
         return test_entry->test->test_function();
     else
     {
-        Logging_Write(log_level_message, "Tried to run invalid test %s!", test_name);
+        Logging_Write(LOG_LEVEL_MESSAGE, "Tried to run invalid test %s!", test_name);
         return false;
     }
 
     return false; //shutup compiler even though this line cannot be reached under any circumstances
 }
 
+bool Command_RunScript()
+{
+    Logging_Write(LOG_LEVEL_ERROR, "IMPLEMENT THIS!");
+    return true; 
+}
+
 // Prints a message.
 bool Command_Print()
 {
-    Logging_Write(log_level_message, Command_Argv(1));
+    Logging_Write(LOG_LEVEL_MESSAGE, Command_Argv(1));
     return true; 
 }
 
 // Prints a message on debug builds only.
 bool Command_PrintDebug()
 {
-    Logging_Write(log_level_debug, Command_Argv(1));
+    Logging_Write(LOG_LEVEL_DEBUG, Command_Argv(1));
     return true; 
 }
 
 // Prints a message on debug builds only.
 bool Command_PrintWarning()
 {
-    Logging_Write(log_level_warning, Command_Argv(1));
+    Logging_Write(LOG_LEVEL_WARNING, Command_Argv(1));
     return true; 
 }
 
 // Prints a message on debug builds only.
 bool Command_PrintError()
 {
-    Logging_Write(log_level_error, Command_Argv(1));
+    Logging_Write(LOG_LEVEL_ERROR, Command_Argv(1));
     return true; 
 }
 
 bool Command_PrintVersion()
 {
-   	Logging_Write(log_level_message, APP_SIGNON_STRING);
+   	Logging_Write(LOG_LEVEL_MESSAGE, APP_SIGNON_STRING);
     return true; 
 }
 
@@ -578,6 +584,7 @@ gpu_script_command_t commands[] =
     { "wsrrange", "writesrrange", Command_WriteSRRange, 3},
     { "nv3_explode", "nv3_explode", Command_NV3Explode, 0 },
     { "rt", "runtest", Command_RunTest, 1},
+    { "rs", "runscript", Command_RunScript, 1},
     { "print", "printmessage", Command_Print, 1 },
     { "printdebug", "printdebug", Command_PrintDebug, 1 },
     { "printwarning", "printwarning", Command_PrintWarning, 1 },

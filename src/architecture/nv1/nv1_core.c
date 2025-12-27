@@ -21,18 +21,18 @@ nv1_state_t nv1_state = {0};                    // NV1 specific state
 bool NV1_PrintMFGInfo()
 {
     /* TODO: Read our Dumb Framebuffer */
-    Logging_Write(log_level_message, "NV1 Manufacture-Time Configuration: \n");
-    Logging_Write(log_level_message, "NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
-    Logging_Write(log_level_message, "NV_PFB_BOOT_0           = %08lX\n", current_device.nv_pfb_boot_0);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV1 Manufacture-Time Configuration: \n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV_PMC_BOOT_0           = %08lX\n", current_device.nv_pmc_boot_0);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV_PFB_BOOT_0           = %08lX\n", current_device.nv_pfb_boot_0);
     /* 
         Determine the amount of Video RAM 
         In theory this could be a shared function between all nv gpus, with the actual amount based on the gpu-specific values, but in reality i'm not so sure
     */
 
-    Logging_Write(log_level_message, "Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
+    Logging_Write(LOG_LEVEL_MESSAGE, "Video RAM Size          = %lu MB\n", (current_device.vram_amount / 1048576));
 
     /* Read in the straps */
-    Logging_Write(log_level_message, "Straps                  = %08lX\n", current_device.straps);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Straps                  = %08lX\n", current_device.straps);
 
     //TODO: Write code to interface with SGS-1732/1764/Nvidia Picasso DAC
     return true; 
@@ -57,7 +57,7 @@ bool NV1_Init()
     */
     if (!bar0_base)
     {
-        Logging_Write(log_level_message, "NV1: Chip is not enabled. Enabling I/O + Memory Space + BAR0...\n");
+        Logging_Write(LOG_LEVEL_MESSAGE, "NV1: Chip is not enabled. Enabling I/O + Memory Space + BAR0...\n");
 
         uint16_t command = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND);
 
@@ -65,7 +65,7 @@ bool NV1_Init()
         command |= (PCI_CFG_OFFSET_COMMAND_BUS_MASTER | PCI_CFG_OFFSET_COMMAND_MEM_ENABLED | PCI_CFG_OFFSET_COMMAND_IO_ENABLED);
         
         PCI_WriteConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND, command);
-        Logging_Write(log_level_debug, "NV1: Programming Base Address Register 0 to hopefully-free value...%08x (prefetchable)\n", NV1_MMIO_SPACE_TEST & 0xFF000000);
+        Logging_Write(LOG_LEVEL_DEBUG, "NV1: Programming Base Address Register 0 to hopefully-free value...%08x (prefetchable)\n", NV1_MMIO_SPACE_TEST & 0xFF000000);
         PCI_WriteConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0, NV1_MMIO_SPACE_TEST);
     
     }
@@ -81,7 +81,7 @@ bool NV1_Init()
 
     __dpmi_physical_address_mapping(&meminfo_bar0);
     
-    Logging_Write(log_level_debug, "GPU Init: Mapping BAR0 MMIO...\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "GPU Init: Mapping BAR0 MMIO...\n");
 
     /* Set up two LDTs, we don't need one for ramin, because, it's just a part of bar1 we map differently */
     current_device.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
@@ -104,12 +104,12 @@ bool NV1_Init()
     current_device.straps = NV_ReadMMIO32(NV1_STRAPS);
 
     /* Power up all GPU subsystems */
-    Logging_Write(log_level_debug, "Enabling all GPU subsystems (0x11111111 -> NV1_PMC_ENABLE)...");
+    Logging_Write(LOG_LEVEL_DEBUG, "Enabling all GPU subsystems (0x11111111 -> NV1_PMC_ENABLE)...");
     NV_WriteMMIO32(NV1_PMC_ENABLE, 0x11111111);
-    Logging_Write(log_level_debug, "Done!\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Done!\n");
 
     /* Enable interrupts (test) */
-    Logging_Write(log_level_debug, "Enabling interrupts - INTA, INTB, INTC and INTD...");
+    Logging_Write(LOG_LEVEL_DEBUG, "Enabling interrupts - INTA, INTB, INTC and INTD...");
     uint32_t enable_value = (NV1_PMC_INTR_EN_0_ALL >> NV1_PMC_INTR_EN_0_INTD
     | (NV1_PMC_INTR_EN_0_ALL >> NV1_PMC_INTR_EN_0_INTC)
     | (NV1_PMC_INTR_EN_0_ALL >> NV1_PMC_INTR_EN_0_INTB)
@@ -117,7 +117,7 @@ bool NV1_Init()
 
     NV_WriteMMIO32(NV1_PMC_INTR_EN_0, enable_value);
 
-    Logging_Write(log_level_debug, "Done!\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Done!\n");
 
     // Read the chip token out
     uint32_t chip_token_0 = (uint32_t)NV_ReadMMIO32(NV1_PAUTH_CHIP_TOKEN_0);
@@ -125,7 +125,7 @@ bool NV1_Init()
 
     nv1_state.chip_token = ((uint64_t)chip_token_0 << 32) | (uint64_t)chip_token_1;
 
-    Logging_Write(log_level_message, "NV1 DRM: ChipToken (Unique ID for NV1 chip): = %08x%08x\n", chip_token_0, chip_token_1);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV1 DRM: ChipToken (Unique ID for NV1 chip): = %08x%08x\n", chip_token_0, chip_token_1);
 
     return true; 
 }
@@ -137,7 +137,7 @@ bool NV1_BreachSecurity()
 {
     if (current_device.nv_pmc_boot_0 == NV_PMC_BOOT_NV1_A01)
     {
-        Logging_Write(log_level_warning, "NV1 DRM:\ttest skipped: Rev. A card (prototype) detected\n");
+        Logging_Write(LOG_LEVEL_WARNING, "NV1 DRM:\ttest skipped: Rev. A card (prototype) detected\n");
         return true;
     }
 
@@ -147,22 +147,22 @@ bool NV1_BreachSecurity()
 
     if (breach_detected)
     {
-        Logging_Write(log_level_message, "NV1 DRM:\tSecurity Breach Mode ACTIVE!!!! Reset the machine and try again\n");
+        Logging_Write(LOG_LEVEL_MESSAGE, "NV1 DRM:\tSecurity Breach Mode ACTIVE!!!! Reset the machine and try again\n");
         return false; 
     }
     else 
-        Logging_Write(log_level_message, "NV1 DRM:\tTripping the alarms...\n");
+        Logging_Write(LOG_LEVEL_MESSAGE, "NV1 DRM:\tTripping the alarms...\n");
 
-    Logging_Write(log_level_message, "NV1 DRM:\tChipToken (Unique ID for NV1 chip): 0x%08X\n", nv1_state.chip_token);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV1 DRM:\tChipToken (Unique ID for NV1 chip): 0x%08X\n", nv1_state.chip_token);
 
-    Logging_Write(log_level_debug, "Let's try PAUTH_PASSWORD\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Let's try PAUTH_PASSWORD\n");
 
     uint32_t random_value = 0;
 
     // First write directly into PAUTH password register.
     for (uint32_t j = 0; j < 128; j++)
     {
-        Logging_Write(log_level_debug, "Write to index 0x%lX (addr range=%06X-%06X)\n", j, NV1_PAUTH_PASSWORD_0(j), NV1_PAUTH_PASSWORD_3(j));
+        Logging_Write(LOG_LEVEL_DEBUG, "Write to index 0x%lX (addr range=%06X-%06X)\n", j, NV1_PAUTH_PASSWORD_0(j), NV1_PAUTH_PASSWORD_3(j));
 
         // Write 128 bits of garbage data at a time into the PAUTH password registers
         random_value = (rand() << 16 | rand());
@@ -182,11 +182,11 @@ bool NV1_BreachSecurity()
 
     if (breach_detected)
     {
-        Logging_Write(log_level_message, "NV1 DRM:\tAlarm tripped. PAUTH_DEBUG_0 bit 0 is set\n. Reset to remove effects.\n");
+        Logging_Write(LOG_LEVEL_MESSAGE, "NV1 DRM:\tAlarm tripped. PAUTH_DEBUG_0 bit 0 is set\n. Reset to remove effects.\n");
         return true; 
     }
     else
-        Logging_Write(log_level_debug, "That didn't work. Let's try RAMPW\n");
+        Logging_Write(LOG_LEVEL_DEBUG, "That didn't work. Let's try RAMPW\n");
 
     // If not, try writing garbage directly into the RAMPW area.
     // we do not have to read the ramin config because NV1 mirrors RAMPW to 606000?
@@ -205,12 +205,12 @@ bool NV1_BreachSecurity()
 
     if (breach_detected)
     {
-        Logging_Write(log_level_message, "NV1 DRM:\tAlarm tripped. PAUTH_DEBUG_0 bit 0 is set. Reset to remove effects.\n");
+        Logging_Write(LOG_LEVEL_MESSAGE, "NV1 DRM:\tAlarm tripped. PAUTH_DEBUG_0 bit 0 is set. Reset to remove effects.\n");
         return true; 
     }
     else
     { 
-        Logging_Write(log_level_debug, "That didn't work. There's some other way to do it, or this is a Rev B02 card or earlier.\n");
+        Logging_Write(LOG_LEVEL_DEBUG, "That didn't work. There's some other way to do it, or this is a Rev B02 card or earlier.\n");
         return false;
     }
 

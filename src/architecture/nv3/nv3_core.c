@@ -30,8 +30,8 @@ bool NV3_Init()
     bar0_base &= 0xFF000000;
     bar1_base &= 0xFF000000;
 
-    Logging_Write(log_level_debug, "NV3 - PCI BAR0 0x%08lX\n", bar0_base);
-    Logging_Write(log_level_debug, "NV3 - PCI BAR1 0x%08lX\n", bar1_base);
+    Logging_Write(LOG_LEVEL_DEBUG, "NV3 - PCI BAR0 0x%08lX\n", bar0_base);
+    Logging_Write(LOG_LEVEL_DEBUG, "NV3 - PCI BAR1 0x%08lX\n", bar1_base);
     
     /* We need to allocate an LDT for this */
     /* So start by allocating a physical mapping. */
@@ -50,14 +50,14 @@ bool NV3_Init()
     __dpmi_physical_address_mapping(&meminfo_bar0);
     __dpmi_physical_address_mapping(&meminfo_bar1);
     
-    Logging_Write(log_level_debug, "NV3 Init: Mapping BAR0 MMIO...\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "NV3 Init: Mapping BAR0 MMIO...\n");
 
     /* Set up two LDTs, we don't need one for ramin, because, it's just a part of bar1 we map differently */
     current_device.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar0_selector, meminfo_bar0.address);
     __dpmi_set_segment_limit(current_device.bar0_selector, NV_MMIO_SIZE - 1);
 
-    Logging_Write(log_level_debug, "NV3 Init: Mapping BAR1 (DFB / RAMIN)...\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "NV3 Init: Mapping BAR1 (DFB / RAMIN)...\n");
 
     current_device.bar1_selector = __dpmi_allocate_ldt_descriptors(1);
     __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1.address);
@@ -88,16 +88,16 @@ bool NV3_Init()
         current_device.crystal_hz = NV_CLOCK_BASE_13500K;
         
     /* Power up all GPU subsystems */
-    Logging_Write(log_level_debug, "NV3 Init: Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
+    Logging_Write(LOG_LEVEL_DEBUG, "NV3 Init: Enabling all GPU subsystems (0x11111111 -> NV3_PMC_ENABLE)...");
     NV_WriteMMIO32(NV3_PMC_ENABLE, 0x11111111);
-    Logging_Write(log_level_debug, "Done!\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Done!\n");
 
     /* Enable interrupts (test) */
-    Logging_Write(log_level_debug, "NV3 Init: Enabling interrupts...");
+    Logging_Write(LOG_LEVEL_DEBUG, "NV3 Init: Enabling interrupts...");
     NV_WriteMMIO32(NV3_PMC_INTERRUPT_ENABLE, (NV3_PMC_INTERRUPT_ENABLE_HARDWARE | NV3_PMC_INTERRUPT_ENABLE_SOFTWARE));
-    Logging_Write(log_level_debug, "Done!\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "Done!\n");
     
-    Logging_Write(log_level_debug, "NV3 Init: Ensuring user-programmable pixel and memory clocks...\n");
+    Logging_Write(LOG_LEVEL_DEBUG, "NV3 Init: Ensuring user-programmable pixel and memory clocks...\n");
     
     // ensure programmable pixel and memory clocks for driver & overclock testing
     uint32_t pramdac_pll_coeff_select = NV_ReadMMIO32(NV3_PRAMDAC_COEFF_SELECT);

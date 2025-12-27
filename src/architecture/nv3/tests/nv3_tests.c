@@ -40,7 +40,7 @@ bool NV3_ReadGarbageMMIO()
     uint32_t last_area02_value = 0, current_area02_value = 0;
     uint32_t last_area03_value = 0, current_area03_value = 0;
 
-    Logging_Write(log_level_message, "NV3_GarbageMMIORead: Iterations = %d\n", NV3_ReadGarbageMMIO_NUM_ITERATIONS);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV3_GarbageMMIORead: Iterations = %d\n", NV3_ReadGarbageMMIO_NUM_ITERATIONS);
 
     for (uint32_t i = 0; i < NV3_ReadGarbageMMIO_NUM_ITERATIONS; i++)
     {
@@ -53,12 +53,12 @@ bool NV3_ReadGarbageMMIO()
         {
             if (i == 0)
             {
-                Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 1 (%08x) initial value: %08x\n",
+                Logging_Write(LOG_LEVEL_MESSAGE, "NV3_GarbageMMIORead: Unmapped Test Area 1 (%08x) initial value: %08x\n",
                 NV3_GARBAGE_MMIO_AREA_01, current_area01_value);
             }
             else
             {
-                Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 1 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
+                Logging_Write(LOG_LEVEL_MESSAGE, "NV3_GarbageMMIORead: Unmapped Test Area 1 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
                 NV3_GARBAGE_MMIO_AREA_01, last_area01_value, current_area01_value, i, NV3_ReadGarbageMMIO_NUM_ITERATIONS);
             }
 
@@ -70,12 +70,12 @@ bool NV3_ReadGarbageMMIO()
         {
             if (i == 0)
             {
-                Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 2 (%08x) initial value: %08x\n",
+                Logging_Write(LOG_LEVEL_MESSAGE, "NV3_GarbageMMIORead: Unmapped Test Area 2 (%08x) initial value: %08x\n",
                 NV3_GARBAGE_MMIO_AREA_02, current_area02_value);
             }
             else
             {
-                Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 2 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
+                Logging_Write(LOG_LEVEL_MESSAGE, "NV3_GarbageMMIORead: Unmapped Test Area 2 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
                 NV3_GARBAGE_MMIO_AREA_02, last_area02_value, current_area02_value, i, NV3_ReadGarbageMMIO_NUM_ITERATIONS);
             }
 
@@ -87,12 +87,12 @@ bool NV3_ReadGarbageMMIO()
         {
             if (i == 0)
             {
-                Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 3 (%08x) initial value: %08x\n",
+                Logging_Write(LOG_LEVEL_MESSAGE, "NV3_GarbageMMIORead: Unmapped Test Area 3 (%08x) initial value: %08x\n",
                 NV3_GARBAGE_MMIO_AREA_03, current_area03_value);
             }
             else
             {
-                Logging_Write(log_level_message, "NV3_GarbageMMIORead: Unmapped Test Area 3 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
+                Logging_Write(LOG_LEVEL_MESSAGE, "NV3_GarbageMMIORead: Unmapped Test Area 3 (%08x) changed: %08x -> %08x (iter %d/%d)\n",
                 NV3_GARBAGE_MMIO_AREA_03, last_area03_value, current_area03_value, i, NV3_ReadGarbageMMIO_NUM_ITERATIONS);
             }
 
@@ -108,9 +108,9 @@ bool NV3_ReadGarbageMMIO()
 bool NV3_TestOverclock()
 {
     /* print out some helpful messages */
-    Logging_Write(log_level_message, "Basic clockspeed test (text mode: best case scenario)\n");
-    Logging_Write(log_level_message, "The GPU will try to run for 60 seconds at each clock setting, gradually going from an underclock to an overclock. If it crashes, reboot, and the default 100Mhz MCLK will be restored.\n");
-    Logging_Write(log_level_message, "Note: Some NVIDIA RIVA 128 ZX cards manufactured by TSMC run at 90Mhz and will have less overclocking potential!\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Basic clockspeed test (text mode: best case scenario)\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "The GPU will try to run for 60 seconds at each clock setting, gradually going from an underclock to an overclock. If it crashes, reboot, and the default 100Mhz MCLK will be restored.\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Note: Some NVIDIA RIVA 128 ZX cards manufactured by TSMC run at 90Mhz and will have less overclocking potential!\n");
 
     /* We vary the n-parameter of the MCLK to fine-tune the GPU clock speed. M can be used for large steps and P param can be used for very big steps */
 
@@ -139,7 +139,7 @@ bool NV3_TestOverclock()
         //not speed critical, use a double
         double megahertz = NV_ClockMNPToMhz(current_device.crystal_hz, final_clock);
 
-        Logging_Write(log_level_message, "Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)...\n", megahertz, final_clock);
+        Logging_Write(LOG_LEVEL_MESSAGE, "Trying MCLK = %.2f Mhz (NV_PRAMDAC_MPLL_COEFF = %08lx)...\n", megahertz, final_clock);
 
         NV_WriteMMIO32(NV3_PRAMDAC_CLOCK_MEMORY, final_clock);
 
@@ -150,7 +150,7 @@ bool NV3_TestOverclock()
             this_clock = uclock();
     }
 
-    Logging_Write(log_level_message, "We survived. Returning to 100Mhz...\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "We survived. Returning to 100Mhz...\n");
 
     /* restore original clock */
     if (current_device.crystal_hz == NV_CLOCK_BASE_14318180)
@@ -197,19 +197,19 @@ bool NV3_MMIOAreaIsExcluded(uint32_t addr)
 bool NV3_DumpMFGInfo()
 {
     /* TODO: Read our Dumb Framebuffer */
-    Logging_Write(log_level_message, "NV3 Manufacture-Time Configuration: \n");
-    Logging_Write(log_level_message, "NV_PMC_BOOT_0             = %08lX\n", current_device.nv_pmc_boot_0);
-    Logging_Write(log_level_message, "NV_PFB_BOOT_0             = %08lX\n", current_device.nv_pfb_boot_0);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV3 Manufacture-Time Configuration: \n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV_PMC_BOOT_0             = %08lX\n", current_device.nv_pmc_boot_0);
+    Logging_Write(LOG_LEVEL_MESSAGE, "NV_PFB_BOOT_0             = %08lX\n", current_device.nv_pfb_boot_0);
     
     /* 
         Determine the amount of Video RAM 
         In theory this could be a shared function between all nv gpus, but in reality i'm not so sure
     */
 
-    Logging_Write(log_level_message, "Video RAM Size            = %lu MB\n", (current_device.vram_amount / 1048576));
+    Logging_Write(LOG_LEVEL_MESSAGE, "Video RAM Size            = %lu MB\n", (current_device.vram_amount / 1048576));
 
     /* Read in the straps */
-    Logging_Write(log_level_message, "Straps                    = %08lX\n", current_device.straps);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Straps                    = %08lX\n", current_device.straps);
 
     uint32_t vpll = NV_ReadMMIO32(NV3_PRAMDAC_CLOCK_PIXEL);
     uint32_t mpll = NV_ReadMMIO32(NV3_PRAMDAC_CLOCK_MEMORY);
@@ -219,8 +219,8 @@ bool NV3_DumpMFGInfo()
     double vpll_mhz = NV_ClockMNPToMhz(current_device.crystal_hz, vpll);
     double mpll_mhz = NV_ClockMNPToMhz(current_device.crystal_hz, mpll);
 
-    Logging_Write(log_level_message, "Pixel Clock Coefficient   = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
-    Logging_Write(log_level_message, "Core/Mem Clock Coefficient= %08lX (%.2f MHz)\n", mpll, mpll_mhz);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Pixel Clock Coefficient   = %08lX (%.2f MHz)\n", vpll, vpll_mhz);
+    Logging_Write(LOG_LEVEL_MESSAGE, "Core/Mem Clock Coefficient= %08lX (%.2f MHz)\n", mpll, mpll_mhz);
 
     return true; 
 }
@@ -330,12 +330,12 @@ void NV3_DumpPGRAPHCache(FILE* stream)
     uint32_t initial_value = (NV3_PGRAPH_CACHE_INDEX_BANK_10 << NV3_PGRAPH_CACHE_INDEX_BANK)
     | (NV3_PGRAPH_CACHE_INDEX_OP_READ_CACHE << NV3_PGRAPH_CACHE_INDEX_OP);
 
-    Logging_Write(log_level_message, "Dumping on-die texture cache banks [1-0]...\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Dumping on-die texture cache banks [1-0]...\n");
     NV3_DumpPGRAPHCacheBank(initial_value, stream);
 
     initial_value = (NV3_PGRAPH_CACHE_INDEX_BANK_32 << NV3_PGRAPH_CACHE_INDEX_BANK)
     | (NV3_PGRAPH_CACHE_INDEX_OP_READ_CACHE << NV3_PGRAPH_CACHE_INDEX_OP);
 
-    Logging_Write(log_level_message, "Dumping on-die texture cache banks [3-2]...\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Dumping on-die texture cache banks [3-2]...\n");
     NV3_DumpPGRAPHCacheBank(initial_value, stream);
 }

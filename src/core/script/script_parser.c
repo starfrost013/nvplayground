@@ -69,7 +69,7 @@ void NVPlay_RunScriptCommand(char* line_buf)
 	&& line_buf_trimmed[1] == '/')
 		return; 
 
-	Logging_Write(log_level_debug, "Trimmed command string: %s\n", line_buf, line_buf_trimmed);
+	Logging_Write(LOG_LEVEL_DEBUG, "Trimmed command string: %s\n", line_buf, line_buf_trimmed);
 
 	strncpy(last_command, line_buf_trimmed, MAX_STR);
 
@@ -96,13 +96,13 @@ void NVPlay_RunScriptCommand(char* line_buf)
 			// don't terminate processing if a function pointer is not present though
 			if (!script_command->function)
 			{
-				Logging_Write(log_level_warning, "Command %s has no function!\n", script_command->name_full);
+				Logging_Write(LOG_LEVEL_WARNING, "Command %s has no function!\n", script_command->name_full);
 				command_valid = false; 
 			}
 
 			if (Command_Argc() < script_command->num_parameters)
 			{
-				Logging_Write(log_level_warning, "Command %s does not have enough parameters!\n", script_command->name_full);
+				Logging_Write(LOG_LEVEL_WARNING, "Command %s does not have enough parameters!\n", script_command->name_full);
 				command_valid = false; 
 			}
 
@@ -110,7 +110,7 @@ void NVPlay_RunScriptCommand(char* line_buf)
 			&& command_valid)
 			{
 				if (!script_command->function())
-					Logging_Write(log_level_error, "Command %s failed to execute!\n", script_command->name_full);
+					Logging_Write(LOG_LEVEL_ERROR, "Command %s failed to execute!\n", script_command->name_full);
 
 				// keep command_valid true
 			}
@@ -123,7 +123,7 @@ void NVPlay_RunScriptCommand(char* line_buf)
 	}
 
 	if (!command_valid && !command_found)
-		Logging_Write(log_level_warning, "Unknown command %s\n", last_token);
+		Logging_Write(LOG_LEVEL_WARNING, "Unknown command %s\n", last_token);
 }
 
 void NVPlay_RunScript()
@@ -133,11 +133,11 @@ void NVPlay_RunScript()
 
 	if (!script_file)
 	{
-		Logging_Write(log_level_error, "Couldn't open script file %s\n");
+		Logging_Write(LOG_LEVEL_ERROR, "Couldn't open script file %s\n");
 		exit(7);
 	}
 
-	Logging_Write(log_level_message, "Running script file %s\n", nvplay_state.reg_script_file);
+	Logging_Write(LOG_LEVEL_MESSAGE, "Running script file %s\n", nvplay_state.reg_script_file);
 
 	while (!feof(script_file))
 	{

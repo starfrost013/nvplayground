@@ -25,7 +25,7 @@ bool Config_Load()
     if (!config.ini_file)
         return false; 
 
-    Logging_Write(log_level_message, "Loaded nvplay.ini\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Loaded nvplay.ini\n");
 
     // load debug settings
     ini_section_t section_debug = ini_find_section(config.ini_file, "Debug");
@@ -51,7 +51,7 @@ bool Config_Load()
 
                 // check if it's enabled. if it's not just skip
                 if (!enabled)
-                    Logging_Write(log_level_debug, "Test %s disabled (2)\n", current_test->name);
+                    Logging_Write(LOG_LEVEL_DEBUG, "Test %s disabled (2)\n", current_test->name);
                 else
                 {
                     // Check the PCI device ID range of the test
@@ -70,7 +70,7 @@ bool Config_Load()
 
                     if (!current_test->test_function)
                     {
-                        Logging_Write(log_level_warning, "The test %s (%s) does not have defined test function!\n", current_test->name, current_test->name_friendly);
+                        Logging_Write(LOG_LEVEL_WARNING, "The test %s (%s) does not have defined test function!\n", current_test->name, current_test->name_friendly);
                         test_is_available = false;
                     }
 

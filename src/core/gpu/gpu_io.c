@@ -110,7 +110,7 @@ uint32_t NV_ReadRamin32(uint32_t offset)
             return _farpeekl(current_device.bar0_selector, NV4_RAMIN_START + offset);
     }
 
-    Logging_Write(log_level_error, "NV_ReadRamin32: Somehow reached here with an unsupported gpu\n");
+    Logging_Write(LOG_LEVEL_ERROR, "NV_ReadRamin32: Somehow reached here with an unsupported gpu\n");
     return 0x00;
 }
 
@@ -137,7 +137,7 @@ void NV_WriteRamin32(uint32_t offset, uint32_t val)
             _farpokel(current_device.bar0_selector, NV4_RAMIN_START + offset, val);    
              break;
         default:
-            Logging_Write(log_level_error, "NV_WriteRamin32: Somehow reached here with an unsupported GPU\n");
+            Logging_Write(LOG_LEVEL_ERROR, "NV_WriteRamin32: Somehow reached here with an unsupported GPU\n");
             break;
     }
 

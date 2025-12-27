@@ -49,29 +49,29 @@ bool NVGeneric_DumpPCISpace()
     uint8_t minimum_grant = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_MINIMUM_GRANT);
     uint8_t maximum_latency = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_MAXIMUM_LATENCY);
 
-    Logging_Write(log_level_message, "[PCI CFG] PCI ID %04x:%04x\n", vendor_id, device_id);
-    Logging_Write(log_level_message, "[PCI CFG] Command Register %04x\n", command);
-    Logging_Write(log_level_message, "[PCI CFG] Status Register %04x\n", status);
-    Logging_Write(log_level_message, "[PCI CFG] Revision %02x\n", revision);
-    Logging_Write(log_level_message, "[PCI CFG] Class ID: %06x\n", (class_id_high << 16) | class_id_low);
-    Logging_Write(log_level_message, "[PCI CFG] Cache Line Size %02x\n", cache_line_size);
-    Logging_Write(log_level_message, "[PCI CFG] Latency Timer %02x\n", latency_timer);
-    Logging_Write(log_level_message, "[PCI CFG] Header Type %02x (should be 0)\n", header_type);
-    Logging_Write(log_level_message, "[PCI CFG] BIST %02x\n", bist);
-    Logging_Write(log_level_message, "[PCI CFG] BAR0 %08x\n", bar0);
-    Logging_Write(log_level_message, "[PCI CFG] BAR1 %08x\n", bar1);
-    Logging_Write(log_level_message, "[PCI CFG] BAR2 %08x\n", bar2);
-    Logging_Write(log_level_message, "[PCI CFG] BAR3 %08x\n", bar3);
-    Logging_Write(log_level_message, "[PCI CFG] BAR4 %08x\n", bar4);
-    Logging_Write(log_level_message, "[PCI CFG] BAR5 %08x\n", bar5);
-    Logging_Write(log_level_message, "[PCI CFG] CardBus CIS Pointer %04x\n", cardbus_cis_ptr);
-    Logging_Write(log_level_message, "[PCI CFG] Subsystem ID %04x:%04x\n", subsystem_vendor_id, subsystem_id);
-    Logging_Write(log_level_message, "[PCI CFG] ROM BAR %04x\n", rom_bar);
-    Logging_Write(log_level_message, "[PCI CFG] Capabilities Pointer %02x\n", capabilities_ptr);
-    Logging_Write(log_level_message, "[PCI CFG] Interrupt Line %02x\n", interrupt_line);
-    Logging_Write(log_level_message, "[PCI CFG] Interrupt Pin %02x\n", interrupt_pin);
-    Logging_Write(log_level_message, "[PCI CFG] Minimum Grant %02x\n", minimum_grant);
-    Logging_Write(log_level_message, "[PCI CFG] Maximum Latency %02x\n", maximum_latency);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] PCI ID %04x:%04x\n", vendor_id, device_id);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Command Register %04x\n", command);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Status Register %04x\n", status);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Revision %02x\n", revision);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Class ID: %06x\n", (class_id_high << 16) | class_id_low);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Cache Line Size %02x\n", cache_line_size);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Latency Timer %02x\n", latency_timer);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Header Type %02x (should be 0)\n", header_type);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] BIST %02x\n", bist);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] BAR0 %08x\n", bar0);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] BAR1 %08x\n", bar1);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] BAR2 %08x\n", bar2);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] BAR3 %08x\n", bar3);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] BAR4 %08x\n", bar4);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] BAR5 %08x\n", bar5);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] CardBus CIS Pointer %04x\n", cardbus_cis_ptr);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Subsystem ID %04x:%04x\n", subsystem_vendor_id, subsystem_id);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] ROM BAR %04x\n", rom_bar);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Capabilities Pointer %02x\n", capabilities_ptr);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Interrupt Line %02x\n", interrupt_line);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Interrupt Pin %02x\n", interrupt_pin);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Minimum Grant %02x\n", minimum_grant);
+    Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Maximum Latency %02x\n", maximum_latency);
 
     return true; 
 }
@@ -79,7 +79,7 @@ bool NVGeneric_DumpPCISpace()
 bool NVGeneric_DumpMMIO_NV1()
 {
     // nv1 has a different setup
-    Logging_Write(log_level_message, "Dumping GPU PCI BAR0...\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Dumping GPU PCI BAR0...\n");
 
     FILE* mmio_bar0 = fopen("nv1bar0.bin", "wb");
 
@@ -102,7 +102,7 @@ bool NVGeneric_DumpMMIO_NV1()
         if (bar0_pos % NV_MMIO_DUMP_FLUSH_FREQUENCY == 0 
             && bar0_pos > 0) // i'm lazy
         {
-            Logging_Write(log_level_debug, "Dumped BAR0 up to: %08lX\n", bar0_pos);
+            Logging_Write(LOG_LEVEL_DEBUG, "Dumped BAR0 up to: %08lX\n", bar0_pos);
             fwrite(&mmio_dump_bar_buf[(bar0_pos - NV_MMIO_DUMP_FLUSH_FREQUENCY) >> 2], NV_MMIO_DUMP_FLUSH_FREQUENCY, 1, mmio_bar0);
             fflush(mmio_bar0);
 
@@ -117,14 +117,14 @@ bool NVGeneric_DumpMMIO_NV1()
     fclose(mmio_bar0);
     free(mmio_dump_bar_buf);
 
-    Logging_Write(log_level_message, "Done!\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Done!\n");
 
     return true; 
 }
 
 bool NVGeneric_DumpMMIO_NV3AndLater()
 {
-    Logging_Write(log_level_message, "Dumping GPU PCI BARs (BAR0 = MMIO, BAR1 = VRAM/RAMIN)...\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Dumping GPU PCI BARs (BAR0 = MMIO, BAR1 = VRAM/RAMIN)...\n");
 
     FILE* mmio_bar0 = fopen("nvbar0.bin", "wb");
     FILE* mmio_bar1 = fopen("nvbar1.bin", "wb");
@@ -161,7 +161,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
         if (bar0_pos % NV_MMIO_DUMP_FLUSH_FREQUENCY == 0 
             && bar0_pos > 0) // i'm lazy
         {
-            Logging_Write(log_level_debug, "Dumped BAR0 up to: %08lX\n", bar0_pos);
+            Logging_Write(LOG_LEVEL_DEBUG, "Dumped BAR0 up to: %08lX\n", bar0_pos);
             fwrite(&mmio_dump_bar_buf[(bar0_pos - NV_MMIO_DUMP_FLUSH_FREQUENCY) >> 2], NV_MMIO_DUMP_FLUSH_FREQUENCY, 1, mmio_bar0);
             fflush(mmio_bar0);
 
@@ -187,7 +187,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
         if ((bar1_pos % NV_MMIO_DUMP_FLUSH_FREQUENCY == 0 
             && bar1_pos > 0))
         {
-            Logging_Write(log_level_debug, "Dumped BAR1 up to: %08lX\n", bar1_pos);
+            Logging_Write(LOG_LEVEL_DEBUG, "Dumped BAR1 up to: %08lX\n", bar1_pos);
             fwrite(&mmio_dump_bar_buf[(bar1_pos - NV_MMIO_DUMP_FLUSH_FREQUENCY) >> 2], NV_MMIO_DUMP_FLUSH_FREQUENCY, 1, mmio_bar1);
             fflush(mmio_bar1);
 
@@ -205,7 +205,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
     
     free(mmio_dump_bar_buf);
 
-    Logging_Write(log_level_message, "Done!\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Done!\n");
 
     return true; 
 }
@@ -221,7 +221,7 @@ bool NVGeneric_DumpMMIO()
 #define VBIOS_LENGTH    8192
 bool NVGeneric_DumpVBIOS()
 {
-    Logging_Write(log_level_message, "Dumping Video BIOS...");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Dumping Video BIOS...");
 
     FILE* vbios = fopen("nvbios.bin", "wb");
 
@@ -249,7 +249,7 @@ bool NVGeneric_DumpVBIOS()
     fwrite(vbios_bin, sizeof(vbios_bin), 1, vbios);
 
     fclose(vbios);
-    Logging_Write(log_level_message, "Done!\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, "Done!\n");
 
     return true; 
 }
@@ -266,7 +266,7 @@ bool NVGeneric_DumpFIFO()
     if (current_device.device_info.hal->dump_fifo_to_text_file)
         current_device.device_info.hal->dump_fifo_to_text_file(stream);
     else
-        Logging_Write(log_level_error, "HAL Failure: No dump_fifo_to_text_file function for GPU %s\n", current_device.device_info.name);
+        Logging_Write(LOG_LEVEL_ERROR, "HAL Failure: No dump_fifo_to_text_file function for GPU %s\n", current_device.device_info.name);
 
     fclose(stream);
 
@@ -286,7 +286,7 @@ bool NVGeneric_DumpRAMHT()
     if (current_device.device_info.hal->dump_ramht_to_text_file)
         current_device.device_info.hal->dump_ramht_to_text_file(stream);
     else
-        Logging_Write(log_level_error, "HAL Failure: No dump_ramht_to_text_file function for GPU %s\n", current_device.device_info.name);
+        Logging_Write(LOG_LEVEL_ERROR, "HAL Failure: No dump_ramht_to_text_file function for GPU %s\n", current_device.device_info.name);
 
 
     fclose(stream);
@@ -304,7 +304,7 @@ bool NVGeneric_DumpRAMFC()
     if (current_device.device_info.hal->dump_ramfc_to_text_file)
         current_device.device_info.hal->dump_ramfc_to_text_file(stream);
     else
-        Logging_Write(log_level_error, "HAL Failure: No dump_ramfc_to_text_file function for GPU %s\n", current_device.device_info.name);
+        Logging_Write(LOG_LEVEL_ERROR, "HAL Failure: No dump_ramfc_to_text_file function for GPU %s\n", current_device.device_info.name);
 
 
     fclose(stream);
@@ -322,7 +322,7 @@ bool NVGeneric_DumpRAMRO()
     if (current_device.device_info.hal->dump_ramro_to_text_file)
         current_device.device_info.hal->dump_ramro_to_text_file(stream);
     else
-        Logging_Write(log_level_error, "HAL Failure: No dump_ramro_to_text_file function for GPU %s\n", current_device.device_info.name);
+        Logging_Write(LOG_LEVEL_ERROR, "HAL Failure: No dump_ramro_to_text_file function for GPU %s\n", current_device.device_info.name);
 
     fclose(stream);
 
@@ -335,13 +335,13 @@ bool NVGeneric_DumpPGRAPHCache()
 {
     if (GPU_IsNV10())
     {
-        Logging_Write(log_level_error, "DumpPGRAPHCache is not yet supported on NV10 because NV10 has a much more complicated and larger cache\n");
+        Logging_Write(LOG_LEVEL_ERROR, "DumpPGRAPHCache is not yet supported on NV10 because NV10 has a much more complicated and larger cache\n");
         return false; 
     }
 
     if (GPU_IsNV1())
     {
-        Logging_Write(log_level_error, "NV1 doesn't have on-die cache, failing\n");
+        Logging_Write(LOG_LEVEL_ERROR, "NV1 doesn't have on-die cache, failing\n");
         return false;
     }   
     
@@ -352,7 +352,7 @@ bool NVGeneric_DumpPGRAPHCache()
     if (current_device.device_info.hal->dump_cache_to_text_file)
         current_device.device_info.hal->dump_cache_to_text_file(stream);
     else
-        Logging_Write(log_level_error, "HAL Failure: No dump_cache_to_text_file function for GPU %s\n", current_device.device_info.name);
+        Logging_Write(LOG_LEVEL_ERROR, "HAL Failure: No dump_cache_to_text_file function for GPU %s\n", current_device.device_info.name);
 
     fclose(stream);
 

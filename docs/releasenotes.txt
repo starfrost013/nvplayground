@@ -9,6 +9,7 @@ Release notes:
 	* More consistent file naming 
 	* Merged command line into core code. Added nvplay_state_t
 		* Changed to state enum instead of booleans for run mode
+	* Made enum casing UPPER CASE as recommended
 
 Old release notes:
 
@@ -43,7 +44,7 @@ Changes:
 * Added GPU_IsNVx functions for GPU-specific behaviour in generic tests
 * Added GPU_NV_GetGeneration functions to return a number equivalent to the NV codename for a chip
 * Allowed dumping amounts of vram that are not 16 MB 
-
+* Consistent function casing
 
 Old release notes:
 

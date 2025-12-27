@@ -127,9 +127,9 @@ bool Test_Run(nv_config_test_entry_t* test_entry)
 		bool success = test_entry->test->test_function();	
 
 		if (success)
-			Logging_Write(log_level_message, "Test %s succeeded\n", test_entry->test->name);
+			Logging_Write(LOG_LEVEL_MESSAGE, "Test %s succeeded\n", test_entry->test->name);
 		else
-			Logging_Write(log_level_message, "Test %s failed! :(\n", test_entry->test->name);
+			Logging_Write(LOG_LEVEL_MESSAGE, "Test %s failed! :(\n", test_entry->test->name);
 	
         return success; 
     }
