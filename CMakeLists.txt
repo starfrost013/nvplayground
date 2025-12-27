@@ -25,9 +25,11 @@ file(GLOB sources CONFIGURE_DEPENDS
 # Util
 "src/util/ini.c"
 "src/util/util_cmdline.c"
+"src/util/util_input_keyboard.c"
 "src/util/util_logging.c"
 "src/util/util_string.c"
 
+# TUI engine
 "src/util/console/console_core.c"
 
 # Main

@@ -54,8 +54,6 @@ void NVPlay_Repl()
             NVPlay_ReplHelp();
         }
         else 
-        {
             NVPlay_RunScriptCommand(repl_string);        
-        }
     }
 }

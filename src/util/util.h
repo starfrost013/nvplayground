@@ -97,3 +97,23 @@ char* String_GetTokenSeparatedPart(char* fmt, const char* delim, uint32_t n);
 char* String_LTrim(char* fmt, uint32_t max);
 char* String_RTrim(char* fmt, uint32_t max);
 
+// Input utils
+
+#define KEYBOARD_MOD_RIGHT_SHIFT            (1 << 1)
+#define KEYBOARD_MOD_LEFT_SHIFT             (1 << 2)
+#define KEYBOARD_MOD_ANY_CTRL               (1 << 3)        /* Not recommended */
+#define KEYBOARD_MOD_ANY_ALT                (1 << 4)
+#define KEYBOARD_MOD_SCROLL_LOCK_ACTIVE     (1 << 5)
+#define KEYBOARD_MOD_NUM_LOCK_ACTIVE        (1 << 6)
+#define KEYBOARD_MOD_CAPS_LOCK_ACTIVE       (1 << 7)
+#define KEYBOARD_MOD_LEFT_CTRL              (1 << 8)
+#define KEYBOARD_MOD_LEFT_ALT               (1 << 9)
+#define KEYBOARD_MOD_RIGHT_CTRL             (1 << 10)
+#define KEYBOARD_MOD_RIGHT_ALT              (1 << 11)
+#define KEYBOARD_MOD_SCROLL_LOCK_PRESSED    (1 << 12)
+#define KEYBOARD_MOD_NUM_LOCK_PRESSED       (1 << 13)
+#define KEYBOARD_MOD_CAPS_LOCK_PRESSED      (1 << 14)
+#define KEYBOARD_MOD_SYSRQ                  (1 << 15)
+
+bool Input_KeyDown(char keyboard); 
+bool Input_ModState(uint16_t mod_flags);
