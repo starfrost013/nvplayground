@@ -83,6 +83,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   target_compile_definitions(nvplay PRIVATE DEBUG)
 elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
   target_compile_definitions(nvplay PRIVATE RELEASE)
+  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
 endif()
 
 
