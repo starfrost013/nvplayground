@@ -3,6 +3,7 @@ NVPlay 1.0.0-rc4 is now available.
 Changes:
 	* Strip symbols in release mode builds
 	* Fix -bootonly
+	* Remove unfinished replay feature
 
 NVPlay 1.0.0-rc3 is now available.
 
