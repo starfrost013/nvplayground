@@ -121,6 +121,8 @@ void Console_Update()
     bool scroll_up = (Input_KeyDown(SCANCODE_CHAR_UPARROW));
     bool scroll_down = (Input_KeyDown(SCANCODE_CHAR_DOWNARROW));
 
+    Logging_Write(LOG_LEVEL_DEBUG, "Scroll UP state: %d DOWN: %d", scroll_up, scroll_down);
+
     // single line scroll
     if (scroll_up 
         || scroll_down)

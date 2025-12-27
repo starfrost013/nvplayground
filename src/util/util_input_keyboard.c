@@ -15,16 +15,16 @@ bool Input_KeyDown(uint8_t scancode)
 {
     int32_t read_key = bioskey(BIOSKEY_GET_STATE);
 
-    /* Extended keys have E0 prefix. So we have to read another key that. */
-    if (read_key != PREFIX_START)
-        return ((read_key >> 8) & 0xFF) == scancode; // low 8 bits are key, upper 8 bits are scancode
-    else
-    {
-        // read again to get the real key 
-        read_key = bioskey(BIOSKEY_GET_STATE);
+    uint8_t real_scancode = (read_key >> 8) & 0xFF;
 
-        return ((read_key >> 8) & 0xFF) == read_key; // low 8 bits are key, upper 8 bits are scancode
-    }
+    // do some data munging
+    // we use 8-bit scancodes. E0 prefix is considered to be | 0x80 by scancodes.h. Let's munge it to have the right format  
+    if ((read_key & 0xFF) == PREFIX_START)
+        real_scancode |= 0x80;
+
+    Logging_Write(LOG_LEVEL_DEBUG, "bioskey: %lx wanted scancode: %lx converted scancode: %lx", read_key, scancode, real_scancode);
+
+    return (scancode == real_scancode);
 }
 
 bool Input_ModState(uint16_t mod_flags)

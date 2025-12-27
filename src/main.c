@@ -52,7 +52,7 @@ void NVPlay_Run()
 
 void NVPlay_ShowHelpAndExit()
 {
-	printf("%s", msg_help); // Done this way to shut up GCC
+	Logging_Write(LOG_LEVEL_MESSAGE, "%s", msg_help); // Done this way to shut up GCC
 	NVPlay_Shutdown(NVPLAY_EXIT_CODE_HELP_MENU);
 }
 

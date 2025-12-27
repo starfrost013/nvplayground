@@ -22,7 +22,7 @@ uint32_t command_history_id = 0;
 
 void NVPlay_ReplHelp()
 {
-    printf("%s", msg_help_script);
+    Logging_Write(LOG_LEVEL_MESSAGE, "%s", msg_help_script);
 }
 
 void NVPlay_Repl()

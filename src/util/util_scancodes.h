@@ -24,7 +24,7 @@
    Special keys like Numeric / are very complicated and emits many scancodes. 
 */
 
-#define SCANCODE_EXTENDED 0x80
+#define SCANCODE_EXTENDED 0x80 // IBM PC
 
 #define SCANCODE_KEY_1 0x29
 #define SCANCODE_CHAR_GRAVE 0x29
@@ -207,7 +207,7 @@
 
 #define SCANCODE_KEY_61 0x39
 #define SCANCODE_CHAR_SPACE SCANCODE_KEY_61
-
+   
 #define SCANCODE_KEY_62 (SCANCODE_EXTENDED | 0x38)
 #define SCANCODE_CHAR_RALT SCANCODE_KEY_62
 
