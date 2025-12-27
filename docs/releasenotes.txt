@@ -6,6 +6,7 @@ Release notes:
 	* Removed the never used gdbstub 
 	* Split nvplay.h into header files for each category of functionality.
 	* Implemented BIOS basic "extended" keyboard input library
+	* More consistent file naming 
 	
 Old release notes:
 

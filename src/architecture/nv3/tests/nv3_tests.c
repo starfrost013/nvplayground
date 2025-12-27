@@ -253,7 +253,7 @@ void NV3_DumpRAMHT(FILE* stream)
         ramht_size = 0x8000;
 
     // easier to do 
-    uint32_t ramht[RAMHT_SIZE_MAX >> 2];
+    uint32_t ramht[(RAMHT_SIZE_MAX >> 2) + 4]; // shutup compiler on release builds
 
     for (uint32_t i = 0; i < ramht_size; i += 4)
         ramht[i] = NV_ReadRamin32(ramht_location + i);

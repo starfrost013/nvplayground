@@ -19,7 +19,6 @@ set(NVPLAY_CONFIG_FILE_NAME "${CMAKE_PROJECT_NAME}.ini")
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 add_compile_options(-Wall -std=gnu99 -save-temps)
 
-
 file(GLOB sources CONFIGURE_DEPENDS 
 
 # Util
@@ -88,6 +87,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   target_compile_definitions(nvplay PRIVATE DEBUG)
 elseif("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
   target_compile_definitions(nvplay PRIVATE RELEASE)
+  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
 endif()
 
 # create required folders
