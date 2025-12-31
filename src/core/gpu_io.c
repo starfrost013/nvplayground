@@ -147,15 +147,38 @@ void NV_WriteRamin32(uint32_t offset, uint32_t val)
 
 void NV_CRTCLockExtendedRegisters()
 {
-    // To do: Does this need to be moved to NV3
-    NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
-    NV_WriteMMIO32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_LOCKED);
+    if (GPU_IsNV1())
+        return; 
+
+    if (GPU_IsNV3())
+    {
+        // To do: Does this need to be moved to NV3
+        NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
+        NV_WriteMMIO32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_LOCKED);
+    }
+    else 
+    {
+        NV_WriteMMIO32(NV4_PRMCIO_CRX_COLOR, NV4_CIO_SR_LOCK_INDEX);
+        NV_WriteMMIO32(NV4_PRMCIO_CR_COLOR, NV4_CIO_SR_LOCK_VALUE);
+    }
+
 }
 
 void NV_CRTCUnlockExtendedRegisters()
 {
-    NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
-    NV_WriteMMIO32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_UNLOCKED);
+    if (GPU_IsNV1())
+        return; 
+
+    if (GPU_IsNV3())
+    {
+        NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, NV3_PRMVIO_SR_INDEX_LOCK);
+        NV_WriteMMIO32(NV3_PRMVIO_SR, NV3_PRMVIO_SR_INDEX_LOCK_LOCKED);
+    }
+    else 
+    {
+        NV_WriteMMIO32(NV4_PRMCIO_CRX_COLOR, NV4_CIO_SR_LOCK_INDEX);
+        NV_WriteMMIO32(NV4_PRMCIO_CR_COLOR, NV4_CIO_SR_UNLOCK_RW_VALUE);
+    }
 }
 
 uint8_t NV_ReadCRTC(uint8_t index)
@@ -174,7 +197,10 @@ uint8_t NV_ReadGDC(uint8_t index)
 // TODO
 uint8_t NV_ReadSequencer(uint8_t index)
 {
+    NV_CRTCUnlockExtendedRegisters();
     NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, index);
+    NV_CRTCLockExtendedRegisters();
+    
     return NV_ReadMMIO32(NV3_PRMVIO_SR);
 }
 
@@ -192,8 +218,10 @@ void NV_WriteGDC(uint8_t index, uint8_t value)
 
 void NV_WriteSequencer(uint8_t index, uint8_t value)
 {
+    NV_CRTCUnlockExtendedRegisters();
     NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, index);
     NV_WriteMMIO32(NV3_PRMVIO_SR,value);
+    NV_CRTCLockExtendedRegisters();
 }
 
 //
