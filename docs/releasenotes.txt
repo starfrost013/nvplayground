@@ -7,6 +7,7 @@ Changes:
 	* Fix sequence register locking 
 	* Don't log tests twice
 	* fix logging name of script file when script file cannot be opened
+	* Warn on Celsius MMIO dump
 	
 NVPlay 1.0.0-rc3 is now available.
 
