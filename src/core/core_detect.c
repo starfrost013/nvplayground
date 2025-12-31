@@ -91,13 +91,13 @@ void NVPlay_DetectOS()
         default: // windows version
             if (regs.h.al == 3 && regs.h.ah == 0)
                 nvplay_state.os_level = NVPLAY_OS_WIN30;
-            else if (regs.h.al == 3 && regs.h.ah == 1)
+            else if (regs.h.al == 3 && regs.h.ah == 10)
                 nvplay_state.os_level = NVPLAY_OS_WIN31;
             else if (regs.h.al == 4 && regs.h.ah == 0)
                 nvplay_state.os_level = NVPLAY_OS_WIN95;
-            else if (regs.h.al == 4 && regs.h.ah == 1)
+            else if (regs.h.al == 4 && regs.h.ah == 10)
                 nvplay_state.os_level = NVPLAY_OS_WIN98;
-            else if (regs.h.al == 4 && regs.h.ah == 9)
+            else if (regs.h.al == 4 && regs.h.ah == 90)
                 nvplay_state.os_level = NVPLAY_OS_WINME;           
             else
                 nvplay_state.os_level = NVPLAY_OS_WINUNKNOWN;   // Some ME pre-alpha builds were version5 
