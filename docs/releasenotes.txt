@@ -4,7 +4,8 @@ Changes:
 	* Strip symbols in release mode builds
 	* Fix -bootonly
 	* Remove unfinished replay feature
-
+	* Fix sequence register locking 
+	
 NVPlay 1.0.0-rc3 is now available.
 
 Changes:

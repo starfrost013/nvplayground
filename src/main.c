@@ -52,17 +52,6 @@ void NVPlay_RunTests()
 				tests_succeeded++;
 			else
 			 	tests_failed++;
-
-			if (success)
-			{
-				tests_succeeded++;
-				Logging_Write(log_level_message, "Test %s succeeded\n", current_entry->test->name);
-			}
-			else 
-			{
-				tests_failed++;
-				Logging_Write(log_level_message, "Test %s failed! :(\n", current_entry->test->name);
-			}
 		}
 		else
 			Logging_Write(log_level_message, "[DRY RUN - SKIP]\n");
