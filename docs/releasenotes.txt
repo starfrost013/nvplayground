@@ -16,7 +16,8 @@ Release notes:
 	* Removed legacy test mode 
 		* nvplay.ini no longer stores tests to run in test mode.
 		* Dry run and run all tests removed
-	
+	* Fix CRTC unlock on NV4+: CRTC unlock was moved from SR[6] to CR[1F] in NV4. Not used on NV1
+
 Old release notes:
 
 NVPlay 1.0 is now available.
