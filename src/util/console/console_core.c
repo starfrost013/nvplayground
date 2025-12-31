@@ -23,10 +23,11 @@ void Console_Init(size_t console_buf_size)
     console.buf = calloc(1, console.size);
 
     // flush 1/8th of console by defualt 
-    if (console.flush_amount > console.size)
+    if (console.flush_amount > console.size
+    || console.flush_amount == 0)
         console.flush_amount = console.size - (console.size >> 3);
 
-    Logging_Write(LOG_LEVEL_DEBUG, "Console initialised: Ring buffer size %d", console_buf_size);
+    Logging_Write(LOG_LEVEL_DEBUG, "Console initialised: Ring buffer size %d\n", console_buf_size);
 }
 
 
@@ -83,12 +84,12 @@ void Console_PushLine(char* buf)
     if (console.write_ptr > (console.size - size))
         Console_Flush();
 
-    memcpy(&console.buf[console.write_ptr], buf, size);; 
+    memcpy(&console.buf[console.write_ptr], buf, size); 
     
     console.write_ptr += size; 
     console.read_ptr = console.write_ptr - size; // by default you want to read it
     
-    puts(buf);
+    fputs(buf, stdout);
 }
 
 void Console_UpdateRedraw()
@@ -100,12 +101,12 @@ void Console_UpdateRedraw()
     for (uint32_t i = 0; i < DEFAULT_CONSOLE_ROWS; i++)
     {
         char* string = &console.buf[cur_ptr];
-        puts(string);
+        fputs(string, stdout);
 
         uint32_t length = strlen(string) + 1; //+1 to include null terminator
 
-        // if the string ends with a newline
-        if (strchr(string, '\n'))
+        // if the string doesn't have a newline
+        if (!strchr(string, '\n'))
             i--;    // don't increment row
 
         if (cur_ptr + length > console.size)
@@ -120,33 +121,32 @@ void Console_Update()
 {
     bool scroll_up = (Input_KeyDown(SCANCODE_CHAR_UPARROW));
     bool scroll_down = (Input_KeyDown(SCANCODE_CHAR_DOWNARROW));
-
-    Logging_Write(LOG_LEVEL_DEBUG, "Scroll UP state: %d DOWN: %d", scroll_up, scroll_down);
-
+ 
     // single line scroll
     if (scroll_up 
         || scroll_down)
     {
-        uint32_t new_buf = console.read_ptr - 1; // get past 0 byte
+        int32_t new_buf = console.read_ptr - 1; // get past 0 byte
 
-        while (console.buf[new_buf] != '\0')
+        while (console.buf[new_buf] != '\0'
+        && new_buf >= 0
+        && new_buf < console.size)
         {
-            if (scroll_up)
+            if (scroll_up)  
                 new_buf--;
             else
                 new_buf++;
         }
 
-        if (new_buf < 0)
-            new_buf = 0;
-
-        if (new_buf > console.size)
-            new_buf = console.size;
+        Logging_Write(LOG_LEVEL_MESSAGE, "new_buf: %lx\n");
 
         console.read_ptr = new_buf; 
 
         Console_UpdateRedraw();
     }
+
+    Logging_Write(LOG_LEVEL_DEBUG, "Rescroll Complete - read_ptr %lx write_ptr %lx size %lx flush amount %lx\n", 
+        console.read_ptr, console.write_ptr, console.size, console.flush_amount);
 }
 
 
