@@ -1,4 +1,4 @@
-NVPlay 2.0 is now available.
+NVPlay 2.0.0 is now available.
 
 Release notes:
 	* Large refactor of main.c. define exit codes, always call nvplay_shutdown
@@ -19,19 +19,45 @@ Release notes:
 	* Fix CRTC unlock on NV4+: CRTC unlock was moved from SR[6] to CR[1F] in NV4. Not used on NV1
 
 Old release notes:
-
-NVPlay 1.0 is now available.
+NVPlay 1.0.0 is now available.
 
 Changes:
-* Changed version system (since version 0.x will go on forever otherwise)
+	* Strip symbols in release mode builds
+	* Fix -bootonly
+	* Remove unfinished replay feature
+	* Fix sequence register locking 
+	* Don't log tests twice
+	* fix logging name of script file when script file cannot be opened
+	* Warn on Celsius MMIO dump
+	
+NVPlay 1.0.0-rc3 is now available.
+
+Changes:
+	* Some text fixes 
+
+NVPlay 1.0.0-rc2 is now available.
+
+Changes:
+	* Fixed test mode. 
+	* Much shorter and less verbose help text with colours.
+
+NVPlay 1.0.0-rc1 is now available.
+
+Changes:
+* Changed version number system (since version 0.x will go on forever otherwise)
 * Added a "repl" loop that is the new default mode. Run "-test" to run tests. 
 	* "?" or "help" at the REPL loop prints help.
 	* "q" or "exit" exits.
-* Added support for Celsius (NV1x) GPUs (untested!)
+* Riva 128 (NV3):
+	* AGP defines added
+	* Removed nv3_api.h, merged it with nv3.h
+* Riva TNT (NV4) support
+	* Currently: NV4_DumpVBIOS, NV4_DumpMMIO, NV4_PrintMfgInfo tests
+	* Tested working on 16MB STB Velocity 4400 (VBIOS Version 1.01, 24 August 1998)
+* Added support for TNT2 (NV5) and Celsius (NV1x) GPUs (untested!)
 * Added HAL system
 	* GPUs now store pointers to arrays of function pointers (not C++ yet...) to avoid GPU list having huge numbers of function pointers and to make calling GPU specific functions
 	more elegant
-* Removed NVS files
 * Implemented "generic" tests that are available across every GPU (for some of them, Hal functions are required )
 * Commands now store number of parameters and check for them
 * Simplified terrible script parsing code
@@ -42,17 +68,27 @@ Changes:
 	* Write CRTC range
 	* Read to console and write VGA Sequencer registers
 	* Read to console and write VGA GDC registers
+	* PrintVersion command
+	* Run a test (RunTest)
 * Renamed nvplayground.h to nvplay.h
 * More consistent function naming scheme
 * Added log_settings.redirect to optionally redirect any of stdin, stdout and stderr to the log
 * -t added as an alias for -test
 * Added -boot /  command line option to initialise GPU and exit
-* Added "RunTest" command to run a test
-* Added "PrintVersion" command
 * Added GPU_IsNVx functions for GPU-specific behaviour in generic tests
+* Added DumpRAMHT, DumpRAMFC and DumpRAMRO to dump RAMHT, RAMFC, and RAMRO
+	* Currently NV3 only
 * Added GPU_NV_GetGeneration functions to return a number equivalent to the NV codename for a chip
-* Allowed dumping amounts of VRAM that are not 16 MB 
-* Consistent function casing
+* Allowed dumping amounts of vram that are not 16 MB 
+* Implemented a  very basic command engine
+	* Load a .NVP file using the -s / -script command line option
+	* Various test scripts are provided
+* Added VGA attribute, sequencer and graphics register functions
+* Added a help message (use -?)
+* Fixed RAMIN reading for non-NV3 cards
+* NVxPrintMfgInfo tests now print clockspeed in MHz for NV3/NV4 
+* Removed never-used "main function mode"
+
 
 Old release notes:
 
