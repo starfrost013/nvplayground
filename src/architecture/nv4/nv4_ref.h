@@ -94,6 +94,20 @@
 #define NV4_PGRAPH_CACHE_RAM                            0x40072C    // Access porthole for on-die texture cache
 
 //
+// CRTC
+// 
+
+#define NV4_PRMCIO_CRX_MONO                             0x006013b4
+#define NV4_PRMCIO_CRX_COLOR                            0x006013d4                  
+#define NV4_PRMCIO_CR_MONO                              0x006013b5
+#define NV4_PRMCIO_CR_COLOR                             0x006013d5 
+
+#define NV4_CIO_SR_LOCK_INDEX                           0x0000001F 
+#define NV4_CIO_SR_UNLOCK_RW_VALUE                      0x00000057 
+#define NV4_CIO_SR_UNLOCK_RO_VALUE                      0x00000075 
+#define NV4_CIO_SR_LOCK_VALUE                           0x00000099 
+
+//
 // PRAMDAC
 //
 
@@ -139,5 +153,4 @@
 #define NV4_PRAMDAC_GENERAL_CONTROL_ALT_MODE            12
 
 
-#define NV4_RAMIN_START                                 0x700000
-#define NV4_REAL_PROM_START                             0x700000        // ramin is acutally at 701000
+#define NV4_RAMIN_START                                0x700000
