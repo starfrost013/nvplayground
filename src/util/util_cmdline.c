@@ -86,7 +86,7 @@ bool Cmdline_Parse(int argc, char** argv)
         || !strcasecmp(current_arg, COMMAND_LINE_BOOTONLY_FULL))
         {
             // Maybe make it so we can load custom INI files?
-            command_line.use_test_ini = true;
+            command_line.boot_only = true;
         }  
     }
 
