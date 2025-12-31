@@ -133,7 +133,7 @@ void Script_Run()
 
 	if (!script_file)
 	{
-		Logging_Write(log_level_error, "Couldn't open script file %s\n");
+		Logging_Write(log_level_error, "Couldn't open script file %s\n", script_file);
 		exit(7);
 	}
 
