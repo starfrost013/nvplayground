@@ -124,6 +124,12 @@ bool NVGeneric_DumpMMIO_NV1()
 
 bool NVGeneric_DumpMMIO_NV3AndLater()
 {
+    if (GPU_IsNV10())
+    {
+        Logging_Write(log_level_message, "Warning! On Celsius-based cards, this test may crash. Press any key to continue...\n");
+        getch();
+    }
+
     Logging_Write(log_level_message, "Dumping GPU PCI BARs (BAR0 = MMIO, BAR1 = VRAM/RAMIN)...\n");
 
     FILE* mmio_bar0 = fopen("nvbar0.bin", "wb");

@@ -10,6 +10,7 @@
 
 #pragma once
 #include <bios.h>
+#include <conio.h>
 #include <ctype.h>
 #include <dpmi.h>
 #include <go32.h>
@@ -342,12 +343,14 @@ static inline bool GPU_IsNV3T()
     && (current_device.nv_pmc_boot_0 & 0xFF) >= 0x20; // Revision C
 }
 
+// Is this a RIVA TNT?
 static inline bool GPU_IsNV4()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV4_A01
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV4_A05);
 }
 
+// Is this a RIVA TNT or better?
 static inline bool GPU_IsNV4orBetter()
 {
     // Special-case NV4 a1 (even though it was probably only ever an ES) since its fabless ID number is less(!) than NV1/2/3!
@@ -355,12 +358,14 @@ static inline bool GPU_IsNV4orBetter()
     || (current_device.nv_pmc_boot_0 & 0xFFFFFFF) >= 0x34001);
 }
 
+// Is this a RIVA TNT2?
 static inline bool GPU_IsNV5()
 {
     return (current_device.nv_pmc_boot_0 >= NV_PMC_BOOT_NV5_A01
     && current_device.nv_pmc_boot_0 <= NV_PMC_BOOT_NV5_B03);
 }
 
+// Is this a Celsius-based GPU?
 static inline bool GPU_IsNV10()
 {
     // No pre-NV10 gpu has >=0x1000000 if fab removed
