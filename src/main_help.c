@@ -12,7 +12,7 @@
 
 const char* msg_help = "nvPlay help:\n\n"
 "---COMMAND LINE OPTIONS---\n\n"
-"By default (without any command-line options) nvPlay enters into a REPL loop that lets you perform raw level I/O with a supported GPU.\n"
+"By default (without any command-line options) nvPlay will enter into a REPL loop that lets you perform raw level I/O with a supported GPU.\n"
 "\x1b[1;32m-d, -dry.\x1b[1;00m: Dry run. Initialise the graphics hardware but do not run any tests. This mode can be used to revive cards with a dead Video BIOS under Windows 9x\n"
 "\x1b[1;32m-a, -all.\x1b[1;00m: Run all tests regardless of if your graphics hardware supports them. THIS IS EXTREMELY INADVISABLE. *DO NOT* DO THIS UNLESS YOU KNOW WHAT YOU ARE DOING!\n"
 "\x1b[1;32m-s, -script <file>.\x1b[1;00m: Run a .NVS script file.\n"

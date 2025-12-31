@@ -60,9 +60,7 @@ typedef struct log_settings_s
 extern log_settings_t log_settings; 
 
 bool Logging_Init();
-
 void Logging_Write(log_level level, const char* fmt, ...);
-
 void Logging_Shutdown();
 
 //
