@@ -12,13 +12,9 @@
 #include <string.h>
 #include <util/util.h>
 
-
+// cOMMAND LINE OPTIONS
 #define COMMAND_LINE_RUN_TEST_INI               "-t"
 #define COMMAND_LINE_RUN_TEST_INI_FULL          "-test"
-#define COMMAND_LINE_RUN_ALL                    "-a"
-#define COMMAND_LINE_RUN_ALL_FULL               "-all"
-#define COMMAND_LINE_DRY_RUN                    "-d"
-#define COMMAND_LINE_DRY_RUN_FULL               "-dry"
 #define COMMAND_LINE_RUN_SCRIPT_FILE            "-s"
 #define COMMAND_LINE_RUN_SCRIPT_FILE_FULL       "-script"
 #define COMMAND_LINE_LOAD_REPLAY                "-nvr"

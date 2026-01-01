@@ -12,6 +12,7 @@
 #include <nvplay.h>
 
 #define AUTOEXEC_FILENAME               "autoexec.nvs"
+#define KEYWORD_SCRIPT                  "MINIMUM_VERSION"
 
 void NVPlay_RunScript(const char* filename);
 void NVPlay_RunScriptCommand(char* line_buf);

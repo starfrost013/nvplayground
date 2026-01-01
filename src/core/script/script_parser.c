@@ -9,11 +9,10 @@
 */
 
 #include <stdio.h>
-
-
 #include "core/script/script.h"
 #include "util/util.h"
 #include <nvplay.h>
+#include <cmake/nvplay_version.h>
 
 /* This is probably not threadsafe */
 char last_command[MAX_STR] = {0};
@@ -135,13 +134,82 @@ void NVPlay_RunScript(const char* filename)
 	if (!script_file)
 	{
 		// don't log
-		if (strcmp(filename, AUTOEXEC_FILENAME))
+		if (strcasecmp(filename, AUTOEXEC_FILENAME))
 			Logging_Write(LOG_LEVEL_ERROR, "Couldn't open script file %s\n", filename);
 
 		return;
 	}
 
 	Logging_Write(LOG_LEVEL_MESSAGE, "Running script file %s\n", script_file);
+
+	// Check for version compatibility
+	uint32_t script_start = 0;
+	int32_t script_major = 0, script_minor = 0, script_revision = 0;
+
+	bool done = false;
+	bool is_supported_version = true; 
+
+	/* 
+		Apparently this is faster than strspn and strcspn 
+		If we need to add more keywords this code will have to be reworked
+	*/
+	while (!done)
+	{
+		fgets(line_buf, MAX_STR, script_file);
+
+
+		for (uint32_t i = 0; i < strlen(line_buf); i++)
+		{
+			// if it is NOT a space...
+			if (!isspace(line_buf[i]))
+			{
+				// Find version string
+				if (!strstr(line_buf, AUTOEXEC_FILENAME))
+				{
+					char* ver_tok = strtok(line_buf, ".");
+
+					if (!ver_tok)
+						goto done; 
+					
+					// try and extract each individual version
+					script_major = atoi(strtok(NULL, "."));
+					if (!script_major) goto done;
+					script_minor = atoi(strtok(NULL, "."));
+					if (!script_minor) goto done;
+					script_revision = atoi(strtok(NULL, "."));
+					if (!script_revision) goto done; 
+
+					// Support strategy:
+
+					is_supported_version = (script_major >= APP_MAJOR
+					&& script_minor >= APP_MINOR
+					&& script_revision >= APP_REVISION);
+
+				done: 
+					// just assume supported
+					done = true;
+					break; // get out
+				}
+
+
+				// to speed up processing, require MINIMUM_VERSION at the start of the file
+				done = true;
+				continue; // don't bother processing the rest of the line
+			}
+		}
+
+		done = true;
+	}
+
+	if (!is_supported_version)
+	{
+		Logging_Write(LOG_LEVEL_ERROR, "This script requires NVPlay version %d.%d.%d but you have version %d.%d.%d. Please update to use this script.\n",
+		script_major, script_minor, script_revision, APP_MAJOR, APP_MINOR, APP_REVISION);
+		return;
+	}
+
+	// go back to the start of the script so that we can actually read the script
+	fseek(script_file, script_start, SEEK_SET);
 
 	while (!feof(script_file))
 	{
