@@ -553,7 +553,7 @@ gpu_script_command_t commands[] =
     { "wvrange16", "writevramrange16", Command_WriteVRAMRange16, 3 },
     { "wv32", "writevram32", Command_WriteVRAM32, 2 },
     { "rvc32", "readvramconsole32", Command_ReadVRAMConsole32, 1 },
-    { "wvrange32", "writevramrange32", Command_WriteMMIORange32, 3 },
+    { "wvrange32", "writevramrange32", Command_WriteVRAMRange32, 3 },
     { "wp8", "writepci8", Command_WritePCI8, 2 },
     { "rpc8", "readpciconsole8", Command_ReadPCIConsole8, 1 },
     { "wprange8", "writepcirange8", Command_WritePCIRange8, 3 },
