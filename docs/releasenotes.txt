@@ -17,7 +17,10 @@ Release notes:
 		* nvplay.ini no longer stores tests to run in test mode.
 		* Dry run and run all tests removed
 	* Fix CRTC unlock on NV4+: CRTC unlock was moved from SR[6] to CR[1F] in NV4. Not used on NV1
-
+	* Use VGA port I/O to write to CRTC, GDC and SR registers
+		* Fixes MMIO CRTC mirroring not existing on NV4 (only SR is mirrored)
+	* Add graphics and attribute register commands
+	
 Old release notes:
 NVPlay 1.0.0 is now available.
 

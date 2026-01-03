@@ -262,6 +262,12 @@ bool NVGeneric_DumpFIFO()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxfifo.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
+    if (!stream)
+    {
+        Logging_Write(LOG_LEVEL_ERROR, "Failed to open FIFO dump file %s!\n", file_name);
+        return false; 
+    }
+
     // call NVHAL function to dump hal
     if (current_device.device_info.hal->dump_fifo_to_text_file)
         current_device.device_info.hal->dump_fifo_to_text_file(stream);
@@ -282,6 +288,12 @@ bool NVGeneric_DumpRAMHT()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramht.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
+    if (!stream)
+    {
+        Logging_Write(LOG_LEVEL_ERROR, "Failed to open RAMHT dump file %s!\n", file_name);
+        return false; 
+    }
+
     // call NVHAL function to dump ramht
     if (current_device.device_info.hal->dump_ramht_to_text_file)
         current_device.device_info.hal->dump_ramht_to_text_file(stream);
@@ -301,6 +313,12 @@ bool NVGeneric_DumpRAMFC()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramfc.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
+    if (!stream)
+    {
+        Logging_Write(LOG_LEVEL_ERROR, "Failed to open RAMFC dump file %s!\n", file_name);
+        return false; 
+    }
+
     if (current_device.device_info.hal->dump_ramfc_to_text_file)
         current_device.device_info.hal->dump_ramfc_to_text_file(stream);
     else
@@ -319,6 +337,12 @@ bool NVGeneric_DumpRAMRO()
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxramro.txt", GPU_NV_GetGeneration());
     FILE* stream = fopen(file_name, "r+");
 
+    if (!stream)
+    {
+        Logging_Write(LOG_LEVEL_ERROR, "Failed to open RAMRO dump file %s!\n", file_name);
+        return false; 
+    }
+
     if (current_device.device_info.hal->dump_ramro_to_text_file)
         current_device.device_info.hal->dump_ramro_to_text_file(stream);
     else
@@ -329,8 +353,7 @@ bool NVGeneric_DumpRAMRO()
     return true; 
 }              
 
-
-
+// The GPU really hates this test and explodes rendering and will probably also hardlock unless you are very careful
 bool NVGeneric_DumpPGRAPHCache()
 {
     if (GPU_IsNV10())
@@ -347,8 +370,14 @@ bool NVGeneric_DumpPGRAPHCache()
     
     char file_name[MSDOS_PATH_LENGTH] = {0};
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxcache.bin", GPU_NV_GetGeneration());
-    
+
     FILE* stream = fopen(file_name, "rb+");
+
+        if (!stream)
+    {
+        Logging_Write(LOG_LEVEL_ERROR, "Failed to open PGRAPH_CACHE dump file %s!\n", file_name);
+        return false; 
+    }
 
     if (current_device.device_info.hal->dump_cache_to_text_file)
         current_device.device_info.hal->dump_cache_to_text_file(stream);

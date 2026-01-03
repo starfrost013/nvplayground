@@ -28,8 +28,8 @@ nv_test_t nv_tests[] =
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpFIFO", "NV Generic - Dump FIFO State", NVGeneric_DumpFIFO},
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMHT", "NV Generic - Dump RAMHT", NVGeneric_DumpRAMHT},
     { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMFC", "NV Generic - Dump RAMFC", NVGeneric_DumpRAMFC},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMRO", "NV Generic - Dump RAMRO", NVGeneric_DumpRAMRO},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpCACHE", "NV Generic - Dump on-die cache", NVGeneric_DumpPGRAPHCache},
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMRO", "NV Generic - Dump RAMRO", NVGeneric_DumpRAMRO}, 
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpCACHE", "NV Generic - Dump on-die cache", NVGeneric_DumpPGRAPHCache}, 
 
     // NV1 has two vendor ids
     { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", NV1_PrintMFGInfo},

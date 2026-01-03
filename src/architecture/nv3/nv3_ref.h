@@ -939,9 +939,18 @@
     Sequencer Registers
     VGA         3C4-3C5
     MMIO        C03C4-C03C5
+
+    Very few of these changed after nv3 so it is safe to use nv3 defaults
 */
+
+#define NV3_VGA_SR_INDEX                                0x3C4
+#define NV3_VGA_SR                                      0x3C5
+
 #define NV3_PRMVIO_SR_INDEX                             0xC03C4 // Sequence registers
 #define NV3_PRMVIO_SR                                   0xC03C5 // Sequence registers
+
+#define NV3_VGA_GR_INDEX                                0x3CE
+#define NV3_VGA_GR                                      0x3CF
 
 #define NV3_PRMVIO_GR_INDEX                             0xC03CE
 #define NV3_PRMVIO_GR                                   0xC03CF
@@ -959,6 +968,8 @@
 
 #define NV3_PRMVIO_SR_INDEX_LOCK_LOCKED                 0x57
 #define NV3_PRMVIO_SR_INDEX_LOCK_UNLOCKED               0x99 //anything other than 0x57 but NV uses this
+
+#define NV3_PRMVIO_AR_INDEX_END                         0x14
 
 /* 
     STRUCTURES FOR THE GPU START HERE

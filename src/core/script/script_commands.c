@@ -18,6 +18,7 @@
 #include "architecture/nv3/nv3.h"
 #include "architecture/nv3/nv3_ref.h"
 #include <cmake/nvplay_version.h>
+#include "core/gpu/gpu.h"
 #include "script.h"
 #include "util/util.h"
 #include <nvplay.h>
@@ -400,7 +401,7 @@ bool Command_WriteGdcRange()
     if (index_start > NV3_PRMVIO_GR_INDEX_END
         || index_end > NV3_PRMVIO_GR_INDEX_END)  
     {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGdcRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGDCRange: Ignoring invalid indexes [range is %d-%d]\n", index_start, index_end);
         return false; 
     }
 
@@ -456,7 +457,7 @@ bool Command_WriteSRRange()
     if (index_start > NV3_PRMVIO_SR_INDEX_END
         || index_end > NV3_PRMVIO_SR_INDEX_END)  
     {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteSRRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteSRRange: Ignoring invalid indexes [range is %d-%d]\n", index_start, index_end);
         return false; 
     }
 
@@ -467,6 +468,120 @@ bool Command_WriteSRRange()
 
     return true; 
 }
+
+// Read a single CRTC register and print it to the console.
+bool Command_ReadGRConsole()
+{
+    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (index > NV3_PRMVIO_GR_INDEX_END)  
+    {
+        Logging_Write(LOG_LEVEL_WARNING, "Command_ReadGRConsole: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = VGA_ReadGraphics(index);
+
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadGRConsole: SR[%02x] = %02x\n", index, value);
+    return true; 
+}
+
+// Write a VGA graphics  register.
+bool Command_WriteGR()
+{
+    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (index > NV3_PRMVIO_GR_INDEX_END)  
+    {
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGR: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    VGA_WriteGraphics(index, value);
+    return true; 
+}
+
+// Write a range of VGA graphics registers.
+bool Command_WriteGRRange()
+{
+    uint32_t index_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t index_end = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    // uint, can't be below 0
+    if (index_start > NV3_PRMVIO_GR_INDEX_END
+        || index_end > NV3_PRMVIO_GR_INDEX_END)  
+    {
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGRRange: Ignoring invalid indexes [range is %d-%d]\n", index_start, index_end);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    for (uint32_t index = index_start; index < index_end; index++)
+        VGA_WriteGraphics(index, value);
+
+    return true; 
+}
+
+
+// Read a single CRTC register and print it to the console.
+bool Command_ReadARConsole()
+{
+    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (index > NV3_PRMVIO_AR_INDEX_END)  
+    {
+        Logging_Write(LOG_LEVEL_WARNING, "Command_ReadARConsole: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = VGA_ReadAttribute(index);
+
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadARConsole: SR[%02x] = %02x\n", index, value);
+    return true; 
+}
+
+// Write a VGA attribute register.
+bool Command_WriteAR()
+{
+    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (index > NV3_PRMVIO_AR_INDEX_END)  
+    {
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteAR: Ignoring invalid index %02x\n", index);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    VGA_WriteAttribute(index, value);
+    return true; 
+}
+
+// Write a range of VGA attribute registers.
+bool Command_WriteARRange()
+{
+    uint32_t index_start = strtol(Command_Argv(1), cmd_endptr, 16);
+    uint32_t index_end = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    // uint, can't be below 0
+    if (index_start > NV3_PRMVIO_GR_INDEX_END
+        || index_end > NV3_PRMVIO_GR_INDEX_END)  
+    {
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteARRange: Ignoring invalid indexes [range is %d-%d]\n", index_start, index_end);
+        return false; 
+    }
+
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    for (uint32_t index = index_start; index < index_end; index++)
+        VGA_WriteAttribute(index, value);
+
+    return true; 
+}
+
 
 // Tries to hardlock the system by writing to the Mediaport registers. This doesn't seem to work in many units (Mediaport should be Video Interface Port) or
 // maybe it requires a device plugged in
@@ -542,6 +657,46 @@ bool Command_PrintVersion()
     return true; 
 }
 
+//
+// Super dangerous commands that will explode your computer
+//
+
+/* PLACEHOLDERS */
+bool Command_Intx86()
+{
+    return true;
+}
+
+bool Command_IOx86Read8()
+{
+    return true;
+}
+
+bool Command_IOx86Read16()
+{
+    return true;
+}
+
+bool Command_IOx86Read32()
+{
+    return true;
+}
+
+bool Command_IOx86Write8()
+{
+    return true;
+}
+
+bool Command_IOx86Write16()
+{
+    return true;
+}
+
+bool Command_IOx86Write32()
+{
+    return true;
+
+}
 // Enumerates all supported commands.
 gpu_script_command_t commands[] =
 {    
@@ -581,6 +736,12 @@ gpu_script_command_t commands[] =
     { "rsrc", "readsrconsole", Command_ReadSRConsole, 1 },
     { "wsr", "writesr", Command_WriteSR, 2 },
     { "wsrrange", "writesrrange", Command_WriteSRRange, 3},
+    { "rgrc", "readgrconsole", Command_ReadGRConsole, 1 },
+    { "wgr", "writegr", Command_WriteGR, 2 },
+    { "wgrrange", "writegrrange", Command_WriteGRRange, 3},
+    { "rarc", "readarconsole", Command_ReadARConsole, 1 },
+    { "war", "writear", Command_WriteAR, 2 },
+    { "warrange", "writearrange", Command_WriteARRange, 3},
     { "nv3_explode", "nv3_explode", Command_NV3Explode, 0 },
     { "rt", "runtest", Command_RunTest, 1},
     { "rs", "runscript", Command_RunScript, 1},
@@ -590,5 +751,14 @@ gpu_script_command_t commands[] =
     { "printerror", "printerror", Command_PrintError, 1 },
     { "printversion", "printversion", Command_PrintVersion, 0 },
     
+    // These commands are even riskier than the previous commands.
+    { "int", "intx86", Command_Intx86, 1 }, 
+    { "ior8", "ioread8", Command_IOx86Read8, 1 }, 
+    { "ior16", "ioread16", Command_IOx86Read16, 1 }, 
+    { "ior32", "ioread32", Command_IOx86Read32, 1 }, 
+    { "iow8", "iowrite8", Command_IOx86Write8, 1 }, 
+    { "iow16", "iowrite16", Command_IOx86Write16, 1 }, 
+    { "iow32", "iowrite32", Command_IOx86Write32, 1 }, 
+
     { NULL, NULL, NULL, 0 },            // Sentinel value for end of list.
 };
