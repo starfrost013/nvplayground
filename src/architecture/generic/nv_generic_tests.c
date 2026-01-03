@@ -347,6 +347,7 @@ bool NVGeneric_DumpPGRAPHCache()
     
     char file_name[MSDOS_PATH_LENGTH] = {0};
     snprintf(file_name, MSDOS_PATH_LENGTH, "nv%lxcache.bin", GPU_NV_GetGeneration());
+    
     FILE* stream = fopen(file_name, "rb+");
 
     if (current_device.device_info.hal->dump_cache_to_text_file)

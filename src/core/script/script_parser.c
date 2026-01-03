@@ -157,7 +157,6 @@ void NVPlay_RunScript(const char* filename)
 	{
 		fgets(line_buf, MAX_STR, script_file);
 
-
 		for (uint32_t i = 0; i < strlen(line_buf); i++)
 		{
 			// if it is NOT a space...

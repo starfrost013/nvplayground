@@ -312,7 +312,7 @@ bool Command_ReadCrtcConsole()
         return false; 
     }
 
-    uint32_t value = NV_ReadCRTC(index);
+    uint32_t value = VGA_ReadCRTC(index);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadCrtcConsole: CRTC[%02x] = %02x\n", index, value);
     return true; 
@@ -331,7 +331,7 @@ bool Command_WriteCrtc()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    NV_WriteCRTC(index, value);
+    VGA_WriteCRTC(index, value);
     return true; 
 }
 
@@ -351,7 +351,7 @@ bool Command_WriteCrtcRange()
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        NV_WriteCRTC(index, value);
+        VGA_WriteCRTC(index, value);
 
     return true; 
 }
@@ -367,7 +367,7 @@ bool Command_ReadGdcConsole()
         return false; 
     }
 
-    uint32_t value = NV_ReadGDC(index);
+    uint32_t value = VGA_ReadGDC(index);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadGdcConsole: GR[%02x] = %02x\n", index, value);
     return true; 
@@ -386,7 +386,7 @@ bool Command_WriteGdc()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    NV_WriteGDC(index, value);
+    VGA_WriteGDC(index, value);
     return true; 
 }
 
@@ -407,7 +407,7 @@ bool Command_WriteGdcRange()
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        NV_WriteGDC(index, value);
+        VGA_WriteGDC(index, value);
 
     return true; 
 }
@@ -423,7 +423,7 @@ bool Command_ReadSRConsole()
         return false; 
     }
 
-    uint32_t value = NV_ReadSequencer(index);
+    uint32_t value = VGA_ReadSequencer(index);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadSRConsole: SR[%02x] = %02x\n", index, value);
     return true; 
@@ -442,7 +442,7 @@ bool Command_WriteSR()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    NV_WriteSequencer(index, value);
+    VGA_WriteSequencer(index, value);
     return true; 
 }
 
@@ -463,7 +463,7 @@ bool Command_WriteSRRange()
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        NV_WriteSequencer(index, value);
+        VGA_WriteSequencer(index, value);
 
     return true; 
 }
