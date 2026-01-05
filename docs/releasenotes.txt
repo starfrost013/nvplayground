@@ -25,7 +25,16 @@ Release notes:
 	* Implement commands for x86 I/O ports: ioread8, ioread16, ioread32, iowrite8, iowrite16, iowrite32
 
 Old release notes:
-NVPlay 1.0.0 is now available.
+
+January 5, 2026: NVPlay 1.0.1 is now available.
+
+Changes: 
+	* Fix WriteVRAMRange32 being a copy of WriteMMIORange32
+	* Use VGA port I/O rather than NVIDIA MMIO mirrors to write to VGA GDC, CRTC and SR. 
+	It does not seem like these mirrors are complete or work on some gpus like NV4.
+	* Fix copy-paste error leading to function pointer being logged 
+	
+December 31, 2025: NVPlay 1.0.0 is now available.
 
 Changes:
 	* Strip symbols in release mode builds
@@ -36,18 +45,18 @@ Changes:
 	* fix logging name of script file when script file cannot be opened
 	* Warn on Celsius MMIO dump
 	
-NVPlay 1.0.0-rc3 is now available.
+December 26, 2025: NVPlay 1.0.0-rc3 is now available December 25, 2025:
 
 Changes:
 	* Some text fixes 
 
-NVPlay 1.0.0-rc2 is now available.
+December 21, 2025: NVPlay 1.0.0-rc2 is now available.
 
 Changes:
 	* Fixed test mode. 
 	* Much shorter and less verbose help text with colours.
 
-NVPlay 1.0.0-rc1 is now available.
+December 20, 2025: NVPlay 1.0.0-rc1 is now available.
 
 Changes:
 * Changed version number system (since version 0.x will go on forever otherwise)
@@ -95,44 +104,20 @@ Changes:
 * NVxPrintMfgInfo tests now print clockspeed in MHz for NV3/NV4 
 * Removed never-used "main function mode"
 
+0.4.0.0-rc5:
+Try to change NVS reading
 
-Old release notes:
-
-0.4.0.0-rcX Changes:
-* Implemented a new ".NVS" savestate format
-	* Load a .NVS file using the -savestate / -nvs command line option. This will load a savestate into the graphics hardware!
-	* Currently only full support on NV3, very experimental
-	* File sections can be shared between every single GPU or per-GPU. Currently only NV3 per function sections are implemented
-* A very basic command engine
-	* Load a .NVP file using the -s / -script command line option
-	* Various test scripts are provided
-* Riva 128 (NV3):
-	* AGP defines added
-	* Removed nv3_api.h, merged it with nv3.h
-* Riva TNT (NV4) support
-	* Currently: NV4_DumpVBIOS, NV4_DumpMMIO, NV4_PrintMfgInfo tests
-	* Tested working on 16MB STB Velocity 4400 (VBIOS Version 1.01, 24 August 1998)
-* Added VGA attribute, sequencer and graphics register functions
-* Added a help message (use -?)
-* Fixed RAMIN reading for non-NV3 cards
-* NVxPrintMfgInfo tests now print clockspeed in MHz for NV3/NV4 
-
-* Removed never-used "main function mode"
-
-0.4.0.0-rc2:
-
-Add NV4 to help
-Fix 0.00 Mhz display
+0.4.0.0-rc4:
+Fix NVS reading
 
 0.4.0.0-rc3:
 Fix -nvs parsing
 Endianness fixes
 Define NVS functions for nv3
-Fix NVS ssection parsing
+Fix NVS section parsing
 Fix nv4 shutdown function
 
-0.4.0.0-rc4:
-Fix NVS reading
+0.4.0.0-rc2:
+Add NV4 to help effort for that one
+Fix 0.00 Mhz display
 
-0.4.0.0-rc5:
-Try to change NVS reading
