@@ -15,19 +15,21 @@
 #include <string.h>
 #include <util/console/console.h>
 
-#include <curses.h>
 
 void Console_Init()
 {
     if (nvplay_state.config.dumb_console)
         return;
 
+    // Initialise PDcurses
     initscr();
 
+    // Non-blocking colour console
     start_color();
     use_default_colors();
     cbreak();
     noecho();
+    timeout(0);
 }
 
 void Console_Clear()

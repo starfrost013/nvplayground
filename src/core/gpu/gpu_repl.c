@@ -25,6 +25,7 @@ void NVPlay_ReplHelp()
     Logging_Write(LOG_LEVEL_MESSAGE, "%s", msg_help_script);
 }
 
+
 void NVPlay_Repl()
 {
     char repl_string[MAX_STR] = {0};
@@ -35,20 +36,31 @@ void NVPlay_Repl()
     while (repl_is_running)
     {
         // Update console
-        if (!nvplay_state.config.dumb_console)
-            Console_Update();
+        //if (!nvplay_state.config.dumb_console)
+            //Console_Update();
+
+        bool input_recv = false; 
 
         Logging_Write(LOG_LEVEL_MESSAGE, "GPU>");
 
-        bool input_recv = true; 
-        // paranoid version of using scanf for this with a strictly limited size
-        if (nvplay_state.config.dumb_console)
-            fgets(repl_string, MAX_STR, stdin);
+        if (!nvplay_state.config.dumb_console)
+        {
+            // TODO: Better input handling
+            while (!input_recv)
+            {
+                input_recv = Input_GetString(repl_string, MAX_STR);
+            }
+        }
         else
-            input_recv = Input_GetString(repl_string, MAX_STR);
+        {
+            input_recv = true; // fake it for dumb console mode
+            fgets(repl_string, MAX_STR, stdin);
+        }
 
+         // fgets above blocks on dumbconsole, on curses, it doesn't
         if (input_recv)
         {
+            Logging_Write(LOG_LEVEL_DEBUG, "repl_string = %s\n", repl_string);
             // get rid of the newline (could call String_GetRTrim(String_GetLTrim) but that does a lot of unnecessary stuff we don't need yet)
             repl_string[strcspn(repl_string, "\r\n")] = '\0';
 

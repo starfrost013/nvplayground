@@ -1,3 +1,13 @@
+/* 
+    NVPlay
+    Copyright © 2025-2026 starfrost
+
+    Raw GPU programming for early Nvidia GPUs
+    Licensed under the MIT license (see license file)
+
+    util_input_keyboard.c: Input library and keyboard functions
+*/
+
 #include <bios.h>
 #include <curses.h>
 #include <util/util.h>
@@ -10,7 +20,13 @@
 #define BIOSKEY_GET_STATE           0x10
 #define BIOSKEY_GET_MODIFIERS       0x12
 
+#define CH_BACKSPACE                0x08
+
 #define PREFIX_START                0xE0 
+
+// this is a terrible idea (NOT thread-safe)
+// if the last return was successful, clear the screen
+bool last_return_was_successful = false; 
 
 // Get input from the user (non-blocking)
 bool Input_GetString(char* buf, uint32_t n)
@@ -19,10 +35,18 @@ bool Input_GetString(char* buf, uint32_t n)
     if (!n)
         return false; 
 
-    if (!kbhit())
-        return false; 
+    // detect if our GetString function was called using a new buf
+    if (last_return_was_successful)
+    {
+        memset(buf, 0x00, n);
+        last_return_was_successful = false; 
+    }
 
     char c = getch();
+
+    // -1 = no key pressed
+    if (c == -1)
+        return false; 
 
     uint32_t len = strlen(buf);
     
@@ -30,10 +54,20 @@ bool Input_GetString(char* buf, uint32_t n)
     if (len >= (n - 1))
         return false;  
 
-    buf[n] = c;
+    // return the character
+    buf[len] = c;
 
-    return (c == '\n'
+    if (c == CH_BACKSPACE)
+        delch();
+    else 
+        addch(c);
+
+    bool ret = (c == '\n'
     || c == '\r');
+
+    last_return_was_successful = ret; 
+
+    return ret;
 }
 
 bool Input_KeyDown(uint8_t scancode)
