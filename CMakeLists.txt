@@ -23,12 +23,12 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Util
 "src/util/util_ini.c"
-"src/util/util_input_keyboard.c"
 "src/util/util_logging.c"
 "src/util/util_string.c"
 
-# TUI engine
+# TUI engine (The layer between nvplay <--> pdcurses)
 "src/util/console/console_core.c"
+"src/util/console/console_input.c"
 
 # Main
 "src/main.c"

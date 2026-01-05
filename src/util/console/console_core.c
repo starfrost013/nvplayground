@@ -9,6 +9,7 @@
 */
 
 #include "conio.h"
+#include "curses.h"
 #include "dpmi.h"
 #include "nvplay.h"
 #include "util/util.h"
@@ -29,6 +30,8 @@ void Console_Init()
     use_default_colors();
     cbreak();
     noecho();
+    scrollok(stdscr, true);
+    keypad(stdscr, true);
     timeout(0);
 }
 
@@ -48,6 +51,36 @@ void Console_Flush()
 {
     clear();
     refresh();
+}
+
+// Scroll the console one line e.g. if we reached the end of it.
+void Console_ScrollIfNeeded()
+{
+    uint32_t x = 0, y = 0;
+
+    getyx(stdscr, y, x);
+
+    // scroll the console
+    if (y == LINES)
+    {
+        scrl(1);
+        wrefresh(stdscr);
+    } 
+
+}
+
+void Console_PushChar(char ch)
+{
+    addch(ch);
+
+    //is this needed
+    wrefresh(stdscr);
+    Console_ScrollIfNeeded();
+}
+
+void Console_PopChar()
+{
+    delch();
 }
 
 void Console_PushLine(char* buf)
@@ -74,6 +107,7 @@ void Console_PushLine(char* buf)
         printw(buf);  
     
     wrefresh(stdscr);
+    Console_ScrollIfNeeded();
 }
 
 
@@ -95,6 +129,7 @@ void Console_Update()
 
     if (refresh_needed)
         wrefresh(stdscr);
+
 }
 
 

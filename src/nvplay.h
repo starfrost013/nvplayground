@@ -10,7 +10,6 @@
 
 #pragma once
 #include <bios.h>
-#include <conio.h>
 #include <ctype.h>
 #include <curses.h>
 #include <dpmi.h>

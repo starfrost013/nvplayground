@@ -60,7 +60,6 @@ void NVPlay_Repl()
          // fgets above blocks on dumbconsole, on curses, it doesn't
         if (input_recv)
         {
-            Logging_Write(LOG_LEVEL_DEBUG, "repl_string = %s\n", repl_string);
             // get rid of the newline (could call String_GetRTrim(String_GetLTrim) but that does a lot of unnecessary stuff we don't need yet)
             repl_string[strcspn(repl_string, "\r\n")] = '\0';
 

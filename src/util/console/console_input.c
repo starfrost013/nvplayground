@@ -5,12 +5,13 @@
     Raw GPU programming for early Nvidia GPUs
     Licensed under the MIT license (see license file)
 
-    util_input_keyboard.c: Input library and keyboard functions
+    console_input.c: Input library and keyboard functions
 */
 
 #include <bios.h>
 #include <curses.h>
 #include <util/util.h>
+#include <util/console/console.h>
 
 /* 
     I am lazy as hell 
@@ -19,8 +20,6 @@
 
 #define BIOSKEY_GET_STATE           0x10
 #define BIOSKEY_GET_MODIFIERS       0x12
-
-#define CH_BACKSPACE                0x08
 
 #define PREFIX_START                0xE0 
 
@@ -42,7 +41,7 @@ bool Input_GetString(char* buf, uint32_t n)
         last_return_was_successful = false; 
     }
 
-    char c = getch();
+    int32_t c = getch();
 
     // -1 = no key pressed
     if (c == -1)
@@ -54,13 +53,22 @@ bool Input_GetString(char* buf, uint32_t n)
     if (len >= (n - 1))
         return false;  
 
+    // back space
+    if (c == KEY_BACKSPACE)
+    {
+        Console_PopChar();
+
+        // remove from the buffer if needed
+        if (len > 0)
+            buf[len] = '\0';
+
+        return false;
+    }
+    else 
+        Console_PushChar(c); // put everything in a centralised place
+
     // return the character
     buf[len] = c;
-
-    if (c == CH_BACKSPACE)
-        delch();
-    else 
-        addch(c);
 
     bool ret = (c == '\n'
     || c == '\r');
