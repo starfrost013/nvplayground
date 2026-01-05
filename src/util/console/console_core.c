@@ -53,20 +53,31 @@ void Console_Flush()
     refresh();
 }
 
-// Scroll the console one line e.g. if we reached the end of it.
-void Console_ScrollIfNeeded()
+void Console_GetPosition(int32_t* cx, int32_t* cy)
 {
-    uint32_t x = 0, y = 0;
+    int32_t x = 0, y = 0;
 
     getyx(stdscr, y, x);
 
+    *cx = x;
+    *cy = y;
+}
+
+// Scroll the console one line e.g. if we reached the end of it.
+void Console_ScrollIfNeeded(bool force)
+{
+    int32_t x, y;
+
+    Console_GetPosition(&x, &y);
+
+    bool need_to_refresh = false; 
+
     // scroll the console
     if (y == LINES)
-    {
         scrl(1);
-        wrefresh(stdscr);
-    } 
 
+    if (need_to_refresh)
+        wrefresh(stdscr);
 }
 
 void Console_PushChar(char ch)
@@ -74,13 +85,23 @@ void Console_PushChar(char ch)
     addch(ch);
 
     //is this needed
-    wrefresh(stdscr);
-    Console_ScrollIfNeeded();
+    Console_ScrollIfNeeded(true);
 }
 
+// Deletes a character
 void Console_PopChar()
 {
+    int32_t x, y;
+    
+    Console_GetPosition(&x, &y);
+    
+    if (x > 0)
+        move(y, x - 1);
+    else if (y > 0)
+        move(y - 1, COLS);
+
     delch();
+    Console_ScrollIfNeeded(true);
 }
 
 void Console_PushLine(char* buf)
@@ -106,8 +127,7 @@ void Console_PushLine(char* buf)
     else
         printw(buf);  
     
-    wrefresh(stdscr);
-    Console_ScrollIfNeeded();
+    Console_ScrollIfNeeded(false);
 }
 
 

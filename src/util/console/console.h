@@ -23,6 +23,7 @@ void Console_Init();
 void Console_Clear();
 void Console_PushChar(char ch);
 void Console_PopChar();
+void Console_GetPosition(int32_t* cx, int32_t* cy);
 void Console_PushLine(char* buf);
 // need to set this so we don't have to withdraw the screen and it's just a sliding buffer
 void Console_Update();

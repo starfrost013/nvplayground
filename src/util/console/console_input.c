@@ -23,6 +23,9 @@
 
 #define PREFIX_START                0xE0 
 
+// keypad mode doesn't work on DOS
+#define REAL_KEY_BACKSPACE          0x08
+
 // this is a terrible idea (NOT thread-safe)
 // if the last return was successful, clear the screen
 bool last_return_was_successful = false; 
@@ -54,13 +57,13 @@ bool Input_GetString(char* buf, uint32_t n)
         return false;  
 
     // back space
-    if (c == KEY_BACKSPACE)
+    if (c == REAL_KEY_BACKSPACE)
     {
-        Console_PopChar();
-
-        // remove from the buffer if needed
         if (len > 0)
-            buf[len] = '\0';
+        {
+            buf[len - 1] = '\0';
+            Console_PopChar();
+        }
 
         return false;
     }
