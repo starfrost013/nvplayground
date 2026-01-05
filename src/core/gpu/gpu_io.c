@@ -245,12 +245,6 @@ void VGA_WriteCRTC(uint8_t index, uint8_t value)
     }
 }
 
-void VGA_WriteGDC(uint8_t index, uint8_t value)
-{
-    outportb(VGA_PORT_GRAPHICS_INDEX, index);
-    outportb(VGA_PORT_GRAPHICS, value);
-}
-
 void VGA_WriteSequencer(uint8_t index, uint8_t value)
 {
     outportb(VGA_PORT_SEQUENCER_INDEX, index);

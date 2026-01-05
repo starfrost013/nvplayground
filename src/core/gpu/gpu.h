@@ -276,12 +276,6 @@ void NV_WriteRamin32(uint32_t offset, uint32_t val);
 // NV-VGA
 void NV_CRTCLockExtendedRegisters();
 void NV_CRTCUnlockExtendedRegisters();
-uint8_t NV_ReadCRTC(uint8_t index);
-uint8_t NV_ReadGDC(uint8_t index);
-uint8_t NV_ReadSequencer(uint8_t index);
-void NV_WriteCRTC(uint8_t index, uint8_t value);
-void NV_WriteGDC(uint8_t index, uint8_t value);
-void NV_WriteSequencer(uint8_t index, uint8_t value);
 
 // Clock
 
@@ -312,7 +306,6 @@ double NV_ClockMNPToMhz(uint32_t clock_base, uint32_t mnp);
 #define VGA_REALMODE_VBIOS_LOCATION				0xC0000
 
 uint8_t VGA_ReadCRTC(uint8_t index);
-uint8_t VGA_ReadGDC(uint8_t index);
 uint8_t VGA_ReadSequencer(uint8_t index);
 uint8_t VGA_ReadAttribute(uint8_t index);
 uint8_t VGA_ReadGraphics(uint8_t index);

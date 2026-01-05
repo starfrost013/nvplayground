@@ -357,63 +357,7 @@ bool Command_WriteCrtcRange()
 
     return true; 
 }
-
-// Read a single GDC register and print it to the console.
-bool Command_ReadGdcConsole()
-{
-    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
-
-    if (index > NV3_PRMVIO_GR_INDEX_END)  
-    {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_ReadGdcConsole: Ignoring invalid index %02x\n", index);
-        return false; 
-    }
-
-    uint32_t value = VGA_ReadGDC(index);
-
-    Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadGdcConsole: GR[%02x] = %02x\n", index, value);
-    return true; 
-}
-
-// Write a CRTC register.
-bool Command_WriteGdc()
-{
-    uint32_t index = strtol(Command_Argv(1), cmd_endptr, 16);
-
-    if (index > NV3_PRMVIO_GR_INDEX_END)  
-    {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGdc: Ignoring invalid index %02x\n", index);
-        return false; 
-    }
-
-    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
-
-    VGA_WriteGDC(index, value);
-    return true; 
-}
-
-// Write a range of CRTC registers.
-bool Command_WriteGdcRange()
-{
-    uint32_t index_start = strtol(Command_Argv(1), cmd_endptr, 16);
-    uint32_t index_end = strtol(Command_Argv(2), cmd_endptr, 16);
-
-    // same for all NVs
-    if (index_start > NV3_PRMVIO_GR_INDEX_END
-        || index_end > NV3_PRMVIO_GR_INDEX_END)  
-    {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGDCRange: Ignoring invalid indexes [range is %d-%d]\n", index_start, index_end);
-        return false; 
-    }
-
-    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
-
-    for (uint32_t index = index_start; index < index_end; index++)
-        VGA_WriteGDC(index, value);
-
-    return true; 
-}
-
+  
 // Read a single CRTC register and print it to the console.
 bool Command_ReadSRConsole()
 {
@@ -764,9 +708,6 @@ gpu_script_command_t commands[] =
     { "rcrtcc", "readcrtcconsole", Command_ReadCrtcConsole, 1 },
     { "wcrtc", "writecrtc", Command_WriteCrtc, 2 },
     { "wcrtcrange", "writecrtcrange", Command_WriteCrtcRange, 3 },
-    { "rgdcc", "readgdcconsole", Command_ReadGdcConsole, 1 },
-    { "wgdcc", "writegdc", Command_WriteGdc, 2 },
-    { "wgdcrange", "writegdcrange", Command_WriteGdcRange, 3 },
     { "rsrc", "readsrconsole", Command_ReadSRConsole, 1 },
     { "wsr", "writesr", Command_WriteSR, 2 },
     { "wsrrange", "writesrrange", Command_WriteSRRange, 3 },
