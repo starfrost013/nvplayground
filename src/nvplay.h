@@ -12,6 +12,7 @@
 #include <bios.h>
 #include <conio.h>
 #include <ctype.h>
+#include <curses.h>
 #include <dpmi.h>
 #include <go32.h>
 #include <pc.h>
@@ -138,6 +139,8 @@ typedef struct nvplay_state_s
     char savestate_file[MAX_STR];   // The savestate file to use
     char replay_file[MAX_STR];      // The replay file to use
 	nv_config_t config;				// The configuration information loaded frromt he INI file
+    WINDOW* window;                 // Curses window
+
 } nvplay_state_t;
 
 extern nvplay_state_t nvplay_state;

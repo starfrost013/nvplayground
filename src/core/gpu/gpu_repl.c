@@ -40,24 +40,32 @@ void NVPlay_Repl()
 
         Logging_Write(LOG_LEVEL_MESSAGE, "GPU>");
 
+        bool input_recv = true; 
         // paranoid version of using scanf for this with a strictly limited size
-        fgets(repl_string, MAX_STR, stdin);
-    
-        // get rid of the newline (could call String_GetRTrim(String_GetLTrim) but that does a lot of unnecessary stuff we don't need yet)
-        repl_string [ strcspn(repl_string, "\r\n") ] = '\0';
+        if (nvplay_state.config.dumb_console)
+            fgets(repl_string, MAX_STR, stdin);
+        else
+            input_recv = Input_GetString(repl_string, MAX_STR);
 
-        // gcc only so it is fine
-        if (!strcasecmp(repl_string, COMMAND_EXIT)
-        || !strcasecmp(repl_string, COMMAND_EXIT_VERBOSE))
+        if (input_recv)
         {
-            repl_is_running = false; 
+            // get rid of the newline (could call String_GetRTrim(String_GetLTrim) but that does a lot of unnecessary stuff we don't need yet)
+            repl_string[strcspn(repl_string, "\r\n")] = '\0';
+
+            // gcc only so it is fine
+            if (!strcasecmp(repl_string, COMMAND_EXIT)
+            || !strcasecmp(repl_string, COMMAND_EXIT_VERBOSE))
+            {
+                repl_is_running = false; 
+            }
+            else if (!strcasecmp(repl_string, COMMAND_HELP)
+            || !strcasecmp(repl_string, COMMAND_HELP_VERBOSE))
+            {
+                NVPlay_ReplHelp();
+            }
+            else 
+                NVPlay_RunScriptCommand(repl_string);    
         }
-        else if (!strcasecmp(repl_string, COMMAND_HELP)
-        || !strcasecmp(repl_string, COMMAND_HELP_VERBOSE))
-        {
-            NVPlay_ReplHelp();
-        }
-        else 
-            NVPlay_RunScriptCommand(repl_string);        
+    
     }
 }

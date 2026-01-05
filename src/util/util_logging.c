@@ -85,7 +85,12 @@ void Logging_Write(log_level level, const char* fmt, ...)
     if (prefix)
     {
         if (log_settings.destination & LOG_DEST_CONSOLE)
-            fputs(prefix, stdout);
+        {
+            if (nvplay_state.config.dumb_console)
+                fputs(prefix, stdout);
+            else
+                Console_PushLine(prefix);
+        }
 
         if (log_settings.destination & LOG_DEST_FILE)
             fwrite(prefix, strlen(prefix), 1, log_file_stream);

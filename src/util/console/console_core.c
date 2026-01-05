@@ -19,7 +19,15 @@
 
 void Console_Init()
 {
+    if (nvplay_state.config.dumb_console)
+        return;
+
     initscr();
+
+    start_color();
+    use_default_colors();
+    cbreak();
+    noecho();
 }
 
 void Console_Clear()
@@ -61,20 +69,30 @@ void Console_PushLine(char* buf)
     if (nvplay_state.config.dumb_console)
         fputs(buf, stdout);
     else
-        printw(buf);    
+        printw(buf);  
+    
+    wrefresh(stdscr);
 }
 
 
 void Console_Update()
 {
+    // don't refresh the console unless needed
+    bool refresh_needed = false; 
+
     bool scroll_up = (Input_KeyDown(SCANCODE_CHAR_UPARROW));
     bool scroll_down = (Input_KeyDown(SCANCODE_CHAR_DOWNARROW));
  
+    refresh_needed = (scroll_up || scroll_down);
+
     if (scroll_up)
         scrl(1);
     
     if (scroll_down)
         scrl(-1);
+
+    if (refresh_needed)
+        wrefresh(stdscr);
 }
 
 

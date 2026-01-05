@@ -90,5 +90,6 @@ char* String_RTrim(char* fmt, uint32_t max);
 #define KEYBOARD_MOD_CAPS_LOCK_PRESSED      (1 << 14)
 #define KEYBOARD_MOD_SYSRQ                  (1 << 15)
 
+bool Input_GetString(char* buf, uint32_t n);
 bool Input_KeyDown(uint8_t scancode); 
 bool Input_ModState(uint16_t mod_flags);

@@ -1,4 +1,5 @@
 #include <bios.h>
+#include <curses.h>
 #include <util/util.h>
 
 /* 
@@ -10,6 +11,30 @@
 #define BIOSKEY_GET_MODIFIERS       0x12
 
 #define PREFIX_START                0xE0 
+
+// Get input from the user (non-blocking)
+bool Input_GetString(char* buf, uint32_t n)
+{
+    //error 
+    if (!n)
+        return false; 
+
+    if (!kbhit())
+        return false; 
+
+    char c = getch();
+
+    uint32_t len = strlen(buf);
+    
+    // we are out of space
+    if (len >= (n - 1))
+        return false;  
+
+    buf[n] = c;
+
+    return (c == '\n'
+    || c == '\r');
+}
 
 bool Input_KeyDown(uint8_t scancode)
 {
