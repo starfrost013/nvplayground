@@ -1,4 +1,12 @@
-NVPlay 1.0.0 is now available.
+January 5, 2026: NVPlay 1.0.1 is now available.
+
+Changes: 
+	* Fix WriteVRAMRange32 being a copy of WriteMMIORange32
+	* Use VGA port I/O rather than NVIDIA MMIO mirrors to write to VGA GDC, CRTC and SR. 
+	It does not seem like these mirrors are complete or work on some gpus like NV4.
+	* Fix copy-paste error leading to function pointer being logged 
+	
+December 31, 2025: NVPlay 1.0.0 is now available.
 
 Changes:
 	* Strip symbols in release mode builds
@@ -9,18 +17,18 @@ Changes:
 	* fix logging name of script file when script file cannot be opened
 	* Warn on Celsius MMIO dump
 	
-NVPlay 1.0.0-rc3 is now available.
+December 26, 2025: NVPlay 1.0.0-rc3 is now available December 25, 2025:
 
 Changes:
 	* Some text fixes 
 
-NVPlay 1.0.0-rc2 is now available.
+December 21, 2025: NVPlay 1.0.0-rc2 is now available.
 
 Changes:
 	* Fixed test mode. 
 	* Much shorter and less verbose help text with colours.
 
-NVPlay 1.0.0-rc1 is now available.
+December 20, 2025: NVPlay 1.0.0-rc1 is now available.
 
 Changes:
 * Changed version number system (since version 0.x will go on forever otherwise)

@@ -331,7 +331,7 @@ bool Command_WriteCrtc()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    NV_WriteCRTC(index, value);
+    VGA_WriteCRTC(index, value);
     return true; 
 }
 
@@ -344,14 +344,14 @@ bool Command_WriteCrtcRange()
     if (index_start > NV3_CRTC_REGISTER_NVIDIA_END
         || index_end > NV3_CRTC_REGISTER_NVIDIA_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteCrtcRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(log_level_warning, "Command_WriteCRTCRange: Ignoring invalid indexes [range is 0-%d]\n", index_start, NV3_CRTC_REGISTER_NVIDIA_END);        
         return false; 
     }
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        NV_WriteCRTC(index, value);
+        VGA_WriteCRTC(index, value);
 
     return true; 
 }
@@ -367,7 +367,7 @@ bool Command_ReadGdcConsole()
         return false; 
     }
 
-    uint32_t value = NV_ReadGDC(index);
+    uint32_t value = VGA_ReadGDC(index);
 
     Logging_Write(log_level_message, "Command_ReadGdcConsole: GR[%02x] = %02x\n", index, value);
     return true; 
@@ -386,7 +386,7 @@ bool Command_WriteGdc()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    NV_WriteGDC(index, value);
+    VGA_WriteGDC(index, value);
     return true; 
 }
 
@@ -400,14 +400,14 @@ bool Command_WriteGdcRange()
     if (index_start > NV3_PRMVIO_GR_INDEX_END
         || index_end > NV3_PRMVIO_GR_INDEX_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteGdcRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(log_level_warning, "Command_WriteGDCRange: Ignoring invalid indexes [range is 0-%d]\n", index_start, NV3_PRMVIO_GR_INDEX_END);        
         return false; 
     }
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        NV_WriteGDC(index, value);
+        VGA_WriteGDC(index, value);
 
     return true; 
 }
@@ -442,7 +442,7 @@ bool Command_WriteSR()
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
-    NV_WriteSequencer(index, value);
+    VGA_WriteSequencer(index, value);
     return true; 
 }
 
@@ -456,14 +456,14 @@ bool Command_WriteSRRange()
     if (index_start > NV3_PRMVIO_SR_INDEX_END
         || index_end > NV3_PRMVIO_SR_INDEX_END)  
     {
-        Logging_Write(log_level_warning, "Command_WriteSRRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(log_level_warning, "Command_WriteSRRange: Ignoring invalid indexes [range is 0-%d]\n", index_start, NV3_PRMVIO_SR_INDEX_END);
         return false; 
     }
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
     for (uint32_t index = index_start; index < index_end; index++)
-        NV_WriteSequencer(index, value);
+        VGA_WriteSequencer(index, value);
 
     return true; 
 }

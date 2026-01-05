@@ -181,49 +181,6 @@ void NV_CRTCUnlockExtendedRegisters()
     }
 }
 
-uint8_t NV_ReadCRTC(uint8_t index)
-{
-    NV_WriteMMIO32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
-    return NV_ReadMMIO32(NV3_PRMCIO_CRTC_REGISTER_COLOR);
-}
-
-// TODO
-uint8_t NV_ReadGDC(uint8_t index)
-{
-    NV_WriteMMIO32(NV3_PRMVIO_GR_INDEX, index);
-    return NV_ReadMMIO32(NV3_PRMVIO_GR);
-}
-
-// TODO
-uint8_t NV_ReadSequencer(uint8_t index)
-{
-    NV_CRTCUnlockExtendedRegisters();
-    NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, index);
-    NV_CRTCLockExtendedRegisters();
-    
-    return NV_ReadMMIO32(NV3_PRMVIO_SR);
-}
-
-void NV_WriteCRTC(uint8_t index, uint8_t value)
-{
-    NV_WriteMMIO32(NV3_PRMCIO_CRTC_REGISTER_INDEX_COLOR, index);
-    NV_WriteMMIO32(NV3_PRMCIO_CRTC_REGISTER_COLOR,value);
-}
-
-void NV_WriteGDC(uint8_t index, uint8_t value)
-{
-    NV_WriteMMIO32(NV3_PRMVIO_GR_INDEX, index);
-    NV_WriteMMIO32(NV3_PRMVIO_GR,value);
-}
-
-void NV_WriteSequencer(uint8_t index, uint8_t value)
-{
-    NV_CRTCUnlockExtendedRegisters();
-    NV_WriteMMIO32(NV3_PRMVIO_SR_INDEX, index);
-    NV_WriteMMIO32(NV3_PRMVIO_SR,value);
-    NV_CRTCLockExtendedRegisters();
-}
-
 //
 // Universal VGA functions
 //
