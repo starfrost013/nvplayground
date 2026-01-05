@@ -346,7 +346,7 @@ bool Command_WriteCrtcRange()
     if (index_start > NV3_CRTC_REGISTER_NVIDIA_END
         || index_end > NV3_CRTC_REGISTER_NVIDIA_END)  
     {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteCrtcRange: Ignoring invalid index %02x\n", index);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteCRTCRange: Ignoring invalid indexes [range is 0-%d]\n", index_start, NV3_CRTC_REGISTER_NVIDIA_END);
         return false; 
     }
 
@@ -402,8 +402,7 @@ bool Command_WriteSRRange()
     if (index_start > NV3_PRMVIO_SR_INDEX_END
         || index_end > NV3_PRMVIO_SR_INDEX_END)  
     {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteSRRange: Ignoring invalid indexes [range is %d-%d]\n", index_start, index_end);
-        return false; 
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteSRRange: Ignoring invalid indexes [range is 0-%d]\n", index_start, NV3_PRMVIO_SR_INDEX_END);
     }
 
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
@@ -458,7 +457,7 @@ bool Command_WriteGRRange()
     if (index_start > NV3_PRMVIO_GR_INDEX_END
         || index_end > NV3_PRMVIO_GR_INDEX_END)  
     {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGRRange: Ignoring invalid indexes [range is %d-%d]\n", index_start, index_end);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteGRRange: Ignoring invalid indexes [range is 0-%d]\n", index_start, NV3_PRMVIO_GR_INDEX_END);
         return false; 
     }
 
@@ -512,10 +511,10 @@ bool Command_WriteARRange()
     uint32_t index_end = strtol(Command_Argv(2), cmd_endptr, 16);
 
     // uint, can't be below 0
-    if (index_start > NV3_PRMVIO_GR_INDEX_END
-        || index_end > NV3_PRMVIO_GR_INDEX_END)  
+    if (index_start > NV3_PRMVIO_AR_INDEX_END
+        || index_end > NV3_PRMVIO_AR_INDEX_END)  
     {
-        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteARRange: Ignoring invalid indexes [range is %d-%d]\n", index_start, index_end);
+        Logging_Write(LOG_LEVEL_WARNING, "Command_WriteARRange: Ignoring invalid indexes [range is 0-%d]\n", index_start, NV3_PRMVIO_AR_INDEX_END);
         return false; 
     }
 
