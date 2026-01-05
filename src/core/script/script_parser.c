@@ -152,54 +152,51 @@ void NVPlay_RunScript(const char* filename)
 	/* 
 		Apparently this is faster than strspn and strcspn 
 		If we need to add more keywords this code will have to be reworked
+
+		WARNING: VERY BAD
 	*/
 	while (!done)
 	{
+		if (feof(script_file))
+			break; // get out=
+
 		fgets(line_buf, MAX_STR, script_file);
 
 		for (uint32_t i = 0; i < strlen(line_buf); i++)
 		{
 			// if it is NOT a space...
 			if (!isspace(line_buf[i]))
-			{
-				// Find version string
-				if (!strstr(line_buf, AUTOEXEC_FILENAME))
-				{
-					char* ver_tok = strtok(line_buf, ".");
-
-					if (!ver_tok)
-						goto done; 
-					
-					// try and extract each individual version
-					script_major = atoi(strtok(NULL, "."));
-					if (!script_major) goto done;
-					script_minor = atoi(strtok(NULL, "."));
-					if (!script_minor) goto done;
-					script_revision = atoi(strtok(NULL, "."));
-					if (!script_revision) goto done; 
-
-					// Support strategy:
-
-					is_supported_version = (script_major >= APP_MAJOR
-					&& script_minor >= APP_MINOR
-					&& script_revision >= APP_REVISION);
-
-				done: 
-					// just assume supported
-					done = true;
-					break; // get out
-				}
-
-
-				// to speed up processing, require MINIMUM_VERSION at the start of the file
-				done = true;
-				continue; // don't bother processing the rest of the line
-			}
+				break;  // don't bother processing the rest of the line
 		}
-
-		done = true;
 	}
 
+	// Find version string
+	if (!strstr(line_buf, AUTOEXEC_FILENAME))
+	{
+		char* ver_tok = strtok(line_buf, ".");
+
+		if (!ver_tok)
+			goto parsed_version; 
+		
+		// try and extract each individual version
+		script_major = atoi(strtok(NULL, "."));
+		if (!script_major) goto parsed_version;
+		script_minor = atoi(strtok(NULL, "."));
+		if (!script_minor) goto parsed_version;
+		script_revision = atoi(strtok(NULL, "."));
+		if (!script_revision) goto parsed_version; 
+
+		// Support strategy:
+		// Older not supported, newer supported (DUH!)
+		is_supported_version = (script_major >= APP_MAJOR
+		&& script_minor >= APP_MINOR
+		&& script_revision >= APP_REVISION);
+
+		// this is horrible (WRITE A REAL LEXER!!!!), don't try and execute the minimum_version command
+		script_start = ftell(script_file);
+	}
+
+parsed_version:
 	if (!is_supported_version)
 	{
 		Logging_Write(LOG_LEVEL_ERROR, "This script requires NVPlay version %d.%d.%d but you have version %d.%d.%d. Please update to use this script.\n",

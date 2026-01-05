@@ -19,7 +19,7 @@ Release notes:
 	* Fix CRTC unlock on NV4+: CRTC unlock was moved from SR[6] to CR[1F] in NV4. Not used on NV1
 	* Use VGA port I/O to write to CRTC, GDC and SR registers
 		* Fixes MMIO CRTC mirroring not existing on NV4 (only SR is mirrored)
-	* Add graphics and attribute register commands
+	* Add attribute register commands and rename GDC to more common "GR" (Graphics Register)
 	* Added errors when failed to dump RAMHT, RAMRO, RAMFC and PGRAPH_CACHE
 	* Implemented PDCurses integration (Ported to CMake!)
 		* Implement commands for x86 I/O ports: ioread8, ioread16, ioread32, iowrite8, iowrite16, iowrite32
