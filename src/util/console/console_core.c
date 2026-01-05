@@ -58,7 +58,10 @@ void Console_PushLine(char* buf)
         return;
     }
 
-    fputs(buf, stdout);
+    if (nvplay_state.config.dumb_console)
+        fputs(buf, stdout);
+    else
+        printw(buf);    
 }
 
 

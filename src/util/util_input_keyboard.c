@@ -22,8 +22,6 @@ bool Input_KeyDown(uint8_t scancode)
     if ((read_key & 0xFF) == PREFIX_START)
         real_scancode |= 0x80;
 
-    Logging_Write(LOG_LEVEL_DEBUG, "bioskey: %lx wanted scancode: %lx converted scancode: %lx", read_key, scancode, real_scancode);
-
     return (scancode == real_scancode);
 }
 
