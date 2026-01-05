@@ -312,7 +312,7 @@ bool Command_ReadCrtcConsole()
         return false; 
     }
 
-    uint32_t value = NV_ReadCRTC(index);
+    uint32_t value = VGA_ReadCRTC(index);
 
     Logging_Write(log_level_message, "Command_ReadCrtcConsole: CRTC[%02x] = %02x\n", index, value);
     return true; 
@@ -423,7 +423,7 @@ bool Command_ReadSRConsole()
         return false; 
     }
 
-    uint32_t value = NV_ReadSequencer(index);
+    uint32_t value = VGA_ReadSequencer(index);
 
     Logging_Write(log_level_message, "Command_ReadSRConsole: SR[%02x] = %02x\n", index, value);
     return true; 
