@@ -15,21 +15,12 @@
 #include <string.h>
 #include <util/console/console.h>
 
-console_t console;
+#include <curses.h>
 
-void Console_Init(size_t console_buf_size)
+void Console_Init()
 {
-    console.size = console_buf_size;
-    console.buf = calloc(1, console.size);
-
-    // flush 1/8th of console by defualt 
-    if (console.flush_amount > console.size
-    || console.flush_amount == 0)
-        console.flush_amount = console.size - (console.size >> 3);
-
-    Logging_Write(LOG_LEVEL_DEBUG, "Console initialised: Ring buffer size %d\n", console_buf_size);
+    initscr();
 }
-
 
 void Console_Clear()
 {
@@ -45,22 +36,8 @@ void Console_Clear()
 
 void Console_Flush()
 {
-    // copy [flush_amount...end of buf] to [0...(end of buf-flush amount)]
-    uint32_t initial = console.write_ptr;
-    console.write_ptr -= console.flush_amount;
-    uint32_t old_data_size = (initial - console.flush_amount);
-
-    uint32_t diff = initial - old_data_size;
-
-    // Try to not do this often.
-    memcpy(&console.buf[0], &console.buf[console.flush_amount], old_data_size);
-
-    // nuke leftover data 
-    memset(&console.buf[old_data_size], 0x00, diff);
-
-    if (console.read_ptr > old_data_size)
-        console.read_ptr -= console.flush_amount;
-    
+    clear();
+    refresh();
 }
 
 void Console_PushLine(char* buf)
@@ -81,82 +58,24 @@ void Console_PushLine(char* buf)
         return;
     }
 
-    if (console.write_ptr > (console.size - size))
-        Console_Flush();
-
-    memcpy(&console.buf[console.write_ptr], buf, size); 
-    
-    console.write_ptr += size; 
-    console.read_ptr = console.write_ptr - size; // by default you want to read it
-    
     fputs(buf, stdout);
 }
 
-void Console_UpdateRedraw()
-{
-    Console_Clear(); 
-
-    uint32_t cur_ptr = console.read_ptr; 
-
-    for (uint32_t i = 0; i < DEFAULT_CONSOLE_ROWS; i++)
-    {
-        char* string = &console.buf[cur_ptr];
-        fputs(string, stdout);
-
-        uint32_t length = strlen(string) + 1; //+1 to include null terminator
-
-        // if the string doesn't have a newline
-        if (!strchr(string, '\n'))
-            i--;    // don't increment row
-
-        if (cur_ptr + length > console.size)
-            break; 
-        
-        // bad idea!
-        cur_ptr += length; 
-    }
-}
 
 void Console_Update()
 {
     bool scroll_up = (Input_KeyDown(SCANCODE_CHAR_UPARROW));
     bool scroll_down = (Input_KeyDown(SCANCODE_CHAR_DOWNARROW));
  
-    // single line scroll
-    if (scroll_up 
-        || scroll_down)
-    {
-        int32_t new_buf = console.read_ptr - 1; // get past 0 byte
-
-        while (console.buf[new_buf] != '\0'
-        && new_buf >= 0
-        && new_buf < console.size)
-        {
-            if (scroll_up)  
-                new_buf--;
-            else
-                new_buf++;
-        }
-
-        Logging_Write(LOG_LEVEL_MESSAGE, "new_buf: %lx\n");
-
-        console.read_ptr = new_buf; 
-
-        Console_UpdateRedraw();
-    }
-
-    Logging_Write(LOG_LEVEL_DEBUG, "Rescroll Complete - read_ptr %lx write_ptr %lx size %lx flush amount %lx\n", 
-        console.read_ptr, console.write_ptr, console.size, console.flush_amount);
+    if (scroll_up)
+        scrl(1);
+    
+    if (scroll_down)
+        scrl(-1);
 }
 
 
 void Console_Shutdown()
 {
-    free(console.buf);
-    
-    // Prevent any weirdness caused by displaying a freed buffer.
-    console.size = console.flush_amount = console.read_ptr = console.write_ptr = 0;
     Console_Clear();
-    console.buf = NULL;
-
 }

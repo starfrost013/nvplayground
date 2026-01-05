@@ -20,6 +20,7 @@ Release notes:
 	* Use VGA port I/O to write to CRTC, GDC and SR registers
 		* Fixes MMIO CRTC mirroring not existing on NV4 (only SR is mirrored)
 	* Add graphics and attribute register commands
+	* Added errors when failed to dump RAMHT, RAMRO, RAMFC and PGRAPH_CACHE
 	
 Old release notes:
 NVPlay 1.0.0 is now available.

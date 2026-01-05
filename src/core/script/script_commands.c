@@ -19,6 +19,7 @@
 #include "architecture/nv3/nv3_ref.h"
 #include <cmake/nvplay_version.h>
 #include "core/gpu/gpu.h"
+#include "core/script/script.h"
 #include "script.h"
 #include "util/util.h"
 #include <nvplay.h>
@@ -669,33 +670,66 @@ bool Command_Intx86()
 
 bool Command_IOx86Read8()
 {
+    uint8_t index = (uint8_t)strtol(Command_Argv(1), cmd_endptr, 16) & 0xFF;
+    uint8_t value = inportb(index);
+
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_IOx86Read8: %08x <- port %08x\n", value, index);
+
     return true;
 }
 
 bool Command_IOx86Read16()
 {
+    uint16_t index = (uint16_t)strtol(Command_Argv(1), cmd_endptr, 16) & 0xFFFF;
+    uint16_t value = inportw(index);
+    
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_IOx86Read16: %08x <- port %08x\n", value, index);
+
     return true;
 }
 
 bool Command_IOx86Read32()
 {
+    uint16_t index = (uint16_t)strtol(Command_Argv(1), cmd_endptr, 16) & 0xFFFF; // limited to 64kb
+    uint32_t value = inportl(index);
+
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_IOx86Read32: %08x <- port %08x\n", value, index);
+
     return true;
 }
 
 bool Command_IOx86Write8()
 {
+    uint8_t index = (uint8_t)strtol(Command_Argv(1), cmd_endptr, 16) & 0xFF;
+    uint8_t value = (uint8_t)strtol(Command_Argv(2), cmd_endptr, 16) & 0xFF;
+
+    outportb(index, value);
+
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_IOx86Write8: %08x -> port %08x\n", index, value);
     return true;
 }
 
 bool Command_IOx86Write16()
 {
+    uint16_t index = (uint16_t)strtol(Command_Argv(1), cmd_endptr, 16) & 0xFFFF;
+    uint16_t value = (uint16_t)strtol(Command_Argv(2), cmd_endptr, 16) & 0xFFFF;
+
+    outportw(index, value);
+
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_IOx86Write16: %08x -> port %08x\n", index, value);
     return true;
 }
 
 bool Command_IOx86Write32()
 {
-    return true;
+    uint16_t index = (uint16_t)strtol(Command_Argv(1), cmd_endptr, 16) & 0xFFFF; // limited to 64kb
+    uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
+    outportl(index, value);
+
+    Logging_Write(LOG_LEVEL_MESSAGE, "Command_IOx86Write32: %08x -> port %08x\n", index, value);
+
+    return true;
 }
 // Enumerates all supported commands.
 gpu_script_command_t commands[] =
@@ -729,19 +763,19 @@ gpu_script_command_t commands[] =
     { "wrrange32", "writeraminrange32", Command_WriteRaminRange32, 3 },
     { "rcrtcc", "readcrtcconsole", Command_ReadCrtcConsole, 1 },
     { "wcrtc", "writecrtc", Command_WriteCrtc, 2 },
-    { "wcrtcrange", "writecrtcrange", Command_WriteCrtcRange, 3},
+    { "wcrtcrange", "writecrtcrange", Command_WriteCrtcRange, 3 },
     { "rgdcc", "readgdcconsole", Command_ReadGdcConsole, 1 },
     { "wgdcc", "writegdc", Command_WriteGdc, 2 },
-    { "wgdcrange", "writegdcrange", Command_WriteGdcRange, 3},
+    { "wgdcrange", "writegdcrange", Command_WriteGdcRange, 3 },
     { "rsrc", "readsrconsole", Command_ReadSRConsole, 1 },
     { "wsr", "writesr", Command_WriteSR, 2 },
-    { "wsrrange", "writesrrange", Command_WriteSRRange, 3},
+    { "wsrrange", "writesrrange", Command_WriteSRRange, 3 },
     { "rgrc", "readgrconsole", Command_ReadGRConsole, 1 },
     { "wgr", "writegr", Command_WriteGR, 2 },
-    { "wgrrange", "writegrrange", Command_WriteGRRange, 3},
+    { "wgrrange", "writegrrange", Command_WriteGRRange, 3 },
     { "rarc", "readarconsole", Command_ReadARConsole, 1 },
     { "war", "writear", Command_WriteAR, 2 },
-    { "warrange", "writearrange", Command_WriteARRange, 3},
+    { "warrange", "writearrange", Command_WriteARRange, 3 },
     { "nv3_explode", "nv3_explode", Command_NV3Explode, 0 },
     { "rt", "runtest", Command_RunTest, 1},
     { "rs", "runscript", Command_RunScript, 1},
@@ -756,9 +790,9 @@ gpu_script_command_t commands[] =
     { "ior8", "ioread8", Command_IOx86Read8, 1 }, 
     { "ior16", "ioread16", Command_IOx86Read16, 1 }, 
     { "ior32", "ioread32", Command_IOx86Read32, 1 }, 
-    { "iow8", "iowrite8", Command_IOx86Write8, 1 }, 
-    { "iow16", "iowrite16", Command_IOx86Write16, 1 }, 
-    { "iow32", "iowrite32", Command_IOx86Write32, 1 }, 
+    { "iow8", "iowrite8", Command_IOx86Write8, 2 }, 
+    { "iow16", "iowrite16", Command_IOx86Write16, 2 }, 
+    { "iow32", "iowrite32", Command_IOx86Write32, 2 }, 
 
     { NULL, NULL, NULL, 0 },            // Sentinel value for end of list.
 };

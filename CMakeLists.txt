@@ -82,6 +82,7 @@ add_executable(nvplay ${sources})
 
 # Base include directories
 include_directories("./src")
+include_directories("./external/pdcurses")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   target_compile_definitions(nvplay PRIVATE DEBUG)
@@ -98,6 +99,9 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out/assets)
 add_custom_command(TARGET nvplay PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -P "${PROJECT_SOURCE_DIR}/src/cmake/VersionInfo.cmake"
 )
+
+# Libraries
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/pdcurses)
 
 # copy assets
 add_custom_command(TARGET nvplay POST_BUILD
@@ -121,3 +125,4 @@ add_custom_command(TARGET nvplay POST_BUILD
 # delete duplicate nvplay.ini (it would be very stupid to move it to the root folder)
 add_custom_command(TARGET nvplay POST_BUILD COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/assets/${NVPLAY_CONFIG_FILE_NAME})
 
+target_link_libraries(nvplay PRIVATE PDCurses)
