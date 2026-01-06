@@ -9,7 +9,7 @@
 */
 
 #include "dpmi.h"
-#include "util/console/console.h"
+#include <core/console/console.h>
 #include "util/util.h"
 #include <nvplay.h>
 
