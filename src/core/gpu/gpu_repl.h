@@ -16,11 +16,10 @@
 
 typedef struct repl_command_history_entry_s
 {
-    const char* cmd;
-    struct repl_command_history_entry_s* prev;
-    struct repl_command_history_entry_s* next;
+    char cmd[MAX_STR];
 } repl_command_history_entry_t;
 
-extern uint32_t command_history_id;
+extern int32_t command_history_id;
+extern repl_command_history_entry_t command_history[MAX_COMMAND_HISTORY];
 
 void NVPlay_Repl(); 

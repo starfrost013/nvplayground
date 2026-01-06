@@ -104,7 +104,7 @@ void Console_PopChar()
     Console_ScrollIfNeeded(true);
 }
 
-void Console_PushLine(char* buf)
+void Console_PushLine(char const* buf)
 {
     // let's hope all the data passed into here is null terminated
     // use some heuristics
@@ -149,7 +149,6 @@ void Console_Update()
 
     if (refresh_needed)
         wrefresh(stdscr);
-
 }
 
 

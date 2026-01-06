@@ -8,9 +8,13 @@
     gpu_repl.c: Implements the Read-Eval-Print loop for gpu i/o
 */
 
+#include "gpu_repl.h"
+#include "curses.h"
+#include "util/console/console.h"
 #include "util/util.h"
 #include <nvplay.h>
 
+// Commands
 #define COMMAND_EXIT            "q"
 #define COMMAND_EXIT_VERBOSE    "exit"
 
@@ -18,13 +22,43 @@
 #define COMMAND_HELP_VERBOSE    "help"
 
 bool repl_is_running = true; 
-uint32_t command_history_id = 0;
+int32_t command_history_id = 0;
+repl_command_history_entry_t command_history[MAX_COMMAND_HISTORY] = {0};
 
 void NVPlay_ReplHelp()
 {
     Logging_Write(LOG_LEVEL_MESSAGE, "%s", msg_help_script);
 }
 
+void NVPlay_ReplIncrementCommandHistory()
+{
+    command_history_id++;
+
+    if (command_history_id >= MAX_COMMAND_HISTORY)
+        command_history_id = (MAX_COMMAND_HISTORY - 1);
+
+    Console_PushLine(command_history[command_history_id].cmd);
+}
+
+void NVPlay_ReplDecrementCommandHistory()
+{
+    command_history_id--;
+
+    if (command_history_id < 0)
+        command_history_id = 0;
+
+    Console_PushLine(command_history[command_history_id].cmd);
+}
+
+void NVPlay_ReplOnCommandHistoryFull()
+{
+    // too much memory use?
+    for (uint32_t i = 1; i < MAX_COMMAND_HISTORY; i++)
+        memcpy((void*)&command_history[i - 1], (void*)&command_history[i], sizeof(repl_command_history_entry_t));
+
+    // decrement command history id
+    command_history_id--;
+}
 
 void NVPlay_Repl()
 {
@@ -48,7 +82,18 @@ void NVPlay_Repl()
             // TODO: Better input handling
             while (!input_recv)
             {
-                input_recv = Input_GetString(repl_string, MAX_STR);
+                int32_t last_char = -1;
+                input_recv = Input_GetStringAndChar(repl_string, MAX_STR, &last_char);
+
+                switch (last_char)
+                {
+                    case KEY_UP:
+                        NVPlay_ReplIncrementCommandHistory();
+                        break;
+                    case KEY_DOWN:
+                        NVPlay_ReplDecrementCommandHistory();
+                        break; 
+                }
             }
         }
         else
@@ -60,6 +105,13 @@ void NVPlay_Repl()
          // fgets above blocks on dumbconsole, on curses, it doesn't
         if (input_recv)
         {
+            command_history_id++;
+
+            if (command_history_id >= MAX_COMMAND_HISTORY)
+                NVPlay_ReplOnCommandHistoryFull();
+
+            strncpy(command_history[command_history_id].cmd, repl_string, MAX_STR);
+
             // get rid of the newline (could call String_GetRTrim(String_GetLTrim) but that does a lot of unnecessary stuff we don't need yet)
             repl_string[strcspn(repl_string, "\r\n")] = '\0';
 

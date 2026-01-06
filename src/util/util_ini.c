@@ -20,7 +20,7 @@
  *          Copyright 2016-2019 Miran Grca.
  *          Copyright 2017-2019 Fred N. van Kempen.
  *          Copyright 2018-2019 David Hrdlička.
- *          Copyright 2025      Connor Hyde
+ *          Copyright 2025-2026 Connor Hyde
  *
  */
 

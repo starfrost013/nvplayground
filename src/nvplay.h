@@ -25,15 +25,6 @@
 #include <sys/nearptr.h>
 #include <sys/farptr.h>
 
-// #pragma once my beloved
-#include <core/gpu/gpu.h>
-#include <core/gpu/gpu_repl.h>
-#include <core/pci/pci.h>
-#include <core/script/script.h>
-#include <util/util.h>
-#include <util/util_ini.h>
-#include <util/console/console.h>
-
 
 /* Strings */
 
@@ -43,6 +34,15 @@ extern const char* msg_help_script;
 #define STRING_EMPTY ""
 #define MSDOS_PATH_LENGTH					64			// maximum ms-dos path size is 64
 #define MAX_STR								260 
+
+// #pragma once my beloved
+#include <core/gpu/gpu.h>
+#include <core/gpu/gpu_repl.h>
+#include <core/pci/pci.h>
+#include <core/script/script.h>
+#include <util/util.h>
+#include <util/util_ini.h>
+#include <util/console/console.h>
 
 // Operating systems that nvplay runs on.
 // (Windows/386 could theoretically run DJGPP, but it is not DPMI aware)

@@ -28,20 +28,20 @@
 
 // this is a terrible idea (NOT thread-safe)
 // if the last return was successful, clear the screen
-bool last_return_was_successful = false; 
+bool input_last_return_was_successful = false; 
 
-// Get input from the user (non-blocking)
-bool Input_GetString(char* buf, uint32_t n)
+// Get input from the user (non-blocking). Also stores the last character returned in the "ch" pointer.
+bool Input_GetStringAndChar(char* buf, uint32_t n, int32_t* ch)
 {
     //error 
     if (!n)
         return false; 
 
     // detect if our GetString function was called using a new buf
-    if (last_return_was_successful)
+    if (input_last_return_was_successful)
     {
         memset(buf, 0x00, n);
-        last_return_was_successful = false; 
+        input_last_return_was_successful = false; 
     }
 
     int32_t c = getch();
@@ -76,14 +76,24 @@ bool Input_GetString(char* buf, uint32_t n)
     bool ret = (c == '\n'
     || c == '\r');
 
-    last_return_was_successful = ret; 
+    input_last_return_was_successful = ret; 
+
+    // fill in the user provided buffer if the user wants it
+    if (ch != NULL)
+        *ch = c;
 
     return ret;
 }
 
+// Gets a string without caring about the last character returned
+bool Input_GetString(char* buf, uint32_t n)
+{
+    return Input_GetStringAndChar(buf, n, NULL);
+}
+
 bool Input_KeyDown(uint8_t scancode)
 {
-    int32_t read_key = bioskey(BIOSKEY_GET_STATE);
+    int32_t read_key = getch();
 
     uint8_t real_scancode = (read_key >> 8) & 0xFF;
 
