@@ -68,8 +68,17 @@ bool Input_GetStringAndChar(char* buf, uint32_t n, int32_t* ch)
         return false;
     }
     else 
-        Console_PushChar(c); // put everything in a centralised place
+    {
+        char* key_name = keyname(c);
 
+        // guaranteed to return a string of at least zero characters
+        bool printable = (key_name[0] != '^');
+        
+        if (printable)
+            Console_PushChar(c); // put everything in a centralised place
+    }
+
+    
     // return the character
     buf[len] = c;
 

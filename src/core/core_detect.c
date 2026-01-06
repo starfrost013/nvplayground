@@ -9,6 +9,7 @@
 */
 
 #include "dpmi.h"
+#include "util/console/console.h"
 #include "util/util.h"
 #include <nvplay.h>
 
@@ -136,6 +137,14 @@ void NVPlay_DetectOS()
 
     Logging_Write(LOG_LEVEL_DEBUG, os_string);
 #endif
+
+    // PDcurses doesn't seem to work on Windows NT (at least 2000)
+    // and this prevents showing the unsupported message (2.0.0.83)
+    if (nvplay_state.os_level == NVPLAY_OS_NT)
+    {
+        nvplay_state.config.dumb_console = true;
+        Console_Shutdown();
+    }
 }
 
 bool GPU_Detect()

@@ -97,38 +97,32 @@ void NVPlay_Repl()
             }
         }
         else
-        {
-            input_recv = true; // fake it for dumb console mode
             fgets(repl_string, MAX_STR, stdin);
-        }
 
          // fgets above blocks on dumbconsole, on curses, it doesn't
-        if (input_recv)
+        command_history_id++;
+
+        if (command_history_id >= MAX_COMMAND_HISTORY)
+            NVPlay_ReplOnCommandHistoryFull();
+
+        strncpy(command_history[command_history_id].cmd, repl_string, MAX_STR);
+
+        // get rid of the newline (could call String_GetRTrim(String_GetLTrim) but that does a lot of unnecessary stuff we don't need yet)
+        repl_string[strcspn(repl_string, "\r\n")] = '\0';
+
+        // gcc only so it is fine
+        if (!strcasecmp(repl_string, COMMAND_EXIT)
+        || !strcasecmp(repl_string, COMMAND_EXIT_VERBOSE))
         {
-            command_history_id++;
-
-            if (command_history_id >= MAX_COMMAND_HISTORY)
-                NVPlay_ReplOnCommandHistoryFull();
-
-            strncpy(command_history[command_history_id].cmd, repl_string, MAX_STR);
-
-            // get rid of the newline (could call String_GetRTrim(String_GetLTrim) but that does a lot of unnecessary stuff we don't need yet)
-            repl_string[strcspn(repl_string, "\r\n")] = '\0';
-
-            // gcc only so it is fine
-            if (!strcasecmp(repl_string, COMMAND_EXIT)
-            || !strcasecmp(repl_string, COMMAND_EXIT_VERBOSE))
-            {
-                repl_is_running = false; 
-            }
-            else if (!strcasecmp(repl_string, COMMAND_HELP)
-            || !strcasecmp(repl_string, COMMAND_HELP_VERBOSE))
-            {
-                NVPlay_ReplHelp();
-            }
-            else 
-                NVPlay_RunScriptCommand(repl_string);    
+            repl_is_running = false; 
         }
+        else if (!strcasecmp(repl_string, COMMAND_HELP)
+        || !strcasecmp(repl_string, COMMAND_HELP_VERBOSE))
+        {
+            NVPlay_ReplHelp();
+        }
+        else 
+            NVPlay_RunScriptCommand(repl_string);    
     
     }
 }

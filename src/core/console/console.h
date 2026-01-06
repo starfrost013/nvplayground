@@ -30,7 +30,8 @@ void Console_Update();
 void Console_Shutdown();
 
 
-// Input utils
+// Input
+
 // using a char may defy the scancode differences. 
 
 #define KEYBOARD_MOD_RIGHT_SHIFT            (1 << 1)

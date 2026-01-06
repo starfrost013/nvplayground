@@ -61,7 +61,7 @@ bool NVPlay_Init(int32_t argc, char** argv)
 {
 	NVPlay_ParseCmdline(argc, argv);
 
-	Console_Init(DEFAULT_CONSOLE_SIZE);
+	Console_Init();
 
 	log_settings.destination = (LOG_DEST_FILE | LOG_DEST_CONSOLE);
 	log_settings.flush_on_line = true; //bad idea?
@@ -110,7 +110,7 @@ bool NVPlay_Init(int32_t argc, char** argv)
 	/* Make sure the GPU is supported */
 	if (!current_device.device_info.hal->init_function)
 	{
-		Logging_Write(LOG_LEVEL_ERROR, "This GPU is not yet supported :(\n");
+		Logging_Write(LOG_LEVEL_ERROR, "This GPU is not yet implemented\n");
 		NVPlay_Shutdown(NVPLAY_EXIT_CODE_UNIMPLEMENTED_GPU);
 	}
 

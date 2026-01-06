@@ -155,4 +155,6 @@ void Console_Update()
 void Console_Shutdown()
 {
     Console_Clear();
+
+    endwin();
 }

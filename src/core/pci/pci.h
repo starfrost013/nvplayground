@@ -113,7 +113,7 @@ typedef enum
 } pci_errors_t; 
 
 /* PCI Functions */
-bool PCI_BiosIsPresent(void);
+bool PCI_BiosIsPresent(void);		// Try and find a PCI 2.1 BIOS
 bool PCI_DevicePresent(uint32_t device_id, uint32_t vendor_id);
 
 uint8_t PCI_ReadConfig8(uint32_t bus_number, uint32_t function_number, uint32_t offset);
