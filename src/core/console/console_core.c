@@ -14,7 +14,7 @@
 #include "nvplay.h"
 #include "util/util.h"
 #include <string.h>
-#include <util/console/console.h>
+#include <core/console/console.h>
 
 
 void Console_Init()

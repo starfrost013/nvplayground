@@ -8,7 +8,7 @@
     util_logging.c: Logging implementation 
 */
 
-#include "console/console.h"
+#include <core/console/console.h>
 #include "util.h"
 #include <nvplay.h>
 

@@ -11,7 +11,7 @@
 #include <bios.h>
 #include <curses.h>
 #include <util/util.h>
-#include <util/console/console.h>
+#include <core/console/console.h>
 
 /* 
     I am lazy as hell 

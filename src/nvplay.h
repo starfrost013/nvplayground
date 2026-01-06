@@ -42,7 +42,7 @@ extern const char* msg_help_script;
 #include <core/script/script.h>
 #include <util/util.h>
 #include <util/util_ini.h>
-#include <util/console/console.h>
+#include <core/console/console.h>
 
 // Operating systems that nvplay runs on.
 // (Windows/386 could theoretically run DJGPP, but it is not DPMI aware)

@@ -26,13 +26,14 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/util/util_logging.c"
 "src/util/util_string.c"
 
-# TUI engine (The layer between nvplay <--> pdcurses)
-"src/util/console/console_core.c"
-"src/util/console/console_input.c"
 
 # Main
 "src/main.c"
 "src/main_help.c"
+
+# TUI engine (The layer between nvplay <--> pdcurses)
+"src/core/console/console_core.c"
+"src/core/console/console_input.c"
 
 # PCI
 "src/core/pci/pci.c"
