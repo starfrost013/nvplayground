@@ -13,6 +13,7 @@
 #include <architecture/nv3/nv3.h>
 #include <architecture/nv4/nv4.h>
 #include <architecture/nv10/nv10.h>
+#include <architecture/virge/virge.h>
 
 // NV1 NVHAL entry
 nvhal_entry_t nvhal_nv1 =
@@ -95,6 +96,25 @@ nvhal_entry_t nvhal_celsius =
     // Init/shutdown functions
     NV10_Init,                      // Init
     NV10_Shutdown,                  // Shutdown
+
+    // Dump functions
+    NULL,                           // Dump FIFO to text file
+    NULL,                           // Dump RAMHT to text file 
+    NULL,                           // Dump RAMFC to text file
+    NULL,                           // Dump RAMRO to text file
+    NULL,                           // Dump PGRAPH_CACHE to text file
+
+    // Rendering functions
+    NULL,                           // Submit object in subchannel
+    NULL,                           // Submit method for existing subchannel 
+};
+
+// S3 ViRGE test hal
+nvhal_entry_t nvhal_virge =
+{
+    // Init/shutdown functions
+    ViRGE_Init,                      // Init
+    ViRGE_Shutdown,                  // Shutdown
 
     // Dump functions
     NULL,                           // Dump FIFO to text file

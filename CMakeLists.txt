@@ -77,6 +77,9 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Architecture: Celsius
 "src/architecture/nv10/nv10_core.c"
+
+# Architecture: S3 ViRGE (Test)
+"src/architecture/virge/virge_core.c"
 )
 
 add_executable(nvplay ${sources})

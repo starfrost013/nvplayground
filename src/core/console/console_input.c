@@ -8,6 +8,7 @@
     console_input.c: Input library and keyboard functions
 */
 
+#include "nvplay.h"
 #include <bios.h>
 #include <curses.h>
 #include <util/util.h>
@@ -71,17 +72,21 @@ bool Input_GetStringAndChar(char* buf, uint32_t n, int32_t* ch)
     {
         char* key_name = keyname(c);
 
-        // guaranteed to return a string of at least zero characters
-        bool printable = (key_name[0] != '^');
+        if (nvplay_state.config.key_debug)
+            Logging_Write(LOG_LEVEL_DEBUG, "Key: %x\n keyname: %s\n", c, key_name);
+
+        // guaranteed to return a string of at least zero characters. Nonprintable characters have KEY_i n them
+        bool printable = (key_name[0] != '^'
+        && !strstr(key_name, "KEY_"));
         
         if (printable)
+        {
+            // return the character
             Console_PushChar(c); // put everything in a centralised place
+            buf[len] = c;
+        }
     }
-
     
-    // return the character
-    buf[len] = c;
-
     bool ret = (c == '\n'
     || c == '\r');
 

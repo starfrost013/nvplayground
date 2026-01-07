@@ -23,6 +23,9 @@ Release notes:
 	* Added errors when RAMHT, RAMRO, RAMFC and PGRAPH_CACHE failed to dump
 	* Implemented PDCurses integration (Ported to CMake!)
 	* Implement commands for x86 I/O ports: ioread8, ioread16, ioread32, iowrite8, iowrite16, iowrite32
+	* Implement command history
+	* Implemented a debug setting (DebugKeyboard in nvplay.ini) to print all keys pressed
+		* Helps to debug the input system
 
 Old release notes:
 

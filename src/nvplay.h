@@ -124,6 +124,7 @@ typedef struct nv_config_s
     // Debug settings
     bool nv10_always_map_128m;                      // NV1x: Always map 128MB
 	bool dumb_console;								// Use dumb console
+    bool key_debug;                                 // Keyboard debug
 } nv_config_t;
 
 bool Config_Load();

@@ -131,7 +131,7 @@ bool NV10_Init()
     return true; 
 }
 
-bool nv10_dump_mfg_info()
+bool NV10_DumpMFGInfo()
 {
         /* TODO: Read our Dumb Framebuffer */
     Logging_Write(LOG_LEVEL_MESSAGE, "Nvidia Celsius-based Graphics Hardware (NV1x) Manufacture-Time Configuration: \n");

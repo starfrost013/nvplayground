@@ -26,6 +26,7 @@ bool Config_Load()
 
     if (section_debug)
     {
+        nvplay_state.config.key_debug = ini_section_get_int(section_debug, "DebugKeyboard", false);
         nvplay_state.config.nv10_always_map_128m = ini_section_get_int(section_debug, "NV10_AlwaysMapFullBAR1", false);
     }
 

@@ -24,6 +24,10 @@
 #define PCI_VENDOR_SGS_NV           0x12D2      // Used for NV3/NV3T
 #define PCI_VENDOR_NV               0x10DE      // Used for NV1, NV1 variant, and NV4+
 
+// Test to see how plausible non-NVidia hardware is
+#define PCI_VENDOR_S3               0x5333      // S3 Graphics, Inc.
+#define PCI_DEVICE_VIRGE_325        0x5631      // ViRGE                    1996
+
 #define PCI_DEVICE_NV1_VGA          0x0008      // NV1 VGA component    	1995
 #define PCI_DEVICE_NV1_NV           0x0009      // NV1 NV component     	1995
 #define PCI_DEVICE_NV2              0x0010      // Mutara               	1995-1996 (cancelled)
