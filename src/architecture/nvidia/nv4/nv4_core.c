@@ -11,7 +11,7 @@
 #include "nv4_ref.h"
 #include "nvplay.h"
 
-#include <architecture/nv4/nv4.h>
+#include <architecture/nvidia/nv4/nv4.h>
 
 // Globals
 nv4_state_t nv4_state = {0};

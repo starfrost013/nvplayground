@@ -13,11 +13,11 @@
 
 
 // Architecture includes
-#include <architecture/generic/nv_generic.h>
-#include <architecture/nv1/nv1.h>
-#include <architecture/nv3/nv3.h>
-#include <architecture/nv4/nv4.h>
-#include <architecture/nv10/nv10.h>
+#include <architecture/nvidia/generic/nv_generic.h>
+#include <architecture/nvidia/nv1/nv1.h>
+#include <architecture/nvidia/nv3/nv3.h>
+#include <architecture/nvidia/nv4/nv4.h>
+#include <architecture/nvidia/nv10/nv10.h>
 
 nv_test_t nv_tests[] = 
 {

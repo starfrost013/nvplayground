@@ -9,7 +9,7 @@
 */
 
 // Architecture Includes
-#include <architecture/nv3/nv3.h>
+#include <architecture/nvidia/nv3/nv3.h>
 /* 
     24bpp does not exist
 */

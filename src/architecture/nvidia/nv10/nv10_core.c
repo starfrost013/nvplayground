@@ -9,7 +9,7 @@
 */
 
 #include "nvplay.h"
-#include <architecture/nv10/nv10.h>
+#include <architecture/nvidia/nv10/nv10.h>
 
 // Globals
 nv10_state_t nv10_state = {0};

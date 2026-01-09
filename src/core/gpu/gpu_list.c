@@ -12,10 +12,10 @@
 #include "core/gpu/gpu.h"
 #include "gpu.h"
 #include "nvplay.h"
-#include <architecture/generic/nv_generic.h>
-#include <architecture/nv1/nv1.h>
-#include <architecture/nv3/nv3.h>
-#include <architecture/nv4/nv4.h>
+#include <architecture/nvidia/generic/nv_generic.h>
+#include <architecture/nvidia/nv1/nv1.h>
+#include <architecture/nvidia/nv3/nv3.h>
+#include <architecture/nvidia/nv4/nv4.h>
 
 // Globals
 //

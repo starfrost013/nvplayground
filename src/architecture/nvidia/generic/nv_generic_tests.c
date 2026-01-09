@@ -9,14 +9,14 @@
     nv3_tests.c: NV3 test suite implementation
 */
 
-#include "architecture/nv1/nv1_ref.h"
-#include "architecture/nv3/nv3_ref.h"
+#include "architecture/nvidia/nv1/nv1_ref.h"
+#include "architecture/nvidia/nv3/nv3_ref.h"
 #include "nvplay.h"
 #include "util/util.h"
-#include <architecture/generic/nv_generic.h>
-#include <architecture/nv1/nv1.h>
-#include <architecture/nv3/nv3.h>
-#include <architecture/nv4/nv4.h>
+#include <architecture/nvidia/generic/nv_generic.h>
+#include <architecture/nvidia/nv1/nv1.h>
+#include <architecture/nvidia/nv3/nv3.h>
+#include <architecture/nvidia/nv4/nv4.h>
 
 // Architecture Includes
 bool NVGeneric_DumpPCISpace()

@@ -8,8 +8,8 @@
     nv1_core.c: NV1 core functions (bringup, main loop, shutdown)
 */
 
-#include <architecture/nv1/nv1.h>
-#include <architecture/nv1/nv1_ref.h>
+#include <architecture/nvidia/nv1/nv1.h>
+#include <architecture/nvidia/nv1/nv1_ref.h>
 
 #include "dpmi.h"
 #include "nv1_ref.h"

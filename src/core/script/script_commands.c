@@ -15,8 +15,8 @@
 
 #include <stdio.h>
 
-#include "architecture/nv3/nv3.h"
-#include "architecture/nv3/nv3_ref.h"
+#include "architecture/nvidia/nv3/nv3.h"
+#include "architecture/nvidia/nv3/nv3_ref.h"
 #include <cmake/nvplay_version.h>
 #include "core/gpu/gpu.h"
 #include "core/script/script.h"

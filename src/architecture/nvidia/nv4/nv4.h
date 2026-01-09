@@ -10,7 +10,7 @@
 
 #pragma once 
 #include <nvplay.h>
-#include <architecture/nv4/nv4_ref.h>
+#include <architecture/nvidia/nv4/nv4_ref.h>
 
 typedef struct nv4_state_s
 {

@@ -58,25 +58,25 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/script/script_parser.c"
 
 # Architecture: Generic/Shared
-"src/architecture/generic/nv_generic_hal.c"
-"src/architecture/generic/nv_generic_tests.c"
-"src/architecture/generic/nvrm_class_names.c"
+"src/architecture/nvidia/generic/nv_generic_hal.c"
+"src/architecture/nvidia/generic/nv_generic_tests.c"
+"src/architecture/nvidia/generic/nvrm_class_names.c"
 
 # Architecture: NV1
-"src/architecture/nv1/nv1_core.c"
-"src/architecture/nv1/nv1_class_names.c"
+"src/architecture/nvidia/nv1/nv1_core.c"
+"src/architecture/nvidia/nv1/nv1_class_names.c"
 
 # Architecture: NV3
-"src/architecture/nv3/nv3_class_names.c"
-"src/architecture/nv3/nv3_mode_table.c"
-"src/architecture/nv3/nv3_core.c"
-"src/architecture/nv3/tests/nv3_tests.c"
+"src/architecture/nvidia/nv3/nv3_class_names.c"
+"src/architecture/nvidia/nv3/nv3_mode_table.c"
+"src/architecture/nvidia/nv3/nv3_core.c"
+"src/architecture/nvidia/nv3/tests/nv3_tests.c"
 
 # Architecture: NV4/5  
-"src/architecture/nv4/nv4_core.c"
+"src/architecture/nvidia/nv4/nv4_core.c"
 
 # Architecture: Celsius
-"src/architecture/nv10/nv10_core.c"
+"src/architecture/nvidia/nv10/nv10_core.c"
 
 # Architecture: S3 ViRGE (Test)
 "src/architecture/virge/virge_core.c"

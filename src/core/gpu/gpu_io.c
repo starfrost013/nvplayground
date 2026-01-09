@@ -9,11 +9,11 @@
 */
 
 #include <nvplay.h>
-#include <architecture/nv1/nv1.h>
-#include <architecture/nv3/nv3.h>
-#include <architecture/nv4/nv4.h>
-#include "architecture/nv3/nv3_ref.h"
-#include "architecture/nv4/nv4_ref.h"
+#include <architecture/nvidia/nv1/nv1.h>
+#include <architecture/nvidia/nv3/nv3.h>
+#include <architecture/nvidia/nv4/nv4.h>
+#include "architecture/nvidia/nv3/nv3_ref.h"
+#include "architecture/nvidia/nv4/nv4_ref.h"
 #include "core/gpu/gpu.h"
 #include "pc.h"
 #include "sys/farptr.h"

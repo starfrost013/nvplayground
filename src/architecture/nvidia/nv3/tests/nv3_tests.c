@@ -13,11 +13,11 @@
 #include <stdlib.h>
 
 // Architecture Includes
-#include <architecture/nv3/nv3.h>
-#include <architecture/nv3/nv3_ref.h>
+#include <architecture/nvidia/nv3/nv3.h>
+#include <architecture/nvidia/nv3/nv3_ref.h>
 
 // some stuff shared
-#include <architecture/nv4/nv4.h>
+#include <architecture/nvidia/nv4/nv4.h>
 
 #include "nvplay.h"
 #include "util/util.h"
