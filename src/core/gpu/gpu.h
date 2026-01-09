@@ -24,9 +24,6 @@
 #define PCI_VENDOR_SGS_NV           0x12D2      // Used for NV3/NV3T
 #define PCI_VENDOR_NV               0x10DE      // Used for NV1, NV1 variant, and NV4+
 
-// Test to see how plausible non-NVidia hardware is
-#define PCI_VENDOR_S3               0x5333      // S3 Graphics, Inc.
-#define PCI_DEVICE_VIRGE_325        0x5631      // ViRGE                    1996
 
 #define PCI_DEVICE_NV1_VGA          0x0008      // NV1 VGA component    	1995
 #define PCI_DEVICE_NV1_NV           0x0009      // NV1 NV component     	1995
@@ -61,6 +58,13 @@
 
 #define PCI_DEVICE_NV1A				0x01A0		// GeForce 2 IGP			~2000
 #define PCI_DEVICE_NV1F				0x01F0		// GeForce 4 MX IGP			2002
+
+// Test to see how plausible non-NVidia hardware is
+#define PCI_VENDOR_S3               0x5333      // S3 Graphics, Inc.
+#define PCI_DEVICE_VIRGE_325        0x5631      // ViRGE                    1996
+
+#define PCI_VENDOR_CIRRUS           0x1013      // Cirrus Logic 
+#define PCI_DEVICE_CIRRUS_5446      0x00B8      // GD-5446                  1995(?)
 
 /* 
     NV_PMC_BOOT values 
@@ -160,6 +164,7 @@ typedef struct nv_device_s
 	void* bar1;						// PCI BAR1 mapping for DFB
 	int32_t bar0_selector;			// MUST BE USED FOR ACCESS TO BAR0
 	int32_t bar1_selector;			// MUST BE USED FOR ACCESS TO BAR1
+
 	uint32_t bar1_dfb_start;		// DFB start address
 	uint32_t ramin_start; 			// RAMIN start address
 
@@ -176,6 +181,8 @@ typedef struct nv_device_s
 	uint32_t vpll;					// [NV1+] Video Clock
 	uint32_t nvpll;					// [NV4+] Core Clock
 
+    uint32_t revision;              // GPU specific implementation
+    
 	bool initialised;				// Initialsied
 } nv_device_t;
 

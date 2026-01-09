@@ -80,6 +80,9 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Architecture: S3 ViRGE (Test)
 "src/architecture/virge/virge_core.c"
+
+# Architecture: Cirrus GD5446 (Test)
+"src/architecture/cirrus/alpine_core.c"
 )
 
 add_executable(nvplay ${sources})

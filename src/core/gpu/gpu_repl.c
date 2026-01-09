@@ -23,6 +23,9 @@
 
 bool repl_is_running = true; 
 int32_t command_history_id = 0;
+
+// The command history starts at 0, reaches its max as you write commmands and then becomes fully full and one is always cleared.
+int32_t command_history_id_max = 0;
 repl_command_history_entry_t command_history[MAX_COMMAND_HISTORY] = {0};
 
 void NVPlay_ReplHelp()
@@ -51,8 +54,8 @@ void NVPlay_ReplIncrementCommandHistory()
 
     command_history_id++;
 
-    if (command_history_id >= MAX_COMMAND_HISTORY)
-        command_history_id = (MAX_COMMAND_HISTORY - 1);
+    if (command_history_id >= command_history_id_max)
+        command_history_id = (command_history_id_max - 1);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Console history is now %d (last command: %s)\n", command_history_id, command_history[command_history_id - 1].cmd);
 }
@@ -121,10 +124,10 @@ void NVPlay_Repl()
                 switch (last_char)
                 {
                     case KEY_UP:
-                        NVPlay_ReplIncrementCommandHistory();
+                        NVPlay_ReplDecrementCommandHistory();
                         break;
                     case KEY_DOWN:
-                        NVPlay_ReplDecrementCommandHistory();
+                        NVPlay_ReplIncrementCommandHistory();
                         break; 
                 }
             }
@@ -139,6 +142,10 @@ void NVPlay_Repl()
 
          // fgets above blocks on dumbconsole, on curses, it doesn't
         command_history_id++;
+
+        // make sure this actually goes up to 10
+        if (command_history_id > command_history_id_max)
+            command_history_id_max = command_history_id;
 
         if (command_history_id >= MAX_COMMAND_HISTORY)
             NVPlay_ReplOnCommandHistoryFull();

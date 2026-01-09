@@ -44,5 +44,7 @@ nv_device_info_t supported_devices[] =
 
 	// TEST
 	{ PCI_DEVICE_VIRGE_325, PCI_DEVICE_VIRGE_325, PCI_VENDOR_S3, "S3 Graphics, Inc. ViRGE (86C325)", &nvhal_virge },
+	{ PCI_DEVICE_CIRRUS_5446, PCI_DEVICE_CIRRUS_5446, PCI_VENDOR_CIRRUS, "Cirrus Logic 'Alpine' GD5446", &nvhal_alpine },
+
 	{ 0, 0, 0, "", NULL }, // sentinel
 };
