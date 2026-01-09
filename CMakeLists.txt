@@ -57,10 +57,10 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/script/script_help.c"
 "src/core/script/script_parser.c"
 
-# Architecture: Generic/Shared
-"src/architecture/nvidia/generic/nv_generic_hal.c"
-"src/architecture/nvidia/generic/nv_generic_tests.c"
-"src/architecture/nvidia/generic/nvrm_class_names.c"
+# Architecture: kernel/Shared
+"src/architecture/nvidia/kernel/nv_generic_hal.c"
+"src/architecture/nvidia/kernel/nv_generic_tests.c"
+"src/architecture/nvidia/kernel/nvrm_class_names.c"
 
 # Architecture: NV1
 "src/architecture/nvidia/nv1/nv1_core.c"
