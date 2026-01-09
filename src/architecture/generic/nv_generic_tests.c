@@ -22,32 +22,32 @@
 bool NVGeneric_DumpPCISpace()
 {
     // read out the device id
-    uint16_t vendor_id = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_VENDOR_ID);
-    uint16_t device_id = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_DEVICE_ID);
-    uint16_t command = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND);
-    uint16_t status = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_STATUS);
-    uint8_t revision = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_REVISION);
-    uint8_t class_id_high = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_CLASS_CODE_HIGH);
-    uint16_t class_id_low = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_CLASS_CODE_LOW);
-    uint8_t cache_line_size = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_CACHE_LINE_SIZE);
-    uint8_t latency_timer = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_LATENCY_TIMER);
-    uint8_t header_type = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_HEADER_TYPE);
-    uint8_t bist = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BIST);
-    uint32_t bar0 = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
-    uint32_t bar1 = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR1);
-    uint32_t bar2 = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR2);
-    uint32_t bar3 = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR3);
-    uint32_t bar4 = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR4);
-    uint32_t bar5 = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR5);
-    uint32_t cardbus_cis_ptr = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_CARDBUS_CIS_PTR);
-    uint16_t subsystem_vendor_id = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_SUBSYSTEM_VENDOR_ID);
-    uint16_t subsystem_id = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_SUBSYSTEM_ID);
-    uint32_t rom_bar = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_EXPANSION_ROM_BASE);
-    uint8_t capabilities_ptr = PCI_ReadConfig8(current_device.bus_number, current_device.function_number,  PCI_CFG_OFFSET_CAPABILITIES_PTR);
-    uint8_t interrupt_line = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_INTERRUPT_LINE);
-    uint8_t interrupt_pin = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_INTERRUPT_PIN);
-    uint8_t minimum_grant = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_MINIMUM_GRANT);
-    uint8_t maximum_latency = PCI_ReadConfig8(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_MAXIMUM_LATENCY);
+    uint16_t vendor_id = PCI_ReadConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_VENDOR_ID);
+    uint16_t device_id = PCI_ReadConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_DEVICE_ID);
+    uint16_t command = PCI_ReadConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_COMMAND);
+    uint16_t status = PCI_ReadConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_STATUS);
+    uint8_t revision = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_REVISION);
+    uint8_t class_id_high = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_CLASS_CODE_HIGH);
+    uint16_t class_id_low = PCI_ReadConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_CLASS_CODE_LOW);
+    uint8_t cache_line_size = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_CACHE_LINE_SIZE);
+    uint8_t latency_timer = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_LATENCY_TIMER);
+    uint8_t header_type = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_HEADER_TYPE);
+    uint8_t bist = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BIST);
+    uint32_t bar0 = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR0);
+    uint32_t bar1 = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR1);
+    uint32_t bar2 = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR2);
+    uint32_t bar3 = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR3);
+    uint32_t bar4 = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR4);
+    uint32_t bar5 = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR5);
+    uint32_t cardbus_cis_ptr = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_CARDBUS_CIS_PTR);
+    uint16_t subsystem_vendor_id = PCI_ReadConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_SUBSYSTEM_VENDOR_ID);
+    uint16_t subsystem_id = PCI_ReadConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_SUBSYSTEM_ID);
+    uint32_t rom_bar = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_EXPANSION_ROM_BASE);
+    uint8_t capabilities_ptr = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number,  PCI_CFG_OFFSET_CAPABILITIES_PTR);
+    uint8_t interrupt_line = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_INTERRUPT_LINE);
+    uint8_t interrupt_pin = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_INTERRUPT_PIN);
+    uint8_t minimum_grant = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_MINIMUM_GRANT);
+    uint8_t maximum_latency = PCI_ReadConfig8(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_MAXIMUM_LATENCY);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] PCI ID %04x:%04x\n", vendor_id, device_id);
     Logging_Write(LOG_LEVEL_MESSAGE, "[PCI CFG] Command Register %04x\n", command);
@@ -111,7 +111,7 @@ bool NVGeneric_DumpMMIO_NV1()
                 break;
         }
 
-        mmio_dump_bar_buf[bar0_pos >> 2] = _farpeekl(current_device.bar0_selector, bar0_pos);
+        mmio_dump_bar_buf[bar0_pos >> 2] = _farpeekl(current_device.bus_info.bar0_selector, bar0_pos);
     }
 
     fclose(mmio_bar0);
@@ -176,7 +176,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
             mmio_dump_bar_buf[bar0_pos >> 2] = 0x4E4F4E45; // 'NONE'
         }
         else
-            mmio_dump_bar_buf[bar0_pos >> 2] = _farpeekl(current_device.bar0_selector, bar0_pos);
+            mmio_dump_bar_buf[bar0_pos >> 2] = _farpeekl(current_device.bus_info.bar0_selector, bar0_pos);
 
     }
 
@@ -197,7 +197,7 @@ bool NVGeneric_DumpMMIO_NV3AndLater()
         }
 
         // no excluded areas needed
-        mmio_dump_bar_buf[bar1_pos >> 2] = _farpeekl(current_device.bar1_selector, bar1_pos);
+        mmio_dump_bar_buf[bar1_pos >> 2] = _farpeekl(current_device.bus_info.bar1_selector, bar1_pos);
 
     }
 

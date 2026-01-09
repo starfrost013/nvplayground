@@ -46,7 +46,7 @@ bool NV1_PrintMFGInfo()
 bool NV1_Init()
 {
     // only top 8 bits actually matter
-    uint32_t bar0_base = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
+    uint32_t bar0_base = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR0);
 
     /* According to the datasheet only the top 8 bits matter */
     bar0_base &= 0xFF000000;
@@ -59,14 +59,14 @@ bool NV1_Init()
     {
         Logging_Write(LOG_LEVEL_MESSAGE, "NV1: Chip is not enabled. Enabling I/O + Memory Space + BAR0...\n");
 
-        uint16_t command = PCI_ReadConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND);
+        uint16_t command = PCI_ReadConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_COMMAND);
 
         // Value 0x07 seen in DOS box on rev.C 2MB unit (ChipToken 0xE5219C6FA99E625E)
         command |= (PCI_CFG_OFFSET_COMMAND_BUS_MASTER | PCI_CFG_OFFSET_COMMAND_MEM_ENABLED | PCI_CFG_OFFSET_COMMAND_IO_ENABLED);
         
-        PCI_WriteConfig16(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_COMMAND, command);
+        PCI_WriteConfig16(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_COMMAND, command);
         Logging_Write(LOG_LEVEL_DEBUG, "NV1: Programming Base Address Register 0 to hopefully-free value...%08x (prefetchable)\n", NV1_MMIO_SPACE_TEST & 0xFF000000);
-        PCI_WriteConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0, NV1_MMIO_SPACE_TEST);
+        PCI_WriteConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR0, NV1_MMIO_SPACE_TEST);
     
     }
 
@@ -84,9 +84,9 @@ bool NV1_Init()
     Logging_Write(LOG_LEVEL_DEBUG, "GPU Init: Mapping BAR0 MMIO...\n");
 
     /* Set up two LDTs, we don't need one for ramin, because, it's just a part of bar1 we map differently */
-    current_device.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
-    __dpmi_set_segment_base_address(current_device.bar0_selector, meminfo_bar0.address);
-    __dpmi_set_segment_limit(current_device.bar0_selector, NV1_PCI_BAR0_SIZE);
+    current_device.bus_info.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
+    __dpmi_set_segment_base_address(current_device.bus_info.bar0_selector, meminfo_bar0.address);
+    __dpmi_set_segment_limit(current_device.bus_info.bar0_selector, NV1_PCI_BAR0_SIZE);
 
     /* store manufacture time configuratino */
     current_device.nv_pmc_boot_0 = NV_ReadMMIO32(NV1_PMC_BOOT_0);

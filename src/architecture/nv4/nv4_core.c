@@ -19,8 +19,8 @@ nv4_state_t nv4_state = {0};
 bool NV4_Init()
 {
     // only top 8 bits actually matter
-    uint32_t bar0_base = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR0);
-    uint32_t bar1_base = PCI_ReadConfig32(current_device.bus_number, current_device.function_number, PCI_CFG_OFFSET_BAR1);
+    uint32_t bar0_base = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR0);
+    uint32_t bar1_base = PCI_ReadConfig32(current_device.bus_info.bus_number, current_device.bus_info.function_number, PCI_CFG_OFFSET_BAR1);
 
     /* According to the datasheet only the top 8 bits matter */
     bar0_base &= 0xFF000000;
@@ -40,7 +40,6 @@ bool NV4_Init()
     meminfo_bar1.address = bar1_base;
     meminfo_bar1.size = NV4_MMIO_SIZE; //this will change
 
-    current_device.bar1_dfb_start = bar1_base;
     current_device.ramin_start = bar0_base + NV4_RAMIN_START;
 
     __dpmi_physical_address_mapping(&meminfo_bar0);
@@ -49,15 +48,15 @@ bool NV4_Init()
     Logging_Write(LOG_LEVEL_DEBUG, "NV4 Init: Mapping BAR0 (MMIO + RAMIN)...\n");
 
     /* Set up two LDTs, we don't need one for ramin, because, it's just a part of bar1 we map differently */
-    current_device.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
-    __dpmi_set_segment_base_address(current_device.bar0_selector, meminfo_bar0.address);
-    __dpmi_set_segment_limit(current_device.bar0_selector, NV4_MMIO_SIZE - 1);
+    current_device.bus_info.bar0_selector = __dpmi_allocate_ldt_descriptors(1);
+    __dpmi_set_segment_base_address(current_device.bus_info.bar0_selector, meminfo_bar0.address);
+    __dpmi_set_segment_limit(current_device.bus_info.bar0_selector, NV4_MMIO_SIZE - 1);
 
     Logging_Write(LOG_LEVEL_DEBUG, "NV4 Init: Mapping BAR1 (VRAM aperture)...\n");
 
-    current_device.bar1_selector = __dpmi_allocate_ldt_descriptors(1);
-    __dpmi_set_segment_base_address(current_device.bar1_selector, meminfo_bar1.address);
-    __dpmi_set_segment_limit(current_device.bar1_selector, NV4_MMIO_SIZE - 1); // ultimately the same size
+    current_device.bus_info.bar1_selector = __dpmi_allocate_ldt_descriptors(1);
+    __dpmi_set_segment_base_address(current_device.bus_info.bar1_selector, meminfo_bar1.address);
+    __dpmi_set_segment_limit(current_device.bus_info.bar1_selector, NV4_MMIO_SIZE - 1); // ultimately the same size
 
     /* store manufacture time configuratino */
     current_device.nv_pmc_boot_0 = NV_ReadMMIO32(NV4_PMC_BOOT);

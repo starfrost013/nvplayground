@@ -153,23 +153,27 @@ typedef struct nv_device_info_s
 /* List of supported devices */
 extern nv_device_info_t supported_devices[]; 
 
-/* Full NV Device Struct (shared across all devices) */
-typedef struct nv_device_s
+/* Device information for PCI/AGP/PCIe bus */
+typedef struct nv_device_pci_s
 {
-	nv_device_info_t device_info;
-	uint32_t real_device_id;		// real device id
 	uint32_t bus_number;			// PCI bus number
 	uint32_t function_number; 		// PCI function number
-	void* bar0;						// PCI BAR0 mapping - gpu stuff
+    void* bar0;						// PCI BAR0 mapping - gpu stuff
 	void* bar1;						// PCI BAR1 mapping for DFB
 	int32_t bar0_selector;			// MUST BE USED FOR ACCESS TO BAR0
 	int32_t bar1_selector;			// MUST BE USED FOR ACCESS TO BAR1
 
-	uint32_t bar1_dfb_start;		// DFB start address
+} nv_device_bus_t;
+
+/* Full NV Device Struct (shared across all devices) */
+typedef struct nv_device_s
+{
+	nv_device_info_t device_info;
+    nv_device_bus_t bus_info;
+
+	uint32_t real_device_id;		// real device id
 	uint32_t ramin_start; 			// RAMIN start address
-
 	uint32_t vram_amount;			// Amount of Video RAM
-
 	/* Some registers shared between all gpus */
 	uint32_t nv_pfb_boot_0;			// nv_pfb_boot_0 register read at boot
 	uint32_t nv_pmc_boot_0;			// nv_pmc_boot_0 register read at boot
@@ -182,7 +186,7 @@ typedef struct nv_device_s
 	uint32_t nvpll;					// [NV4+] Core Clock
 
     uint32_t revision;              // GPU specific implementation
-    
+
 	bool initialised;				// Initialsied
 } nv_device_t;
 

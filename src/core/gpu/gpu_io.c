@@ -28,23 +28,23 @@
 /* Read 8-bit value from the MMIO */
 uint8_t NV_ReadMMIO8(uint32_t offset)
 {
-    return _farpeekb(current_device.bar0_selector, offset);
+    return _farpeekb(current_device.bus_info.bar0_selector, offset);
 }
 
 /* Read 32-bit value from the MMIO */
 uint32_t NV_ReadMMIO32(uint32_t offset)
 {
-    return _farpeekl(current_device.bar0_selector, offset);
+    return _farpeekl(current_device.bus_info.bar0_selector, offset);
 }
 
 void NV_WriteMMIO8(uint32_t offset, uint8_t val)
 {
-    _farpokeb(current_device.bar0_selector, offset, val);
+    _farpokeb(current_device.bus_info.bar0_selector, offset, val);
 }
 
 void NV_WriteMMIO32(uint32_t offset, uint32_t val)
 {
-    _farpokel(current_device.bar0_selector, offset, val);
+    _farpokel(current_device.bus_info.bar0_selector, offset, val);
 }
 
 //
@@ -54,36 +54,36 @@ void NV_WriteMMIO32(uint32_t offset, uint32_t val)
 /* Read 8-bit value from the DFB */
 uint8_t NV_ReadDfb8(uint32_t offset)
 {
-    return _farpeekb(current_device.bar1_selector, offset);
+    return _farpeekb(current_device.bus_info.bar1_selector, offset);
 }
 
 /* Read 16-bit value from the DFB */
 uint16_t NV_ReadDfb16(uint32_t offset)
 {
-    return _farpeekw(current_device.bar1_selector, offset);
+    return _farpeekw(current_device.bus_info.bar1_selector, offset);
 }
 
 /* Read 32-bit value from the DFB */
 uint32_t NV_ReadDfb32(uint32_t offset)
 {
-    return _farpeekl(current_device.bar1_selector, offset);
+    return _farpeekl(current_device.bus_info.bar1_selector, offset);
 }
 
 /* Write 8-bit value to the DFB */
 void NV_WriteDfb8(uint32_t offset, uint8_t val)
 {
-    _farpokeb(current_device.bar1_selector, offset, val);
+    _farpokeb(current_device.bus_info.bar1_selector, offset, val);
 }
 
 /* Write 16-bit value to the DFB */
 void NV_WriteDfb16(uint32_t offset, uint16_t val)
 {
-    _farpokew(current_device.bar1_selector, offset, val);
+    _farpokew(current_device.bus_info.bar1_selector, offset, val);
 }
 
 void NV_WriteDfb32(uint32_t offset, uint32_t val)
 {
-    _farpokel(current_device.bar1_selector, offset, val);
+    _farpokel(current_device.bus_info.bar1_selector, offset, val);
 }
 
 /* Read 32-bit value from RAMIN */
@@ -98,17 +98,17 @@ uint32_t NV_ReadRamin32(uint32_t offset)
     {
         // RAMIN not usable on NV1 with CONFIG=2 due to hardware errata, see envytools
         case PCI_DEVICE_NV1_NV:
-            return _farpeekl(current_device.bar0_selector, NV1_RAMIN_START + offset);
+            return _farpeekl(current_device.bus_info.bar0_selector, NV1_RAMIN_START + offset);
         case PCI_DEVICE_NV3:
         case PCI_DEVICE_NV3T_ACPI:
-            return _farpeekl(current_device.bar1_selector, NV3_RAMIN_START + offset);
+            return _farpeekl(current_device.bus_info.bar1_selector, NV3_RAMIN_START + offset);
         // WARNING! WARNING! WARNING!
         // 
         // NV4 MMIO dumps show *PROM* (VBIOS mirror) at 0x700000 unlike 0x300000 as indicated by NV drivers. 
         // RAMIN RAMFC RAMHT RAMRO structures always start at 0x10000 so NVIDIA never had to deal with this issue (for all practical purposes RAMIN starts at 710000)
         // Therefore, it may not be possible, due to hardware errata, to write to RAMIN address below 0x10000!
         case PCI_DEVICE_NV4 ... PCI_DEVICE_NV1F: // all NV1xsa re the same
-            return _farpeekl(current_device.bar0_selector, NV4_RAMIN_START + offset);
+            return _farpeekl(current_device.bus_info.bar0_selector, NV4_RAMIN_START + offset);
     }
 
     Logging_Write(LOG_LEVEL_ERROR, "NV_ReadRamin32: Somehow reached here with an unsupported gpu\n");
@@ -126,16 +126,16 @@ void NV_WriteRamin32(uint32_t offset, uint32_t val)
     {
         // RAMIN not usable on NV1 with CONFIG=2 due to hardware errata, see envytools
         case PCI_DEVICE_NV1_NV:
-            _farpokel(current_device.bar0_selector, NV1_RAMIN_START + offset, val);
+            _farpokel(current_device.bus_info.bar0_selector, NV1_RAMIN_START + offset, val);
             break;
         case PCI_DEVICE_NV3:
         case PCI_DEVICE_NV3T_ACPI:
-            _farpokel(current_device.bar1_selector, NV3_RAMIN_START + offset, val);
+            _farpokel(current_device.bus_info.bar1_selector, NV3_RAMIN_START + offset, val);
              break;
         // See "WARNING" above for NV4 RAMIN writes!
         case PCI_DEVICE_NV4:
         case PCI_DEVICE_NV10 ... PCI_DEVICE_NV18_END:       // NV1x uses 0x700000 BAR0 start too
-            _farpokel(current_device.bar0_selector, NV4_RAMIN_START + offset, val);    
+            _farpokel(current_device.bus_info.bar0_selector, NV4_RAMIN_START + offset, val);    
              break;
         default:
             Logging_Write(LOG_LEVEL_ERROR, "NV_WriteRamin32: Somehow reached here with an unsupported GPU\n");

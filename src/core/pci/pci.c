@@ -62,8 +62,8 @@ bool PCI_DevicePresent(uint32_t device_id, uint32_t vendor_id)
     }
 
     // store the returned bus and function number
-    current_device.bus_number = regs.h.bh;
-    current_device.function_number = regs.h.bl;
+    current_device.bus_info.bus_number = regs.h.bh;
+    current_device.bus_info.function_number = regs.h.bl;
 
     return true; 
 }

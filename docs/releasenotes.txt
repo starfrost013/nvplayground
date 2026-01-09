@@ -26,6 +26,7 @@ Release notes:
 	* Implement command history
 	* Implemented a debug setting (DebugKeyboard in nvplay.ini) to print all keys pressed
 		* Helps to debug the input system
+	* Reorganised nv_device_info_t, made bus info (bus number, function number, PCI BAR mappings) a substructure (nv_device_bus_t)
 
 Old release notes:
 
