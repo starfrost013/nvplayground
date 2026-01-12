@@ -239,7 +239,7 @@ bool NVGeneric_DumpVBIOS()
             base_location = NV3_PROM_START;
             break;
         case 4 ... 0x10:
-            base_location = NV4_RAMIN_START;
+            base_location = NV4_PRAMIN_START;
             break;
     }
 

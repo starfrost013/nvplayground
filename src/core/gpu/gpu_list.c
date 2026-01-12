@@ -25,7 +25,7 @@ nv_device_info_t supported_devices[] =
 	// Todo: are the PCIe NV19s actually a separate ID? If so, how do we identify them?
 	{ PCI_DEVICE_NV1_NV, PCI_DEVICE_NV1_NV, PCI_VENDOR_SGS, "NV1 (STG-2000 DRAM version)", &nvhal_nv1 },
 	{ PCI_DEVICE_NV1_NV, PCI_DEVICE_NV1_NV, PCI_VENDOR_NV, "NV1 (NV1 VRAM version)", &nvhal_nv1 },
-	{ PCI_DEVICE_NV2, PCI_DEVICE_NV2, PCI_VENDOR_NV, "NV2 (Mutara V08) (You don't have this)", &nvhal_nv2 },
+	{ PCI_DEVICE_NV2, PCI_DEVICE_NV2, PCI_VENDOR_NV, "NV2 (Mutara V08) (You don't have this)", &nvhal_nv1 }, // doesn't need its own hal entry since it does not exist afaik 
 	{ PCI_DEVICE_NV3, PCI_DEVICE_NV3T_ACPI, PCI_VENDOR_SGS_NV, "RIVA 128 (NV3) or RIVA 128 ZX (NV3T)", &nvhal_nv3 }, 
 	{ PCI_DEVICE_NV4, PCI_DEVICE_NV4, PCI_VENDOR_NV, "RIVA TNT (NV4)", &nvhal_nv4 },
 	{ PCI_DEVICE_NV5, PCI_DEVICE_NV5_CRAP, PCI_VENDOR_NV, "RIVA TNT2-based GPU (NV5) - TNT2/Pro/Ultra", &nvhal_nv4 },

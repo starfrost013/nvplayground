@@ -22,3 +22,6 @@ extern nv4_state_t nv4_state;
 bool NV4_Init();
 bool NV4_DumpMFGInfo();
 void NV4_Shutdown(); 
+
+// NV4 FIFO
+void NV4_InitFIFO();

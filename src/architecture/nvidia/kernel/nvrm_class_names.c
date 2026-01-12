@@ -12,6 +12,7 @@
 */
 
 #include <nvplay.h>
+#include <architecture/nvidia/kernel/kernel.h>
 #include <architecture/nvidia/kernel/nv_generic.h>
 
 #define CLASS_LAST                  0x7F

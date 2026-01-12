@@ -108,7 +108,7 @@ uint32_t NV_ReadRamin32(uint32_t offset)
         // RAMIN RAMFC RAMHT RAMRO structures always start at 0x10000 so NVIDIA never had to deal with this issue (for all practical purposes RAMIN starts at 710000)
         // Therefore, it may not be possible, due to hardware errata, to write to RAMIN address below 0x10000!
         case PCI_DEVICE_NV4 ... PCI_DEVICE_NV1F: // all NV1xsa re the same
-            return _farpeekl(current_device.bus_info.bar0_selector, NV4_RAMIN_START + offset);
+            return _farpeekl(current_device.bus_info.bar0_selector, NV4_PRAMIN_START + offset);
     }
 
     Logging_Write(LOG_LEVEL_ERROR, "NV_ReadRamin32: Somehow reached here with an unsupported gpu\n");
@@ -135,7 +135,7 @@ void NV_WriteRamin32(uint32_t offset, uint32_t val)
         // See "WARNING" above for NV4 RAMIN writes!
         case PCI_DEVICE_NV4:
         case PCI_DEVICE_NV10 ... PCI_DEVICE_NV18_END:       // NV1x uses 0x700000 BAR0 start too
-            _farpokel(current_device.bus_info.bar0_selector, NV4_RAMIN_START + offset, val);    
+            _farpokel(current_device.bus_info.bar0_selector, NV4_PRAMIN_START + offset, val);    
              break;
         default:
             Logging_Write(LOG_LEVEL_ERROR, "NV_WriteRamin32: Somehow reached here with an unsupported GPU\n");

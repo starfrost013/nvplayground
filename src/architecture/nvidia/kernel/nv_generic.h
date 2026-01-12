@@ -26,27 +26,8 @@ bool NVGeneric_DumpPGRAPHCache();
 
 // I considered using an array, but we'd have to define hardcoded indicies anyway so we can just define these entries
 extern nvhal_entry_t nvhal_nv1;
-extern nvhal_entry_t nvhal_nv2;
 extern nvhal_entry_t nvhal_nv3;
 extern nvhal_entry_t nvhal_nv4;
 extern nvhal_entry_t nvhal_celsius;
 extern nvhal_entry_t nvhal_virge;
 extern nvhal_entry_t nvhal_alpine;
-
-//
-// Resource Manager 
-//
-
-// DETERMINE WHEN STUFF WAS MADE OBSOLETE AND ALSO REMOVE ALL NON-HW CLASSES
-// would a hashmap be better??
-
-typedef struct nvrm_class_s
-{
-    uint32_t classid;
-    // the fastest way to represent this data?
-    uint32_t generation_minimum;                // below nv4 doesn't count but kept practicall
-    uint32_t generation_maximum;                // does not mean it is *unusable* just obsolete
-    const char* name;
-} nvrm_class_t;
-
-extern nvrm_class_t nvrm_class[];

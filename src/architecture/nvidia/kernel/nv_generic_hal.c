@@ -30,29 +30,12 @@ nvhal_entry_t nvhal_nv1 =
     NULL,                           // Dump RAMRO to text file
     NULL,                           // Dump PGRAPH_CACHE to text file
 
-    // Rendering functions
+    // Kernel functions
+    NULL,                           // FIFO init
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel
 }; 
 
-// NV2 NVHAL entry
-nvhal_entry_t nvhal_nv2 =
-{
-    // Init/shutdown functions
-    NULL,                           // Init
-    NULL,                           // Shutdown
-
-    // Dump functions
-    NULL,                           // Dump FIFO to text file
-    NULL,                           // Dump RAMHT to text file 
-    NULL,                           // Dump RAMFC to text file
-    NULL,                           // Dump RAMRO to text file
-    NULL,                           // Dump PGRAPH_CACHE to text file
-
-    // Rendering functions
-    NULL,                           // Submit object in subchannel
-    NULL,                           // Submit method for existing subchannel              
-};
 
 nvhal_entry_t nvhal_nv3 =
 {
@@ -67,7 +50,8 @@ nvhal_entry_t nvhal_nv3 =
     NV3_DumpRAMRO,                  // Dump RAMRO to text file
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file
 
-    // Rendering functions
+    // Kernel functions
+    NULL,                           // FIFO init
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
@@ -86,7 +70,8 @@ nvhal_entry_t nvhal_nv4 =
     NULL,                           // Dump RAMRO to text file
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file (similar enough to nv3)
 
-    // Rendering functions
+    // Kernel functions
+    NULL,                           // FIFO init
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
@@ -105,7 +90,8 @@ nvhal_entry_t nvhal_celsius =
     NULL,                           // Dump RAMRO to text file
     NULL,                           // Dump PGRAPH_CACHE to text file
 
-    // Rendering functions
+    // Kernel functions
+    NULL,                           // FIFO init
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
@@ -124,7 +110,8 @@ nvhal_entry_t nvhal_virge =
     NULL,                           // Dump RAMRO to text file
     NULL,                           // Dump PGRAPH_CACHE to text file
 
-    // Rendering functions
+    // Kernel functions
+    NULL,                           // FIFO init
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
@@ -133,8 +120,8 @@ nvhal_entry_t nvhal_virge =
 nvhal_entry_t nvhal_alpine =
 {
     // Init/shutdown functions
-    Alpine_Init,                      // Init
-    Alpine_Shutdown,                  // Shutdown
+    Alpine_Init,                     // Init
+    Alpine_Shutdown,                 // Shutdown
 
     // Dump functions
     NULL,                           // Dump FIFO to text file
@@ -143,7 +130,8 @@ nvhal_entry_t nvhal_alpine =
     NULL,                           // Dump RAMRO to text file
     NULL,                           // Dump PGRAPH_CACHE to text file
 
-    // Rendering functions
+    // Kernel functions
+    NULL,                           // FIFO init
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
