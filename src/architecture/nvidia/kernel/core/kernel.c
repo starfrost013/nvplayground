@@ -56,12 +56,26 @@ void Kernel_SetState(gpu_state state)
         free(kernel_gpu);
 }
 
+void Kernel_Interrupt()
+{
+    if (!current_device.device_info.hal->interrupt_service)
+        Kernel_Fatal("Kernel: No interrupt service for current GPU");
+
+    current_device.device_info.hal->interrupt_service();
+}
+
 void Kernel_Main()
 {
     Kernel_SetState(GPU_STATE_INIT);
 
     /* If we are initialising we have to reset */
     Kernel_SetState(GPU_STATE_RESET);
+
+    /* todo: script */
+    while (kernel_gpu->running)
+    {
+        Kernel_Interrupt();
+    }
 }
 
 /* Triggered upon entry into an unrecoverable error condition. */

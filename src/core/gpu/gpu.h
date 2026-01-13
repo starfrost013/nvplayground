@@ -136,6 +136,7 @@ typedef struct nvhal_entry_s
     void (*dump_cache_to_text_file)(FILE* stream);
 
     // KERNEL functions
+    void (*interrupt_service)();
     bool (*fifo_init)();
     bool (*graph_init)();
     bool (*graph_reset)();

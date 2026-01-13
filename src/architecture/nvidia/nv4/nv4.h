@@ -23,6 +23,9 @@ bool NV4_Init();
 bool NV4_DumpMFGInfo();
 void NV4_Shutdown(); 
 
+// NV4 interrupt
+void NV4_InterruptService();
+
 // NV4 PFIFO
 bool NV4_InitFIFO();
 

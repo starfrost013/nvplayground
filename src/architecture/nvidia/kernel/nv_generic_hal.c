@@ -31,6 +31,7 @@ nvhal_entry_t nvhal_nv1 =
     NULL,                           // Dump PGRAPH_CACHE to text file
 
     // Kernel functions
+    NULL,                           // Service interrupts
     NULL,                           // FIFO init
     NULL,                           // PGRAPH init
     NULL,                           // PGRAPH reset
@@ -53,6 +54,7 @@ nvhal_entry_t nvhal_nv3 =
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file
 
     // Kernel functions
+    NULL,                           // Service interrupts
     NULL,                           // FIFO init
     NULL,                           // PGRAPH init
     NULL,                           // PGRAPH reset
@@ -75,6 +77,7 @@ nvhal_entry_t nvhal_nv4 =
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file (similar enough to nv3)
 
     // Kernel functions
+    NV4_InterruptService,           // Service interrupts
     NV4_InitFIFO,                   // FIFO init
     NV4_InitGraph,                  // PGRAPH init
     NV4_ResetGraph,                 // PGRAPH reset
@@ -97,6 +100,7 @@ nvhal_entry_t nvhal_celsius =
     NULL,                           // Dump PGRAPH_CACHE to text file
 
     // Kernel functions
+    NULL,                           // Service interrupts
     NULL,                           // FIFO init
     NULL,                           // PGRAPH init
     NULL,                           // PGRAPH reset
@@ -119,6 +123,7 @@ nvhal_entry_t nvhal_virge =
     NULL,                           // Dump PGRAPH_CACHE to text file
 
     // Kernel functions
+    NULL,                           // Service interrupts
     NULL,                           // FIFO init
     NULL,                           // PGRAPH init
     NULL,                           // PGRAPH reset

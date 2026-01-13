@@ -82,6 +82,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/architecture/nvidia/nv4/nv4_core.c"
 "src/architecture/nvidia/nv4/nv4_fifo.c"
 "src/architecture/nvidia/nv4/nv4_graph.c"
+"src/architecture/nvidia/nv4/nv4_intr.c"
 
 # Architecture: Celsius
 "src/architecture/nvidia/nv10/nv10_core.c"

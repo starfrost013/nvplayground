@@ -40,6 +40,7 @@ typedef enum gpu_state_e
 } gpu_state; 
 
 void Kernel_Main();                             // GPU driver main function
+void Kernel_Interrupt();                        // Service interrupts (not a state)
 void Kernel_Fatal(const char* err);             // Triggered upon entry into an unrecoverable error condition.
 void Kernel_SetState(gpu_state state);          // State transition
 
@@ -90,6 +91,7 @@ typedef struct kernel_instance_s
         uint32_t channel_id;
     } nv4_pgraph;
 
+    bool running;
 } kernel_instance_t;
 
 extern kernel_instance_t* kernel_gpu;
