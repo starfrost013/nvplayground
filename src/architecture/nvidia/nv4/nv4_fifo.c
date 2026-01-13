@@ -9,6 +9,7 @@
 */
 
 #include "core/gpu/gpu.h"
+#include "curses.h"
 #include "nv4_ref.h"
 #include "nvplay.h"
 
@@ -27,7 +28,7 @@ bool NV4_InitFIFO()
     | (1 << NV4_PFIFO_INTR_EN_0_RUNOUT_OVERFLOW)        // very bad
     );
 
-    kernel_gpu->nv4_pfifo.intr_en = fifo_intr_en;
+    kernel_gpu->nv4.pfifo.intr_en = fifo_intr_en;
 
     NV_WriteMMIO32(NV4_PFIFO_INTR_EN_0, fifo_intr_en);
 
@@ -47,6 +48,10 @@ bool NV4_InitFIFO()
     NV_WriteMMIO32(NV4_PFIFO_RUNOUT_GET, 0x0);
     NV_WriteMMIO32(NV4_PFIFO_RUNOUT_PUT, 0x0);
 
-
     return true; 
+}
+
+void NV4_InterruptFIFO()
+{
+
 }

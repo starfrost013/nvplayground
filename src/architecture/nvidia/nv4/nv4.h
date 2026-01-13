@@ -28,7 +28,9 @@ void NV4_InterruptService();
 
 // NV4 PFIFO
 bool NV4_InitFIFO();
+void NV4_InterruptFIFO();
 
 // NV4 PGRAPH
 bool NV4_InitGraph();
 bool NV4_ResetGraph();
+void NV4_InterruptGraph();

@@ -36,7 +36,7 @@ bool NV4_InitGraph()
     Initialise PGRAPH debug registers based on 6.xx drivers. These are required for GPU functionality
     Let's explicitly turn off some options just in case
     */
-    kernel_gpu->nv4_pgraph.debug_0 = (1 << NV4_PGRAPH_DEBUG_0_LIMIT_CHECK)  // Enable limit checking
+    kernel_gpu->nv4.pgraph.debug_0 = (1 << NV4_PGRAPH_DEBUG_0_LIMIT_CHECK)  // Enable limit checking
     | (1 << NV4_PGRAPH_DEBUG_0_LIMIT_INT)
     | (0 << NV4_PGRAPH_DEBUG_0_OVRFLW_INT)
     | (1 << NV4_PGRAPH_DEBUG_0_WRITE_ONLY_ROPS_2D)                          // Write only ROPS (2D)
@@ -48,7 +48,7 @@ bool NV4_InitGraph()
     | (1 << NV4_PGRAPH_DEBUG_0_BLIT_DST_LIMIT); 
 
     // Nvidia drivers set to last on reset then not last
-    kernel_gpu->nv4_pgraph.debug_1 = (NV4_PGRAPH_DEBUG_1_VOLATILE_RESET_LAST << NV4_PGRAPH_DEBUG_1_VOLATILE_RESET)
+    kernel_gpu->nv4.pgraph.debug_1 = (NV4_PGRAPH_DEBUG_1_VOLATILE_RESET_LAST << NV4_PGRAPH_DEBUG_1_VOLATILE_RESET)
     | (1 << NV4_PGRAPH_DEBUG_1_PATCH_INV)                                   // Patch inversion?
     | (1 << NV4_PGRAPH_DEBUG_1_TRI_OPTS)                                    // Enable triangle operations
     | (1 << NV4_PGRAPH_DEBUG_1_TRICLIP_OPTS)                                // Enable triangle clipping
@@ -61,7 +61,7 @@ bool NV4_InitGraph()
     | (1 << NV4_PGRAPH_DEBUG_1_RCLAMP)                                      // Clamp R(?) coordinates
     | (1 << NV4_PGRAPH_DEBUG_1_DX6_2PIXMODE);                               // NVidia drivers only enable this on NV5. Check if it causes errata
     
-    kernel_gpu->nv4_pgraph.debug_2 = (1 << NV4_PGRAPH_DEBUG_2_PINGPONG)     // ?????????????????????????????????
+    kernel_gpu->nv4.pgraph.debug_2 = (1 << NV4_PGRAPH_DEBUG_2_PINGPONG)     // ?????????????????????????????????
     | (NV4_PGRAPH_DEBUG_2_ZBUF_SEQ_AUTO << NV4_PGRAPH_DEBUG_2_ZBUF_SEQ)     // Z buffer order
     | (1 << NV4_PGRAPH_DEBUG_2_FAST_VERTEX_LOAD)                            // Better than slow I guess
     | (1 << NV4_PGRAPH_DEBUG_2_BILINEAR_3D_ENABLED)                         // Enable bilinear texture filtering
@@ -79,7 +79,7 @@ bool NV4_InitGraph()
     | (1 << NV4_PGRAPH_DEBUG_2_SPARE3);
 
     // DX3 culling mode is used by nvidia. So if it causes errors change it back - but we try to avoid compatibility modes
-    kernel_gpu->nv4_pgraph.debug_3 = (NV4_PGRAPH_DEBUG_3_CULLING_TYPE_DX5 << NV4_PGRAPH_DEBUG_3_CULLING_TYPE)
+    kernel_gpu->nv4.pgraph.debug_3 = (NV4_PGRAPH_DEBUG_3_CULLING_TYPE_DX5 << NV4_PGRAPH_DEBUG_3_CULLING_TYPE)
     | (1 << NV4_PGRAPH_DEBUG_3_CULLING)                                     // Enable culling
     | (1 << NV4_PGRAPH_DEBUG_3_FAST_DATA_STRTCH)                            // Enable fast stretched image handling
     | (1 << NV4_PGRAPH_DEBUG_3_FAST_DATA_D3D)                               // Enable fast 3D
@@ -108,10 +108,10 @@ bool NV4_InitGraph()
     // NV4 driver initialises in DX3 mode.
     Logging_Write(LOG_LEVEL_DEBUG, "NV4_InitGraph is initialising graphics hardware...\n");
 
-    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_0, kernel_gpu->nv4_pgraph.debug_0);
-    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_1, kernel_gpu->nv4_pgraph.debug_1);
-    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_2, kernel_gpu->nv4_pgraph.debug_2);
-    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_3, kernel_gpu->nv4_pgraph.debug_3);
+    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_0, kernel_gpu->nv4.pgraph.debug_0);
+    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_1, kernel_gpu->nv4.pgraph.debug_1);
+    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_2, kernel_gpu->nv4.pgraph.debug_2);
+    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_3, kernel_gpu->nv4.pgraph.debug_3);
 
 
     return true; 
@@ -120,21 +120,21 @@ bool NV4_InitGraph()
 bool NV4_ResetGraph()
 {
     /* Now reset. */
-    kernel_gpu->nv4_pgraph.debug_0 |= (1 << NV4_PGRAPH_DEBUG_0_STATE_RESET);
-    kernel_gpu->nv4_pgraph.debug_1 |= (1 << NV4_PGRAPH_DEBUG_1_DMA_ACTIVITY_CANCEL);
-    kernel_gpu->nv4_pgraph.debug_1 |= (1 << NV4_PGRAPH_DEBUG_1_VOLATILE_RESET);
+    kernel_gpu->nv4.pgraph.debug_0 |= (1 << NV4_PGRAPH_DEBUG_0_STATE_RESET);
+    kernel_gpu->nv4.pgraph.debug_1 |= (1 << NV4_PGRAPH_DEBUG_1_DMA_ACTIVITY_CANCEL);
+    kernel_gpu->nv4.pgraph.debug_1 |= (1 << NV4_PGRAPH_DEBUG_1_VOLATILE_RESET);
 
-    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_0, kernel_gpu->nv4_pgraph.debug_0);
-    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_1, kernel_gpu->nv4_pgraph.debug_1);
+    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_0, kernel_gpu->nv4.pgraph.debug_0);
+    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_1, kernel_gpu->nv4.pgraph.debug_1);
 
-    kernel_gpu->nv4_pgraph.debug_0 &= ~(1 << NV4_PGRAPH_DEBUG_0_STATE_RESET);
-    kernel_gpu->nv4_pgraph.debug_1 &= ~(1 << NV4_PGRAPH_DEBUG_1_DMA_ACTIVITY_CANCEL);
-    kernel_gpu->nv4_pgraph.debug_1 &= ~(1 << NV4_PGRAPH_DEBUG_1_VOLATILE_RESET);
+    kernel_gpu->nv4.pgraph.debug_0 &= ~(1 << NV4_PGRAPH_DEBUG_0_STATE_RESET);
+    kernel_gpu->nv4.pgraph.debug_1 &= ~(1 << NV4_PGRAPH_DEBUG_1_DMA_ACTIVITY_CANCEL);
+    kernel_gpu->nv4.pgraph.debug_1 &= ~(1 << NV4_PGRAPH_DEBUG_1_VOLATILE_RESET);
 
     /* Leave reset */
     
-    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_0, kernel_gpu->nv4_pgraph.debug_0);
-    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_1, kernel_gpu->nv4_pgraph.debug_1);
+    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_0, kernel_gpu->nv4.pgraph.debug_0);
+    NV_WriteMMIO32(NV4_PGRAPH_DEBUG_1, kernel_gpu->nv4.pgraph.debug_1);
 
     /* Reset current grobj */
 
@@ -150,4 +150,9 @@ bool NV4_ResetGraph()
     /* Load current channel here */
 
     return true;
+}
+
+void NV4_InterruptGraph()
+{
+    
 }

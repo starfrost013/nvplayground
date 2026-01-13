@@ -17,5 +17,24 @@
 
 void NV4_InterruptService()
 {
+    uint32_t intr = NV_ReadMMIO32(NV4_PMC_INTR_0);
+    uint32_t intr_en = NV_ReadMMIO32(NV4_PMC_INTR_EN_0);
 
+    if (!intr_en)
+        return;
+
+    // send the interrupt to the subsystem 
+    
+    if (intr & (1 << NV4_PMC_INTR_0_PFIFO_PENDING)
+        && intr_en & (1 << NV4_PMC_INTR_0_PFIFO_PENDING))
+    {
+        NV4_InterruptFIFO();
+    }
+
+    if (intr & (1 << NV4_PMC_INTR_0_PGRAPH_PENDING)
+        && intr_en & (1 << NV4_PMC_INTR_0_PGRAPH_PENDING))
+    {
+        NV4_InterruptGraph();
+
+    }
 }

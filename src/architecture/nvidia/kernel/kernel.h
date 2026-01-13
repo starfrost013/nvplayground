@@ -50,22 +50,15 @@ void Kernel_SetStateGraph(gpu_state state);
 
 extern nvrm_class_t nvrm_class[];
 
-/* 
-    Kernel - GPU Instance 
-    This is a separate structure because I want you to be able to run the REPL separately with none of the overhead of the RM
-*/
-typedef struct kernel_instance_s
+typedef struct kernel_instance_nv4_s
 {
-    // Cursor enable state
-    bool cursor_enable;
-    gpu_state state; 
-    
+
     struct kernel_mc_info_nv4
     {
         uint32_t enable;
         uint32_t intr;
         uint32_t intr_en;
-    } nv4_pmc;
+    } pmc;
 
     /* may have to move this out */
     struct kernel_fifo_info_nv4
@@ -78,7 +71,7 @@ typedef struct kernel_instance_s
         uint32_t ramro_size;
         uint32_t ramfc_addr;
         uint32_t ramfc_size;
-    } nv4_pfifo;
+    } pfifo;
 
     /* Graphics patch */
     struct kernel_graph_info_nv4
@@ -89,7 +82,34 @@ typedef struct kernel_instance_s
         uint32_t debug_3;
         uint32_t ctx_control;           // how to interpret object
         uint32_t channel_id;
-    } nv4_pgraph;
+    } pgraph;
+
+} kernel_instance_nv4_t;
+/* 
+    Kernel - GPU Instance 
+    This is a separate structure because I want you to be able to run the REPL separately with none of the overhead of the RM
+*/
+typedef struct kernel_instance_s
+{
+
+    //
+    // GLOBAL
+    //
+
+    // Cursor enable state
+    bool cursor_enable;
+    gpu_state state; 
+    
+    struct mode_info
+    {
+
+    } mode_info;
+
+    //
+    // GPU SPECIFIC
+    //
+    kernel_instance_nv4_t nv4;
+
 
     bool running;
 } kernel_instance_t;
