@@ -137,6 +137,8 @@ typedef struct nvhal_entry_s
 
     // KERNEL functions
     bool (*fifo_init)();
+    bool (*graph_init)();
+    bool (*graph_reset)();
 
     // RENDERING functions
     void (*submit_object)(uint32_t name, uint32_t context);

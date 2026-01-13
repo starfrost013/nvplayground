@@ -30,18 +30,22 @@ typedef struct nvrm_class_s
 typedef enum gpu_state_e
 {
     GPU_STATE_INIT = 0,                         // Gpu state is initialising
+    GPU_STATE_RESET = 1,                        // GPU needs to be reset (May rename)
     // CAN THESE BE UNIFIED? SHOULD THEY?
-    GPU_STATE_RENDER = 1,                       // Gpu is ready to render  graphics                
-    GPU_STATE_SHUTDOWN = 2,                     // GPU is shutting down
-    GPU_STATE_MODE_SWITCH = 3,                  // GPU is modeswitching 
-    GPU_STATE_CRASHED = 4,                      // GPU crashed
+    GPU_STATE_RENDER = 2,                       // Gpu is ready to render graphics                
+    GPU_STATE_SHUTDOWN = 3,                     // GPU is shutting down
+    GPU_STATE_MODE_SWITCH = 4,                  // GPU is modeswitching 
+    GPU_STATE_CRASHED = 5,                      // GPU crashed
     GPU_STATE_LAST = GPU_STATE_CRASHED + 1,     // GPU last state for debug code below
 } gpu_state; 
 
+void Kernel_Main();                             // GPU driver main function
+void Kernel_Fatal(const char* err);             // Triggered upon entry into an unrecoverable error condition.
+void Kernel_SetState(gpu_state state);          // State transition
 
-void KernelSetStateGpu(gpu_state state);
-void KernelSetStateFifo(gpu_state state);
-void KernelMain();
+// State transitions
+void Kernel_SetStateFifo(gpu_state state);
+void Kernel_SetStateGraph(gpu_state state);
 
 extern nvrm_class_t nvrm_class[];
 
@@ -60,8 +64,8 @@ typedef struct kernel_instance_s
         uint32_t enable;
         uint32_t intr;
         uint32_t intr_en;
+    } nv4_pmc;
 
-    };
     /* may have to move this out */
     struct kernel_fifo_info_nv4
     {
@@ -73,9 +77,19 @@ typedef struct kernel_instance_s
         uint32_t ramro_size;
         uint32_t ramfc_addr;
         uint32_t ramfc_size;
-    };
+    } nv4_pfifo;
 
-    struct kernel_fifo_info_nv4 nv4_fifo;
+    /* Graphics patch */
+    struct kernel_graph_info_nv4
+    {
+        uint32_t debug_0;
+        uint32_t debug_1;
+        uint32_t debug_2;
+        uint32_t debug_3;
+        uint32_t ctx_control;           // how to interpret object
+        uint32_t channel_id;
+    } nv4_pgraph;
+
 } kernel_instance_t;
 
-extern kernel_instance_t* kernel_gpu ;
+extern kernel_instance_t* kernel_gpu;

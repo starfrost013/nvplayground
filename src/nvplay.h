@@ -153,17 +153,20 @@ void NVPlay_DetectOS();
 bool NVPlay_ParseCmdline(int argc, char** argv);
 
 /* Exit codes (8 bit  only for MS-DOS )*/ 
-#define NVPLAY_EXIT_CODE_SUCCESS			0			// Normal exit	
-#define NVPLAY_EXIT_CODE_NO_PCI				1			// Computer too old - No PCI BIOS 2.0
-#define NVPLAY_EXIT_CODE_UNSUPPORTED_GPU	2			// Unsupported GPU
-#define NVPLAY_EXIT_CODE_CONFIG_LOAD_FAIL	3			// Configuration load failure
-#define NVPLAY_EXIT_CODE_UNIMPLEMENTED_GPU	4			// GPU will be supported in the future
-#define NVPLAY_EXIT_CODE_NO_GPU_INIT		5			// No GPU initialisation function
-#define NVPLAY_EXIT_CODE_NO_TESTS			6			// Nothing to do
-#define NVPLAY_EXIT_CODE_LOG_INIT_FAIL		7			// Failed to initialise logging engine
-#define NVPLAY_EXIT_CODE_HELP_MENU			8			// Help menu	
-#define NVPLAY_EXIT_CODE_UNSUPPORTED_OS		9			// Operating system not supported
-#define NVPLAY_EXIT_CODE_UNKNOWN_FATAL		0x67		// 6-7
+#define NVPLAY_EXIT_CODE_SUCCESS			                0			// Normal exit	
+#define NVPLAY_EXIT_CODE_NO_PCI				                1			// Computer too old - No PCI BIOS 2.0
+#define NVPLAY_EXIT_CODE_UNSUPPORTED_GPU	                2			// Unsupported GPU
+#define NVPLAY_EXIT_CODE_CONFIG_LOAD_FAIL	                3			// Configuration load failure
+#define NVPLAY_EXIT_CODE_UNIMPLEMENTED_GPU	                4			// GPU will be supported in the future
+#define NVPLAY_EXIT_CODE_NO_GPU_INIT		                5			// No GPU initialisation function
+#define NVPLAY_EXIT_CODE_NO_TESTS			                6			// Nothing to do
+#define NVPLAY_EXIT_CODE_LOG_INIT_FAIL		                7			// Failed to initialise logging engine
+#define NVPLAY_EXIT_CODE_HELP_MENU			                8			// Help menu	
+#define NVPLAY_EXIT_CODE_UNSUPPORTED_OS		                9			// Operating system not supported
+#define NVPLAY_EXIT_CODE_KERNEL_INIT_FAILED                 10          // Kernel initialisation failed
+#define NVPLAY_EXIT_CODE_KERNEL_STATE_TRANSITION_FAILED     11          // Kernel state transition failed
+#define NVPLAY_EXIT_CODE_KERNEL_ENTERED_CRASHED_STATE       12          // Kernel entered crashed stated
+#define NVPLAY_EXIT_CODE_UNKNOWN_FATAL		                0x67		// 6-7
 
 /* Video & System BIOS */
 

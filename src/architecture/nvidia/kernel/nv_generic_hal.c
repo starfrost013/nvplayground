@@ -32,6 +32,8 @@ nvhal_entry_t nvhal_nv1 =
 
     // Kernel functions
     NULL,                           // FIFO init
+    NULL,                           // PGRAPH init
+    NULL,                           // PGRAPH reset
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel
 }; 
@@ -52,6 +54,8 @@ nvhal_entry_t nvhal_nv3 =
 
     // Kernel functions
     NULL,                           // FIFO init
+    NULL,                           // PGRAPH init
+    NULL,                           // PGRAPH reset
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
@@ -71,7 +75,9 @@ nvhal_entry_t nvhal_nv4 =
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file (similar enough to nv3)
 
     // Kernel functions
-    NULL,                           // FIFO init
+    NV4_InitFIFO,                   // FIFO init
+    NV4_InitGraph,                  // PGRAPH init
+    NV4_ResetGraph,                 // PGRAPH reset
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
@@ -92,6 +98,8 @@ nvhal_entry_t nvhal_celsius =
 
     // Kernel functions
     NULL,                           // FIFO init
+    NULL,                           // PGRAPH init
+    NULL,                           // PGRAPH reset
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
@@ -112,6 +120,8 @@ nvhal_entry_t nvhal_virge =
 
     // Kernel functions
     NULL,                           // FIFO init
+    NULL,                           // PGRAPH init
+    NULL,                           // PGRAPH reset
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };
@@ -132,6 +142,8 @@ nvhal_entry_t nvhal_alpine =
 
     // Kernel functions
     NULL,                           // FIFO init
+    NULL,                           // PGRAPH init
+    NULL,                           // PGRAPH reset
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };

@@ -1196,6 +1196,7 @@
 #define NV4_PGRAPH_DEBUG_2_SPARE7                                 10 
 #define NV4_PGRAPH_DEBUG_2_MCLK_RECTS                             11 
 #define NV4_PGRAPH_DEBUG_2_MCLK_RECTS_ENABLED             		 0x1 
+#define NV4_PGRAPH_DEBUG_2_BILINEAR_3D                     		  12
 #define NV4_PGRAPH_DEBUG_2_BILINEAR_3D_ENABLED            		 0x1 
 #define NV4_PGRAPH_DEBUG_2_ANISOTROPIC_3D                         13 
 #define NV4_PGRAPH_DEBUG_2_ANISOTROPIC_3D_ENABLED         		 0x1 

@@ -10,17 +10,22 @@
 
 #include <architecture/nvidia/kernel/kernel.h>
 #include "core/gpu/gpu.h"
+#include "nvplay.h"
 #include "util/util.h"
 
-void KernelSetStateFifo(gpu_state state)
+void Kernel_SetStateFifo(gpu_state state)
 {
     switch (state)
     {
         case GPU_STATE_INIT:
-            kernel_gpu = calloc(1, sizeof(kernel_instance_t));
-
-            
+            if (!current_device.device_info.hal->fifo_init)
+                Kernel_Fatal("KernelSetStateFifo: No FIFO initialisation function for the current GPU");
+           
             Logging_Write(LOG_LEVEL_DEBUG, "GPU Kernel: Initialising PFIFO...\n");
+
+            if (!current_device.device_info.hal->fifo_init())
+                Kernel_Fatal("KernelSetStateFifo: Failed to initialise PFIFO");
+            
             break; 
         default:
             break;

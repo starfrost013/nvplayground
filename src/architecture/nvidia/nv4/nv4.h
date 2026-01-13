@@ -23,5 +23,9 @@ bool NV4_Init();
 bool NV4_DumpMFGInfo();
 void NV4_Shutdown(); 
 
-// NV4 FIFO
-void NV4_InitFIFO();
+// NV4 PFIFO
+bool NV4_InitFIFO();
+
+// NV4 PGRAPH
+bool NV4_InitGraph();
+bool NV4_ResetGraph();

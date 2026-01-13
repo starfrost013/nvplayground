@@ -9,7 +9,8 @@
 */
 
 #include <architecture/nvidia/kernel/kernel.h>
-#include "core/gpu/gpu.h"
+#include "core/gpu/gpu.h" 
+#include "nvplay.h"
 #include "util/util.h"
 
 kernel_instance_t* kernel_gpu = NULL;
@@ -19,6 +20,7 @@ kernel_instance_t* kernel_gpu = NULL;
 const char* debug_state_names[GPU_STATE_LAST] = 
 {
     "GPU_STATE_INIT",
+    "GPU_STATE_RESET",
     "GPU_STATE_RENDER",
     "GPU_STATE_SHUTDOWN",
     "GPU_STATE_MODE_SWITCH",
@@ -26,7 +28,7 @@ const char* debug_state_names[GPU_STATE_LAST] =
 };
 #endif
 
-void KernelSetStateGpu(gpu_state state)
+void Kernel_SetState(gpu_state state)
 {
 #ifdef DEBUG
     Logging_Write(LOG_LEVEL_DEBUG, "GPU Kernel/RM is transitioning to state %s", debug_state_names[state]);
@@ -36,19 +38,40 @@ void KernelSetStateGpu(gpu_state state)
     {
         case GPU_STATE_INIT:
             kernel_gpu = calloc(1, sizeof(kernel_instance_t));
-
-            current_device.device_info.hal->fifo_init();
             break;
+        case GPU_STATE_RESET:
+        case GPU_STATE_SHUTDOWN:
+            break; 
         default:
-            Logging_Write(LOG_LEVEL_ERROR, "Kernel: INVALID gpu state %d\n", state);
+            Logging_Write(LOG_LEVEL_ERROR, "Kernel: INVALID GPU state %d\n", state);
             return; // skip
     }
 
-    KernelSetStateFifo(state);
-    
+    Kernel_SetStateFifo(state);
+    Kernel_SetStateGraph(state);
+
+    /* We have to init kerenl_gpu before subsystem init free kernel_gpu after all subsytems have shut down */
+
+    if (state == GPU_STATE_SHUTDOWN)
+        free(kernel_gpu);
 }
 
-void KernelMain()
+void Kernel_Main()
 {
+    Kernel_SetState(GPU_STATE_INIT);
 
+    /* If we are initialising we have to reset */
+    Kernel_SetState(GPU_STATE_RESET);
+}
+
+/* Triggered upon entry into an unrecoverable error condition. */
+void Kernel_Fatal(const char* err)
+{
+    Logging_Write(LOG_LEVEL_ERROR, "******* GPU Driver Kernel reported FATAL ERROR: *******\n");
+    Logging_Write(LOG_LEVEL_ERROR, "%s\n", err);
+    Logging_Write(LOG_LEVEL_ERROR, "******* A recovery will be attempted. However, success cannot be guaranteed."
+        "It is recommended to reboot your system. *******\n");
+
+    Kernel_SetState(GPU_STATE_SHUTDOWN);
+    NVPlay_Shutdown(NVPLAY_EXIT_CODE_KERNEL_ENTERED_CRASHED_STATE);
 }
