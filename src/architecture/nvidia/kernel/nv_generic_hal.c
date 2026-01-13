@@ -29,14 +29,6 @@ nvhal_entry_t nvhal_nv1 =
     NULL,                           // Dump RAMFC to text file
     NULL,                           // Dump RAMRO to text file
     NULL,                           // Dump PGRAPH_CACHE to text file
-
-    // Kernel functions
-    NULL,                           // Service interrupts
-    NULL,                           // FIFO init
-    NULL,                           // PGRAPH init
-    NULL,                           // PGRAPH reset
-    NULL,                           // Submit object in subchannel
-    NULL,                           // Submit method for existing subchannel
 }; 
 
 
@@ -53,13 +45,6 @@ nvhal_entry_t nvhal_nv3 =
     NV3_DumpRAMRO,                  // Dump RAMRO to text file
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file
 
-    // Kernel functions
-    NULL,                           // Service interrupts
-    NULL,                           // FIFO init
-    NULL,                           // PGRAPH init
-    NULL,                           // PGRAPH reset
-    NULL,                           // Submit object in subchannel
-    NULL,                           // Submit method for existing subchannel 
 };
 
 // NV4-based GPU (NV4/NV5/NV6) HAL
@@ -76,13 +61,6 @@ nvhal_entry_t nvhal_nv4 =
     NULL,                           // Dump RAMRO to text file
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file (similar enough to nv3)
 
-    // Kernel functions
-    NV4_InterruptService,           // Service interrupts
-    NV4_InitFIFO,                   // FIFO init
-    NV4_InitGraph,                  // PGRAPH init
-    NV4_ResetGraph,                 // PGRAPH reset
-    NULL,                           // Submit object in subchannel
-    NULL,                           // Submit method for existing subchannel 
 };
 
 // Celsius (NV1x) HAL
@@ -98,14 +76,6 @@ nvhal_entry_t nvhal_celsius =
     NULL,                           // Dump RAMFC to text file
     NULL,                           // Dump RAMRO to text file
     NULL,                           // Dump PGRAPH_CACHE to text file
-
-    // Kernel functions
-    NULL,                           // Service interrupts
-    NULL,                           // FIFO init
-    NULL,                           // PGRAPH init
-    NULL,                           // PGRAPH reset
-    NULL,                           // Submit object in subchannel
-    NULL,                           // Submit method for existing subchannel 
 };
 
 // S3 ViRGE test hal
@@ -122,13 +92,6 @@ nvhal_entry_t nvhal_virge =
     NULL,                           // Dump RAMRO to text file
     NULL,                           // Dump PGRAPH_CACHE to text file
 
-    // Kernel functions
-    NULL,                           // Service interrupts
-    NULL,                           // FIFO init
-    NULL,                           // PGRAPH init
-    NULL,                           // PGRAPH reset
-    NULL,                           // Submit object in subchannel
-    NULL,                           // Submit method for existing subchannel 
 };
 
 // Cirrus Logic "Alpine" test hal
@@ -145,10 +108,4 @@ nvhal_entry_t nvhal_alpine =
     NULL,                           // Dump RAMRO to text file
     NULL,                           // Dump PGRAPH_CACHE to text file
 
-    // Kernel functions
-    NULL,                           // FIFO init
-    NULL,                           // PGRAPH init
-    NULL,                           // PGRAPH reset
-    NULL,                           // Submit object in subchannel
-    NULL,                           // Submit method for existing subchannel 
 };

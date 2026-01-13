@@ -2,10 +2,10 @@
 cmake_minimum_required(VERSION 3.26)
 
 # Version information
-set(NVPLAY_VERSION_MAJOR 2)
-set(NVPLAY_VERSION_MINOR 0)
+set(NVPLAY_VERSION_MAJOR 1)
+set(NVPLAY_VERSION_MINOR 1)
 set(NVPLAY_VERSION_REVISION 0)
-set(NVPLAY_VERSION_STATE "pre-release")
+set(NVPLAY_VERSION_STATE "beta")
 
 set(HEADER_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../src/cmake/nvplay_version.h")
 set(CACHE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../src/cmake/nvplay_build.txt")

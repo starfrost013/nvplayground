@@ -1,4 +1,4 @@
-NVPlay 2.0.0 is now available.
+NVPlay 1.1.0 is now available.
 
 Release notes:
 	* Large refactor of main.c. define exit codes, always call nvplay_shutdown

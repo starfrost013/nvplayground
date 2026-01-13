@@ -134,16 +134,7 @@ typedef struct nvhal_entry_s
     void (*dump_ramfc_to_text_file)(FILE* stream);
     void (*dump_ramro_to_text_file)(FILE* stream);
     void (*dump_cache_to_text_file)(FILE* stream);
-
-    // KERNEL functions
-    void (*interrupt_service)();
-    bool (*fifo_init)();
-    bool (*graph_init)();
-    bool (*graph_reset)();
-
-    // RENDERING functions
-    void (*submit_object)(uint32_t name, uint32_t context);
-    void (*submit_method)(uint32_t method, uint32_t param);
+    
 } nvhal_entry_t;   
 
 /* Graphics Device Definition */

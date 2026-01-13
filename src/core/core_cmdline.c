@@ -25,7 +25,6 @@
 #define COMMAND_LINE_BOOTONLY_FULL              "-bootonly"
 #define COMMAND_LINE_DUMBCONSOLE                "-d"
 #define COMMAND_LINE_DUMBCONSOLE_FULL           "-dumbconsole"
-#define COMMAND_LINE_KERNEL_TEST                "-kerneltest"
 
 // C23 constexpr pls
 #define ARG_LEFT    argc - i < 1
@@ -90,10 +89,6 @@ bool NVPlay_ParseCmdline(int argc, char** argv)
             // Maybe make it so we can load custom INI files?
             nvplay_state.config.dumb_console = true; 
         }  
-        else if (!strcasecmp(current_arg, COMMAND_LINE_KERNEL_TEST))
-        {
-            nvplay_state.run_mode = NVPLAY_MODE_KERNEL_TEST;
-        }
     }
 
     return true; 

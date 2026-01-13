@@ -58,15 +58,8 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/script/script_parser.c"
 
 # Architecture: kernel/Shared
-
-# Resource Manager
-"src/architecture/nvidia/kernel/core/kernel.c"
-"src/architecture/nvidia/kernel/fifo/fifo.c"
-"src/architecture/nvidia/kernel/graph/graph.c"
-
 "src/architecture/nvidia/kernel/nv_generic_hal.c"
 "src/architecture/nvidia/kernel/nv_generic_tests.c"
-"src/architecture/nvidia/kernel/nvrm_class_names.c"
 
 # Architecture: NV1
 "src/architecture/nvidia/nv1/nv1_core.c"
@@ -80,9 +73,6 @@ file(GLOB sources CONFIGURE_DEPENDS
 
 # Architecture: NV4/5  
 "src/architecture/nvidia/nv4/nv4_core.c"
-"src/architecture/nvidia/nv4/nv4_fifo.c"
-"src/architecture/nvidia/nv4/nv4_graph.c"
-"src/architecture/nvidia/nv4/nv4_intr.c"
 
 # Architecture: Celsius
 "src/architecture/nvidia/nv10/nv10_core.c"

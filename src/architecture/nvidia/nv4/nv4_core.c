@@ -115,7 +115,6 @@ bool NV4_Init()
     NV_WriteMMIO32(NV4_PRAMDAC_MPLL_COEFF, current_device.mpll);
     NV_WriteMMIO32(NV4_PRAMDAC_VPLL_COEFF, current_device.vpll);
 
-
     return true; 
 }
 
