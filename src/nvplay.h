@@ -69,6 +69,7 @@ typedef enum nvplay_run_mode_e
 	NVPLAY_MODE_REPLAY = 2,			// Run "GPU replay" file [FUTURE]
 	NVPLAY_MODE_BOOTGPU = 3,		// Initialise graphics hardware and exit
 	NVPLAY_MODE_HELP = 4,			// Print help and exit
+    NVPLAY_MODE_KERNEL_TEST = 5,    // GPU driver test mode
 	// Should help be a mode?
 	// Dry run is not a mode - it's a variant of TESTS mode, same for all tests
 } nvplay_run_mode;
