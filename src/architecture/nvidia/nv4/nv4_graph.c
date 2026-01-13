@@ -148,4 +148,6 @@ bool NV4_ResetGraph()
     /* Enable FIFO access */
     NV_WriteMMIO32(NV4_PGRAPH_FIFO, NV4_PGRAPH_FIFO_ACCESS_ENABLED);
     /* Load current channel here */
+
+    return true;
 }

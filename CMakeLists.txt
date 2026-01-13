@@ -62,6 +62,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 # Resource Manager
 "src/architecture/nvidia/kernel/core/kernel.c"
 "src/architecture/nvidia/kernel/fifo/fifo.c"
+"src/architecture/nvidia/kernel/graph/graph.c"
 
 "src/architecture/nvidia/kernel/nv_generic_hal.c"
 "src/architecture/nvidia/kernel/nv_generic_tests.c"
@@ -80,6 +81,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 # Architecture: NV4/5  
 "src/architecture/nvidia/nv4/nv4_core.c"
 "src/architecture/nvidia/nv4/nv4_fifo.c"
+"src/architecture/nvidia/nv4/nv4_graph.c"
 
 # Architecture: Celsius
 "src/architecture/nvidia/nv10/nv10_core.c"
