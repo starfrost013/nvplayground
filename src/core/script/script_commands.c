@@ -531,6 +531,10 @@ bool Command_WriteARRange()
 // maybe it requires a device plugged in
 bool Command_NV3Explode()
 {
+    /* No need */
+    if (GPU_IsNV1())
+        return true; 
+
     // Check the pci vendor 
     if (current_device.real_device_id == PCI_DEVICE_NV3
     || current_device.real_device_id == PCI_DEVICE_NV3T_ACPI)

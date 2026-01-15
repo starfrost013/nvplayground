@@ -59,6 +59,8 @@
 #define PCI_DEVICE_NV1A				0x01A0		// GeForce 2 IGP			~2000
 #define PCI_DEVICE_NV1F				0x01F0		// GeForce 4 MX IGP			2002
 
+#define PCI_DEVICE_XBOX             0x02A0      // Xbox                     2001 (NV2A)
+
 // Test to see how plausible non-NVidia hardware is
 #define PCI_VENDOR_S3               0x5333      // S3 Graphics, Inc.
 #define PCI_DEVICE_VIRGE_325        0x5631      // ViRGE                    1996
@@ -168,6 +170,7 @@ typedef struct nv_device_pci_s
 	void* bar1;						// PCI BAR1 mapping for DFB
 	int32_t bar0_selector;			// MUST BE USED FOR ACCESS TO BAR0
 	int32_t bar1_selector;			// MUST BE USED FOR ACCESS TO BAR1
+	int32_t bar2_selector;			// MUST BE USED FOR ACCESS TO BAR2
 
 } nv_device_bus_t;
 

@@ -20,10 +20,10 @@
 | (NV4_PGRAPH_CTX_CONTROL_SWITCHING_IDLE << NV4_PGRAPH_CTX_CONTROL_SWITCHING) \
 | (NV4_PGRAPH_CTX_CONTROL_DEVICE_ENABLED << NV4_PGRAPH_CTX_CONTROL_DEVICE)
 
+#include "nvplay.h"
 
 #include "core/gpu/gpu.h"
 #include "nv4_ref.h"
-#include "nvplay.h"
 #include "util/util.h"
 
 #include <architecture/nvidia/kernel/kernel.h>
@@ -113,7 +113,6 @@ bool NV4_InitGraph()
     NV_WriteMMIO32(NV4_PGRAPH_DEBUG_2, kernel_gpu->nv4.pgraph.debug_2);
     NV_WriteMMIO32(NV4_PGRAPH_DEBUG_3, kernel_gpu->nv4.pgraph.debug_3);
 
-
     return true; 
 }
 
@@ -154,5 +153,6 @@ bool NV4_ResetGraph()
 
 void NV4_InterruptGraph()
 {
-    
+    uint32_t intr = NV_ReadMMIO32(NV4_PGRAPH_INTR);
+    uint32_t intr_en = NV_ReadMMIO32(NV4_PGRAPH_INTR_EN);
 }
