@@ -27,7 +27,7 @@
 #include <stdlib.h>
 
 #define MSG_OUT_OF_BOUNDS           "Error: Address %lx out of bounds!\n"
-#define MSG_OUT_OF_BOUNDS_RANGE     "Error: Address %lx out of bounds!\n"
+#define MSG_OUT_OF_BOUNDS_RANGE     "Error: Address %lx-%lx range is at least partially out of bounds!\n"
 
 // bad
 char** cmd_endptr;
@@ -198,7 +198,7 @@ bool Command_ReadVRAMConsole8()
         Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
         return false; 
     }
-    
+
     uint8_t value = NV_ReadDfb8(offset);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadVRAMConsole8: %03x = %02x\n", offset, value);
