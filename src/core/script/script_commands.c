@@ -15,9 +15,10 @@
 
 #include <stdio.h>
 
-#include "architecture/nvidia/nv3/nv3.h"
-#include "architecture/nvidia/nv3/nv3_ref.h"
-#include <cmake/nvplay_version.h>
+#include <architecture/nvidia/nv1/nv1.h>
+#include <architecture/nvidia/nv3/nv3.h>
+#include <architecture/nvidia/nv3/nv3_ref.h>
+#include <architecture/nvidia/nv4/nv4.h>
 #include "core/gpu/gpu.h"
 #include "core/script/script.h"
 #include "script.h"
@@ -25,13 +26,41 @@
 #include <nvplay.h>
 #include <stdlib.h>
 
+#define MSG_OUT_OF_BOUNDS           "Error: Address %lx out of bounds!\n"
+#define MSG_OUT_OF_BOUNDS_RANGE     "Error: Address %lx-%lx range is at least partially out of bounds!\n"
+
 // bad
 char** cmd_endptr;
+
+/* We don't implement these checks inside the NV_* functions because these functions need to be as fast as possible */
+bool Command_MMIOBoundsCheck(uint32_t addr)
+{
+    uint32_t mmio_max = 0;
+
+    if (GPU_IsNV1())
+        mmio_max = NV1_PCI_BAR0_SIZE;
+    else
+        mmio_max = NV4_MMIO_SIZE;
+
+    return (addr >= mmio_max);
+
+}
+
+bool Command_VRAMBoundsCheck(uint32_t addr)
+{
+    return (addr >= current_device.vram_amount);
+}
 
 bool Command_WriteMMIO8()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
+
+    if (!Command_MMIOBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
 
     NV_WriteMMIO8(offset, value);
     return true; 
@@ -42,6 +71,14 @@ bool Command_WriteMMIORange8()
     uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    if (!Command_MMIOBoundsCheck(offset_start)
+    || !Command_MMIOBoundsCheck(offset_end))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS_RANGE, 
+            offset_start, offset_end);
+        return false; 
+    }
 
     for (uint32_t offset = offset_start; offset < offset_end; offset++)
         NV_WriteMMIO8(offset, value);
@@ -54,6 +91,12 @@ bool Command_ReadMMIOConsole8()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
+    if (!Command_MMIOBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadMMIOConsole8: %02x = %02x\n", offset, value);
     return true; 
 }
@@ -63,7 +106,13 @@ bool Command_WriteMMIO32()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
- 
+
+    if (!Command_MMIOBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+     
     Logging_Write(LOG_LEVEL_DEBUG, "Command_WriteMMIO32 %s:%08x %s:%08x\n", Command_Argv(1), offset, Command_Argv(2), value);
 
     NV_WriteMMIO32(offset, value);
@@ -75,6 +124,12 @@ bool Command_ReadMMIOConsole32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = NV_ReadMMIO32(offset);
 
+    if (!Command_MMIOBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+    
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadMMIOConsole32: %08x = %08x\n", offset, value);
     return true; 
 }
@@ -84,6 +139,14 @@ bool Command_WriteMMIORange32()
     uint32_t offset_start = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
+
+    if (!Command_MMIOBoundsCheck(offset_start)
+    || !Command_MMIOBoundsCheck(offset_end))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS_RANGE, 
+            offset_start, offset_end);
+        return false; 
+    }
 
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
         NV_WriteMMIO32(offset, value);
@@ -96,6 +159,12 @@ bool Command_WriteVRAM8()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
+    if (!Command_VRAMBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+    
     NV_WriteDfb8(offset, value);
     return true; 
 }
@@ -106,6 +175,14 @@ bool Command_WriteVRAMRange8()
     uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
+    if (!Command_VRAMBoundsCheck(offset_start)
+    || !Command_VRAMBoundsCheck(offset_end))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS_RANGE, 
+            offset_start, offset_end);
+        return false; 
+    }
+
     for (uint32_t offset = offset_start; offset < offset_end; offset++)
         NV_WriteDfb8(offset, value);
 
@@ -115,6 +192,13 @@ bool Command_WriteVRAMRange8()
 bool Command_ReadVRAMConsole8()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (!Command_VRAMBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+
     uint8_t value = NV_ReadDfb8(offset);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadVRAMConsole8: %03x = %02x\n", offset, value);
@@ -126,6 +210,12 @@ bool Command_WriteVRAM16()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
+    if (!Command_VRAMBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+
     NV_WriteDfb16(offset, value);
     return true; 
 }
@@ -136,6 +226,14 @@ bool Command_WriteVRAMRange16()
     uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
+    if (!Command_VRAMBoundsCheck(offset_start)
+    || !Command_VRAMBoundsCheck(offset_end))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS_RANGE, 
+            offset_start, offset_end);
+        return false; 
+    }
+
     for (uint32_t offset = offset_start; offset < offset_end; offset += 2)
         NV_WriteDfb16(offset, value);
 
@@ -145,6 +243,13 @@ bool Command_WriteVRAMRange16()
 bool Command_ReadVRAMConsole16()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (!Command_VRAMBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+
     uint16_t value = NV_ReadDfb16(offset);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadVRAMConsole16: %04x = %04x\n", offset, value);
@@ -156,6 +261,12 @@ bool Command_WriteVRAM32()
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(2), cmd_endptr, 16);
 
+    if (!Command_VRAMBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+
     NV_WriteDfb32(offset, value);    
     return true; 
 }
@@ -166,6 +277,14 @@ bool Command_WriteVRAMRange32()
     uint32_t offset_end = strtol(Command_Argv(2), cmd_endptr, 16);
     uint32_t value = strtol(Command_Argv(3), cmd_endptr, 16);
 
+    if (!Command_VRAMBoundsCheck(offset_start)
+    || !Command_VRAMBoundsCheck(offset_end))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS_RANGE, 
+            offset_start, offset_end);
+        return false; 
+    }
+
     for (uint32_t offset = offset_start; offset < offset_end; offset += 4)
         NV_WriteDfb32(offset, value);
 
@@ -175,6 +294,13 @@ bool Command_WriteVRAMRange32()
 bool Command_ReadVRAMConsole32()
 {
     uint32_t offset = strtol(Command_Argv(1), cmd_endptr, 16);
+
+    if (!Command_VRAMBoundsCheck(offset))
+    {
+        Logging_Write(LOG_LEVEL_ERROR, MSG_OUT_OF_BOUNDS, offset);
+        return false; 
+    }
+
     uint32_t value = NV_ReadDfb32(offset);
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Command_ReadVRAMConsole32: %08x = %08x\n", offset, value);
