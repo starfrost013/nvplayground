@@ -24,6 +24,7 @@
 #include "script.h"
 #include "util/util.h"
 #include <nvplay.h>
+#include <cmake/nvplay_version.h>
 #include <stdlib.h>
 
 #define MSG_OUT_OF_BOUNDS           "Error: Address %lx out of bounds!\n"
