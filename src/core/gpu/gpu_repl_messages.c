@@ -23,7 +23,7 @@ const char* not_really_funny_messages[] =
     "Also try https://github.com/Wack0/entii-for-workcubes",
     "Sue This!",
     "\"Fuck you, Nvidia!\"",
-    "Time Wasted Reverse Engineering: \%d (Don't worry, it won't get any less annoying)",
+    "Time Wasted Reverse Engineering: %%d (Don't worry, it won't get any less annoying)",
     "Also try going outside!",
     "Why don't we just go in there and shoot all the motherfuckers between us and the emulation?",
     "Now announcing ATiPlay",
