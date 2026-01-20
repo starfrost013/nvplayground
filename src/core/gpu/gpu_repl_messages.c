@@ -12,7 +12,7 @@
 const char* not_really_funny_messages[] = 
 {
     "OVER 99 BILLION CRASHES SERVED",
-    "Cunnilingus and psychiatry brought us to this",
+    "\"Cunnilingus and psychiatry brought us to this\" - Tony Soprano",
     "Exiting due to signal SIGSEGV\nPage fault at eip=06769420, error=0006\neax=Ha ha just kidding...Bye bye!",
     "Better than Season 8...",
     "Easier than Tubular",
