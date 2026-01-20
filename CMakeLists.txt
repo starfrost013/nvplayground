@@ -48,6 +48,7 @@ file(GLOB sources CONFIGURE_DEPENDS
 "src/core/gpu/gpu_list.c"
 "src/core/gpu/gpu_io.c"
 "src/core/gpu/gpu_repl.c"
+"src/core/gpu/gpu_repl_messages.c"
 
 # Core: Tests
 "src/core/tests/tests.c"

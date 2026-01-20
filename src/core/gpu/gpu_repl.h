@@ -22,4 +22,8 @@ typedef struct repl_command_history_entry_s
 extern int32_t command_history_id;
 extern repl_command_history_entry_t command_history[MAX_COMMAND_HISTORY];
 
+extern const char* not_really_funny_messages[];
+
+// It's a good idea to increase this or use C++
+#define FUNNY_MESSAGE_COUNT         21
 void NVPlay_Repl(); 

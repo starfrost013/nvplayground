@@ -101,6 +101,7 @@ void NVPlay_Repl()
 
     Logging_Write(LOG_LEVEL_MESSAGE, "Welcome to NVPlay\n");
     Logging_Write(LOG_LEVEL_MESSAGE, "Enter commands to interface with the GPU. Type ? or help for help. Type q or exit to exit.\n");
+    Logging_Write(LOG_LEVEL_MESSAGE, not_really_funny_messages[rand() % FUNNY_MESSAGE_COUNT]);
 
     while (repl_is_running)
     {
