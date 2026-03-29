@@ -31,3 +31,4 @@ extern const char* nv1_class_names[];
 bool NV1_Init();
 bool NV1_PrintMFGInfo();
 bool NV1_BreachSecurity();
+bool NV1_DumpEEPROM();

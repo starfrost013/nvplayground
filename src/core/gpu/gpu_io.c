@@ -98,7 +98,8 @@ uint32_t NV_ReadRamin32(uint32_t offset)
     {
         // RAMIN not usable on NV1 with CONFIG=2 due to hardware errata, see envytools
         case PCI_DEVICE_NV1_NV:
-            return _farpeekl(current_device.bus_info.bar0_selector, NV1_RAMIN_START + offset);
+            // This needs to be 
+            return _farpeekl(current_device.bus_info.bar0_selector, NV1_PRAMIN + offset);
         case PCI_DEVICE_NV3:
         case PCI_DEVICE_NV3T_ACPI:
             return _farpeekl(current_device.bus_info.bar1_selector, NV3_RAMIN_START + offset);
@@ -126,7 +127,7 @@ void NV_WriteRamin32(uint32_t offset, uint32_t val)
     {
         // RAMIN not usable on NV1 with CONFIG=2 due to hardware errata, see envytools
         case PCI_DEVICE_NV1_NV:
-            _farpokel(current_device.bus_info.bar0_selector, NV1_RAMIN_START + offset, val);
+            _farpokel(current_device.bus_info.bar0_selector, NV1_PRAMIN + offset, val);
             break;
         case PCI_DEVICE_NV3:
         case PCI_DEVICE_NV3T_ACPI:

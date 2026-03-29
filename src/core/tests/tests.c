@@ -22,28 +22,28 @@
 nv_test_t nv_tests[] = 
 {
     // Generic tests
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpPCI", "NV Generic - Dump PCI", NVGeneric_DumpPCISpace},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpMMIO", "NV Generic - Dump MMIO", NVGeneric_DumpMMIO},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpVBIOS", "NV Generic - Dump VBIOS", NVGeneric_DumpVBIOS},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpFIFO", "NV Generic - Dump FIFO State", NVGeneric_DumpFIFO},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMHT", "NV Generic - Dump RAMHT", NVGeneric_DumpRAMHT},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMFC", "NV Generic - Dump RAMFC", NVGeneric_DumpRAMFC},
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMRO", "NV Generic - Dump RAMRO", NVGeneric_DumpRAMRO}, 
-    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpCACHE", "NV Generic - Dump on-die cache", NVGeneric_DumpPGRAPHCache}, 
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpPCI", "NV Generic - Dump PCI", NVGeneric_DumpPCISpace },
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpMMIO", "NV Generic - Dump MMIO", NVGeneric_DumpMMIO },
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpVBIOS", "NV Generic - Dump VBIOS", NVGeneric_DumpVBIOS },
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpFIFO", "NV Generic - Dump FIFO State", NVGeneric_DumpFIFO },
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMHT", "NV Generic - Dump RAMHT", NVGeneric_DumpRAMHT },
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMFC", "NV Generic - Dump RAMFC", NVGeneric_DumpRAMFC },
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpRAMRO", "NV Generic - Dump RAMRO", NVGeneric_DumpRAMRO }, 
+    { PCI_VENDOR_GENERIC, PCI_DEVICE_GENERIC, "NV_DumpCACHE", "NV Generic - Dump on-die cache", NVGeneric_DumpPGRAPHCache }, 
 
     // NV1 has two vendor ids
-    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", NV1_PrintMFGInfo},
-    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", NV1_PrintMFGInfo},
-    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", NV1_BreachSecurity},
-    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", NV1_BreachSecurity},
+    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", NV1_PrintMFGInfo },
+    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_PrintMfgInfo", "NV1 Print Manufacturing Info", NV1_PrintMFGInfo },
+    { PCI_VENDOR_SGS, PCI_DEVICE_NV1_NV, "NV1_SecurityBreach", "NV1 DRM Enable", NV1_BreachSecurity },
+    { PCI_VENDOR_NV, PCI_DEVICE_NV1_NV, "NV1_DumpEEPROM", "NV1 Dump EEPROM", NV1_DumpEEPROM },
 
     // NV3 tests
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", NV3_DumpMFGInfo},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", NV3_DumpMFGInfo},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_SetOverclock", "NV3 Overclock Torture", NV3_TestOverclock},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_SetOverclock", "NV3 Overclock Torture", NV3_TestOverclock},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_GarbageMMIORead", "NV3 Garbage Test", NV3_ReadGarbageMMIO},
-    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_GarbageMMIORead", "NV3 Garbage Test", NV3_ReadGarbageMMIO},
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", NV3_DumpMFGInfo },
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_PrintMfgInfo", "NV3 Print Manufacturing Info", NV3_DumpMFGInfo },
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_SetOverclock", "NV3 Overclock Torture", NV3_TestOverclock },
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_SetOverclock", "NV3 Overclock Torture", NV3_TestOverclock },
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3, "NV3_GarbageMMIORead", "NV3 Garbage Test", NV3_ReadGarbageMMIO },
+    { PCI_VENDOR_SGS_NV, PCI_DEVICE_NV3T_ACPI, "NV3_GarbageMMIORead", "NV3 Garbage Test", NV3_ReadGarbageMMIO },
 
     // NV4 tests
 

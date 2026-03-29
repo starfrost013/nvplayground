@@ -11,6 +11,7 @@
 #include <architecture/nvidia/nv1/nv1.h>
 #include <architecture/nvidia/nv1/nv1_ref.h>
 
+#include "core/gpu/gpu.h"
 #include "dpmi.h"
 #include "nv1_ref.h"
 #include "util/util.h"
@@ -41,7 +42,8 @@ bool NV1_PrintMFGInfo()
 
 // Type 0 (32-bit)
 // Bit 3 = 1, for prefetchable (Only Bits 31:23 matter for BAR, it must begin on)
-#define NV1_MMIO_SPACE_TEST     0x84000008
+// 0xCC000000 is used by NV1 driver
+#define NV1_MMIO_SPACE_TEST     0xCC000008
 
 bool NV1_Init()
 {
@@ -101,7 +103,7 @@ bool NV1_Init()
     else if (ram_amount_value == NV1_PFB_BOOT_0_RAM_AMOUNT_1MB)                      // 1MB
         current_device.vram_amount = NV1_VRAM_SIZE_1MB;
 
-    current_device.straps = NV_ReadMMIO32(NV1_STRAPS);
+    current_device.straps = NV_ReadMMIO32(NV1_PEXTDEV_BOOT_0);
 
     /* Power up all GPU subsystems */
     Logging_Write(LOG_LEVEL_DEBUG, "Enabling all GPU subsystems (0x11111111 -> NV1_PMC_ENABLE)...");
@@ -154,7 +156,6 @@ bool NV1_BreachSecurity()
         Logging_Write(LOG_LEVEL_MESSAGE, "NV1 DRM:\tTripping the alarms...\n");
 
     Logging_Write(LOG_LEVEL_MESSAGE, "NV1 DRM:\tChipToken (Unique ID for NV1 chip): 0x%08X\n", nv1_state.chip_token);
-
     Logging_Write(LOG_LEVEL_DEBUG, "Let's try PAUTH_PASSWORD\n");
 
     uint32_t random_value = 0;
@@ -162,17 +163,17 @@ bool NV1_BreachSecurity()
     // First write directly into PAUTH password register.
     for (uint32_t j = 0; j < 128; j++)
     {
-        Logging_Write(LOG_LEVEL_DEBUG, "Write to index 0x%lX (addr range=%06X-%06X)\n", j, NV1_PAUTH_PASSWORD_0(j), NV1_PAUTH_PASSWORD_3(j));
+        Logging_Write(LOG_LEVEL_DEBUG, "Write to index 0x%lX (addr range=%06X-%06X)\n", j, NV1_PAUTH_PASSWD_0(j), NV1_PAUTH_PASSWD_0(j));
 
         // Write 128 bits of garbage data at a time into the PAUTH password registers
         random_value = (rand() << 16 | rand());
-        NV_WriteMMIO32(NV1_PAUTH_PASSWORD_0(j), random_value);
+        NV_WriteMMIO32(NV1_PAUTH_PASSWD_0(j), random_value);
         random_value = (rand() << 16 | rand());
-        NV_WriteMMIO32(NV1_PAUTH_PASSWORD_1(j), random_value);
+        NV_WriteMMIO32(NV1_PAUTH_PASSWD_1(j), random_value);
         random_value = (rand() << 16 | rand());
-        NV_WriteMMIO32(NV1_PAUTH_PASSWORD_2(j), random_value);
+        NV_WriteMMIO32(NV1_PAUTH_PASSWD_2(j), random_value);
         random_value = (rand() << 16 | rand());
-        NV_WriteMMIO32(NV1_PAUTH_PASSWORD_3(j), random_value);
+        NV_WriteMMIO32(NV1_PAUTH_PASSWD_3(j), random_value);
 
     }
         
@@ -217,3 +218,54 @@ bool NV1_BreachSecurity()
     return false; 
 }
 
+#define NV1_EEPROM_SIZE             0x7F
+
+// Value is pulled out of a certain location
+#define NUM_ITERATIONS_WARNING      100000
+#define NUM_ITERATIONS_ERROR        1000000
+
+// Dump the NV1's EEPROM
+bool NV1_DumpEEPROM()
+{
+    uint8_t eeprom_address = 0x00; 
+    bool busy = false; 
+    bool failed = false; // partially or fully failed
+    int num_iterations = 0;
+
+    for (int32_t i = 0; i < NV1_EEPROM_SIZE; i++)
+    {
+        uint32_t val = ((eeprom_address & 0x7F) << NV1_PEEPROM_CONTROL_ADDRESS)
+        | (NV1_PEEPROM_CONTROL_COMMAND_READ << NV1_PEEPROM_CONTROL_COMMAND);
+
+        NV_WriteMMIO32(NV1_PEEPROM_CONTROL, val);
+
+        val = NV_ReadMMIO32(NV1_PEEPROM_CONTROL);
+        busy = (val >> NV1_PEEPROM_CONTROL_STATUS) & 0x01;
+       
+        // bit 28 is unset when it is not busy
+        while (busy)
+        {
+            if (num_iterations > NUM_ITERATIONS_WARNING)
+                Logging_Write(LOG_LEVEL_WARNING, "Probably not coming back here...\n");
+            else if (num_iterations > NUM_ITERATIONS_ERROR)
+            {
+                Logging_Write(LOG_LEVEL_WARNING, "EEPROM took > %d tries to read. Giving up...\n", NUM_ITERATIONS_ERROR);
+                busy = false;
+                failed = true;
+                break;          
+            }
+
+            val = NV_ReadMMIO32(NV1_PEEPROM_CONTROL);
+            busy = (val >> NV1_PEEPROM_CONTROL_STATUS) & 0x01;
+            num_iterations++;
+        }
+
+        Logging_Write(LOG_LEVEL_DEBUG, "EEPROM:%x - %x (took %d iterations for EEPROM to come back)\n",
+        val & 0xFF,
+        num_iterations); 
+
+        num_iterations = 0;
+    }
+
+    return !failed; 
+}
