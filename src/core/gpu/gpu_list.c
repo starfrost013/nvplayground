@@ -41,10 +41,5 @@ nv_device_info_t supported_devices[] =
 	{ PCI_DEVICE_NV18_START, PCI_DEVICE_NV18_END, PCI_VENDOR_NV, "GeForce 4 MX-based GPU with AGP 8X support (NV18)",& nvhal_celsius },
 	{ PCI_DEVICE_NV1A, PCI_DEVICE_NV1A, PCI_VENDOR_NV, "GeForce 2 IGP (NV1A)", &nvhal_celsius },
 	{ PCI_DEVICE_NV1F, PCI_DEVICE_NV1F, PCI_VENDOR_NV, "GeForce 4 MX IGP (NV1F)", &nvhal_celsius },
-
-	// TEST
-	{ PCI_DEVICE_VIRGE_325, PCI_DEVICE_VIRGE_325, PCI_VENDOR_S3, "S3 Graphics, Inc. ViRGE (86C325)", &nvhal_virge },
-	{ PCI_DEVICE_CIRRUS_5446, PCI_DEVICE_CIRRUS_5446, PCI_VENDOR_CIRRUS, "Cirrus Logic 'Alpine' GD5446", &nvhal_alpine },
-
 	{ 0, 0, 0, "", NULL }, // sentinel
 };

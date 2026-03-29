@@ -88,11 +88,6 @@ file(GLOB sources CONFIGURE_DEPENDS
 # Architecture: Celsius
 "src/architecture/nvidia/nv10/nv10_core.c"
 
-# Architecture: S3 ViRGE (Test)
-"src/architecture/virge/virge_core.c"
-
-# Architecture: Cirrus GD5446 (Test)
-"src/architecture/cirrus/alpine_core.c"
 )
 
 add_executable(nvplay ${sources})

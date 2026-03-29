@@ -29,5 +29,3 @@ extern nvhal_entry_t nvhal_nv1;
 extern nvhal_entry_t nvhal_nv3;
 extern nvhal_entry_t nvhal_nv4;
 extern nvhal_entry_t nvhal_celsius;
-extern nvhal_entry_t nvhal_virge;
-extern nvhal_entry_t nvhal_alpine;
