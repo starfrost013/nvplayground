@@ -12,7 +12,6 @@
 #include "nvplay.h"
 #include "util/util.h"
 #include <nvplay.h>
-#include <architecture/nvidia/kernel/kernel.h>
 #include <cmake/nvplay_version.h>
 #include <stdio.h>
 
@@ -48,7 +47,7 @@ void NVPlay_Run()
 			Logging_Write(LOG_LEVEL_WARNING, "Replay mode is not yet implemented!\n");
 			break;
 		case NVPLAY_MODE_KERNEL_TEST:
-			Kernel_Main();
+			//Kernel_Main();
 			break;
 	}
 

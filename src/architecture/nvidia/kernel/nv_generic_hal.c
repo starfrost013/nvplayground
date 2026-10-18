@@ -75,10 +75,10 @@ nvhal_entry_t nvhal_nv4 =
     NV3_DumpPGRAPHCache,            // Dump PGRAPH_CACHE to text file (similar enough to nv3)
 
     // Kernel functions
-    NV4_InterruptService,           // Service interrupts
-    NV4_InitFIFO,                   // FIFO init
-    NV4_InitGraph,                  // PGRAPH init
-    NV4_ResetGraph,                 // PGRAPH reset
+    NULL, 
+    NULL, 
+    NULL, 
+    NULL,
     NULL,                           // Submit object in subchannel
     NULL,                           // Submit method for existing subchannel 
 };

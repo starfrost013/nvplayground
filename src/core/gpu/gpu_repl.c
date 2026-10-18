@@ -164,6 +164,5 @@ void NVPlay_Repl()
         }
         else 
             NVPlay_RunScriptCommand(repl_string);    
-    
     }
 }
